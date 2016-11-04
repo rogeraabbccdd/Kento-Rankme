@@ -18,13 +18,13 @@
 	"BombPickup"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}撿起炸彈{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}撿起炸彈{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"BombDropped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}丟掉炸彈{RED}失去 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}丟掉炸彈{RED}失去 {3} 點{NORMAL}."
 	}
 	
 	"MVP"
@@ -36,43 +36,43 @@
 	"LostSuicide"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}自殺,{RED}失去 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}自殺,{RED}失去 {3} 點{NORMAL}."
 	}
 	
 	"LostTK"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}擊殺隊友 {PINK}{4} {RED}失去 {3} 點{NORMAL}. "
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}擊殺隊友 {PINK}{4} {RED}失去 {3} 點{NORMAL}. "
 	}
 	
 	"CT_VIPEscaped"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{BLUE}反恐小組{NORMAL} 使VIP成功逃離,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{BLUE}反恐小組{RED} 使VIP成功逃離,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
 	"VIPEscaped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}當VIP成功逃離,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}當VIP成功逃離, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"TR_VIPKilled"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{ORANGE}恐怖份子{NORMAL} 刺殺VIP,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{ORANGE}恐怖份子 {RED}刺殺VIP, {LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
 	"VIPKilled"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}刺殺VIP,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}刺殺VIP, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"GotPointsBy"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}因為 {4} {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}因為 {RED}{4} {LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 
 	"IsRankedAt"
@@ -84,25 +84,25 @@
 	"Killing"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
-		"zho"		"{PINK}{1} {PURPLE}({2}) {NORMAL}擊殺 {PINK} {4} {PURPLE}({5}){NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1} {PURPLE}({2}) {RED}擊殺 {PINK} {4} {PURPLE}({5}){NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"KillingKillerNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"zho"		"{PINK}{1} {PURPLE}({2})[{6}/{7}] {NORMAL}擊殺 {PINK}{4} {PURPLE}({5}){NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1} {PURPLE}({2})[{6}/{7}] {RED}擊殺 {PINK}{4} {PURPLE}({5}){NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"KillingVictimNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"zho"		"{PINK}{1} {PURPLE}({2}) {NORMAL}擊殺 {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1} {PURPLE}({2}) {RED}擊殺 {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"KillingBothNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {NORMAL}擊殺 {PINK}{4} {PURPLE}({5})[{8}/{9}] {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {RED}擊殺 {PINK}{4} {PURPLE}({5})[{8}/{9}] {LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"Headshot"
@@ -114,61 +114,61 @@
 	"TR_Planting"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{ORANGE}恐怖份子{NORMAL} 放置炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{ORANGE}恐怖份子{RED} 放置炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
 	"Planting"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}放置炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}放置炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"TR_Exploding"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{ORANGE}恐怖份子{NORMAL} 引爆炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{ORANGE}恐怖份子{RED} 引爆炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
 	"Exploding"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK} {1}{PURPLE} ({2}) {NORMAL}引爆炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK} {1}{PURPLE} ({2}) {RED}引爆炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"CT_Defusing"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{BLUE}反恐小組{NORMAL} 拆除炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{BLUE}反恐小組{RED} 拆除炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
 	"Defusing"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}拆除炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}拆除炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"CT_Hostage"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{BLUE}反恐小組{NORMAL} 在這回合疏散人質{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{BLUE}反恐小組{RED} 在這回合疏散人質{LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
 	"Hostage"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}在這回合疏散人質{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}在這回合疏散人質{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"CT_Round"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{BLUE}反恐小組{NORMAL} 勝利,在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{BLUE}反恐小組{RED} 勝利,在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{ORANGE}恐怖份子{NORMAL} 勝利,在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{ORANGE}恐怖份子{RED} 勝利,在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
 	"NotRanked"

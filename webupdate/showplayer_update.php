@@ -8,7 +8,7 @@
 		}
 		$temp = strval($row[$weapon]/$kills*100);
 		
-		$weapon_names=array('Knife','USP-S','P2000','Dual Berettas','P250','FiveSeven','CZ75','Deagle','Glock','TEC-9','R8 Revolver','Nova','XM1014','MAG-7','Sawed-Off','MP9','MP7','UMP-45','P90','PP-Bizon','Mac10','Famas','M4A1-S','M4A4','AUG','Galil AR','AK-47','SG 553','SSG 08','SCAR-20','AWP','G3SG1','M249','Negev','HE','Flashbang','Smoke','Decoy','Molotv/Incendiary ','Taser');
+		$weapon_names=array('Knife','USP-S','P2000','Dual Berettas','P250','FiveSeven','CZ75','Deagle','Glock','TEC-9','R8 Revolver','Nova','XM1014','MAG-7','Sawed-Off','MP9','MP7','UMP-45','P90','PP-Bizon','Mac10','Famas','M4A1-S','M4A4','AUG','Galil AR','AK-47','SG 553','SSG 08','SCAR-20','AWP','G3SG1','M249','Negev','HE','Flashbang','Smoke','Decoy','Inferno','Taser');
 		echo "<td>{$weapon_names[$i]}</td>"; echo "<td>{$row[$weapon]} ("; 
 		$ts = 1;
 		$temp = strval($row[$weapon]/$kills*100);

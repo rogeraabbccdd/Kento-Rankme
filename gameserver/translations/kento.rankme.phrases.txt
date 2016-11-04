@@ -17,13 +17,13 @@
 	"BombPickup"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point(s) {NORMAL}for Picking up the Bomb."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point(s) {NORMAL}for {RED}Picking up the Bomb{NORMAL}."
 	}
 	
 	"BombDropped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}lost {3} point(s) {NORMAL}for Dropping the Bomb."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}lost {3} point(s) {NORMAL}for {RED}Dropping the Bomb{NORMAL}."
 	}
 	
 	"MVP"
@@ -35,43 +35,43 @@
 	"LostSuicide"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for Suiciding."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for {RED}Suiciding{NORMAL}."
 	}
 	
 	"LostTK"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for Team Killing {PINK}{4}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for Team Killing {PINK}{4}{NORMAL}."
 	}
 	
 	"CT_VIPEscaped"
 	{
 		"#format"	"{1:d}"
-		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for Escaping as VIP."
+		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Escaping as VIP{NORMAL}."
 	}
 	
 	"VIPEscaped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for Escaping as VIP."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Escaping as VIP{NORMAL}."
 	}
 	
 	"TR_VIPKilled"
 	{
 		"#format"	"{1:d}"
-		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for Killing the VIP."
+		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Killing the VIP{NORMAL}."
 	}
 	
 	"VIPKilled"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for Killing the VIP."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Killing the VIP{NORMAL}."
 	}
 	
 	"GotPointsBy"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point(s) {NORMAL}for {4}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point(s) {NORMAL}for {RED}{4}{NORMAL}."
 	}
 
 	"IsRankedAt"
@@ -83,117 +83,117 @@
 	"Killing"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for killing {PINK}{4} {PURPLE}({5})."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}killing {PINK}{4} {PURPLE}({5}){NORMAL}."
 	}
 	
 	"KillingKillerNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points {NORMAL}for killing {PINK}{4} {PURPLE}({5})."
+		"en"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points {NORMAL}for {RED}killing {PINK}{4} {PURPLE}({5}){NORMAL}."
 	}
 	
 	"KillingVictimNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for killing {PINK}{4} {PURPLE}({5})[{6}/{7}]."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}killing {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}."
 	}
 	
 	"KillingBothNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points {NORMAL}for killing {PINK}{4} {PURPLE}({5})[{8}/{9}]."
+		"en"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points {NORMAL}for {RED}killing {PINK}{4} {PURPLE}({5})[{8}/{9}]{NORMAL}."
 	}
 	
 	"Headshot"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Headshot."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Headshot{NORMAL}."
 	}
 	
 	"TR_Planting"
 	{
 		"#format"	"{1:d}"
-		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for Planting the Bomb"
+		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Planting the Bomb{NORMAL}."
 	}
 	
 	"Planting"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for Planting the Bomb."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Planting the Bomb{NORMAL}."
 	}
 	
 	"TR_Exploding"
 	{
 		"#format"	"{1:d}"
-		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for Exploding the Bomb."
+		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Exploding the Bomb{NORMAL}."
 	}
 	
 	"Exploding"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for Exploding the Bomb."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Exploding the Bomb{NORMAL}."
 	}
 	
 	"CT_Defusing"
 	{
 		"#format"	"{1:d}"
-		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for Defusing the Bomb."
+		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Defusing the Bomb{NORMAL}."
 	}
 	
 	"Defusing"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for Defusing the Bomb."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Defusing the Bomb{NORMAL}."
 	}
 	
 	"CT_Hostage"
 	{
 		"#format"	"{1:d}"
-		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for Rescuing the Hostage."
+		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Rescuing the Hostage{NORMAL}."
 	}
 	
 	"Hostage"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for Rescuing the Hostage."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Rescuing the Hostage{NORMAL}."
 	}
 	
 	"CT_Round"
 	{
 		"#format"	"{1:d}"
-		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for Winning the Round."
+		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Winning the Round{NORMAL}."
 	}
 	
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
-		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for Winning the Round."
+		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Winning the Round{NORMAL}."
 	}
 	
 	"PlayerJoinedChat"
 	//{1} = ClientName | {2} = RankOnConnect | {3} = PointsOnConnect
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{NORMAL} joined the server. {YELLOW}(Pos {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}Points)"
+		"en"		"{PINK}{1}{NORMAL} joined the server. {YELLOW}(Pos {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}Points){NORMAL}."
 	}
 	
 	"TopPlayerJoinedChat"
 	{
 		"#format"	"{1:d},{2:s},{3:d},"
-		"en"		"Top {RED}{1}{NORMAL} player {PINK}{2}{NORMAL} connected, currently rank {GREEN}{3}"
+		"en"		"Top {RED}{1}{NORMAL} player {PINK}{2}{NORMAL} connected, currently rank {GREEN}{3}{NORMAL}."
 	}
 	
 	"PlayerLeft"
 	//{1} = ClientName | {2} = rank | {3} = Position | {4} = PointsOnDisconnect | {5} = PointsDif
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d}"
-		"en"		"{PINK}{1}{NORMAL} left the server. {YELLOW}(Pos {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}Points {LIGHTGREEN}--> {YELLOW}Pos {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}Points)"
+		"en"		"{PINK}{1}{NORMAL} left the server. {YELLOW}(Pos {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}Points {LIGHTGREEN}--> {YELLOW}Pos {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}Points){NORMAL}."
 	}
 	
 	"NotRanked"
 	{
 		"#format"	"{1:d},{2:d}"
-		"en"		"{RED}Not ranked yet. {NORMAL}You need {RED}{2}{NORMAL} kills for entering the rank. Current {LIGHTGREEN}{1}."
+		"en"		"{RED}Not ranked yet. {NORMAL}You need {RED}{2}{NORMAL} kills for entering the rank. Current {LIGHTGREEN}{1}{NORMAL}."
 	}
 	
 	//****************** PrintHintText ******************
