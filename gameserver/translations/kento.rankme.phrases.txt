@@ -71,7 +71,7 @@
 	"GotPointsBy"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point(s) for {NORMAL}{4}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point(s) {NORMAL}for {4}."
 	}
 
 	"IsRankedAt"
@@ -83,25 +83,25 @@
 	"Killing"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points for killing {PINK}{4} {PURPLE}({5})."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for killing {PINK}{4} {PURPLE}({5})."
 	}
 	
 	"KillingKillerNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points for killing {PINK}{4} {PURPLE}({5})."
+		"en"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points {NORMAL}for killing {PINK}{4} {PURPLE}({5})."
 	}
 	
 	"KillingVictimNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points for killing {PINK}{4} {PURPLE}({5})[{6}/{7}]."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for killing {PINK}{4} {PURPLE}({5})[{6}/{7}]."
 	}
 	
 	"KillingBothNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points for killing {PINK}{4} {PURPLE}({5})[{8}/{9}]."
+		"en"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points {NORMAL}for killing {PINK}{4} {PURPLE}({5})[{8}/{9}]."
 	}
 	
 	"Headshot"
