@@ -1,0 +1,396 @@
+//**********************************************  Valid Colors	********************************************************
+// {NORMAL}, {DARKRED}, {PINK}, {YELLOW}, {GREEN}, {LIGHTGREEN}, {RED}, {GRAY}, {BLUE}, {DARKBLUE}, {PURPLE}, {ORANGE} *
+//**********************************************************************************************************************
+//                                     http://i.imgur.com/q2wb8Cu.png                                                  *
+//{NORMAL} = x01 | {DARKRED} = x02 | {PINK} = x03 | {GREEN} = x04 | {YELLOW} = x09 | {LIGHTGREEN} = x06 | {RED} = x07  *
+//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E|  {ORANGE} = x10                                     *
+//**********************************************************************************************************************
+
+"Phrases"
+{	
+	//******************* PrintToChat *******************
+	
+	"ResetMyRank"
+	{
+		"zho"		"{RED}你的排名已經重置"
+	}
+	
+	"BombPickup"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}撿起炸彈{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"BombDropped"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}丟掉炸彈{RED}失去 {3} 點{NORMAL}."
+	}
+	
+	"MVP"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}是這回合的{RED}MVP,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"LostSuicide"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}自殺,{RED}失去 {3} 點{NORMAL}."
+	}
+	
+	"LostTK"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}擊殺隊友 {PINK}{4} {RED}失去 {3} 點{NORMAL}. "
+	}
+	
+	"CT_VIPEscaped"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{BLUE}反恐小組{NORMAL} 使VIP成功逃離,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"VIPEscaped"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}當VIP成功逃離,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"TR_VIPKilled"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{ORANGE}恐怖份子{NORMAL} 刺殺VIP,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"VIPKilled"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}刺殺VIP,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"GotPointsBy"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}因為 {4} {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+
+	"IsRankedAt"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:.2f}"
+		"zho"		"玩家 {PINK} {1} {NORMAL}的排名是 {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} 點{NORMAL},{LIGHTGREEN} {5} 擊殺{NORMAL},{RED} {6} 死亡{NORMAL},{BLUE} KDR {7}{NORMAL}."
+	}
+	
+	"Killing"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
+		"zho"		"{PINK}{1} {PURPLE}({2}) {NORMAL}擊殺 {PINK} {4} {PURPLE}({5}){NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"KillingKillerNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
+		"zho"		"{PINK}{1} {PURPLE}({2})[{6}/{7}] {NORMAL}擊殺 {PINK}{4} {PURPLE}({5}){NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"KillingVictimNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
+		"zho"		"{PINK}{1} {PURPLE}({2}) {NORMAL}擊殺 {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}, {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"KillingBothNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {NORMAL}擊殺 {PINK}{4} {PURPLE}({5})[{8}/{9}] {LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"Headshot"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}爆頭,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"TR_Planting"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{ORANGE}恐怖份子{NORMAL} 放置炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"Planting"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}放置炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"TR_Exploding"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{ORANGE}恐怖份子{NORMAL} 引爆炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"Exploding"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK} {1}{PURPLE} ({2}) {NORMAL}引爆炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"CT_Defusing"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{BLUE}反恐小組{NORMAL} 拆除炸彈,{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"Defusing"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}拆除炸彈,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"CT_Hostage"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{BLUE}反恐小組{NORMAL} 在這回合疏散人質{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"Hostage"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}在這回合疏散人質{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"CT_Round"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{BLUE}反恐小組{NORMAL} 勝利,在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"TR_Round"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{ORANGE}恐怖份子{NORMAL} 勝利,在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"NotRanked"
+	{
+		"#format"	"{1:d},{2:d}"
+		"en"		"{RED}你還沒被列入排名. {NORMAL}你需要 {RED}{2}{NORMAL} 殺才能被列入排名. 現在 {LIGHTGREEN}{1}."
+	}
+	
+	"PlayerJoinedChat"
+	//{1} = ClientName | {2} = RankOnConnect | {3} = PointsOnConnect
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"en"		"玩家{PINK}{1}{NORMAL} 進入伺服器. {YELLOW}(排名 {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}點)"
+	}
+	
+	"TopPlayerJoinedChat"
+	{
+		"#format"	"{1:d},{2:s},{3:d},"
+		"en"		"Top {RED}{1}{NORMAL} 玩家 {PINK}{2}{NORMAL} 進入伺服器, 目前排名 {GREEN}{3}"
+	}
+	
+	"PlayerLeft"
+	//{1} = ClientName | {2} = rank | {3} = Position | {4} = PointsOnDisconnect | {5} = PointsDif
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d}"
+		"en"		"{PINK}{1}{NORMAL} 離開伺服器. {YELLOW}(排名 {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}點 {LIGHTGREEN}--> {YELLOW}排名 {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}點)"
+	}
+	
+//****************************************************   WARNING   *******************************************************
+//********************************************   NO COLORS  BELOW THIS LINE   ********************************************
+
+	"Showing"
+	{
+		"#format"	"{1:d},{2:d},{3:d}"
+		"zho"		"顯示從 {1} 到 {2} ,共 {3}\n"
+	}
+	
+	"Next"
+	{
+		"zho"		"下一頁"
+	}
+	
+	"Back"
+	{
+		"zho"		"前一頁"
+	}
+	
+	"KnifeKills"
+	{
+		"zho"		"刀子擊殺"
+	}
+	
+	"TaserKills"
+	{
+		"zho"		"電擊槍擊殺"
+	}
+	
+	"Position"
+	{
+		"zho"		"位置"
+	}
+	
+	"Points"
+	{
+		"zho"		"點數"
+	}
+	
+	"BasicStats"
+	{
+		"zho"		"基本統計"
+	}
+	
+	"KillsDeaths"
+	{
+		"#format"	"{1:d},{2:d}"
+		"zho"		"擊殺: {1}   死亡: {2}"
+	}
+	
+	"Suicides"
+	{
+		"zho"		"自殺"
+	}
+	
+	"RoundStats"
+	{
+		"zho"		"回合統計"
+	}
+	
+	"TRWins"
+	{
+		"zho"		"恐怖獲勝"
+	}
+	
+	"CTWins"
+	{
+		"zho"		"反恐獲勝"
+	}
+	
+	"HitStats"
+	{
+		"zho"		"射擊統計"
+	}
+	
+	"Shots"
+	{
+		"zho"		"射擊數"
+	}
+	
+	"Hits"
+	{
+		"zho"		"擊中數"
+	}
+	
+	"Accuracy"
+	{
+		"zho"		"準度"
+	}
+	
+	"BombHostagesStats"
+	{
+		"zho"		"炸彈/人質 統計"
+	}
+	
+	"PlantedBombs"
+	{
+		"zho"		"放置炸彈"
+	}
+	
+	"DefusedBombs"
+	{
+		"zho"		"拆除炸彈"
+	}
+	
+	"ExplodedBombs"
+	{
+		"zho"		"炸彈爆炸"
+	}
+	
+	"RescuedHostages"
+	{
+		"zho"		"救援人質"
+	}
+	
+	"OtherStats"
+	{
+		"zho"		"其他統計"
+	}
+	
+	"TimeConnected"
+	{
+		"#format"	"{1:d},{2:d},{3:d}"
+		"zho"		"遊玩時間: {1} 小時, {2} 分, {3} 秒"
+	}
+	
+	"Head"
+	{
+		"zho"		"頭"
+	}
+	
+	"Chest"
+	{
+		"zho"		"胸"
+	}
+	
+	"Stomach"
+	{
+		"zho"		"腹"
+	}
+	
+	"LeftArm"
+	{
+		"zho"		"左手"
+	}
+	
+	"LeftLeg"
+	{
+		"zho"		"左腳"
+	}
+	
+	"RightArm"
+	{
+		"zho"		"右手"
+	}
+	
+	"RightLeg"
+	{
+		"zho"		"右腳"
+	}
+	
+	"Next9Players"
+	{
+		"zho"		"上面9個玩家"
+	}
+	
+	"WeaponsStats"
+	{
+		"zho"		"武器統計"
+	}
+	
+	"VIPStats"
+	{
+		"zho"		"VIP統計"
+	}
+	
+	"VIPEscapes"
+	{
+		"zho"		"當VIP逃離"
+	}
+	
+	"VIPsKilled"
+	{
+		"zho"		"VIP刺殺"
+	}
+	
+	"Kills"
+	{
+		"zho"		"擊殺數"
+	}
+	
+	"Deaths"
+	{
+		"zho"		"死亡數"
+	}
+}
+ 

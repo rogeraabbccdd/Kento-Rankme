@@ -1,0 +1,1 @@
+Replace the code under "Weapons Kills" in your showplayer.php
