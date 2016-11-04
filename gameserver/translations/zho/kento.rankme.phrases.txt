@@ -108,7 +108,7 @@
 	"Headshot"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}爆頭,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}爆頭,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"TR_Planting"
