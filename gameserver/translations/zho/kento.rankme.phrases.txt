@@ -197,9 +197,28 @@
 		"en"		"{PINK}{1}{NORMAL} 離開伺服器. {YELLOW}(排名 {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}點 {LIGHTGREEN}--> {YELLOW}排名 {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}點)"
 	}
 	
-//****************************************************   WARNING   *******************************************************
-//********************************************   NO COLORS  BELOW THIS LINE   ********************************************
-
+	"AssistKill"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}助攻,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	//****************** PrintHintText ******************
+	
+	"PlayerJoinedHint"
+	{
+		"#format"	"{1:s},{2:d},{3:d},"
+		"en"		"<font color='#28FF28'>訊息:</font> \n <font color='#B15BFF'>{1}</font> 加入遊戲. \n 排名 <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> 點"	
+	}
+	
+	"TopPlayerJoinedHint"
+	{
+		"#format"	"{1:d},{2:s},{3:d},"
+		"en"		"<font color='#28FF28'>訊息:</font> \n Top <font color='#FF0000'>{1}</font> 玩家 <font color='#B15BFF'>{2}</font> 加入遊戲 \n 目前排名: <font color='#28FF28'>{3}</font>"
+	}
+	
+	//***************** Menu (No Colors) *****************
+	
 	"Showing"
 	{
 		"#format"	"{1:d},{2:d},{3:d}"

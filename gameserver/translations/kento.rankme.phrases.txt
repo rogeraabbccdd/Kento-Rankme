@@ -196,6 +196,12 @@
 		"en"		"{RED}Not ranked yet. {NORMAL}You need {RED}{2}{NORMAL} kills for entering the rank. Current {LIGHTGREEN}{1}{NORMAL}."
 	}
 	
+	"AssistKill"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist Kill{NORMAL}."
+	}
+	
 	//****************** PrintHintText ******************
 	
 	"PlayerJoinedHint"
@@ -207,7 +213,7 @@
 	"TopPlayerJoinedHint"
 	{
 		"#format"	"{1:d},{2:s},{3:d},"
-		"en"		"<font color='#28FF28'>Info</font> \n Top <font color='##FF0000'>{1}</font> player <font color='#B15BFF'>{2}</font> connected \n Currently rank <font color='#E800E8'>{3}</font>"
+		"en"		"<font color='#28FF28'>Info</font> \n Top <font color='#FF0000'>{1}</font> player <font color='#B15BFF'>{2}</font> connected \n Currently rank <font color='#28FF28'>{3}</font>"
 	}
 	
 	//***************** Menu (No Colors) *****************

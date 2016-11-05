@@ -1,25 +1,23 @@
 //Changelog
 //
 //3.0.3.Kento.1
-//Add colors (csgocolors, done)
-//Add csgo weapons (done)
-//Fix Molotov & Inc Grenade Bug (done)
-//Include rankme_connect_announcer (done)
+//Add colors
+//Add csgo weapons
+//Fix Molotov & Inc Grenade Bug
+//Include rankme_connect_announcer
+//Fix knife_falchion, knife_push and knife_survival_bowie will not count bug
+//
+//3.0.3.Kento.2
+//Add Assist Supprt
+//Code edited from pracc's rankme http://hlmod.ru/resources/cs-go-rankme-web.132/
 //
 //
 //To do (if I'm not lazy)
 //
+//Add assist stats to sql?
+//
 //Remove vip stats?
 //Will CSGO official add vip gamemode in the future?
-//
-//Add kill assist point
-//Notes:
-//EventPlayerDeath, GetClientOfUserId(GetEventInt(event, "assister"));
-//Add assist table in g_sSqlCreate, g_sSqlInsert, g_sSqlSave
-//Add assist to "IsRankedAt" phrases in rankme.inc
-//Add assist at "enum STATS_NAMES" in cmds.inc
-//Add assist to !statsme
-//New cvar rankme_points_kill_ct, rankme_points_kill_tr, rankme_points_kill_bonus_ct, rankme_points_kill_bonus_tr
 //
 //Rewirte with New syntax
 //
@@ -27,7 +25,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.1"
+#define PLUGIN_VERSION "3.0.3.Kento.2"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -206,13 +204,16 @@ new g_aPointsOnDisconnect[MAXPLAYERS+1];
 new g_aRankOnConnect[MAXPLAYERS+1];
 new String:g_sBufferClientName[MAXPLAYERS+1][MAX_NAME_LENGTH];
 
+/*Assist*/
+new Handle:g_cvarPointsAssistKill;
+new g_PointsAssistKill;
 
 public Plugin:myinfo =  {
 	name = "RankMe", 
-	author = "lok1, Scooby, Kento", 
+	author = "lok1, Scooby, pracc, Kento", 
 	description = "Improved RankMe for CSGO", 
 	version = PLUGIN_VERSION, 
-	url = "https://github.com/rogeraabbccdd/RankMe"
+	url = "https://github.com/rogeraabbccdd/Kento-Rankme"
 };
 
 public OnPluginStart() {
@@ -270,6 +271,9 @@ public OnPluginStart() {
 	g_cvarPointsBombPickup = CreateConVar("rankme_points_bomb_pickup", "0", "How many points a player gets for picking up the bomb?", _, true, 0.0);
 	g_cvarPointsBombDropped = CreateConVar("rankme_points_bomb_dropped", "0", "How many points a player loess for dropping the bomb?", _, true, 0.0);
 	
+	/* Assist */
+	g_cvarPointsAssistKill = CreateConVar("rankme_points_assiist_kill","1","How many points a player loess for assist kill?",_,true,0.0);
+	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
 	HookConVarChange(g_cvarChatChange, OnConVarChanged);
@@ -322,6 +326,9 @@ public OnPluginStart() {
 	HookConVarChange(g_cvarPointsMvpTr, OnConVarChanged);
 	HookConVarChange(g_cvarPointsBombPickup, OnConVarChanged);
 	HookConVarChange(g_cvarPointsBombDropped, OnConVarChanged);
+	
+	/* Assist */
+	HookConVarChange(g_cvarPointsAssistKill,OnConVarChanged);
 	
 	// EVENTS
 	HookEventEx("player_death", EventPlayerDeath);
@@ -518,6 +525,9 @@ public OnConfigsExecuted() {
 	g_PointsMvpTr = GetConVarInt(g_cvarPointsMvpTr);
 	g_PointsBombDropped = GetConVarInt(g_cvarPointsBombDropped);
 	g_PointsBombPickup = GetConVarInt(g_cvarPointsBombPickup);
+	
+	/* Assist */
+	g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
 	
 	/*RankMe Connect Announcer*/
 	g_bAnnounceConnect = GetConVarBool(g_cvarAnnounceConnect);
@@ -1465,6 +1475,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 	
 	new victim = GetClientOfUserId(GetEventInt(event, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
+	new assist = GetClientOfUserId(GetEventInt(event, "assister"));
 	
 	if (!g_bRankBots && attacker != 0 && (IsFakeClient(victim) || IsFakeClient(attacker)))
 		return;
@@ -1478,6 +1489,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			
 			CPrintToChat(victim, "%s %t", MSG, "LostSuicide", g_aClientName[victim], g_aStats[victim][SCORE], g_PointsLoseSuicide);
 		}
+		
 	} else if (!g_bFfa && (GetClientTeam(victim) == GetClientTeam(attacker))) {
 		if (attacker < MAXPLAYERS) {
 			g_aStats[attacker][TK]++;
@@ -1580,6 +1592,25 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 				CPrintToChat(attacker, "%s %t", MSG, "Headshot", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsHs);
 		}
 	}
+			
+	/* Assist */
+	if(assist && attacker < MAXPLAYERS){
+		
+		//Do not attack your teammate, my friend
+		if(GetClientTeam(victim) == GetClientTeam(assist)){
+			return;
+		}
+		
+		else{
+			g_aStats[assist][SCORE]+= g_PointsAssistKill;
+			g_aSession[assist][SCORE]+= g_PointsAssistKill;
+			
+			if(g_bChatChange && g_PointsAssistKill > 0){
+				CPrintToChat(assist, "%s %t", MSG, "AssistKill", g_aClientName[assist], g_aStats[assist][SCORE], g_PointsAssistKill);
+			}
+		}
+	}
+	
 	if (attacker < MAXPLAYERS)
 		if (g_aStats[attacker][KILLS] == 50)
 		g_TotalPlayers++;
@@ -2092,6 +2123,12 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 	
 	else if(convar == g_cvarAnnounceTopConnectHint) {
 		g_bAnnounceTopConnectHint = GetConVarBool(g_cvarAnnounceTopConnectHint);
+	}
+	
+	
+	/* Assist */
+	else if (convar == g_cvarPointsAssistKill){
+		g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
 	}
 	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
