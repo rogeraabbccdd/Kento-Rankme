@@ -18,6 +18,7 @@ https://forums.alliedmods.net/showthread.php?p=2467665
 ##Credits
 * [lok1](https://forums.alliedmods.net/showthread.php?t=155621) - Developed the original RankMe plugin that this plugin is based on.
 * [benscobie](https://github.com/benscobie/sourcemod-rankme) - This plugin is improved from his version.
+* [pracc](http://hlmod.ru/resources/cs-go-rankme-web.132/) - Code of kill assist is edited from his rankme
 
 ##Pictures Preview
 ![](http://i.imgur.com/61RcRQf.jpg "")
