@@ -3,6 +3,7 @@
   #endinput
 #endif
 #define _rankme_included
+
 enum WEAPONS_ENUM{
 	KNIFE,
 	GLOCK,
@@ -45,10 +46,12 @@ enum WEAPONS_ENUM{
 	DECOY,
 	TASER,
 }
+
 enum STATS_NAMES{
 	SCORE,
 	KILLS,
 	DEATHS,
+	ASSISTS,
 	SUICIDES,
 	TK,
 	SHOTS,

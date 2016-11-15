@@ -77,8 +77,8 @@
 
 	"IsRankedAt"
 	{
-		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:.2f}"
-		"zho"		"玩家 {PINK} {1} {NORMAL}的排名是 {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} 點{NORMAL},{LIGHTGREEN} {5} 擊殺{NORMAL},{RED} {6} 死亡{NORMAL},{BLUE} KDR {7}{NORMAL}."
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d}"
+		"zho"		"玩家 {PINK} {1} {NORMAL}的排名是 {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} 點{NORMAL},{LIGHTGREEN} {5} 擊殺{NORMAL},{RED} {6} 死亡{NORMAL},{ORANGE} {7} 助攻{NORMAL},{BLUE} KDR {8},{DARKRED} TKs {9}{NORMAL}."
 	}
 	
 	"Killing"
@@ -174,33 +174,58 @@
 	"NotRanked"
 	{
 		"#format"	"{1:d},{2:d}"
-		"en"		"{RED}你還沒被列入排名. {NORMAL}你需要 {RED}{2}{NORMAL} 殺才能被列入排名. 現在 {LIGHTGREEN}{1}."
+		"zho"		"{RED}你還沒被列入排名. {NORMAL}你需要 {RED}{2}{NORMAL} 殺才能被列入排名. 現在 {LIGHTGREEN}{1}."
 	}
 	
 	"PlayerJoinedChat"
 	//{1} = ClientName | {2} = RankOnConnect | {3} = PointsOnConnect
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"玩家{PINK}{1}{NORMAL} 進入伺服器. {YELLOW}(排名 {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}點)"
+		"zho"		"玩家{PINK}{1}{NORMAL} 進入伺服器. {YELLOW}(排名 {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}點)"
 	}
 	
 	"TopPlayerJoinedChat"
 	{
 		"#format"	"{1:d},{2:s},{3:d},"
-		"en"		"Top {RED}{1}{NORMAL} 玩家 {PINK}{2}{NORMAL} 進入伺服器, 目前排名 {GREEN}{3}"
+		"zho"		"Top {RED}{1}{NORMAL} 玩家 {PINK}{2}{NORMAL} 進入伺服器, 目前排名 {GREEN}{3}"
 	}
 	
 	"PlayerLeft"
 	//{1} = ClientName | {2} = rank | {3} = Position | {4} = PointsOnDisconnect | {5} = PointsDif
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d}"
-		"en"		"{PINK}{1}{NORMAL} 離開伺服器. {YELLOW}(排名 {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}點 {LIGHTGREEN}--> {YELLOW}排名 {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}點)"
+		"zho"		"{PINK}{1}{NORMAL} 離開伺服器. {YELLOW}(排名 {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}點 {LIGHTGREEN}--> {YELLOW}排名 {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}點)"
 	}
 	
 	"AssistKill"
 	{
-		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}助攻,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}協助 {PINK}{4} {RED}擊殺 {PINK}{5} {NORMAL},{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"The rank has been reset"
+	{
+		"zho"		"{RED}已重置排名資料"
+	}
+	
+	"All rank data has been reset"
+	{
+		"zho"		"{RED}已重置所有排名資料"
+	}
+	
+	"Usagepurge"
+	{
+		"zho"		"{RED}請使用: {PINK}rankpurge X (X 代表未上線天數)"
+	}
+	
+	"Purged"
+	{
+		"zho"		"{RED}Purged"
+	}
+	
+	"UsageStatsme2"
+	{
+		"zho"		"{RED}請使用: {PINK}sm_statsme2 <名字 / #排名 / steam>"
 	}
 	
 	//****************** PrintHintText ******************
@@ -208,13 +233,13 @@
 	"PlayerJoinedHint"
 	{
 		"#format"	"{1:s},{2:d},{3:d},"
-		"en"		"<font color='#28FF28'>訊息:</font> \n <font color='#B15BFF'>{1}</font> 加入遊戲. \n 排名 <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> 點"	
+		"zho"		"<font color='#28FF28'>訊息:</font> \n <font color='#B15BFF'>{1}</font> 加入遊戲. \n 排名 <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> 點"	
 	}
 	
 	"TopPlayerJoinedHint"
 	{
 		"#format"	"{1:d},{2:s},{3:d},"
-		"en"		"<font color='#28FF28'>訊息:</font> \n Top <font color='#FF0000'>{1}</font> 玩家 <font color='#B15BFF'>{2}</font> 加入遊戲 \n 目前排名: <font color='#28FF28'>{3}</font>"
+		"zho"		"<font color='#28FF28'>訊息:</font> \n Top <font color='#FF0000'>{1}</font> 玩家 <font color='#B15BFF'>{2}</font> 加入遊戲 \n 目前排名: <font color='#28FF28'>{3}</font>"
 	}
 	
 	//***************** Menu (No Colors) *****************
@@ -260,10 +285,10 @@
 		"zho"		"基本統計"
 	}
 	
-	"KillsDeaths"
+	"KillsDeathsAssists"
 	{
-		"#format"	"{1:d},{2:d}"
-		"zho"		"擊殺: {1}   死亡: {2}"
+		"#format"	"{1:d},{2:d},{3:d}"
+		"zho"		"擊殺: {1}   死亡: {2}   助攻: {3}"
 	}
 	
 	"Suicides"
@@ -410,6 +435,141 @@
 	"Deaths"
 	{
 		"zho"		"死亡數"
+	}
+	
+	"Headshots"
+	{
+		"zho"		"爆頭數"
+	}
+	
+	"Assists"
+	{
+		"zho"		"助攻數"
+	}
+	
+	"TKs"
+	{
+		"zho"		"擊殺隊友數"
+	}
+	
+	"RankMe Menu"
+	{
+		"zho"		"RankMe選單"
+	}
+	
+	"My Rank"
+	{
+		"zho"		"我的排名"
+	}
+	
+	"Reset My Rank"
+	{
+		"zho"		"重置我的排名"
+	}
+	
+	"My Stats"
+	{
+		"zho"		"我的統計資料"
+	}
+	
+	"Show Other Players Stats"
+	{
+		"zho"		"顯示其他玩家的統計資料"
+	}
+	
+	"Session"
+	{
+		"zho"		"顯示這張地圖的統計資料"
+	}
+	
+	"My HitBox Stats"
+	{
+		"zho"		"My HitBox Stats"
+	}
+	
+	"My Weapon Stats"
+	{
+		"zho"		"顯示我的武器統計"
+	}
+	
+	"Show Players Above Me"
+	{
+		"zho"		"顯示名次在我上面的玩家"
+	}
+	
+	"TOP 10"
+	{
+		"zho"		"TOP 10"
+	}
+	
+	"TOP Kills"
+	{
+		"zho"		"擊殺排名"
+	}
+	
+	"TOP Deaths"
+	{
+		"zho"		"死亡排名"
+	}
+	
+	"TOP Assists"
+	{
+		"zho"		"助攻排名"
+	}
+	
+//	"TOP KDR"
+//	{
+//		"zho"		"KDR排名"
+//	}
+	
+	"TOP TK"
+	{
+		"zho"		"TK排名"
+	}
+	
+	"TOP Weapon"
+	{
+		"zho"		"武器排名"
+	}
+	
+//	"TOP Grenade"
+//	{
+//		"zho"		"TOP Grenade"
+//	}
+//	
+//	"TOP Knife"
+//	{
+//		"zho"		"TOP Knife"
+//	}
+//	
+//	"TOP Taser"
+//	{
+//		"zho"		"TOP Taser"
+//	}
+	
+	"TOP Accuracy"
+	{
+		"zho"		"準確率排名"
+	}
+	
+	"TOP HS"
+	{
+		"zho"		"爆頭排名"
+	}
+	
+	"TOP Time Connected"
+	{
+		"zho"		"連線時間排名"
+	}
+	
+	"Reset a player rank"
+	{
+		"zho"		"重置玩家排名"
+	}
+	
+	"Reset all the rank"
+	{
+		"zho"		"重置所有玩家排名"
 	}
 }
  

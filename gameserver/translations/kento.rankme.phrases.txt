@@ -76,8 +76,8 @@
 
 	"IsRankedAt"
 	{
-		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:.2f}"
-		"en"		"Player{PINK} {1} {NORMAL}is ranked at {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} points{NORMAL},{LIGHTGREEN} {5} kills{NORMAL},{RED} {6} deaths{NORMAL}, and{BLUE} KDR {7}{NORMAL}."
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d}"
+		"en"		"Player{PINK} {1} {NORMAL}is ranked at {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} points{NORMAL},{LIGHTGREEN} {5} kills{NORMAL},{RED} {6} deaths{NORMAL},{ORANGE} {7} assists{NORMAL}, {BLUE} KDR {8} {NORMAL}and {DARKRED}{9} team kills{NORMAL}."
 	}
 	
 	"Killing"
@@ -198,8 +198,33 @@
 	
 	"AssistKill"
 	{
-		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist Kill{NORMAL}."
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Kill {PINK}{5}{NORMAL}."
+	}
+	
+	"The rank has been reset"
+	{
+		"en"		"{RED}The rank has been reset"
+	}
+	
+	"All rank data has been reset"
+	{
+		"en"		"{RED}All rank data has been reset"
+	}
+	
+	"Usagepurge"
+	{
+		"en"		"{RED}Usage: {PINK}rankpurge X (where X equals number of days of inactivity)"
+	}
+	
+	"Purged"
+	{
+		"en"		"{RED}Purged"
+	}
+	
+	"UsageStatsme2"
+	{
+		"en"		"{RED}Usage: {PINK}sm_statsme2 <name / #position on top / steam>"
 	}
 	
 	//****************** PrintHintText ******************
@@ -285,10 +310,10 @@
 		"en"		"Basic Stats"
 	}
 	
-	"KillsDeaths"
+	"KillsDeathsAssists"
 	{
-		"#format"	"{1:d},{2:d}"
-		"en"		"Kills: {1}   Deaths: {2}"
+		"#format"	"{1:d},{2:d},{3:d}"
+		"en"		"Kills: {1}   Deaths: {2}   Assists: {3}"
 	}
 	
 	"Suicides"
@@ -410,6 +435,141 @@
 	"WeaponsStats"
 	{
 		"en"		"Weapon Statistics"
+	}
+	
+	"Headshots"
+	{
+		"en"		"Headshots"
+	}
+	
+	"Assists"
+	{
+		"en"		"Assists"
+	}
+	
+	"TKs"
+	{
+		"en"		"TKs"
+	}
+	
+	"RankMe Menu"
+	{
+		"en"		"RankMe Menu"
+	}
+	
+	"My Rank"
+	{
+		"en"		"My Rank"
+	}
+	
+	"Reset My Rank"
+	{
+		"en"		"Reset My Rank"
+	}
+	
+	"My Stats"
+	{
+		"en"		"My Stats"
+	}
+	
+	"Show Other Players Stats"
+	{
+		"en"		"Show Other Players Stats"
+	}
+	
+	"Session"
+	{
+		"en"		"Session"
+	}
+	
+	"My HitBox Stats"
+	{
+		"en"		"My HitBox Stats"
+	}
+	
+	"My Weapon Stats"
+	{
+		"en"		"My Weapon Stats"
+	}
+	
+	"Show Players Above Me"
+	{
+		"en"		"Show Players Above Me"
+	}
+	
+	"TOP 10"
+	{
+		"en"		"TOP 10"
+	}
+	
+	"TOP Kills"
+	{
+		"en"		"TOP Kills"
+	}
+	
+	"TOP Deaths"
+	{
+		"en"		"TOP Deaths"
+	}
+	
+	"TOP Assists"
+	{
+		"en"		"TOP Assists"
+	}
+	
+//	"TOP KDR"
+//	{
+//		"en"		"TOP KDR"
+//	}
+	
+	"TOP TK"
+	{
+		"en"		"TOP TK"
+	}
+	
+	"TOP Weapon"
+	{
+		"en"		"TOP Weapon"
+	}
+	
+//	"TOP Grenade"
+//	{
+//		"en"		"TOP Grenade"
+//	}
+//	
+//	"TOP Knife"
+//	{
+//		"en"		"TOP Knife"
+//	}
+//	
+//	"TOP Taser"
+//	{
+//		"en"		"TOP Taser"
+//	}
+	
+	"TOP Accuracy"
+	{
+		"en"		"TOP Accuracy"
+	}
+	
+	"TOP HS"
+	{
+		"en"		"TOP HS"
+	}
+	
+	"TOP Time Connected"
+	{
+		"en"		"TOP Time Connected"
+	}
+	
+	"Reset a player rank"
+	{
+		"en"		"Reset a player rank"
+	}
+	
+	"Reset all the rank"
+	{
+		"en"		"Reset All The Rank"
 	}
 }
  
