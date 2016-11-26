@@ -25,10 +25,16 @@
 //Add country into connect and disconnect announce
 //
 //
+//3.0.3.Kento.5
+//Remove disconnect announce contry, I forgot this won't work
+//
+//
 //WIP
 //Add new cvar "rankme_points_warmup"
 //g_PointsWarmup
 //https://forums.alliedmods.net/showthread.php?p=2445323
+//Add disconnect reason to disconnect announce
+//
 //
 //To do (if I'm not lazy)
 //Add new commnad topkdr
@@ -38,7 +44,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.4"
+#define PLUGIN_VERSION "3.0.3.Kento.5"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -368,6 +374,7 @@ public OnPluginStart() {
 	HookEventEx("round_end", Event_RoundEnd);
 	HookEventEx("round_mvp", Event_RoundMVP);
 	HookEventEx("player_changename", OnClientChangeName, EventHookMode_Pre);
+	//HookEventEx("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre); 
 	
 	// ADMNIN COMMANDS
 	RegAdminCmd("sm_resetrank", CMD_ResetRank, ADMFLAG_ROOT, "RankMe: Resets the rank of a player");
@@ -1874,7 +1881,7 @@ public OnClientDisconnect(client) {
 	SalvarPlayer(client);
 	OnDB[client] = false;
 	
-	/*RankMe Connect Announcer*/
+	//RankMe Connect Announcer
 
 	if(!g_bAnnounceDisconnect)
 		return;
@@ -2177,10 +2184,8 @@ public RankConnectCallback(client, rank, any:data){
 	
 	/* Geoip, code from cksurf */
 	decl String:s_Country[32];
-	decl String:s_clientName[32];
 	decl String:s_address[32];		
 	GetClientIP(client, s_address, 32);
-	GetClientName(client, s_clientName, 32);
 	Format(s_Country, 100, "Unknown");
 	GeoipCountry(s_address, s_Country, 100);     
 	if(!strcmp(s_Country, NULL_STRING))
@@ -2236,38 +2241,39 @@ public RankConnectCallback(client, rank, any:data){
 
 public RankDisconnectCallback(client, rank, any:data){
 	
-	/* Geoip, code from cksurf */
-	decl String:s_Country[32];
-	decl String:s_clientName[32];
-	decl String:s_address[32];		
-	GetClientIP(client, s_address, 32);
-	GetClientName(client, s_clientName, 32);
-	Format(s_Country, 100, "Unknown");
-	GeoipCountry(s_address, s_Country, 100);     
-	if(!strcmp(s_Country, NULL_STRING))
-		Format( s_Country, 100, "Unknown", s_Country );
-	else				
-		if( StrContains( s_Country, "United", false ) != -1 || 
-			StrContains( s_Country, "Republic", false ) != -1 || 
-			StrContains( s_Country, "Federation", false ) != -1 || 
-			StrContains( s_Country, "Island", false ) != -1 || 
-			StrContains( s_Country, "Netherlands", false ) != -1 || 
-			StrContains( s_Country, "Isle", false ) != -1 || 
-			StrContains( s_Country, "Bahamas", false ) != -1 || 
-			StrContains( s_Country, "Maldives", false ) != -1 || 
-			StrContains( s_Country, "Philippines", false ) != -1 || 
-			StrContains( s_Country, "Vatican", false ) != -1 )
-		{
-			Format( s_Country, 100, "The %s", s_Country );
-		}			
+	if(g_bAnnounceDisconnect){
+	
+		new Position = (rank - g_aRankOnConnect[client])*-1;
+		new PointsDif = g_aPointsOnDisconnect[client]-g_aPointsOnConnect[client];
+		
+		CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],rank,Position,g_aPointsOnDisconnect[client],PointsDif);
+	}
+		
+	return;
+}
+
+/*
+//WIP
+public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	if(!g_bAnnounceDisconnect)
+		return;
+	
+	decl String:disconnectReason[64];
+	GetEventString(event, "reason", disconnectReason, sizeof(disconnectReason));   
+	
+	if (!IsValidClient(client) || IsFakeClient(client)){
+		return;
+	}
 	
 	if(g_bAnnounceDisconnect){
 	
 		new Position = (rank - g_aRankOnConnect[client])*-1;
 		new PointsDif = g_aPointsOnDisconnect[client]-g_aPointsOnConnect[client];
 		
-		CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],rank,Position,g_aPointsOnDisconnect[client],PointsDif,s_Country);
+		CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],rank,Position,g_aPointsOnDisconnect[client],PointsDif,disconnectReason);
 	}
 		
 	return;
 }
+*/

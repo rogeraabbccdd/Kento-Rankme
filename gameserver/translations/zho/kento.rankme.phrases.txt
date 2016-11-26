@@ -194,7 +194,7 @@
 	//{1} = ClientName | {2} = rank | {3} = Position | {4} = PointsOnDisconnect | {5} = PointsDif
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:s}"
-		"zho"		"{PINK}{1}{NORMAL} 來自 {LIGHTGREEN}{6}{NORMAL} 離開伺服器. {YELLOW}(排名 {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}點 {LIGHTGREEN}--> {YELLOW}排名 {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}點)"
+		"zho"		"玩家 {PINK}{1}{NORMAL} 離開伺服器. {YELLOW}(排名 {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}點 {LIGHTGREEN}--> {YELLOW}排名 {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}點)"
 	}
 	
 	"AssistKill"
