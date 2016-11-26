@@ -171,23 +171,23 @@
 	}
 	
 	"PlayerJoinedChat"
-	//{1} = ClientName | {2} = RankOnConnect | {3} = PointsOnConnect
+	//{1} = ClientName | {2} = RankOnConnect | {3} = PointsOnConnect | {4} = Country
 	{
-		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{NORMAL} joined the server. {YELLOW}(Pos {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}Points){NORMAL}."
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"en"		"{PINK}{1}{NORMAL} from {LIGHTGREEN}{4} {NORMAL}joined the server. {YELLOW}(Pos {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}Points){NORMAL}."
 	}
 	
 	"TopPlayerJoinedChat"
 	{
-		"#format"	"{1:d},{2:s},{3:d},"
-		"en"		"Top {RED}{1}{NORMAL} player {PINK}{2}{NORMAL} connected, currently rank {GREEN}{3}{NORMAL}."
+		"#format"	"{1:d},{2:s},{3:d},{4:s}"
+		"en"		"Top {RED}{1}{NORMAL} player {PINK}{2}{NORMAL} from {LIGHTGREEN}{4} {NORMAL}connected, currently rank {GREEN}{3}{NORMAL}."
 	}
 	
 	"PlayerLeft"
-	//{1} = ClientName | {2} = rank | {3} = Position | {4} = PointsOnDisconnect | {5} = PointsDif
+	//{1} = ClientName | {2} = rank | {3} = Position | {4} = PointsOnDisconnect | {5} = PointsDif | {6} = Country
 	{
-		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d}"
-		"en"		"{PINK}{1}{NORMAL} left the server. {YELLOW}(Pos {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}Points {LIGHTGREEN}--> {YELLOW}Pos {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}Points){NORMAL}."
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:s}"
+		"en"		"{PINK}{1}{NORMAL} from {LIGHTGREEN}{6} {NORMAL}left the server. {YELLOW}(Pos {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}Points {LIGHTGREEN}--> {YELLOW}Pos {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}Points){NORMAL}."
 	}
 	
 	"NotRanked"
@@ -231,14 +231,14 @@
 	
 	"PlayerJoinedHint"
 	{
-		"#format"	"{1:s},{2:d},{3:d},"
-		"en"		"<font color='#28FF28'>Info</font> \n <font color='#B15BFF'>{1}</font> joined the server. \n Pos <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> Points"	
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"en"		"<font color='#28FF28'>Info</font> \n <font color='#B15BFF'>{1}</font> from <font color='#00FF7F'>{4}</font> joined the server. \n Pos <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> Points"	
 	}
 	
 	"TopPlayerJoinedHint"
 	{
-		"#format"	"{1:d},{2:s},{3:d},"
-		"en"		"<font color='#28FF28'>Info</font> \n Top <font color='#FF0000'>{1}</font> player <font color='#B15BFF'>{2}</font> connected \n Currently rank <font color='#28FF28'>{3}</font>"
+		"#format"	"{1:d},{2:s},{3:d},{4:s}"
+		"en"		"<font color='#28FF28'>Info</font> \n Top <font color='#FF0000'>{1}</font> player <font color='#B15BFF'>{2}</font> from <font color='#00FF7F'>{4}</font> connected \n Currently rank <font color='#28FF28'>{3}</font>"
 	}
 	
 	//***************** Menu (No Colors) *****************

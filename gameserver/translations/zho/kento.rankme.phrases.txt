@@ -180,21 +180,21 @@
 	"PlayerJoinedChat"
 	//{1} = ClientName | {2} = RankOnConnect | {3} = PointsOnConnect
 	{
-		"#format"	"{1:s},{2:d},{3:d}"
-		"zho"		"玩家{PINK}{1}{NORMAL} 進入伺服器. {YELLOW}(排名 {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}點)"
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"zho"		"玩家 {PINK}{1}{NORMAL} 來自 {LIGHTGREEN}{4}{NORMAL} 進入伺服器. {YELLOW}(排名 {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}點)"
 	}
 	
 	"TopPlayerJoinedChat"
 	{
-		"#format"	"{1:d},{2:s},{3:d},"
-		"zho"		"Top {RED}{1}{NORMAL} 玩家 {PINK}{2}{NORMAL} 進入伺服器, 目前排名 {GREEN}{3}"
+		"#format"	"{1:d},{2:s},{3:d},{4:s}"
+		"zho"		"Top {RED}{1}{NORMAL} 玩家 {PINK}{2}{NORMAL} 來自 {LIGHTGREEN}{4}{NORMAL} 進入伺服器, 目前排名 {GREEN}{3}"
 	}
 	
 	"PlayerLeft"
 	//{1} = ClientName | {2} = rank | {3} = Position | {4} = PointsOnDisconnect | {5} = PointsDif
 	{
-		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d}"
-		"zho"		"{PINK}{1}{NORMAL} 離開伺服器. {YELLOW}(排名 {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}點 {LIGHTGREEN}--> {YELLOW}排名 {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}點)"
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:s}"
+		"zho"		"{PINK}{1}{NORMAL} 來自 {LIGHTGREEN}{6}{NORMAL} 離開伺服器. {YELLOW}(排名 {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}點 {LIGHTGREEN}--> {YELLOW}排名 {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}點)"
 	}
 	
 	"AssistKill"
@@ -232,14 +232,14 @@
 	
 	"PlayerJoinedHint"
 	{
-		"#format"	"{1:s},{2:d},{3:d},"
-		"zho"		"<font color='#28FF28'>訊息:</font> \n <font color='#B15BFF'>{1}</font> 加入遊戲. \n 排名 <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> 點"	
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"zho"		"<font color='#28FF28'>訊息:</font> \n <font color='#B15BFF'>{1}</font> 來自 <font color='#00FF7F'>{4}</font> 加入遊戲. \n 排名 <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> 點"	
 	}
 	
 	"TopPlayerJoinedHint"
 	{
-		"#format"	"{1:d},{2:s},{3:d},"
-		"zho"		"<font color='#28FF28'>訊息:</font> \n Top <font color='#FF0000'>{1}</font> 玩家 <font color='#B15BFF'>{2}</font> 加入遊戲 \n 目前排名: <font color='#28FF28'>{3}</font>"
+		"#format"	"{1:d},{2:s},{3:d},{4:s}"
+		"zho"		"<font color='#28FF28'>訊息:</font> \n Top <font color='#FF0000'>{1}</font> 玩家 <font color='#B15BFF'>{2}</font> 來自 <font color='#00FF7F'>{4}</font> 加入遊戲 \n 目前排名: <font color='#28FF28'>{3}</font>"
 	}
 	
 	//***************** Menu (No Colors) *****************

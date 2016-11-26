@@ -7,6 +7,7 @@
 //Include rankme_connect_announcer
 //Fix knife_falchion, knife_push and knife_survival_bowie will not count bug
 //
+//
 //3.0.3.Kento.2
 //Add Assist Supprt
 //Code edited from pracc's rankme http://hlmod.ru/resources/cs-go-rankme-web.132/
@@ -16,26 +17,33 @@
 //Add Assist To Database
 //Add new commnad "topassists" & "toptk"
 //Remove topnade topknife toptaser (Useless, you can check them in topweapon, my friend)
+//"statsme2" is now open for everyone
+//Make more phrases translatable
 //
+//
+//3.0.3.Kento.4
+//Add country into connect and disconnect announce
+//
+//
+//WIP
+//Add new cvar "rankme_points_warmup"
+//g_PointsWarmup
+//https://forums.alliedmods.net/showthread.php?p=2445323
 //
 //To do (if I'm not lazy)
-//
 //Add new commnad topkdr
-//
-//Remove vip stats?
-//Will CSGO official add vip gamemode in the future?
-//
+//Remove vip stats? Will CSGO official add vip gamemode in the future?
 //Rewirte with New syntax
-//
 //Watch porn <--THIS IS REALLY IMPORTANT, MY FRIEND
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.3"
+#define PLUGIN_VERSION "3.0.3.Kento.4"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
 #include <kento_rankme/rankme>
+#include <geoip>
 
 //Maybe? I'm too lazy
 //#pragma newdecls required
@@ -210,9 +218,13 @@ new g_aPointsOnDisconnect[MAXPLAYERS+1];
 new g_aRankOnConnect[MAXPLAYERS+1];
 new String:g_sBufferClientName[MAXPLAYERS+1][MAX_NAME_LENGTH];
 
-/*Assist*/
+/* Assist */
 new Handle:g_cvarPointsAssistKill;
 new g_PointsAssistKill;
+
+/* Warmup */
+//new Handle:g_cvarPointsWarmup;
+//new bool:g_PointsWarmup;
 
 public Plugin:myinfo =  {
 	name = "RankMe", 
@@ -279,6 +291,10 @@ public OnPluginStart() {
 	
 	/* Assist */
 	g_cvarPointsAssistKill = CreateConVar("rankme_points_assiist_kill","1","How many points a player gets for assist kill?",_,true,0.0);
+	
+	/* Warmup */
+	//g_cvarPointsWarmup = CreateConVar("rankme_points_warmup","1","Turn on point during warmup?",_,true,0.0);
+	//HookConVarChange(g_cvarPointsWarmup,OnConVarChanged);
 	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
@@ -2102,6 +2118,11 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 		g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
 	}
 	
+	/* Warmup */
+	//else if(convar == g_cvarPointsWarmup) {
+	//	g_PointsWarmup = GetConVarBool(g_cvarPointsWarmup);
+	//}
+	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		new String:query[500];
 		MakeSelectQuery(query, sizeof(query));
@@ -2154,17 +2175,42 @@ public RankConnectCallback(client, rank, any:data){
 	new String:sClientName[MAX_NAME_LENGTH];
 	GetClientName(client,sClientName,sizeof(sClientName));
 	
+	/* Geoip, code from cksurf */
+	decl String:s_Country[32];
+	decl String:s_clientName[32];
+	decl String:s_address[32];		
+	GetClientIP(client, s_address, 32);
+	GetClientName(client, s_clientName, 32);
+	Format(s_Country, 100, "Unknown");
+	GeoipCountry(s_address, s_Country, 100);     
+	if(!strcmp(s_Country, NULL_STRING))
+		Format( s_Country, 100, "Unknown", s_Country );
+	else				
+		if( StrContains( s_Country, "United", false ) != -1 || 
+			StrContains( s_Country, "Republic", false ) != -1 || 
+			StrContains( s_Country, "Federation", false ) != -1 || 
+			StrContains( s_Country, "Island", false ) != -1 || 
+			StrContains( s_Country, "Netherlands", false ) != -1 || 
+			StrContains( s_Country, "Isle", false ) != -1 || 
+			StrContains( s_Country, "Bahamas", false ) != -1 || 
+			StrContains( s_Country, "Maldives", false ) != -1 || 
+			StrContains( s_Country, "Philippines", false ) != -1 || 
+			StrContains( s_Country, "Vatican", false ) != -1 )
+		{
+			Format( s_Country, 100, "The %s", s_Country );
+		}			
+	
 	if(g_bAnnounceConnect){
 		
 		if(g_bAnnounceConnectChat){
 		
-			CPrintToChatAll("%s %t",MSG,"PlayerJoinedChat",sClientName,g_aRankOnConnect[client],g_aPointsOnConnect[client]);
+			CPrintToChatAll("%s %t",MSG,"PlayerJoinedChat",sClientName,g_aRankOnConnect[client],g_aPointsOnConnect[client],s_Country);
 			
 		}
 		
 		if(g_bAnnounceConnectHint){
 		
-			PrintHintTextToAll("%t","PlayerJoinedHint",sClientName,g_aRankOnConnect[client],g_aPointsOnConnect[client]);
+			PrintHintTextToAll("%t","PlayerJoinedHint",sClientName,g_aRankOnConnect[client],g_aPointsOnConnect[client],s_Country);
 			
 		}
 	
@@ -2174,13 +2220,13 @@ public RankConnectCallback(client, rank, any:data){
 		
 		if(g_bAnnounceTopConnectChat){
 		
-			CPrintToChatAll("%s %t",MSG,"TopPlayerJoinedChat",g_AnnounceTopPosConnect,sClientName,g_aRankOnConnect[client]);
+			CPrintToChatAll("%s %t",MSG,"TopPlayerJoinedChat",g_AnnounceTopPosConnect,sClientName,g_aRankOnConnect[client],s_Country);
 			
 		}
 		
 		if(g_bAnnounceTopConnectHint){
 		
-			PrintHintTextToAll("%t","TopPlayerJoinedHint",g_AnnounceTopPosConnect,sClientName,g_aRankOnConnect[client]);
+			PrintHintTextToAll("%t","TopPlayerJoinedHint",g_AnnounceTopPosConnect,sClientName,g_aRankOnConnect[client],s_Country);
 			
 		}
 		
@@ -2190,12 +2236,37 @@ public RankConnectCallback(client, rank, any:data){
 
 public RankDisconnectCallback(client, rank, any:data){
 	
+	/* Geoip, code from cksurf */
+	decl String:s_Country[32];
+	decl String:s_clientName[32];
+	decl String:s_address[32];		
+	GetClientIP(client, s_address, 32);
+	GetClientName(client, s_clientName, 32);
+	Format(s_Country, 100, "Unknown");
+	GeoipCountry(s_address, s_Country, 100);     
+	if(!strcmp(s_Country, NULL_STRING))
+		Format( s_Country, 100, "Unknown", s_Country );
+	else				
+		if( StrContains( s_Country, "United", false ) != -1 || 
+			StrContains( s_Country, "Republic", false ) != -1 || 
+			StrContains( s_Country, "Federation", false ) != -1 || 
+			StrContains( s_Country, "Island", false ) != -1 || 
+			StrContains( s_Country, "Netherlands", false ) != -1 || 
+			StrContains( s_Country, "Isle", false ) != -1 || 
+			StrContains( s_Country, "Bahamas", false ) != -1 || 
+			StrContains( s_Country, "Maldives", false ) != -1 || 
+			StrContains( s_Country, "Philippines", false ) != -1 || 
+			StrContains( s_Country, "Vatican", false ) != -1 )
+		{
+			Format( s_Country, 100, "The %s", s_Country );
+		}			
+	
 	if(g_bAnnounceDisconnect){
 	
 		new Position = (rank - g_aRankOnConnect[client])*-1;
 		new PointsDif = g_aPointsOnDisconnect[client]-g_aPointsOnConnect[client];
 		
-		CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],rank,Position,g_aPointsOnDisconnect[client],PointsDif);
+		CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],rank,Position,g_aPointsOnDisconnect[client],PointsDif,s_Country);
 	}
 		
 	return;
