@@ -29,6 +29,10 @@
 //Remove disconnect announce contry, I forgot this won't work
 //
 //
+//3.0.3.Kento.6
+//Fix some stats will not count bug
+//Remove useless message in disconnect announce
+//
 //WIP
 //Add new cvar "rankme_points_warmup"
 //g_PointsWarmup
@@ -44,7 +48,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.5"
+#define PLUGIN_VERSION "3.0.3.Kento.6"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -691,7 +695,7 @@ public Native_GetRank(Handle:plugin, numParams)
 	WritePackCell(pack, data);
 	WritePackCell(pack, _:plugin);
 	
-	new String:query[500];
+	new String:query[2000];
 	MakeSelectQuery(query, sizeof(query));
 	
 	if (g_RankMode == 1)
@@ -836,7 +840,7 @@ public Action:OnClientChangeName(Handle:event, const String:name[], bool:dontBro
 		SQL_EscapeString(g_hStatsDb, clientnewname, Eclientnewname, sizeof(Eclientnewname));
 		
 		//ReplaceString(clientnewname, sizeof(clientnewname), "'", "");
-		new String:query[500];
+		new String:query[2000];
 		if (g_RankBy == 1) {
 			OnDB[client] = false;
 			for (new i = 0; i <= 19; i++) {
@@ -1078,12 +1082,12 @@ public OnPluginEnd() {
 			//ReplaceString(name, sizeof(name), "'", "");
 			
 			
-			new String:weapons_query[500] = "";
+			new String:weapons_query[1000] = "";
 			for (new i = 0; i <= 39; i++) {
 				Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
 			}
 			
-			new String:query[1500];
+			new String:query[2000];
 			if (g_RankBy == 1) {
 				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
@@ -1658,11 +1662,11 @@ public SalvarPlayer(client) {
 	//ReplaceString(name, sizeof(name), "'", "");
 	
 	
-	new String:weapons_query[500] = "";
+	new String:weapons_query[1000] = "";
 	for (new i = 0; i <= 39; i++) {
 		Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
 	}
-	new String:query[1500];
+	new String:query[2000];
 	if (g_RankBy == 1) {
 		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
@@ -1744,7 +1748,7 @@ public LoadPlayer(client) {
 	new String:ip[64];
 	GetClientIP(client, ip, sizeof(ip));
 	strcopy(g_aClientIp[client], 64, ip);
-	new String:query[500];
+	new String:query[2000];
 	if (g_RankBy == 1)
 		Format(query, sizeof(query), g_sSqlRetrieveClientName, g_sSQLTable, sEscapeName);
 	else if (g_RankBy == 0)
@@ -1815,7 +1819,7 @@ public SQL_LoadPlayerCallback(Handle:owner, Handle:hndl, const String:error[], a
 		g_aStats[client][VIP_ESCAPED] = SQL_FetchInt(hndl, 71);
 		g_aStats[client][VIP_PLAYED] = SQL_FetchInt(hndl, 72);
 	} else {
-		new String:query[500];
+		new String:query[2000];
 		
 		new String:sEscapeName[MAX_NAME_LENGTH * 2 + 1];
 		SQL_EscapeString(g_hStatsDb, g_aClientName[client], sEscapeName, sizeof(sEscapeName));
@@ -1890,8 +1894,17 @@ public OnClientDisconnect(client) {
 	GetClientName(client,sName,MAX_NAME_LENGTH);
 	strcopy(g_sBufferClientName[client],MAX_NAME_LENGTH,sName);
 	
+	//Old disconnect announce
 	g_aPointsOnDisconnect[client] = RankMe_GetPoints(client);
-	RankMe_GetRank(client,RankDisconnectCallback);
+	//RankMe_GetRank(client,RankDisconnectCallback);
+	
+	CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],g_aPointsOnDisconnect[client]);
+	
+	//WIP
+	//
+	//decl String:disconnectReason[64];
+	//GetEventString(event, "reason", disconnectReason, sizeof(disconnectReason)); 
+	//CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],disconnectReason);
 }
 
 public SQL_DumpCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack) {
@@ -2131,7 +2144,7 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 	//}
 	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
-		new String:query[500];
+		new String:query[2000];
 		MakeSelectQuery(query, sizeof(query));
 		SQL_TQuery(g_hStatsDb, SQL_GetPlayersCallback, query);
 	}
@@ -2239,6 +2252,8 @@ public RankConnectCallback(client, rank, any:data){
 	
 }
 
+//Old disconnect announce
+/*
 public RankDisconnectCallback(client, rank, any:data){
 	
 	if(g_bAnnounceDisconnect){
@@ -2247,31 +2262,6 @@ public RankDisconnectCallback(client, rank, any:data){
 		new PointsDif = g_aPointsOnDisconnect[client]-g_aPointsOnConnect[client];
 		
 		CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],rank,Position,g_aPointsOnDisconnect[client],PointsDif);
-	}
-		
-	return;
-}
-
-/*
-//WIP
-public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	if(!g_bAnnounceDisconnect)
-		return;
-	
-	decl String:disconnectReason[64];
-	GetEventString(event, "reason", disconnectReason, sizeof(disconnectReason));   
-	
-	if (!IsValidClient(client) || IsFakeClient(client)){
-		return;
-	}
-	
-	if(g_bAnnounceDisconnect){
-	
-		new Position = (rank - g_aRankOnConnect[client])*-1;
-		new PointsDif = g_aPointsOnDisconnect[client]-g_aPointsOnConnect[client];
-		
-		CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],rank,Position,g_aPointsOnDisconnect[client],PointsDif,disconnectReason);
 	}
 		
 	return;

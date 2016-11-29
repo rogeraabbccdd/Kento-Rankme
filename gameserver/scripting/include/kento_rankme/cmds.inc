@@ -31,7 +31,7 @@ public Action:CMD_ResetRank(client,args){
 	SQL_EscapeString(g_hStatsDb,arg1,sEscapeArg1,sizeof(sEscapeArg1));
 	//ReplaceString(arg1,sizeof(arg1)," ","");
 	//ReplaceString(arg1,sizeof(arg1),"\"","");
-	new String:query[500];
+	new String:query[2000];
 	if(g_RankBy == 1){
 		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTable,sEscapeArg1);
 	} else if (g_RankBy == 0){
@@ -77,7 +77,7 @@ public Action:CMD_ResetRankAll(client,args){
 	if(!g_bEnabled) 
 		return Plugin_Handled;
 		
-	new String:query[500];
+	new String:query[2000];
 	Format(query,sizeof(query),"DELETE FROM `%s` WHERE 1=1",g_sSQLTable);
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	
@@ -108,7 +108,7 @@ public Action:CMD_Purge(client,args){
 		return Plugin_Handled;
 	}
 	deletebefore = GetTime() - (StringToInt(arg1)*86400);
-	new String:query[100];
+	new String:query[2000];
 	Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastconnect < '%d'",g_sSQLTable,deletebefore);
 	SQL_TQuery(g_hStatsDb,SQL_PurgeCallback,query);
 	LogAction(client,-1,"[RankMe]: Purged rank (%s days inactivity)",arg1);
@@ -183,7 +183,7 @@ ShowTOPWeapon(client,weapon,at){
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
 	
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY %s DESC LIMIT %i, 10",query,g_sWeaponsNamesGame[weapon],at-1);
 	
@@ -300,7 +300,7 @@ ShowTOP(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	if(g_RankMode == 1)
 		Format(query,sizeof(query),"%s ORDER BY score DESC LIMIT %i, 10",query,at-1);
@@ -429,7 +429,7 @@ ShowTOPKnife(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY knife DESC LIMIT %i, 10",query,at-1);
 		
@@ -542,7 +542,7 @@ ShowTOPTaser(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY taser DESC LIMIT %i, 10",query,at-1);
 		
@@ -778,7 +778,7 @@ ShowTopHS(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY headshots DESC LIMIT %i, 10",query,at-1);
 		
@@ -891,7 +891,7 @@ ShowTopKills(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY kills DESC LIMIT %i, 10",query,at-1);
 		
@@ -1004,7 +1004,7 @@ ShowTopDeaths(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY deaths DESC LIMIT %i, 10",query,at-1);
 		
@@ -1117,7 +1117,7 @@ ShowTopAcc(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	
 	if(g_bMysql)
@@ -1241,7 +1241,7 @@ ShowTopTime(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY connected DESC LIMIT %i, 10",query,at-1);
 		
@@ -1350,7 +1350,7 @@ public Action:CMD_Rank(client,args){
 		CPrintToChat(client,"%s %t",MSG,"NotRanked",g_aStats[client][KILLS],g_MinimalKills);
 		return Plugin_Handled;
 	}
-	new String:query[500];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	
 	if(g_RankMode == 1)
@@ -1589,7 +1589,7 @@ public Action:CMD_WeaponMe(client,args){
 public Action:CMD_StatsMe(client,args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new String:query[500];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	if(g_RankMode == 1)
 		Format(query,sizeof(query),"%s ORDER BY score DESC",query);
@@ -1612,10 +1612,10 @@ public Action:CMD_StatsMe2(client,args){
 	new String:arg1[MAX_NAME_LENGTH];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	StripQuotes(arg1);
-	new String:query[500];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	
-	new String:order[200];
+	new String:order[2000];
 	if(g_RankMode == 1)
 		Format(order,sizeof(order),"ORDER BY score DESC");
 	else if(g_RankMode == 2){
@@ -1950,7 +1950,7 @@ public PanelNoHandle(Handle:menu, MenuAction:action, param1, param2){
 public Action:CMD_Next(client,args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new String:query[500];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	if(g_RankMode == 1)
 		Format(query,sizeof(query),"%s ORDER BY score DESC",query);
@@ -2044,7 +2044,7 @@ public Action:CMD_ResetOwnRank(client,args){
 
 	if(!g_bEnabled || !g_bResetOwnRank || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new String:query[300];
+	new String:query[2000];
 	if(g_RankBy == 1){
 		
 		new String:sEscape[MAX_NAME_LENGTH*2+1];
@@ -2357,7 +2357,7 @@ ShowTopAssists(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY assists DESC LIMIT %i, 10",query,at-1);
 		
@@ -2471,7 +2471,7 @@ ShowTopTK(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[300];
+	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY tk DESC LIMIT %i, 10",query,at-1);
 		
