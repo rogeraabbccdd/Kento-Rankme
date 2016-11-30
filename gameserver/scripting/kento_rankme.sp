@@ -33,6 +33,11 @@
 //Fix some stats will not count bug
 //Remove useless message in disconnect announce
 //
+//
+//3.0.3.Kento.7
+//Fix a little bug
+//
+//
 //WIP
 //Add new cvar "rankme_points_warmup"
 //g_PointsWarmup
@@ -48,7 +53,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.6"
+#define PLUGIN_VERSION "3.0.3.Kento.7"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
