@@ -187,7 +187,7 @@
 	//{1} = ClientName | {2} = rank | {3} = Reason (WIP)
 	{
 		"#format"	"{1:s},{2:d}"
-		"ru"		"{PINK}{1}{PURPLE} покинул сервер.."
+		"ru"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}покинул сервер.."
 	}
 
 	"NotRanked"
