@@ -37,6 +37,8 @@
 //3.0.3.Kento.7
 //Fix a little bug
 //
+//3.0.3.Kento.8
+//Fix toptk showing assists bug
 //
 //WIP
 //Add new cvar "rankme_points_warmup"
@@ -53,7 +55,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.7"
+#define PLUGIN_VERSION "3.0.3.Kento.8"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>

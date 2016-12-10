@@ -2514,7 +2514,7 @@ public SQL_TopTKCallback(Handle:owner, Handle:hndl, const String:error[], any:Da
 			
 		
 	
-		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %t: %d\n",i+at,name,SQL_FetchInt(hndl,4),"TKs",SQL_FetchInt(hndl,7));
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %t: %d\n",i+at,name,SQL_FetchInt(hndl,4),"TKs",SQL_FetchInt(hndl,9));
 		
 		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
 			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
