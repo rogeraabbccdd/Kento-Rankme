@@ -49,7 +49,6 @@
 //
 //To do (if I'm not lazy)
 //Add a cvar to prevent players rank lower 0
-//Add disconnect reason to disconnect announce
 //Add new cvar "rankme_points_warmup" (https://forums.alliedmods.net/showthread.php?p=2445323)
 //Add new commnad topkdr
 //Remove vip stats? Will CSGO official add vip gamemode in the future?
