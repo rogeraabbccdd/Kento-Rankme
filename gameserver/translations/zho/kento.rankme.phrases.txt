@@ -191,7 +191,7 @@
 	}
 	
 	"PlayerLeft"
-	//{1} = ClientName | {2} = rank | {3} = Reason (WIP)
+	//{1} = ClientName | {2} = rank | {3} = Reason
 	{
 		"#format"	"{1:s},{2:d},{3:s}"
 		"zho"		"玩家 {PINK}{1}{PURPLE} ({2}) {NORMAL} 離開伺服器. {YELLOW}({3})"

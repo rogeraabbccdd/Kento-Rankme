@@ -184,7 +184,7 @@
 	}
 	
 	"PlayerLeft"
-	//{1} = ClientName | {2} = rank | {3} = Reason (WIP)
+	//{1} = ClientName | {2} = rank | {3} = Reason
 	{
 		"#format"	"{1:s},{2:d},{3:s}"
 		"de"		"{PINK}{1}{PURPLE} ({2}) {NORMAL} hat den Server verlassen. {YELLOW}({3})."
