@@ -186,8 +186,8 @@
 	"PlayerLeft"
 	//{1} = ClientName | {2} = rank | {3} = Reason (WIP)
 	{
-		"#format"	"{1:s},{2:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}покинул сервер.."
+		"#format"	"{1:s},{2:d},{3:s}"
+		"ru"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}покинул сервер.. {YELLOW}({3})"
 	}
 
 	"NotRanked"

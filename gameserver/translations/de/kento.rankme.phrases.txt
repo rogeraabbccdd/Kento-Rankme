@@ -184,10 +184,10 @@
 	}
 	
 	"PlayerLeft"
-	//{1} = ClientName | {2} = rank | {3} = Position | {4} = PointsOnDisconnect | {5} = PointsDif
+	//{1} = ClientName | {2} = rank | {3} = Reason (WIP)
 	{
-		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d}"
-		"de"		"{PINK}{1}{NORMAL} hat den Server verlassen. {YELLOW}(Pos {GREEN}{2}{YELLOW} - {PURPLE}{3} {YELLOW}Punkte {LIGHTGREEN}--> {YELLOW}Pos {GREEN}{4}{YELLOW} - {PURPLE}{5} {YELLOW}Punkte){NORMAL}."
+		"#format"	"{1:s},{2:d},{3:s}"
+		"de"		"{PINK}{1}{PURPLE} ({2}) {NORMAL} hat den Server verlassen. {YELLOW}({3})."
 	}
 	
 	"NotRanked"

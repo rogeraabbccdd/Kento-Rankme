@@ -37,17 +37,20 @@
 //3.0.3.Kento.7
 //Fix a little bug
 //
+//
 //3.0.3.Kento.8
 //Fix toptk showing assists bug
 //
-//WIP
-//Add new cvar "rankme_points_warmup"
-//g_PointsWarmup
-//https://forums.alliedmods.net/showthread.php?p=2445323
+//
+//3.0.3.Kento.9
+//rankbot gotv IsClientSourceTV(client)
 //Add disconnect reason to disconnect announce
 //
 //
 //To do (if I'm not lazy)
+//Add a cvar to prevent players rank lower 0
+//Add disconnect reason to disconnect announce
+//Add new cvar "rankme_points_warmup" (https://forums.alliedmods.net/showthread.php?p=2445323)
 //Add new commnad topkdr
 //Remove vip stats? Will CSGO official add vip gamemode in the future?
 //Rewirte with New syntax
@@ -55,7 +58,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.8"
+#define PLUGIN_VERSION "3.0.3.Kento.9"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -239,10 +242,6 @@ new String:g_sBufferClientName[MAXPLAYERS+1][MAX_NAME_LENGTH];
 new Handle:g_cvarPointsAssistKill;
 new g_PointsAssistKill;
 
-/* Warmup */
-//new Handle:g_cvarPointsWarmup;
-//new bool:g_PointsWarmup;
-
 public Plugin:myinfo =  {
 	name = "RankMe", 
 	author = "lok1, Scooby, pracc, Kento", 
@@ -308,10 +307,6 @@ public OnPluginStart() {
 	
 	/* Assist */
 	g_cvarPointsAssistKill = CreateConVar("rankme_points_assiist_kill","1","How many points a player gets for assist kill?",_,true,0.0);
-	
-	/* Warmup */
-	//g_cvarPointsWarmup = CreateConVar("rankme_points_warmup","1","Turn on point during warmup?",_,true,0.0);
-	//HookConVarChange(g_cvarPointsWarmup,OnConVarChanged);
 	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
@@ -385,7 +380,7 @@ public OnPluginStart() {
 	HookEventEx("round_end", Event_RoundEnd);
 	HookEventEx("round_mvp", Event_RoundMVP);
 	HookEventEx("player_changename", OnClientChangeName, EventHookMode_Pre);
-	//HookEventEx("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre); 
+	HookEventEx("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre); 
 	
 	// ADMNIN COMMANDS
 	RegAdminCmd("sm_resetrank", CMD_ResetRank, ADMFLAG_ROOT, "RankMe: Resets the rank of a player");
@@ -1774,7 +1769,9 @@ public LoadPlayer(client) {
 
 public SQL_LoadPlayerCallback(Handle:owner, Handle:hndl, const String:error[], any:client)
 {
-	
+	if (!g_bRankBots && IsFakeClient(client))
+		return;
+		
 	if (hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Load Player Fail: %s", error);
@@ -1811,7 +1808,7 @@ public SQL_LoadPlayerCallback(Handle:owner, Handle:hndl, const String:error[], a
 			g_aWeapons[client][i] = SQL_FetchInt(hndl, 17 + i);
 		}
 		
-		//ALL 8 Weapons
+		//ALL 8 Hitboxes
 		for (new i = 1; i <= 7; i++) {
 			g_aHitBox[client][i] = SQL_FetchInt(hndl, 56 + i);
 		}
@@ -1891,27 +1888,6 @@ public OnClientDisconnect(client) {
 		return;
 	SalvarPlayer(client);
 	OnDB[client] = false;
-	
-	//RankMe Connect Announcer
-
-	if(!g_bAnnounceDisconnect)
-		return;
-		
-	new String:sName[MAX_NAME_LENGTH];
-	GetClientName(client,sName,MAX_NAME_LENGTH);
-	strcopy(g_sBufferClientName[client],MAX_NAME_LENGTH,sName);
-	
-	//Old disconnect announce
-	g_aPointsOnDisconnect[client] = RankMe_GetPoints(client);
-	//RankMe_GetRank(client,RankDisconnectCallback);
-	
-	CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],g_aPointsOnDisconnect[client]);
-	
-	//WIP
-	//
-	//decl String:disconnectReason[64];
-	//GetEventString(event, "reason", disconnectReason, sizeof(disconnectReason)); 
-	//CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],disconnectReason);
 }
 
 public SQL_DumpCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack) {
@@ -2145,11 +2121,6 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 		g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
 	}
 	
-	/* Warmup */
-	//else if(convar == g_cvarPointsWarmup) {
-	//	g_PointsWarmup = GetConVarBool(g_cvarPointsWarmup);
-	//}
-	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		new String:query[2000];
 		MakeSelectQuery(query, sizeof(query));
@@ -2259,18 +2230,24 @@ public RankConnectCallback(client, rank, any:data){
 	
 }
 
-//Old disconnect announce
-/*
-public RankDisconnectCallback(client, rank, any:data){
-	
-	if(g_bAnnounceDisconnect){
-	
-		new Position = (rank - g_aRankOnConnect[client])*-1;
-		new PointsDif = g_aPointsOnDisconnect[client]-g_aPointsOnConnect[client];
+public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	if(!g_bAnnounceDisconnect)
+		return;
 		
-		CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client],rank,Position,g_aPointsOnDisconnect[client],PointsDif);
-	}
-		
-	return;
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	
+	if(!g_bRankBots && IsFakeClient(client))
+		return;
+	
+	new String:sName[MAX_NAME_LENGTH];
+	GetClientName(client,sName,MAX_NAME_LENGTH);
+	strcopy(g_sBufferClientName[client],MAX_NAME_LENGTH,sName);
+	
+	g_aPointsOnDisconnect[client] = RankMe_GetPoints(client);
+	
+	decl String:disconnectReason[64];
+	GetEventString(event, "reason", disconnectReason, sizeof(disconnectReason));
+	
+	CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client], g_aPointsOnDisconnect[client], disconnectReason);
 }
-*/
