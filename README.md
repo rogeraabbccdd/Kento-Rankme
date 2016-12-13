@@ -14,3 +14,4 @@ https://forums.alliedmods.net/showthread.php?p=2467665
 * [pracc](http://hlmod.ru/resources/cs-go-rankme-web.132/) - Code of kill assist is edited from his rankme
 * [TR1D](https://github.com/TR1D) - Thanks for his Russian translation
 * [shanapu](https://github.com/shanapu) - Thanks for his German translation
+* [2389736818](https://github.com/2389736818) - Thanks for his Simplified Chinese translation
