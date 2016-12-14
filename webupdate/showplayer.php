@@ -40,3 +40,10 @@ echo $temp[$i1];
 	<td align=right><?php echo $row['assists'];?>
 	</td>
 </tr>
+<tr>
+	<td>MVPs:
+	</td>
+	
+	<td align=right><?php echo $row['mvp'];?>
+	</td>
+</tr>

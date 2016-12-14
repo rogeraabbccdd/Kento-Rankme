@@ -76,8 +76,8 @@
 
 	"IsRankedAt"
 	{
-		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:.2f}"
-		"de"		"Spieler{PINK} {1} {NORMAL}ist auf Rang {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} Punkte{NORMAL},{LIGHTGREEN} {5} Kills{NORMAL},{RED} {6} Deaths{NORMAL} und{BLUE} KDR {7}{NORMAL}."
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
+		"de"		"Spieler{PINK} {1} {NORMAL}ist auf Rang {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} Punkte{NORMAL},{LIGHTGREEN} {5} Kills{NORMAL},{RED} {6} Deaths{NORMAL} und{BLUE} KDR {8}{NORMAL}."
 	}
 	
 	"Killing"

@@ -1,12 +1,13 @@
 //Kento Edition: 
 //Add "Orange" Color
 //Change yellow to x09
+//MAX_MESSAGE_LENGTH 200 ~ 1000
 #if defined _colors_included
  #endinput
 #endif
 #define _colors_included
  
-#define MAX_MESSAGE_LENGTH 250
+#define MAX_MESSAGE_LENGTH 1000
 #define MAX_COLORS 12
 
 #define SERVER_INDEX 0

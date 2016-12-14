@@ -76,8 +76,8 @@
 
 	"IsRankedAt"
 	{
-		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d}"
-		"en"		"Player{PINK} {1} {NORMAL}is ranked at {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} points{NORMAL},{LIGHTGREEN} {5} kills{NORMAL},{RED} {6} deaths{NORMAL},{ORANGE} {7} assists{NORMAL}, {BLUE} KDR {8} {NORMAL}and {DARKRED}{9} team kills{NORMAL}."
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
+		"en"		"Player{PINK} {1} {NORMAL}is ranked at {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} points{NORMAL},{LIGHTGREEN} {5} kills{NORMAL},{RED} {6} deaths{NORMAL},{ORANGE} {7} assists{NORMAL}, {BLUE} KDR {8} {NORMAL}and {DARKRED}{9} tks {NORMAL}and {YELLOW}{10} MVPs{NORMAL}."
 	}
 	
 	"Killing"
@@ -570,6 +570,16 @@
 	"Reset all the rank"
 	{
 		"en"		"Reset All The Rank"
+	}
+		
+	"MVPs"
+	{
+		"en"		"MVPs"
+	}
+		
+	"TOP MVP"
+	{
+		"en"		"TOP MVP"
 	}
 }
  
