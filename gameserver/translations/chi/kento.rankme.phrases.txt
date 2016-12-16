@@ -594,11 +594,11 @@
 	
 	"Damage"
 	{
-		"chi"		"总傷害"
+		"chi"		"总伤害"
 	}
 	
 	"TOP Damage"
 	{
-		"chi"		"傷害排名"
+		"chi"		"伤害排名"
 	}
 }
