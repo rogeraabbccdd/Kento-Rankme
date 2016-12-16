@@ -581,5 +581,26 @@
 	{
 		"en"		"TOP MVP"
 	}
+	
+	"KPR"
+	{
+		"en"		"KPR"
+	}
+	
+	"DPR"
+	{
+		"en"		"DPR"
+	}
+	
+	"Damage"
+	{
+		"en"		"Damage"
+	}
+	
+		
+	"TOP Damage"
+	{
+		"en"		"TOP Damage"
+	}
 }
  

@@ -574,12 +574,32 @@
 	
 	"MVPs"
 	{
-		"en"		"MVPs"
+		"zho"		"MVPs"
 	}
 		
 	"TOP MVP"
 	{
-		"en"		"MVP排名"
+		"zho"		"MVP排名"
+	}
+	
+	"KPR"
+	{
+		"zho"		"KPR"
+	}
+	
+	"DPR"
+	{
+		"zho"		"DPR"
+	}
+	
+	"Damage"
+	{
+		"zho"		"總傷害"
+	}
+	
+	"TOP Damage"
+	{
+		"zho"		"傷害排名"
 	}
 }
  

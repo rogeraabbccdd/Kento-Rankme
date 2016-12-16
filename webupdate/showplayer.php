@@ -47,3 +47,10 @@ echo $temp[$i1];
 	<td align=right><?php echo $row['mvp'];?>
 	</td>
 </tr>
+<tr>
+	<td>Total damage:
+	</td>
+	
+	<td align=right><?php echo $row['damage'];?>
+	</td>
+</tr>

@@ -1435,13 +1435,24 @@ public Action:CMD_Session(client,args){
 	else
 		shots = g_aSession[client][SHOTS];
 	
+	new rounds = g_aSession[client][ROUNDS_TR] + g_aSession[client][ROUNDS_CT];
+	if((g_aSession[client][ROUNDS_TR] == 0) && (g_aSession[client][ROUNDS_CT] == 0))
+	{
+		rounds = 1;
+	}
+	
+	new idamage = g_aSession[client][DAMAGE];
+	new Float:damage = IntToFloat(idamage);
+	
 	Format(temp,255,"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aSession[client][ASSISTS],kills/deaths);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %d\n ","Headshots", client, g_aSession[client][HEADSHOTS],"Suicides",client,g_aSession[client][SUICIDES],"TKs",client,g_aSession[client][TK]);
+	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","Headshots", client, g_aSession[client][HEADSHOTS],"Suicides",client,g_aSession[client][SUICIDES],"TKs",client,g_aSession[client][TK]);
+	StrCat(text,255,temp);
+	Format(temp,255,"%T: %d   %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds,"DPR", client, damage/rounds);
 	StrCat(text,255,temp);
 	AddMenuItem(panel,"",text);
 	text="";
-	
+
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n ","TRWins",client,g_aSession[client][TR_WIN],g_aSession[client][ROUNDS_TR],"CTWins",client,g_aSession[client][CT_WIN],g_aSession[client][ROUNDS_CT],"MVPs",client,g_aSession[client][MVP]);
@@ -1757,6 +1768,15 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 	if(shots == 0)
 		shots = 1;
 	
+	new rounds = SQL_FetchInt(hndl,14) + SQL_FetchInt(hndl,15);
+	if((SQL_FetchInt(hndl,14) == 0) && (SQL_FetchInt(hndl,15) == 0))
+	{
+		rounds = 1;
+	}
+
+	new idamage = SQL_FetchInt(hndl,74);
+	new Float:damage = IntToFloat(idamage);
+	
 	new hits = SQL_FetchInt(hndl,11);
 	new String:temp[255];
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
@@ -1768,11 +1788,13 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 	StrCat(text,255,temp);
 	Format(temp,255,"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,SQL_FetchInt(hndl,7),kills/deaths);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %d\n ","Headshots", client, SQL_FetchInt(hndl,12),"Suicides",client,SQL_FetchInt(hndl,8),"TKs",client,SQL_FetchInt(hndl,9));
+	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","Headshots", client, SQL_FetchInt(hndl,12),"Suicides",client,SQL_FetchInt(hndl,8),"TKs",client,SQL_FetchInt(hndl,9));
+	StrCat(text,255,temp);
+	Format(temp,255,"%T: %d   %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
 	StrCat(text,255,temp);
 	AddMenuItem(panel,"",text);
 	text="";
-	
+
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n ","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73));
@@ -1875,6 +1897,16 @@ public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 		shots = 1;
 	else
 		shots = g_aStats[client][SHOTS];
+	
+	new rounds = g_aStats[client][ROUNDS_TR] + g_aStats[client][ROUNDS_CT];
+	if((g_aStats[client][ROUNDS_TR] ==0) && (g_aStats[client][ROUNDS_CT] == 0))
+	{
+		rounds = 1;
+	}
+	
+	new idamage = g_aStats[client][DAMAGE];
+	new Float:damage = IntToFloat(idamage);
+
 	new String:temp[255];
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
 	StrCat(text,255,temp);
@@ -1885,7 +1917,9 @@ public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	StrCat(text,255,temp);
 	Format(temp,255,"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aStats[client][ASSISTS],kills/deaths);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d  %T: %d  %T: %d\n ","Headshots",client,g_aStats[client][HEADSHOTS],"Suicides",client,g_aStats[client][SUICIDES],"TKs",client,g_aStats[client][TK]);
+	Format(temp,255,"%T: %d  %T: %d  %T: %d\n","Headshots",client,g_aStats[client][HEADSHOTS],"Suicides",client,g_aStats[client][SUICIDES],"TKs",client,g_aStats[client][TK]);
+	StrCat(text,255,temp);
+	Format(temp,255,"%T: %d  %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
 	StrCat(text,255,temp);
 	AddMenuItem(panel,"",text);
 	text="";
@@ -2146,6 +2180,14 @@ public Action:CMD_RankMe(client,args){
 	Format(toptk, sizeof(toptk), "%t", "TOP TK");
 	AddMenuItem(hMenu,"toptk", toptk);
 	
+	char topmvp[512];
+	Format(topmvp, sizeof(topmvp), "%t", "TOP MVP");
+	AddMenuItem(hMenu,"topmvp", topmvp);
+	
+	char topdamage[512];
+	Format(topdamage, sizeof(topdamage), "%t", "TOP Damage");
+	AddMenuItem(hMenu,"topdamage", topdamage);
+	
 	/*
 	char topnade[512];
 	Format(topnade, sizeof(topnade), "%t", "TOP Grenade");
@@ -2250,6 +2292,12 @@ public MenuHandler_RankMe(Handle:menu, MenuAction:action, client, param2){
 			
 		else if(StrEqual(temp,"toptk"))
 			ShowTopTK(client,0);
+			
+		else if(StrEqual(temp,"topmvp"))
+			ShowTopMVP(client,0);
+			
+		else if(StrEqual(temp,"topdamage"))
+			ShowTopDamage(client,0);
 			
 		else if(StrEqual(temp,"resetrank")){
 			
@@ -2663,6 +2711,120 @@ public MenuHandler_TopMVP(Handle:menu, MenuAction:action, param1, param2){
 			ShowTopMVP(param1,StringToInt(temp)+1);
 		} else {
 			ShowTopMVP(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		CloseHandle(menu);
+	}
+}
+
+/* Top Damage */
+public Action:CMD_TopDamage(client,args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+
+	new String:arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTopDamage(client,StringToInt(arg1));
+	}	else {
+		ShowTopDamage(client,0);
+	}
+	return Plugin_Handled;
+}
+
+ShowTopDamage(client,at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	new Handle:Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	new String:query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	Format(query,sizeof(query),"%s ORDER BY damage DESC LIMIT %i, 10",query,at-1);
+		
+	SQL_TQuery(g_hStatsDb,SQL_TopDamageCallback,query,Datapack);
+
+}
+
+public SQL_TopDamageCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	ResetPack(Datapack);
+	new i;
+	new client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	new at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTopDamage(client,g_TotalPlayers-9);
+		return;
+	}
+	new String:name[256];
+	new String:temp[500];
+	
+	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopDamage);
+	
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	SetMenuTitle(menu,"");
+	new String:sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		
+		i++;
+		
+		SQL_FetchString(hndl,2,name,sizeof(name));
+			
+		
+	
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %t: %d\n",i+at,name,SQL_FetchInt(hndl,4),"Damage",SQL_FetchInt(hndl,74));
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n ",temp);
+	AddMenuItem(menu,temp,temp);
+	
+	
+	IntToString(at+i,temp,sizeof(temp));
+	new String:temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		AddMenuItem(menu,temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		AddMenuItem(menu,temp,temp1);
+
+	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+}
+
+public MenuHandler_TopDamage(Handle:menu, MenuAction:action, param1, param2){
+	
+	if (action == MenuAction_Select)
+	{
+		new String:temp[250];
+	
+		GetMenuItem(menu, param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTopDamage(param1,StringToInt(temp)+1);
+		} else {
+			ShowTopDamage(param1,0);
 		}
 	}
 	if (action == MenuAction_End)

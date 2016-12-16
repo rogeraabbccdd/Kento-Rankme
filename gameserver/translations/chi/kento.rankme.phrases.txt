@@ -574,11 +574,31 @@
 	
 	"MVPs"
 	{
-		"en"		"MVPs"
+		"chi"		"MVPs"
 	}
 		
 	"TOP MVP"
 	{
-		"en"		"MVP排名"
+		"chi"		"MVP排名"
+	}
+	
+	"KPR"
+	{
+		"chi"		"KPR"
+	}
+	
+	"DPR"
+	{
+		"chi"		"DPR"
+	}
+	
+	"Damage"
+	{
+		"chi"		"总傷害"
+	}
+	
+	"TOP Damage"
+	{
+		"chi"		"傷害排名"
 	}
 }

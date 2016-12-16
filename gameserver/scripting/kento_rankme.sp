@@ -52,17 +52,33 @@
 //New Command "topmvp"
 //
 //
+//3.0.3.Kento.11
+//Add damage to database
+//Show damage in statsme & session
+//Show DPR(Damage Per Round) in statsme & session
+//Show KPR(Kill Per Round) in statsme & session
+//New command "topdamage"
+//Add topmvp & topdamage to !rankme menu
+//Change round played count from player spawn to round start (warmup have autorespawn)
+//
+//
+//WIP
+//New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
+//New cvar "rankme_points_min", "0", "Minimum points"
+//
+//
 //To do (if I'm not lazy)
-//Add a cvar to prevent players rank lower 0
 //Add new cvar "rankme_points_warmup" to disable point count in warmup (https://forums.alliedmods.net/showthread.php?p=2445323)
 //Add new commnad "topkdr"
+//Add new commnad "topkpr"
+//Add new commnad "topdpr"
 //Remove vip stats? Will CSGO official add vip gamemode in the future?
 //Rewirte with New syntax
 //Watch porn <--THIS IS REALLY IMPORTANT, MY FRIEND
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.10"
+#define PLUGIN_VERSION "3.0.3.Kento.11"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -80,11 +96,11 @@
 #define SENDER_WORLD					0
 #define MAX_LENGTH_MENU 470
 
-new String:g_sSqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC)";
-new String:g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
-new String:g_sSqlSave[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i',c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
-new String:g_sSqlSaveName[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i',c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', lastconnect='%i', connected='%i' WHERE name = '%s';";
-new String:g_sSqlSaveIp[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i',c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s';";
+new String:g_sSqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC)";
+new String:g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
+new String:g_sSqlSave[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i',c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
+new String:g_sSqlSaveName[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i',c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', lastconnect='%i', connected='%i' WHERE name = '%s';";
+new String:g_sSqlSaveIp[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i',c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s';";
 new String:g_sSqlRetrieveClient[] = "SELECT * FROM `%s` WHERE steam='%s';";
 new String:g_sSqlRetrieveClientName[] = "SELECT * FROM `%s` WHERE name='%s';";
 new String:g_sSqlRetrieveClientIp[] = "SELECT * FROM `%s` WHERE lastip='%s';";
@@ -194,7 +210,7 @@ new g_PointsVipKilledTeam;
 new g_PointsVipKilledPlayer;
 new g_DaysToNotShowOnRank;
 new g_RankMode;
-new String:g_sSQLTable[100];
+new String:g_sSQLTable[200];
 new Handle:g_hStatsDb;
 new bool:OnDB[MAXPLAYERS + 1];
 new g_aSession[MAXPLAYERS + 1][STATS_NAMES];
@@ -245,6 +261,12 @@ new String:g_sBufferClientName[MAXPLAYERS+1][MAX_NAME_LENGTH];
 /* Assist */
 new Handle:g_cvarPointsAssistKill;
 new g_PointsAssistKill;
+
+/* Min points */
+//new Handle:g_cvarPointsMin;
+//new g_PointsMin;
+//new Handle:g_cvarPointsMinEnabled;
+//new bool:g_bPointsMinEnabled;
 
 public Plugin:myinfo =  {
 	name = "RankMe", 
@@ -312,6 +334,10 @@ public OnPluginStart() {
 	/* Assist */
 	g_cvarPointsAssistKill = CreateConVar("rankme_points_assiist_kill","1","How many points a player gets for assist kill?",_,true,0.0);
 	
+	/* Min points */
+	//g_cvarPointsMinEnabled = CreateConVar("rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false", _, true, 0.0, true, 1.0);
+	//g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
+	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
 	HookConVarChange(g_cvarChatChange, OnConVarChanged);
@@ -368,9 +394,13 @@ public OnPluginStart() {
 	/* Assist */
 	HookConVarChange(g_cvarPointsAssistKill,OnConVarChanged);
 	
+	/* Min points */
+	//HookConVarChange(g_cvarPointsMinEnabled, OnConVarChanged);
+	//HookConVarChange(g_cvarPointsMin, OnConVarChanged);
+	
 	// EVENTS
 	HookEventEx("player_death", EventPlayerDeath);
-	HookEventEx("player_spawn", EventPlayerSpawn);
+	//HookEventEx("player_spawn", EventPlayerSpawn);
 	HookEventEx("player_hurt", EventPlayerHurt);
 	HookEventEx("weapon_fire", EventWeaponFire);
 	HookEventEx("bomb_planted", Event_BombPlanted);
@@ -382,6 +412,7 @@ public OnPluginStart() {
 	HookEventEx("vip_killed", Event_VipKilled);
 	HookEventEx("vip_escaped", Event_VipEscaped);
 	HookEventEx("round_end", Event_RoundEnd);
+	HookEventEx("round_start", Event_RoundStart);
 	HookEventEx("round_mvp", Event_RoundMVP);
 	HookEventEx("player_changename", OnClientChangeName, EventHookMode_Pre);
 	HookEventEx("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre); 
@@ -420,6 +451,7 @@ public OnPluginStart() {
 	RegConsoleCmd("sm_topassists", CMD_TopAssists, "RankMe: Shows the TOP ordered by Assists");
 	RegConsoleCmd("sm_toptk", CMD_TopTK, "RankMe: Shows the TOP ordered by TKs");
 	RegConsoleCmd("sm_topmvp", CMD_TopMVP, "RankMe: Shows the TOP ordered by MVPs");
+	RegConsoleCmd("sm_topdamage", CMD_TopDamage, "RankMe: Shows the TOP ordered by damage");
 	
 	/*RankMe Connect Announcer*/
 	g_cvarAnnounceConnect = CreateConVar("rankme_announcer_player_connect","1","Announce when a player connect with position and points?",_,true,0.0,true,1.0);
@@ -515,7 +547,7 @@ public OnConfigsExecuted() {
 	else
 		DB_Connect(false);
 	new AutoPurge = GetConVarInt(g_cvarAutopurge);
-	new String:sQuery[500];
+	new String:sQuery[1000];
 	if (AutoPurge > 0) {
 		new DeleteBefore = GetTime() - (AutoPurge * 86400);
 		Format(sQuery, sizeof(sQuery), "DELETE FROM `%s` WHERE lastconnect < '%d'", g_sSQLTable, DeleteBefore);
@@ -573,6 +605,10 @@ public OnConfigsExecuted() {
 	
 	/* Assist */
 	g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
+	
+	/* Min points */
+	//g_PointsMin = GetConVarInt(g_cvarPointsMin);
+	//g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMin);
 	
 	/*RankMe Connect Announcer*/
 	g_bAnnounceConnect = GetConVarBool(g_cvarAnnounceConnect);
@@ -825,7 +861,7 @@ public Native_GetHitbox(Handle:plugin, numParams)
 public DumpDB() {
 	if (!g_bDumpDB || g_bMysql)
 		return;
-	new String:sQuery[500];
+	new String:sQuery[1000];
 	Format(sQuery, sizeof(sQuery), "SELECT * from `%s`", g_sSQLTable);
 	SQL_TQuery(g_hStatsDb, SQL_DumpCallback, sQuery);
 }
@@ -930,6 +966,10 @@ public Action:OnSayText(client, const String:command[], argc)
 	else if (StrContains(sWords[0], "topmvp", false) == 0)
 	{
 		CMD_TopMVP(client, 0);
+	}
+	else if (StrContains(sWords[0], "topdamage", false) == 0)
+	{
+		CMD_TopDamage(client, 0);
 	}
 	
 	/*
@@ -1102,15 +1142,15 @@ public OnPluginEnd() {
 			if (g_RankBy == 1) {
 				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
+					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
 			} else if (g_RankBy == 0) {
 				Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
+					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
 			} else if (g_RankBy == 2) {
 				Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
+					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
 			}
 			
 			SQL_FastQuery(g_hStatsDb, query);
@@ -1315,6 +1355,7 @@ public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadca
 	DumpDB();
 }
 
+/*
 public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
@@ -1329,6 +1370,29 @@ public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 	} else if (GetClientTeam(client) == CT) {
 		g_aStats[client][ROUNDS_CT]++;
 		g_aSession[client][ROUNDS_CT]++;
+	}
+}
+*/
+
+public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+		return;
+	
+	for (int i = 1; i <= MaxClients; i++) 
+	{
+		if (!g_bRankBots && IsFakeClient(i))
+			continue;
+		if (IsClientInGame(i) && GetClientTeam(i) == TR) 
+		{
+			g_aStats[i][ROUNDS_TR]++;
+			g_aSession[i][ROUNDS_TR]++;
+		} 
+		else if (IsClientInGame(i) && GetClientTeam(i) == CT) 
+		{
+			g_aStats[i][ROUNDS_CT]++;
+			g_aSession[i][ROUNDS_CT]++;
+		}
 	}
 }
 
@@ -1485,6 +1549,17 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		g_aSession[victim][SUICIDES]++;
 		g_aStats[victim][SCORE] -= g_PointsLoseSuicide;
 		g_aSession[victim][SCORE] -= g_PointsLoseSuicide;
+		
+		/*
+		if (g_bPointsMinEnabled)
+		{
+			if (g_aStats[victim][SCORE] < g_PointsMin)
+			{
+				g_aStats[victim][SCORE] = g_PointsMin;
+			}
+		}
+		*/
+		
 		if (g_PointsLoseSuicide > 0 && g_bChatChange) {
 			
 			CPrintToChat(victim, "%s %t", MSG, "LostSuicide", g_aClientName[victim], g_aStats[victim][SCORE], g_PointsLoseSuicide);
@@ -1542,12 +1617,35 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aStats[attacker][KILLS]++;
 			g_aSession[attacker][KILLS]++;
 		}
-		if (g_bPointsLoseRoundCeil) {
+		if (g_bPointsLoseRoundCeil) 
+		{
 			g_aStats[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
 			g_aSession[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
-		} else {
+			
+			/*
+			if (g_bPointsMinEnabled)
+			{
+				if (g_aStats[victim][SCORE] < g_PointsMin)
+				{
+					g_aStats[victim][SCORE] = g_PointsMin;
+				}
+			}
+			*/
+		} 
+		else 
+		{
 			g_aStats[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			g_aSession[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
+			
+			/*
+			if (g_bPointsMinEnabled)
+			{
+				if (g_aStats[victim][SCORE] < g_PointsMin)
+				{
+					g_aStats[victim][SCORE] = g_PointsMin;
+				}
+			}
+			*/
 		}
 		if (attacker < MAXPLAYERS) {
 			g_aStats[attacker][SCORE] += score_dif;
@@ -1634,6 +1732,11 @@ public Action:EventPlayerHurt(Handle:event, const String:name[], bool:dontBroadc
 		g_aStats[attacker][HITS]++;
 		g_aSession[attacker][HITS]++;
 		g_aHitBox[attacker][hitgroup]++;
+		
+		new damage = GetEventInt(event, "dmg_health");
+		g_aStats[attacker][DAMAGE] += damage;
+		g_aSession[attacker][DAMAGE] += damage;
+		
 		//PrintToChat(attacker, "Hitgroup %i: %i hits", hitgroup, g_aHitBox[attacker][hitgroup]);
 		//PrintToServer("Stats Hits: %i\nSession Hits: %i\nHitBox %i -> %i",g_aStats[attacker][HITS],g_aSession[attacker][HITS],hitgroup,g_aHitBox[attacker][hitgroup]);
 	}
@@ -1680,15 +1783,15 @@ public SalvarPlayer(client) {
 	if (g_RankBy == 1) {
 		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
+			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
 	} else if (g_RankBy == 0) {
 		Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
+			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
 	} else if (g_RankBy == 2) {
 		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
+			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
 	}
 	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query, client, DBPrio_High);
 	
@@ -1831,6 +1934,7 @@ public SQL_LoadPlayerCallback(Handle:owner, Handle:hndl, const String:error[], a
 		g_aStats[client][VIP_ESCAPED] = SQL_FetchInt(hndl, 71);
 		g_aStats[client][VIP_PLAYED] = SQL_FetchInt(hndl, 72);
 		g_aStats[client][MVP] = SQL_FetchInt(hndl, 73);
+		g_aStats[client][DAMAGE] = SQL_FetchInt(hndl, 74);
 	} else {
 		new String:query[2000];
 		
@@ -2129,6 +2233,15 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 	else if (convar == g_cvarPointsAssistKill){
 		g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
 	}
+	
+	/* Min points */
+	//else if (convar == g_cvarPointsMin){
+	//	g_PointsMin = GetConVarInt(g_cvarPointsMin);
+	//}
+	
+	//else if (convar == g_cvarPointsMinEnabled){
+	//	g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMinEnabled);
+	//}
 	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		new String:query[2000];
