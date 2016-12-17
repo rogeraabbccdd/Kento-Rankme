@@ -66,6 +66,10 @@
 //Fix Client not connected bug.
 //
 //
+//3.0.3.Kento.13
+//Try to fix bugs.
+//
+//
 //WIP
 //New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
 //New cvar "rankme_points_min", "0", "Minimum points"
@@ -82,7 +86,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.11"
+#define PLUGIN_VERSION "3.0.3.Kento.13"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -875,7 +879,7 @@ public Action:OnClientChangeName(Handle:event, const String:name[], bool:dontBro
 	if (!g_bEnabled)
 		return Plugin_Continue;
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if (!g_bRankBots && IsFakeClient(client))
+	if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 		return Plugin_Continue;
 	if (IsClientConnected(client))
 	{
@@ -1126,7 +1130,7 @@ public OnPluginEnd() {
 	SQL_LockDatabase(g_hStatsDb);
 	for (new client = 1; client <= MaxClients; client++) {
 		if (IsClientInGame(client)) {
-			if (!g_bRankBots && IsFakeClient(client))
+			if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 				return;
 			new String:name[MAX_NAME_LENGTH];
 			GetClientName(client, name, sizeof(name));
@@ -1366,7 +1370,7 @@ public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 		return;
 	
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if (!g_bRankBots && IsFakeClient(client))
+	if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 		return;
 	if (GetClientTeam(client) == TR) {
 		g_aStats[client][ROUNDS_TR]++;
@@ -1755,7 +1759,7 @@ public Action:EventWeaponFire(Handle:event, const String:name[], bool:dontBroadc
 	if (!g_bEnabled || !g_bGatherStats)
 		return;
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if (!g_bRankBots && IsFakeClient(client))
+	if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 		return;
 	new String:sWeaponUsed[50];
 	GetEventString(event, "weapon", sWeaponUsed, sizeof(sWeaponUsed));
@@ -1769,7 +1773,7 @@ public Action:EventWeaponFire(Handle:event, const String:name[], bool:dontBroadc
 public SalvarPlayer(client) {
 	if (!g_bEnabled || !g_bGatherStats)
 		return;
-	if (!g_bRankBots && IsFakeClient(client))
+	if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 		return;
 	if (!OnDB[client])
 		return;
@@ -1887,7 +1891,7 @@ public LoadPlayer(client) {
 
 public SQL_LoadPlayerCallback(Handle:owner, Handle:hndl, const String:error[], any:client)
 {
-	if (!g_bRankBots && IsFakeClient(client))
+	if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 		return;
 		
 	if (hndl == INVALID_HANDLE)
@@ -2004,7 +2008,7 @@ public SQL_NothingCallback(Handle:owner, Handle:hndl, const String:error[], any:
 public OnClientDisconnect(client) {
 	if (!g_bEnabled)
 		return;
-	if (!g_bRankBots && IsFakeClient(client))
+	if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 		return;
 	SalvarPlayer(client);
 	OnDB[client] = false;
@@ -2366,7 +2370,7 @@ public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 		
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
-	if(!g_bRankBots && IsFakeClient(client))
+	if(!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 		return;
 	
 	new String:sName[MAX_NAME_LENGTH];
