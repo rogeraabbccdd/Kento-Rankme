@@ -62,6 +62,10 @@
 //Change round played count from player spawn to round start (warmup have autorespawn)
 //
 //
+//3.0.3.Kento.12
+//Fix Client not connected bug.
+//
+//
 //WIP
 //New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
 //New cvar "rankme_points_min", "0", "Minimum points"
@@ -1378,18 +1382,21 @@ public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
 		return;
-	
+		
 	for (int i = 1; i <= MaxClients; i++) 
 	{
 		if (!g_bRankBots && IsFakeClient(i))
+		{
 			continue;
-		if (IsClientInGame(i) && GetClientTeam(i) == TR) 
+		}	
+		
+		if (IsClientConnected(i) && IsClientInGame(i) && GetClientTeam(i) == TR) 
 		{
 			g_aStats[i][ROUNDS_TR]++;
 			g_aSession[i][ROUNDS_TR]++;
 		} 
-		else if (IsClientInGame(i) && GetClientTeam(i) == CT) 
-		{
+		else if (IsClientConnected(i) && IsClientInGame(i) && GetClientTeam(i) == CT) 
+		{	
 			g_aStats[i][ROUNDS_CT]++;
 			g_aSession[i][ROUNDS_CT]++;
 		}
