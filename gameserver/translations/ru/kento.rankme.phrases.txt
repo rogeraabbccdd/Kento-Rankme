@@ -17,19 +17,19 @@
 	"BombPickup"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очко(в) {RED}Подобрав бомбу{NORMAL}."
+		"ru"		"{ORANGE}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очка {RED}Подобрав бомбу{NORMAL}."
 	}
 
 	"BombDropped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}потерял {3} очко(в) {RED}Сбросив бомбу{NORMAL}."
+		"ru"		"{ORANGE}{1}{PURPLE} ({2}) {RED}потерял {3} очка {RED}Сбросив бомбу{NORMAL}."
 	}
 
 	"MVP"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очко(в) {NORMAL}как {RED}Самый Ценный Игрок{NORMAL}."
+		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очка {NORMAL}как {RED}MVP{NORMAL}."
 	}
 
 	"LostSuicide"
@@ -47,25 +47,25 @@
 	"CT_VIPEscaped"
 	{
 		"#format"	"{1:d}"
-		"ru"		"{BLUE}Спецназ{NORMAL} {LIGHTGREEN}получил {1} очков {NORMAL}за {RED}Побег в качестве VIP{NORMAL}."
+		"ru"		"{NORMAL}Команда {BLUE}Counter-Terrorists {LIGHTGREEN}получил {1} очков {NORMAL}за {RED}Побег в качестве VIP{NORMAL}."
 	}
 
 	"VIPEscaped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}Побег в качестве VIP{NORMAL}."
+		"ru"		"{BLUE}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}Побег в качестве VIP{NORMAL}."
 	}
 
 	"TR_VIPKilled"
 	{
 		"#format"	"{1:d}"
-		"ru"		"{ORANGE}Террористы{NORMAL} {LIGHTGREEN}получили {1} очков {NORMAL}за {RED}Убийство VIP{NORMAL}."
+		"ru"		"{NORMAL}Команда {ORANGE}TERRORISTS {LIGHTGREEN}получили {1} очков {NORMAL}за {RED}Убийство VIP{NORMAL}."
 	}
 
 	"VIPKilled"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}Убийство VIP{NORMAL}."
+		"ru"		"{ORANGE}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}Убийство VIP{NORMAL}."
 	}
 
 	"GotPointsBy"
@@ -77,97 +77,97 @@
 	"IsRankedAt"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
-		"ru"		"Игрок{PINK} {1} {NORMAL}оценивается в {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} очков{NORMAL},{LIGHTGREEN} {5} убийств{NORMAL},{RED} {6} смертей{NORMAL},{ORANGE} {7} помощи{NORMAL}, {BLUE} У/С {8} {NORMAL}и {DARKRED}{9} убийств своих{NORMAL}."
+		"ru"		"Игрок{PINK} {1} {NORMAL}на {GREEN}{2} {NORMAL}из {3} месте, {PURPLE}{4} очков{NORMAL},{LIGHTGREEN} {5} убийств{NORMAL},{RED} {6} смертей{NORMAL},{ORANGE} {7} помощи{NORMAL}, {BLUE} KDR {8} {NORMAL}и {DARKRED}{9} убийств своих{NORMAL}."
 	}
 
 	"Killing"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}убийство {PINK}{4} {PURPLE}({5}){NORMAL}."
+		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}+{3} {NORMAL}за {RED}убийство {PINK}{4} {PURPLE}({5}){NORMAL}."
 	}
 
 	"KillingKillerNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}убийство {PINK}{4} {PURPLE}({5}){NORMAL}."
+		"ru"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}+{3} {NORMAL}за {RED}убийство {PINK}{4} {PURPLE}({5}){NORMAL}."
 	}
 
 	"KillingVictimNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}убийство {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}."
+		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}+{3} {NORMAL}за {RED}убийство {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}."
 	}
 
 	"KillingBothNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}убийство {PINK}{4} {PURPLE}({5})[{8}/{9}]{NORMAL}."
+		"ru"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}+{3} {NORMAL}за {RED}убийство {PINK}{4} {PURPLE}({5})[{8}/{9}]{NORMAL}."
 	}
 
 	"Headshot"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очко(в) {NORMAL}за {RED}Выстрел в голову{NORMAL}."
+		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очка {NORMAL}за {RED}HEADSHOT{NORMAL}."
 	}
 
 	"TR_Planting"
 	{
 		"#format"	"{1:d}"
-		"ru"		"{ORANGE}Террористы{NORMAL} {LIGHTGREEN}получили {1} очков {NORMAL}за {RED}Установку бомбы{NORMAL}."
+		"ru"		"{NORMAL}Команда {ORANGE}TERRORISTS {LIGHTGREEN}получила {1} очка {NORMAL}за {RED}Установку бомбы{NORMAL}."
 	}
 
 	"Planting"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}Установку бомбы{NORMAL}."
+		"ru"		"{ORANGE}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очка {NORMAL}за {RED}Установку бомбы{NORMAL}."
 	}
 
 	"TR_Exploding"
 	{
 		"#format"	"{1:d}"
-		"ru"		"{ORANGE}Террористы{NORMAL} {LIGHTGREEN}получили {1} очков {NORMAL}за {RED}Взрыв бомбы{NORMAL}."
+		"ru"		"{NORMAL}Команда {ORANGE}TERRORISTS {LIGHTGREEN}получила {1} очка {NORMAL}за {RED}Взрыв бомбы{NORMAL}."
 	}
 
 	"Exploding"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}Взрыв бомбы{NORMAL}."
+		"ru"		"{ORANGE}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очка {NORMAL}за {RED}Взрыв бомбы{NORMAL}."
 	}
 
 	"CT_Defusing"
 	{
 		"#format"	"{1:d}"
-		"ru"		"{BLUE}Спецназ{NORMAL} {LIGHTGREEN}получил {1} очков {NORMAL}за {RED}Обезвреживание бомбы{NORMAL}."
+		"ru"		"{NORMAL}Команда {BLUE}Counter-Terrorists {LIGHTGREEN}получила {1} очка {NORMAL}за {RED}Обезвреживание бомбы{NORMAL}."
 	}
 
 	"Defusing"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}Обезвреживание бомбы{NORMAL}."
+		"ru"		"{BLUE}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очка {NORMAL}за {RED}Обезвреживание бомбы{NORMAL}."
 	}
 
 	"CT_Hostage"
 	{
 		"#format"	"{1:d}"
-		"ru"		"{BLUE}Спецназ{NORMAL} {LIGHTGREEN}получил {1} очков {NORMAL}за {RED}Спасение заложника{NORMAL}."
+		"ru"		"{NORMAL}Команда {BLUE}Counter-Terrorists {LIGHTGREEN}получила {1} очка {NORMAL}за {RED}Спасение заложника{NORMAL}."
 	}
 
 	"Hostage"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"ru"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очков {NORMAL}за {RED}Спасение заложника{NORMAL}."
+		"ru"		"{BLUE}{1}{PURPLE} ({2}) {LIGHTGREEN}получил {3} очка {NORMAL}за {RED}Спасение заложника{NORMAL}."
 	}
 
 	"CT_Round"
 	{
 		"#format"	"{1:d}"
-		"ru"		"{BLUE}Спецназ{NORMAL} {LIGHTGREEN}получил {1} очков {NORMAL}за {RED}Победу в раунде{NORMAL}."
+		"ru"		"{NORMAL}Команда {BLUE}Counter-Terrorists {LIGHTGREEN}получила {1} очко {NORMAL}за {BLUE}Победу в раунде{NORMAL}."
 	}
 
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
-		"ru"		"{ORANGE}Террористы{NORMAL} {LIGHTGREEN}получили {1} очков {NORMAL}за {RED}Победу в раунде{NORMAL}."
+		"ru"		"{NORMAL}Команда {ORANGE}TERRORISTS {LIGHTGREEN}получила {1} очко {NORMAL}за {ORANGE}Победу в раунде{NORMAL}."
 	}
 
 	"PlayerJoinedChat"
@@ -307,7 +307,7 @@
 
 	"BasicStats"
 	{
-		"ru"		"Основная статистика"
+		"ru"		"Basic Stats"
 	}
 
 	"KillsDeathsAssists"
@@ -323,22 +323,22 @@
 
 	"RoundStats"
 	{
-		"ru"		"Статистика раунда"
+		"ru"		"Round Stats"
 	}
 
 	"TRWins"
 	{
-		"ru"		"Побед Террористов"
+		"ru"		"Побед TR"
 	}
 
 	"CTWins"
 	{
-		"ru"		"Побед Спецназа"
+		"ru"		"Побед CT"
 	}
 
 	"HitStats"
 	{
-		"ru"		"Статистика попаданий"
+		"ru"		"Hit Stats"
 	}
 
 	"Shots"
@@ -358,7 +358,7 @@
 
 	"BombHostagesStats"
 	{
-		"ru"		"Статистика бомб/заложников"
+		"ru"		"Bomb Hostages Stats"
 	}
 
 	"PlantedBombs"
@@ -383,7 +383,7 @@
 
 	"OtherStats"
 	{
-		"ru"		"Прочая статистика"
+		"ru"		"Other Stats"
 	}
 
 	"TimeConnected"

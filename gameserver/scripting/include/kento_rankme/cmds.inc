@@ -1415,7 +1415,7 @@ public Action:CMD_Session(client,args){
 	new Handle:panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	new String:text[255];
 	new String:temp[255];
-	SetMenuPagination(panel,4);
+	SetMenuPagination(panel,3);
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
 	StrCat(text,255,temp);
 	Format(temp,sizeof(temp),"%T: %i\n","Points",client,g_aSession[client][SCORE]);
@@ -1755,7 +1755,7 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 	SetMenuTitle(panel,Name_receive);
 	
 	new String:text[255];
-	SetMenuPagination(panel,4);
+	SetMenuPagination(panel,3);
 	new ikills = SQL_FetchInt(hndl,5);
 	new ideaths= SQL_FetchInt(hndl,6);
 	new deaths;
@@ -1883,7 +1883,7 @@ public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	}
 	new Handle:panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	new String:text[255];
-	SetMenuPagination(panel,4);
+	SetMenuPagination(panel,3);
 	new ikills = g_aStats[client][KILLS];
 	new ideaths=g_aStats[client][DEATHS];
 	new deaths;
