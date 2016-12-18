@@ -75,6 +75,10 @@
 //Thanks Drum1low.
 //
 //
+//3.0.3.Kento.15
+//Try to fix bugs.
+//
+//
 //WIP
 //New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
 //New cvar "rankme_points_min", "0", "Minimum points"
@@ -91,7 +95,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.14"
+#define PLUGIN_VERSION "3.0.3.Kento.15"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -1439,7 +1443,7 @@ public Action:Event_BombPlanted(Handle:event, const String:name[], bool:dontBroa
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
 		CPrintToChat(i, "%s %t", MSG, "TR_Planting", g_PointsBombPlantedTeam);
-	if (g_PointsBombPlantedPlayer > 0 && client != 0 && (g_bRankBots && !IsFakeClient(client)))
+	if (g_PointsBombPlantedPlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
 		CPrintToChat(i, "%s %t", MSG, "Planting", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPlantedTeam + g_PointsBombPlantedPlayer);
@@ -1472,7 +1476,7 @@ public Action:Event_BombDefused(Handle:event, const String:name[], bool:dontBroa
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
 		CPrintToChat(i, "%s %t", MSG, "CT_Defusing", g_PointsBombDefusedTeam);
-	if (g_PointsBombDefusedPlayer > 0 && client != 0 && (g_bRankBots && !IsFakeClient(client)))
+	if (g_PointsBombDefusedPlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
 		CPrintToChat(i, "%s %t", MSG, "Defusing", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDefusedTeam + g_PointsBombDefusedPlayer);
@@ -1504,7 +1508,7 @@ public Action:Event_BombExploded(Handle:event, const String:name[], bool:dontBro
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
 		CPrintToChat(i, "%s %t", MSG, "TR_Exploding", g_PointsBombExplodeTeam);
-	if (g_PointsBombExplodePlayer > 0 && client != 0 && (g_bRankBots || (IsClientInGame(client) && !IsFakeClient(client))))
+	if (g_PointsBombExplodePlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
 		CPrintToChat(i, "%s %t", MSG, "Exploding", g_sC4PlantedByName, g_aStats[client][SCORE], g_PointsBombExplodeTeam + g_PointsBombExplodePlayer);
@@ -2372,7 +2376,7 @@ public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 		
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
-	if (client <= 0 || client > MaxClients || !IsClientConnected(client) || (g_bRankBots && IsFakeClient(client)))
+	if (client <= 0 || client > MaxClients || !IsClientConnected(client) || !g_bRankBots)
 		return;
 	
 	new String:sName[MAX_NAME_LENGTH];
