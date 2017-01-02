@@ -99,7 +99,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.15"
+#define PLUGIN_VERSION "3.0.3.Kento.16"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
