@@ -79,6 +79,10 @@
 //Try to fix bugs.
 //
 //
+//3.0.3.Kento.16
+//In warmup points don't count.
+//
+//
 //WIP
 //New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
 //New cvar "rankme_points_min", "0", "Minimum points"
@@ -95,12 +99,13 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.15"
+#define PLUGIN_VERSION "3.0.3.Kento.16"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
 #include <kento_rankme/rankme>
 #include <geoip>
+#include <sdktools>
 
 //Maybe? I'm too lazy
 //#pragma newdecls required
@@ -1200,7 +1205,7 @@ public GetWeaponNum(String:weaponname[]) {
 }
 
 public Action:Event_VipEscaped(Handle:event, const String:name[], bool:dontBroadcast) {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
@@ -1232,7 +1237,7 @@ public Action:Event_VipEscaped(Handle:event, const String:name[], bool:dontBroad
 }
 
 public Action:Event_VipKilled(Handle:event, const String:name[], bool:dontBroadcast) {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	new killer = GetClientOfUserId(GetEventInt(event, "attacker"));
@@ -1265,7 +1270,7 @@ public Action:Event_VipKilled(Handle:event, const String:name[], bool:dontBroadc
 }
 
 public Action:Event_HostageRescued(Handle:event, const String:name[], bool:dontBroadcast) {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
@@ -1299,7 +1304,7 @@ public Action:Event_HostageRescued(Handle:event, const String:name[], bool:dontB
 }
 
 public Action:Event_RoundMVP(Handle:event, const String:name[], bool:dontBroadcast) {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
@@ -1330,7 +1335,7 @@ public Action:Event_RoundMVP(Handle:event, const String:name[], bool:dontBroadca
 	g_aSession[client][MVP]++;
 }
 public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadcast) {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	new i;
 	new Winner = GetEventInt(event, "winner");
@@ -1375,7 +1380,7 @@ public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadca
 /*
 public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
@@ -1393,7 +1398,7 @@ public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 	return;
 	new i;
 	for(i=1;i<=MaxClients;i++)
@@ -1415,7 +1420,7 @@ public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Action:Event_BombPlanted(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
@@ -1452,7 +1457,7 @@ public Action:Event_BombPlanted(Handle:event, const String:name[], bool:dontBroa
 
 public Action:Event_BombDefused(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
@@ -1484,7 +1489,7 @@ public Action:Event_BombDefused(Handle:event, const String:name[], bool:dontBroa
 
 public Action:Event_BombExploded(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	new client = g_C4PlantedBy;
 	
@@ -1516,7 +1521,7 @@ public Action:Event_BombExploded(Handle:event, const String:name[], bool:dontBro
 
 public Action:Event_BombPickup(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
@@ -1533,7 +1538,7 @@ public Action:Event_BombPickup(Handle:event, const String:name[], bool:dontBroad
 
 public Action:Event_BombDropped(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
@@ -1551,7 +1556,7 @@ public Action:Event_BombDropped(Handle:event, const String:name[], bool:dontBroa
 public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 // ----------------------------------------------------------------------------
 {
-	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers() || isInWarmup())
 		return;
 	
 	new victim = GetClientOfUserId(GetEventInt(event, "userid"));
@@ -2389,4 +2394,11 @@ public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 	GetEventString(event, "reason", disconnectReason, sizeof(disconnectReason));
 	
 	CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client], g_aPointsOnDisconnect[client], disconnectReason);
+}
+
+stock bool isInWarmup(){
+	if (GameRules_GetProp("m_bWarmupPeriod") == 1)
+		return true;
+	else
+		return false;
 }
