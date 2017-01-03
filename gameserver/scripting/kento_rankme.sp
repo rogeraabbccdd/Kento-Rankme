@@ -79,6 +79,10 @@
 //Try to fix bugs.
 //
 //
+//3.0.3.Kento.16
+//Fix round played stats not counting bug.
+//
+//
 //WIP
 //New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
 //New cvar "rankme_points_min", "0", "Minimum points"
@@ -95,7 +99,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.15"
+#define PLUGIN_VERSION "3.0.3.Kento.16"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -1394,12 +1398,11 @@ public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
-	return;
+		return;
+		
 	new i;
 	for(i=1;i<=MaxClients;i++)
 	{
-		if(IsClientInGame(i) && (g_bRankBots || !IsFakeClient(i)))
-			continue;
 		if (IsClientInGame(i) && GetClientTeam(i) == TR) 
 		{
 			g_aStats[i][ROUNDS_TR]++;
