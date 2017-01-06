@@ -83,13 +83,16 @@
 //Fix round played stats not counting bug.
 //
 //
+//3.0.3.Kento.17
+//Add new cvar "rankme_gather_stats_warmup" to disable point count in warmup
+//
+//
 //WIP
 //New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
 //New cvar "rankme_points_min", "0", "Minimum points"
 //
 //
 //To do (if I'm not lazy)
-//Add new cvar "rankme_points_warmup" to disable point count in warmup (https://forums.alliedmods.net/showthread.php?p=2445323)
 //Add new commnad "topkdr"
 //Add new commnad "topkpr"
 //Add new commnad "topdpr"
@@ -99,12 +102,13 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.16"
+#define PLUGIN_VERSION "3.0.3.Kento.17"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
 #include <kento_rankme/rankme>
 #include <geoip>
+#include <sdktools>
 
 //Maybe? I'm too lazy
 //#pragma newdecls required
@@ -283,6 +287,10 @@ new String:g_sBufferClientName[MAXPLAYERS+1][MAX_NAME_LENGTH];
 new Handle:g_cvarPointsAssistKill;
 new g_PointsAssistKill;
 
+/* Enable Or Disable Points In Warmup */
+new Handle:g_cvarGatherStatsWarmup;
+new bool:g_bGatherStatsWarmup;
+
 /* Min points */
 //new Handle:g_cvarPointsMin;
 //new g_PointsMin;
@@ -355,6 +363,9 @@ public OnPluginStart() {
 	/* Assist */
 	g_cvarPointsAssistKill = CreateConVar("rankme_points_assiist_kill","1","How many points a player gets for assist kill?",_,true,0.0);
 	
+	/* Enable Or Disable Points In Warmup */
+	g_cvarGatherStatsWarmup = CreateConVar("rankme_gather_stats_warmup","1","Gather Statistics In Warmup?", _, true, 0.0, true, 1.0);
+	
 	/* Min points */
 	//g_cvarPointsMinEnabled = CreateConVar("rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false", _, true, 0.0, true, 1.0);
 	//g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
@@ -414,6 +425,9 @@ public OnPluginStart() {
 	
 	/* Assist */
 	HookConVarChange(g_cvarPointsAssistKill,OnConVarChanged);
+	
+	/* Enable Or Disable Points In Warmup */
+	HookConVarChange(g_cvarGatherStatsWarmup,OnConVarChanged);
 	
 	/* Min points */
 	//HookConVarChange(g_cvarPointsMinEnabled, OnConVarChanged);
@@ -626,6 +640,9 @@ public OnConfigsExecuted() {
 	
 	/* Assist */
 	g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
+	
+	/* Enable Or Disable Points In Warmup */
+	g_bGatherStatsWarmup = GetConVarBool(g_cvarGatherStatsWarmup);
 	
 	/* Min points */
 	//g_PointsMin = GetConVarInt(g_cvarPointsMin);
@@ -1739,7 +1756,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 public Action:EventPlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)
 // ----------------------------------------------------------------------------
 {
-	if (!g_bEnabled || !g_bGatherStats)
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
 		return;
 	new victim = GetClientOfUserId(GetEventInt(event, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
@@ -1765,7 +1782,7 @@ public Action:EventPlayerHurt(Handle:event, const String:name[], bool:dontBroadc
 public Action:EventWeaponFire(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	
-	if (!g_bEnabled || !g_bGatherStats)
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
 		return;
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
@@ -1780,7 +1797,7 @@ public Action:EventWeaponFire(Handle:event, const String:name[], bool:dontBroadc
 }
 
 public SalvarPlayer(client) {
-	if (!g_bEnabled || !g_bGatherStats)
+	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
 		return;
 	if (!g_bRankBots && (IsFakeClient(client) || !IsValidClient(client)))
 		return;
@@ -2248,10 +2265,14 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 		g_bAnnounceTopConnectHint = GetConVarBool(g_cvarAnnounceTopConnectHint);
 	}
 	
-	
 	/* Assist */
 	else if (convar == g_cvarPointsAssistKill){
 		g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
+	}
+	
+	/* Enable Or Disable Points In Warmup */
+	else if (convar == g_cvarGatherStatsWarmup){
+		g_bGatherStatsWarmup = GetConVarBool(g_cvarGatherStatsWarmup);
 	}
 	
 	/* Min points */
@@ -2392,4 +2413,24 @@ public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 	GetEventString(event, "reason", disconnectReason, sizeof(disconnectReason));
 	
 	CPrintToChatAll("%s %t",MSG,"PlayerLeft",g_sBufferClientName[client], g_aPointsOnDisconnect[client], disconnectReason);
+}
+
+/* Enable Or Disable Points In Warmup */
+public void OnGameFrame()
+{
+	//If cvar disable
+	if(!g_bGatherStatsWarmup)
+	{
+		//In Warmup
+		if(GameRules_GetProp("m_bWarmupPeriod") == 1)
+		{
+			g_bGatherStats = false;
+		}
+		
+		//Not in warmup
+		else 
+		{
+			g_bGatherStats = true;
+		}
+	}	
 }
