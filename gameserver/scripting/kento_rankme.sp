@@ -1,11 +1,3 @@
-/*
-L 01/10/2017 - 20:12:56: [SM] Exception reported: String formatted incorrectly - parameter 14 (total 13)
-L 01/10/2017 - 20:12:56: [SM] Blaming: kento_rankme.smx
-L 01/10/2017 - 20:12:56: [SM] Call stack trace:
-L 01/10/2017 - 20:12:56: [SM]   [0] Format
-L 01/10/2017 - 20:12:56: [SM]   [1] Line 1883, D:\CSGODS\CSGO\csgo\addons\sourcemod\scripting\kento_rankme.sp::SalvarPlayer
-L 01/10/2017 - 20:12:56: [SM]   [2] Line 2099, D:\CSGODS\CSGO\csgo\addons\sourcemod\scripting\kento_rankme.sp::OnClientDisconnect
-*/
 //Changelog
 //
 //3.0.3.Kento.1
