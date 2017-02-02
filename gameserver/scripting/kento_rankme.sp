@@ -95,7 +95,7 @@
 //Bug Fix.
 //
 //
-//WIP
+//3.0.3.Kento.20
 //New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
 //New cvar "rankme_points_min", "0", "Minimum points"
 //
@@ -110,7 +110,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.19"
+#define PLUGIN_VERSION "3.0.3.Kento.20"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -312,10 +312,10 @@ new Handle:g_cvarGatherStatsWarmup;
 new bool:g_bGatherStatsWarmup;
 
 /* Min points */
-//new Handle:g_cvarPointsMin;
-//new g_PointsMin;
-//new Handle:g_cvarPointsMinEnabled;
-//new bool:g_bPointsMinEnabled;
+new Handle:g_cvarPointsMin;
+new g_PointsMin;
+new Handle:g_cvarPointsMinEnabled;
+new bool:g_bPointsMinEnabled;
 
 public Plugin:myinfo =  {
 	name = "RankMe", 
@@ -387,8 +387,8 @@ public OnPluginStart() {
 	g_cvarGatherStatsWarmup = CreateConVar("rankme_gather_stats_warmup","1","Gather Statistics In Warmup?", _, true, 0.0, true, 1.0);
 	
 	/* Min points */
-	//g_cvarPointsMinEnabled = CreateConVar("rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false", _, true, 0.0, true, 1.0);
-	//g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
+	g_cvarPointsMinEnabled = CreateConVar("rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false", _, true, 0.0, true, 1.0);
+	g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
 	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
@@ -450,8 +450,8 @@ public OnPluginStart() {
 	HookConVarChange(g_cvarGatherStatsWarmup,OnConVarChanged);
 	
 	/* Min points */
-	//HookConVarChange(g_cvarPointsMinEnabled, OnConVarChanged);
-	//HookConVarChange(g_cvarPointsMin, OnConVarChanged);
+	HookConVarChange(g_cvarPointsMinEnabled, OnConVarChanged);
+	HookConVarChange(g_cvarPointsMin, OnConVarChanged);
 	
 	// EVENTS
 	HookEventEx("player_death", EventPlayerDeath);
@@ -665,8 +665,8 @@ public OnConfigsExecuted() {
 	g_bGatherStatsWarmup = GetConVarBool(g_cvarGatherStatsWarmup);
 	
 	/* Min points */
-	//g_PointsMin = GetConVarInt(g_cvarPointsMin);
-	//g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMin);
+	g_PointsMin = GetConVarInt(g_cvarPointsMin);
+	g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMin);
 	
 	/*RankMe Connect Announcer*/
 	g_bAnnounceConnect = GetConVarBool(g_cvarAnnounceConnect);
@@ -1645,7 +1645,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		g_aStats[victim][SCORE] -= g_PointsLoseSuicide;
 		g_aSession[victim][SCORE] -= g_PointsLoseSuicide;
 		
-		/*
+		/* Min points */
 		if (g_bPointsMinEnabled)
 		{
 			if (g_aStats[victim][SCORE] < g_PointsMin)
@@ -1653,7 +1653,6 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 				g_aStats[victim][SCORE] = g_PointsMin;
 			}
 		}
-		*/
 		
 		if (g_PointsLoseSuicide > 0 && g_bChatChange) {
 			
@@ -1666,6 +1665,16 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aSession[attacker][TK]++;
 			g_aStats[attacker][SCORE] -= g_PointsLoseTk;
 			g_aSession[attacker][SCORE] -= g_PointsLoseTk;
+			
+			/* Min points */
+			if (g_bPointsMinEnabled)
+			{
+				if (g_aStats[victim][SCORE] < g_PointsMin)
+				{
+					g_aStats[victim][SCORE] = g_PointsMin;
+				}
+			}
+		
 			if (g_PointsLoseTk > 0 && g_bChatChange) {
 				
 				CPrintToChat(victim, "%s %t", MSG, "LostTK", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
@@ -1717,7 +1726,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aStats[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
 			g_aSession[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
 			
-			/*
+			/* Min points */
 			if (g_bPointsMinEnabled)
 			{
 				if (g_aStats[victim][SCORE] < g_PointsMin)
@@ -1725,14 +1734,14 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 					g_aStats[victim][SCORE] = g_PointsMin;
 				}
 			}
-			*/
+			
 		} 
 		else 
 		{
 			g_aStats[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			g_aSession[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			
-			/*
+			/* Min points */
 			if (g_bPointsMinEnabled)
 			{
 				if (g_aStats[victim][SCORE] < g_PointsMin)
@@ -1740,7 +1749,6 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 					g_aStats[victim][SCORE] = g_PointsMin;
 				}
 			}
-			*/
 		}
 		if (attacker < MAXPLAYERS) {
 			g_aStats[attacker][SCORE] += score_dif;
@@ -2373,13 +2381,13 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 	}
 	
 	/* Min points */
-	//else if (convar == g_cvarPointsMin){
-	//	g_PointsMin = GetConVarInt(g_cvarPointsMin);
-	//}
+	else if (convar == g_cvarPointsMin){
+		g_PointsMin = GetConVarInt(g_cvarPointsMin);
+	}
 	
-	//else if (convar == g_cvarPointsMinEnabled){
-	//	g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMinEnabled);
-	//}
+	else if (convar == g_cvarPointsMinEnabled){
+		g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMinEnabled);
+	}
 	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		new String:query[10000];
