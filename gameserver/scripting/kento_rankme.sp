@@ -537,6 +537,7 @@ public OnPluginStart() {
 	AddCommandListener(OnSayText, "say");
 	AddCommandListener(OnSayText, "say_team");
 	
+	
 	new Handle:cvarVersion = CreateConVar("rankme_version", PLUGIN_VERSION, "RankMe Version", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DONTRECORD);
 	// UPDATE THE CVAR IF NEEDED
 	new String:sVersionOnCvar[10];
@@ -567,6 +568,7 @@ public DB_Connect(bool:firstload) {
 		decl String:sError[256];
 		if (g_bMysql) {
 			g_hStatsDb = SQL_Connect("rankme", false, sError, sizeof(sError));
+			
 		} else {
 			g_hStatsDb = SQLite_UseDatabase("rankme", sError, sizeof(sError));
 		}
@@ -587,6 +589,7 @@ public DB_Connect(bool:firstload) {
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_played NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		SQL_UnlockDatabase(g_hStatsDb);
+		SQL_SetCharset(g_hStatsDb, "UTF8");
 		
 		for (new i = 1; i <= MaxClients; i++) {
 			if (IsClientInGame(i))
