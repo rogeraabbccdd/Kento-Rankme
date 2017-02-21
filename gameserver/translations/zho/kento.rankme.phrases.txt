@@ -78,7 +78,7 @@
 	"IsRankedAt"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
-		"zho"		"玩家 {PINK} {1} {NORMAL}的排名是 {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} 點{NORMAL},{LIGHTGREEN} {5} 擊殺{NORMAL},{RED} {6} 死亡{NORMAL},{ORANGE} {7} 助攻{NORMAL},{BLUE} KDR {8}{NORMAL},{DARKRED} {9} TKs{NORMAL}, {YELLOW}{10} MVPs{NORMAL}."
+		"zho"		"玩家 {PINK} {1} {NORMAL}的排名是 {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} 點{NORMAL},{LIGHTGREEN} {5} 擊殺{NORMAL},{RED} {6} 死亡{NORMAL},{ORANGE} {7} 助攻{NORMAL},{BLUE} KDR {8}{NORMAL},{DARKRED} TKs{NORMAL}, {YELLOW}{10} MVPs{NORMAL}."
 	}
 	
 	"Killing"

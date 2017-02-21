@@ -1381,18 +1381,8 @@ public SQL_RankCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 	new String:Name_receive[MAX_NAME_LENGTH];
 	new String:Auth_receive[64];
 	new String:Ip_receive[64];
-	
-	new ikills = g_aStats[client][KILLS];
-	new ideaths=g_aStats[client][DEATHS];
-	
+	new Float:kdr;
 	new deaths;
-	if(ideaths == 0)
-		deaths = 1;
-	else 
-		deaths=ideaths;
-	
-	new Float:kills = IntToFloat(ikills);
-	
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		i++;
@@ -1401,13 +1391,18 @@ public SQL_RankCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 		SQL_FetchString(hndl,3,Ip_receive,64);
 	//	PrintToServer("%d %s %s",i, Name_receive, Auth_receive);
 		if((g_RankBy == 1 && StrEqual(Name_receive,g_aClientName[client],false)) || (g_RankBy == 0 && StrEqual(Auth_receive,g_aClientSteam[client],false)) || (g_RankBy == 2 && StrEqual(Ip_receive,g_aClientIp[client],false))){
-
+			deaths=SQL_FetchInt(hndl,6);
+			
+			if(deaths == 0)
+				deaths = 1;
+			
+			kdr = SQL_FetchFloat(hndl,5)/deaths;
 			if(g_bShowRankAll){
 				for(new j = 1; j <= MaxClients;j++)
 					if(IsClientInGame(j))
-						CPrintToChat(j,"%s %t",MSG,"IsRankedAt", g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
+						CPrintToChat(j,"%s %t",MSG,"IsRankedAt", g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kdr,g_aStats[client][TK],g_aStats[client][MVP]);
 			} else {
-				CPrintToChat(client,"%s %t",MSG,"IsRankedAt", g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
+				CPrintToChat(client,"%s %t",MSG,"IsRankedAt", g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kdr,g_aStats[client][TK],g_aStats[client][MVP]);
 			}
 			break;
 		}
