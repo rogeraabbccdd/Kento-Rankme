@@ -105,6 +105,10 @@
 //Try to fix bugs.
 //
 //
+////3.0.3.Kento.22
+//Fix kdr in !rank will only change after changing map bug.
+//Fix some translation phrases.
+//
 //To do (if I'm not lazy)
 //Add new commnad "topkdr"
 //Add new commnad "topkpr"
@@ -115,7 +119,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.21"
+#define PLUGIN_VERSION "3.0.3.Kento.22"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
