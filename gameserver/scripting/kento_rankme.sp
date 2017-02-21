@@ -95,9 +95,14 @@
 //Bug Fix.
 //
 //
-//WIP
+//3.0.3.Kento.20
 //New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
 //New cvar "rankme_points_min", "0", "Minimum points"
+//
+//
+//3.0.3.Kento.21
+//Now database will created in utf8mb4_general_ci
+//Try to fix bugs.
 //
 //
 //To do (if I'm not lazy)
@@ -110,7 +115,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.19"
+#define PLUGIN_VERSION "3.0.3.Kento.21"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -129,7 +134,7 @@
 #define SENDER_WORLD					0
 #define MAX_LENGTH_MENU 470
 
-new String:g_sSqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC)";
+new String:g_sSqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
 new String:g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
 
 /* Old
@@ -312,10 +317,10 @@ new Handle:g_cvarGatherStatsWarmup;
 new bool:g_bGatherStatsWarmup;
 
 /* Min points */
-//new Handle:g_cvarPointsMin;
-//new g_PointsMin;
-//new Handle:g_cvarPointsMinEnabled;
-//new bool:g_bPointsMinEnabled;
+new Handle:g_cvarPointsMin;
+new g_PointsMin;
+new Handle:g_cvarPointsMinEnabled;
+new bool:g_bPointsMinEnabled;
 
 public Plugin:myinfo =  {
 	name = "RankMe", 
@@ -387,8 +392,8 @@ public OnPluginStart() {
 	g_cvarGatherStatsWarmup = CreateConVar("rankme_gather_stats_warmup","1","Gather Statistics In Warmup?", _, true, 0.0, true, 1.0);
 	
 	/* Min points */
-	//g_cvarPointsMinEnabled = CreateConVar("rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false", _, true, 0.0, true, 1.0);
-	//g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
+	g_cvarPointsMinEnabled = CreateConVar("rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false", _, true, 0.0, true, 1.0);
+	g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
 	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
@@ -450,8 +455,8 @@ public OnPluginStart() {
 	HookConVarChange(g_cvarGatherStatsWarmup,OnConVarChanged);
 	
 	/* Min points */
-	//HookConVarChange(g_cvarPointsMinEnabled, OnConVarChanged);
-	//HookConVarChange(g_cvarPointsMin, OnConVarChanged);
+	HookConVarChange(g_cvarPointsMinEnabled, OnConVarChanged);
+	HookConVarChange(g_cvarPointsMin, OnConVarChanged);
 	
 	// EVENTS
 	HookEventEx("player_death", EventPlayerDeath);
@@ -537,7 +542,6 @@ public OnPluginStart() {
 	AddCommandListener(OnSayText, "say");
 	AddCommandListener(OnSayText, "say_team");
 	
-	
 	new Handle:cvarVersion = CreateConVar("rankme_version", PLUGIN_VERSION, "RankMe Version", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DONTRECORD);
 	// UPDATE THE CVAR IF NEEDED
 	new String:sVersionOnCvar[10];
@@ -568,7 +572,6 @@ public DB_Connect(bool:firstload) {
 		decl String:sError[256];
 		if (g_bMysql) {
 			g_hStatsDb = SQL_Connect("rankme", false, sError, sizeof(sError));
-			
 		} else {
 			g_hStatsDb = SQLite_UseDatabase("rankme", sError, sizeof(sError));
 		}
@@ -589,7 +592,6 @@ public DB_Connect(bool:firstload) {
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_played NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		SQL_UnlockDatabase(g_hStatsDb);
-		SQL_SetCharset(g_hStatsDb, "UTF8");
 		
 		for (new i = 1; i <= MaxClients; i++) {
 			if (IsClientInGame(i))
@@ -668,8 +670,8 @@ public OnConfigsExecuted() {
 	g_bGatherStatsWarmup = GetConVarBool(g_cvarGatherStatsWarmup);
 	
 	/* Min points */
-	//g_PointsMin = GetConVarInt(g_cvarPointsMin);
-	//g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMin);
+	g_PointsMin = GetConVarInt(g_cvarPointsMin);
+	g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMin);
 	
 	/*RankMe Connect Announcer*/
 	g_bAnnounceConnect = GetConVarBool(g_cvarAnnounceConnect);
@@ -1567,8 +1569,12 @@ public Action:Event_BombExploded(Handle:event, const String:name[], bool:dontBro
 {
 	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
 		return;
+		
 	new client = g_C4PlantedBy;
 	
+	if (!g_bRankBots && (!IsValidClient(client) || IsFakeClient(client)))
+		return;
+		
 	for (new i = 1; i <= MaxClients; i++) {
 		
 		if (IsClientInGame(i) && GetClientTeam(i) == TR) {
@@ -1648,7 +1654,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		g_aStats[victim][SCORE] -= g_PointsLoseSuicide;
 		g_aSession[victim][SCORE] -= g_PointsLoseSuicide;
 		
-		/*
+		/* Min points */
 		if (g_bPointsMinEnabled)
 		{
 			if (g_aStats[victim][SCORE] < g_PointsMin)
@@ -1656,7 +1662,6 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 				g_aStats[victim][SCORE] = g_PointsMin;
 			}
 		}
-		*/
 		
 		if (g_PointsLoseSuicide > 0 && g_bChatChange) {
 			
@@ -1669,6 +1674,16 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aSession[attacker][TK]++;
 			g_aStats[attacker][SCORE] -= g_PointsLoseTk;
 			g_aSession[attacker][SCORE] -= g_PointsLoseTk;
+			
+			/* Min points */
+			if (g_bPointsMinEnabled)
+			{
+				if (g_aStats[victim][SCORE] < g_PointsMin)
+				{
+					g_aStats[victim][SCORE] = g_PointsMin;
+				}
+			}
+		
 			if (g_PointsLoseTk > 0 && g_bChatChange) {
 				
 				CPrintToChat(victim, "%s %t", MSG, "LostTK", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
@@ -1720,7 +1735,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aStats[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
 			g_aSession[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
 			
-			/*
+			/* Min points */
 			if (g_bPointsMinEnabled)
 			{
 				if (g_aStats[victim][SCORE] < g_PointsMin)
@@ -1728,14 +1743,14 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 					g_aStats[victim][SCORE] = g_PointsMin;
 				}
 			}
-			*/
+			
 		} 
 		else 
 		{
 			g_aStats[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			g_aSession[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			
-			/*
+			/* Min points */
 			if (g_bPointsMinEnabled)
 			{
 				if (g_aStats[victim][SCORE] < g_PointsMin)
@@ -1743,7 +1758,6 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 					g_aStats[victim][SCORE] = g_PointsMin;
 				}
 			}
-			*/
 		}
 		if (attacker < MAXPLAYERS) {
 			g_aStats[attacker][SCORE] += score_dif;
@@ -2376,13 +2390,13 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 	}
 	
 	/* Min points */
-	//else if (convar == g_cvarPointsMin){
-	//	g_PointsMin = GetConVarInt(g_cvarPointsMin);
-	//}
+	else if (convar == g_cvarPointsMin){
+		g_PointsMin = GetConVarInt(g_cvarPointsMin);
+	}
 	
-	//else if (convar == g_cvarPointsMinEnabled){
-	//	g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMinEnabled);
-	//}
+	else if (convar == g_cvarPointsMinEnabled){
+		g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMinEnabled);
+	}
 	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		new String:query[10000];
@@ -2421,6 +2435,9 @@ public Action:RankMe_OnPlayerLoaded(client){
 	if(!g_bAnnounceConnect && !g_bAnnounceTopConnect)
 		return Plugin_Handled;
 	
+	if (!g_bRankBots && (!IsValidClient(client) || IsFakeClient(client)))
+		return Plugin_Handled;
+	
 	RankMe_GetRank(client,RankConnectCallback);
 	
 	return Plugin_Continue;
@@ -2429,6 +2446,9 @@ public Action:RankMe_OnPlayerLoaded(client){
 
 public RankConnectCallback(client, rank, any:data){
 	
+	if (!g_bRankBots && (!IsValidClient(client) || IsFakeClient(client)))
+		return;
+		
 	g_aPointsOnConnect[client] = RankMe_GetPoints(client);
 	
 	g_aRankOnConnect[client] = rank;
