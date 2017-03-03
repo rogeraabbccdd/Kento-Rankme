@@ -23,7 +23,7 @@ stock Array_FindHighestValue(any:array[], size, start=0){
 }
 
 public Action:CMD_ResetRank(client,args){
-	if(!g_bEnabled) 
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	new String:arg1[64];
 	GetCmdArg(1,arg1,sizeof(arg1));
@@ -74,7 +74,7 @@ public Action:CMD_ResetRank(client,args){
 }
 
 public Action:CMD_ResetRankAll(client,args){
-	if(!g_bEnabled) 
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 		
 	new String:query[2000];
@@ -92,7 +92,7 @@ public Action:CMD_ResetRankAll(client,args){
 }
 
 public Action:CMD_Purge(client,args){
-	if(!g_bEnabled) 
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	new String:arg1[64];
 	

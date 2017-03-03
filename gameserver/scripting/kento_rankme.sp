@@ -105,9 +105,14 @@
 //Try to fix bugs.
 //
 //
-////3.0.3.Kento.22
+//3.0.3.Kento.22
 //Fix kdr in !rank will only change after changing map bug.
 //Fix some translation phrases.
+//
+//
+//3.0.3.Kento.23
+//Fix cmd "Invalid client index 0" bug.
+//
 //
 //To do (if I'm not lazy)
 //Add new commnad "topkdr"
@@ -119,7 +124,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.22"
+#define PLUGIN_VERSION "3.0.3.Kento.23"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
