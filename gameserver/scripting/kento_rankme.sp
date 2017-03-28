@@ -295,6 +295,10 @@ new String:g_aClientSteam[MAXPLAYERS + 1][64];
 new String:g_aClientName[MAXPLAYERS + 1][MAX_NAME_LENGTH];
 new String:g_aClientIp[MAXPLAYERS + 1][64];
 
+/* Rank cache */
+new Handle:g_cvarRankCache;
+new Handle:g_arrayRankCache[3];
+
 #include <kento_rankme/cmds>
 
 /*RankMe Connect Announcer*/
@@ -408,6 +412,12 @@ public OnPluginStart() {
 	/* Min points */
 	g_cvarPointsMinEnabled = CreateConVar("rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false", _, true, 0.0, true, 1.0);
 	g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
+	
+	/* Rank cache */
+	g_cvarRankCache = CreateConVar("rankme_rank_cache", "1", "Get player rank via cache, auto build cache on every OnMapStart.", _, true, 0.0, true, 1.0);
+	g_arrayRankCache[0] = CreateArray(ByteCountToCells(128));
+	g_arrayRankCache[1] = CreateArray(ByteCountToCells(128));
+	g_arrayRankCache[2] = CreateArray(ByteCountToCells(128));
 	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
@@ -714,6 +724,54 @@ public OnConfigsExecuted() {
 	
 	SQL_TQuery(g_hStatsDb, SQL_GetPlayersCallback, sQuery);
 	
+	BuildRankCache();
+}
+void BuildRankCache()
+{
+	if(!GetConVarBool(g_cvarRankCache))
+		return;
+	
+	ClearArray(g_arrayRankCache[0]);
+	ClearArray(g_arrayRankCache[1]);
+	ClearArray(g_arrayRankCache[2]);
+	
+	PushArrayString(g_arrayRankCache[0], "Rank By SteamId: This is First Line in Array");
+	PushArrayString(g_arrayRankCache[1], "Rank By Name: This is First Line in Array");
+	PushArrayString(g_arrayRankCache[2], "Rank By IP: This is First Line in Array");
+	
+	new String:query[1000];
+	MakeSelectQuery(query, sizeof(query));
+
+	if (g_RankMode == 1)
+		Format(query, sizeof(query), "%s ORDER BY score DESC", query);
+	else if(g_RankMode == 2)
+		Format(query, sizeof(query), "%s ORDER BY CAST(CAST(kills as float)/CAST (deaths as float) as float) DESC", query);
+	
+	SQL_TQuery(g_hStatsDb, SQL_BuildRankCache, query);
+}
+public SQL_BuildRankCache(Handle:owner, Handle:hndl, const String:error[], any:unuse)
+{
+	if (hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] : build rank cache failed", error);
+		return;
+	}
+	
+	if(SQL_GetRowCount(hndl))
+	{
+		new String:steamid[32], String:name[128], String:ip[32];
+		while(SQL_FetchRow(hndl))
+		{
+			SQL_FetchString(hndl, 1, steamid, 32);
+			SQL_FetchString(hndl, 2, name, 128);
+			SQL_FetchString(hndl, 3, ip, 32);
+			PushArrayString(g_arrayRankCache[0], steamid);
+			PushArrayString(g_arrayRankCache[1], name);
+			PushArrayString(g_arrayRankCache[2], ip);
+		}
+	}
+	else
+		LogMessage("[RankMe] :  No mork rank");
 }
 public Action:CMD_Duplicate(client, args) {
 	new String:sQuery[400];
@@ -825,6 +883,12 @@ public Native_GetRank(Handle:plugin, numParams)
 	WritePackCell(pack, data);
 	WritePackCell(pack, _:plugin);
 	
+	if(GetConVarBool(g_cvarRankCache))
+	{
+		GetClientRank(pack);
+		return;
+	}
+
 	new String:query[10000];
 	MakeSelectQuery(query, sizeof(query));
 	
@@ -834,6 +898,44 @@ public Native_GetRank(Handle:plugin, numParams)
 		Format(query, sizeof(query), "%s ORDER BY CAST(CAST(kills as float)/CAST (deaths as float) as float) DESC", query);
 	
 	SQL_TQuery(g_hStatsDb, SQL_GetRankCallback, query, pack);
+}
+
+void GetClientRank(Handle:pack)
+{
+	ResetPack(pack);
+	new client = ReadPackCell(pack);
+	new Function:callback = Function:ReadPackFunction(pack);
+	new any:args = ReadPackCell(pack);
+	new Handle:plugin = Handle:ReadPackCell(pack);
+	CloseHandle(pack);
+	
+	new rank;
+	switch(g_RankBy)
+	{
+		case 0:
+		{
+			new String:steamid[32];
+			GetClientAuthId(client, AuthId_Steam2, steamid, 32, true);
+			rank = FindStringInArray(g_arrayRankCache[0], steamid);
+		}
+		case 1:
+		{
+			new String:name[128];
+			GetClientName(client, name, 128);
+			rank = FindStringInArray(g_arrayRankCache[1], name);
+		}
+		case 2:
+		{
+			new String:ip[128];
+			GetClientIP(client, ip, 128);
+			rank = FindStringInArray(g_arrayRankCache[2], ip);
+		}
+	}
+
+	if(rank > 0)
+		CallRankCallback(client, rank, Function:callback, args, plugin);
+	else
+		CallRankCallback(client, 0, Function:callback, args, plugin);
 }
 
 public SQL_GetRankCallback(Handle:owner, Handle:hndl, const String:error[], any:data)
@@ -2363,6 +2465,7 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 	}
 	else if (convar == g_cvarRankMode) {
 		g_RankMode = GetConVarInt(g_cvarRankMode);
+		BuildRankCache();
 	}
 	else if (convar == g_cvarChatTriggers) {
 		g_bChatTriggers = GetConVarBool(g_cvarChatTriggers);
@@ -2460,7 +2563,6 @@ stock MakeSelectQuery(String:sQuery[], strsize) {
 	// Append check for inactivity
 	if (g_DaysToNotShowOnRank > 0)
 		Format(sQuery, strsize, "%s AND lastconnect >= '%d'", sQuery, GetTime() - (g_DaysToNotShowOnRank * 86400));
-	
 } 
 
 /*RankMe Connect Announcer*/
