@@ -15,6 +15,7 @@ https://forums.alliedmods.net/showthread.php?p=2467665
 * [TR1D](https://github.com/TR1D) - Thanks for his Russian translation
 * [shanapu](https://github.com/shanapu) - Thanks for his German translation
 * [2389736818](https://github.com/2389736818) - Thanks for his Simplified Chinese translation
+* [Kxnrl](https://github.com/Kxnrl) - Thanks for his rankme cache
 
 ##Donate
 If you apreciate my work, you can donate me via [steam trade offer](https://steamcommunity.com/tradeoffer/new/?partner=52559891&token=ADe-707J)
