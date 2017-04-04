@@ -118,25 +118,38 @@
 //Fix sqlite query failed.
 //
 //
+//3.0.3.Kento.25
+//Add 3 array to store rank cache.
+//Auto rebuild cache on map start.
+//On get client rank use cache instead of query sql.
+//Thanks Kxnrl.
+//
+//
+//WIP
+//Use TOGs SourcePawn Syntax Converter convert to new syntax.
+//https://forums.alliedmods.net/showthread.php?p=2472379
+//Include "https://github.com/Kxnrl/RankMe-Tag" and edit some code, but I don't know why it isn't work.
+//
 //To do (if I'm not lazy)
 //Add new commnad "topkdr"
 //Add new commnad "topkpr"
 //Add new commnad "topdpr"
 //Remove vip stats? Will CSGO official add vip gamemode in the future?
-//Rewirte with New syntax
 //Watch porn <--THIS IS REALLY IMPORTANT, MY FRIEND
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.24"
+#define PLUGIN_VERSION "3.0.3.Kento.25"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
 #include <kento_rankme/rankme>
 #include <geoip>
 #include <sdktools>
+#include <cstrike>
 
-//Maybe? I'm too lazy
+//TOGs SourcePawn Syntax Converter
+//https://forums.alliedmods.net/showthread.php?p=2472379
 //#pragma newdecls required
 
 #define MSG "\x04 [RankMe] \x01\x0B\x01"
@@ -298,6 +311,7 @@ new String:g_aClientIp[MAXPLAYERS + 1][64];
 /* Rank cache */
 new Handle:g_cvarRankCache;
 new Handle:g_arrayRankCache[3];
+new bool:g_bRankCache;
 
 #include <kento_rankme/cmds>
 
@@ -340,9 +354,15 @@ new g_PointsMin;
 new Handle:g_cvarPointsMinEnabled;
 new bool:g_bPointsMinEnabled;
 
+/* Rankme Clan Tag (WIP)
+new bool:g_bClanTag;
+new Handle:g_cvarClanTag;
+new String:g_szClantag[MAXPLAYERS+1][32];
+*/
+
 public Plugin:myinfo =  {
 	name = "RankMe", 
-	author = "lok1, Scooby, pracc, Kento", 
+	author = "lok1, Scooby, pracc, Kento, Kxnrl", 
 	description = "Improved RankMe for CSGO", 
 	version = PLUGIN_VERSION, 
 	url = "https://github.com/rogeraabbccdd/Kento-Rankme"
@@ -419,6 +439,9 @@ public OnPluginStart() {
 	g_arrayRankCache[1] = CreateArray(ByteCountToCells(128));
 	g_arrayRankCache[2] = CreateArray(ByteCountToCells(128));
 	
+	/* Rankme Clan Tag (WIP) */
+	//g_cvarClanTag = CreateConVar("rankme_clan_tag", "0", "Enable Rankme Clan Tag?", _, true, 0.0, true, 1.0);
+	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
 	HookConVarChange(g_cvarChatChange, OnConVarChanged);
@@ -484,7 +507,7 @@ public OnPluginStart() {
 	
 	// EVENTS
 	HookEventEx("player_death", EventPlayerDeath);
-	//HookEventEx("player_spawn", EventPlayerSpawn);
+	HookEvent("player_spawn", EventPlayerSpawn);
 	HookEventEx("player_hurt", EventPlayerHurt);
 	HookEventEx("weapon_fire", EventWeaponFire);
 	HookEventEx("bomb_planted", Event_BombPlanted);
@@ -500,6 +523,7 @@ public OnPluginStart() {
 	HookEventEx("round_mvp", Event_RoundMVP);
 	HookEventEx("player_changename", OnClientChangeName, EventHookMode_Pre);
 	HookEventEx("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre); 
+	//HookEvent("player_team", Event_PlayerTeam);	
 	
 	// ADMNIN COMMANDS
 	RegAdminCmd("sm_resetrank", CMD_ResetRank, ADMFLAG_ROOT, "RankMe: Resets the rank of a player");
@@ -576,6 +600,9 @@ public OnPluginStart() {
 	// Create the forwards
 	g_fwdOnPlayerLoaded = CreateGlobalForward("RankMe_OnPlayerLoaded", ET_Hook, Param_Cell);
 	g_fwdOnPlayerSaved = CreateGlobalForward("RankMe_OnPlayerSaved", ET_Hook, Param_Cell);
+	
+	/* Rankme Clan Tag (WIP) */
+	//CreateTimer(1.0, ClanTagTimer, INVALID_HANDLE, TIMER_FLAG_NO_MAPCHANGE | TIMER_REPEAT);
 }
 
 public OnConVarChanged_SQLTable(Handle:convar, const String:oldValue[], const String:newValue[]) {
@@ -728,7 +755,7 @@ public OnConfigsExecuted() {
 }
 void BuildRankCache()
 {
-	if(!GetConVarBool(g_cvarRankCache))
+	if(!g_bRankCache)
 		return;
 	
 	ClearArray(g_arrayRankCache[0]);
@@ -883,7 +910,7 @@ public Native_GetRank(Handle:plugin, numParams)
 	WritePackCell(pack, data);
 	WritePackCell(pack, _:plugin);
 	
-	if(GetConVarBool(g_cvarRankCache))
+	if(g_bRankCache)
 	{
 		GetClientRank(pack);
 		return;
@@ -1582,9 +1609,18 @@ public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadca
 	DumpDB();
 }
 
-/*
+
 public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 {
+	/* Rankme Clan Tag (WIP)
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	if(g_bClanTag)
+	{
+		if(CanOverride(client)) OverwriteClanTag(client);
+	}
+	*/
+	
+	/* Old rounds played, this have been moved to round start.
 	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
 		return;
 	
@@ -1598,8 +1634,9 @@ public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 		g_aStats[client][ROUNDS_CT]++;
 		g_aSession[client][ROUNDS_CT]++;
 	}
+	*/
 }
-*/
+
 
 public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
 {
@@ -2535,6 +2572,17 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 		g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMinEnabled);
 	}
 	
+	/* Rank Cache */
+	else if (convar == g_cvarRankCache) {
+		g_bRankCache = GetConVarBool(g_cvarRankCache);
+	}
+	
+	/* Rankme Clan Tag (WIP)
+	else if (convar == g_cvarClanTag) {
+		g_bClanTag = GetConVarBool(g_cvarClanTag);
+	}
+	*/
+	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		new String:query[10000];
 		MakeSelectQuery(query, sizeof(query));
@@ -2565,9 +2613,9 @@ stock MakeSelectQuery(String:sQuery[], strsize) {
 		Format(sQuery, strsize, "%s AND lastconnect >= '%d'", sQuery, GetTime() - (g_DaysToNotShowOnRank * 86400));
 } 
 
-/*RankMe Connect Announcer*/
 public Action:RankMe_OnPlayerLoaded(client){
 
+	/*RankMe Connect Announcer*/
 	if(!g_bAnnounceConnect && !g_bAnnounceTopConnect)
 		return Plugin_Handled;
 	
@@ -2576,8 +2624,11 @@ public Action:RankMe_OnPlayerLoaded(client){
 	
 	RankMe_GetRank(client,RankConnectCallback);
 	
-	return Plugin_Continue;
+	/* Rankme Clan Tag (WIP)
+	RankMe_GetRank(client,GetClientRankCallback);
+	*/
 	
+	return Plugin_Continue;
 }
 
 public RankConnectCallback(client, rank, any:data){
@@ -2672,7 +2723,7 @@ public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 }
 
 /* Enable Or Disable Points In Warmup */
-public void OnGameFrame()
+public OnGameFrame()
 {
 	//If cvar disable
 	if(!g_bGatherStatsWarmup)
@@ -2690,3 +2741,60 @@ public void OnGameFrame()
 		}
 	}	
 }
+
+/* Rankme Clan Tag (WIP)
+public Action ClanTagTimer(Handle timer, any client)
+{
+	for (new i = 1; i <= MaxClients; i++) 
+	{
+		if(g_bClanTag)
+		{
+			if(CanOverride(client)) OverwriteClanTag(client);
+		}
+	}
+}
+public Action Event_PlayerTeam(Handle event, const char[] name, bool dontBroadcast)
+{
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	
+	if(g_bClanTag)
+	{
+		if(CanOverride(client)) OverwriteClanTag(client);
+	}
+}
+
+public void OnClientSettingsChanged(int client)
+{
+    if(g_bClanTag)
+	{
+		if(CanOverride(client)) OverwriteClanTag(client);
+	}
+}
+
+public int GetClientRankCallback(int client, int rank, any data)
+{
+	if(rank == 0)
+		strcopy(g_szClantag[client], 32, "NoRank");
+	else
+		Format(g_szClantag[client], 32, "TOP-%d", rank);
+}
+
+void OverwriteClanTag(int client)
+{
+	CS_SetClientClanTag(client, g_szClantag[client]);
+}
+
+bool CanOverride(int client)
+{
+	if(!(1 <= client <= MaxClients))
+		return false;
+	
+	if(!IsClientInGame(client))
+		return false;
+	
+	if(GetClientTeam(client) <= 1)
+		return false;
+
+	return true;
+}
+*/
