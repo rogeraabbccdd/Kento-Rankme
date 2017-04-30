@@ -434,7 +434,7 @@ public OnPluginStart() {
 	g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
 	
 	/* Rank cache */
-	g_cvarRankCache = CreateConVar("rankme_rank_cache", "1", "Get player rank via cache, auto build cache on every OnMapStart.", _, true, 0.0, true, 1.0);
+	g_cvarRankCache = CreateConVar("rankme_rank_cache", "0", "Get player rank via cache, auto build cache on every OnMapStart.", _, true, 0.0, true, 1.0);
 	g_arrayRankCache[0] = CreateArray(ByteCountToCells(128));
 	g_arrayRankCache[1] = CreateArray(ByteCountToCells(128));
 	g_arrayRankCache[2] = CreateArray(ByteCountToCells(128));
@@ -1039,8 +1039,8 @@ public Native_GetStats(Handle:plugin, numParams)
 	array[i] = g_aStats[iClient][i];
 	
 	SetNativeArray(2, array, 20);
-	
 }
+
 public Native_GetSession(Handle:plugin, numParams)
 {
 	new iClient = GetNativeCell(1);
@@ -1049,7 +1049,6 @@ public Native_GetSession(Handle:plugin, numParams)
 	array[i] = g_aSession[iClient][i];
 	
 	SetNativeArray(2, array, 20);
-	
 }
 
 public Native_GetWeaponStats(Handle:plugin, numParams)
@@ -1060,7 +1059,6 @@ public Native_GetWeaponStats(Handle:plugin, numParams)
 	array[i] = g_aWeapons[iClient][i];
 	
 	SetNativeArray(2, array, 40);
-	
 }
 
 public Native_GetHitbox(Handle:plugin, numParams)
@@ -1072,7 +1070,6 @@ public Native_GetHitbox(Handle:plugin, numParams)
 	
 	SetNativeArray(2, array, 8);
 }
-
 
 public DumpDB() {
 	if (!g_bDumpDB || g_bMysql)
