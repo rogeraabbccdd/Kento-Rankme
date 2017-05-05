@@ -323,7 +323,7 @@
 
 	"RoundStats"
 	{
-		"es"		"Estadisticas de Rounds"
+		"es"		"Estadisticas de Rondas"
 	}
 
 	"TRWins"
