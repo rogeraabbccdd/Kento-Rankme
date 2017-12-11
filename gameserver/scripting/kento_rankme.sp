@@ -806,24 +806,24 @@ public Action:CMD_Duplicate(client, args) {
 	if (g_bMysql) {
 		
 		if (g_RankBy == 0)
-			Format(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
 		
 		else if (g_RankBy == 1)
-			Format(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateNameMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateNameMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
 		
 		else if (g_RankBy == 2)
-			Format(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateIpMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateIpMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
 		
 	} else {
 		
 		if (g_RankBy == 0)
-			Format(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
 		
 		else if (g_RankBy == 1)
-			Format(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateNameSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateNameSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
 		
 		else if (g_RankBy == 2)
-			Format(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateIpSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateIpSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
 		
 	}
 	
@@ -1075,7 +1075,7 @@ public DumpDB() {
 	if (!g_bDumpDB || g_bMysql)
 		return;
 	new String:sQuery[1000];
-	Format(sQuery, sizeof(sQuery), "SELECT * from `%s`", g_sSQLTable);
+	FormatEx(sQuery, sizeof(sQuery), "SELECT * from `%s`", g_sSQLTable);
 	SQL_TQuery(g_hStatsDb, SQL_DumpCallback, sQuery);
 }
 
@@ -2075,31 +2075,31 @@ public SalvarPlayer(client) {
 	
 	if (g_RankBy == 0) 
 	{
-		Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
+		FormatEx(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientSteam[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
+		FormatEx(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
 			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
 	} 
 	
 	else if (g_RankBy == 1) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
+		FormatEx(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], sEscapeName);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
+		FormatEx(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
 			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
 	} 
 	
 	else if (g_RankBy == 2) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
+		FormatEx(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientIp[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
+		FormatEx(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
 			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
 	}
 	
@@ -2160,25 +2160,25 @@ public LoadPlayer(client) {
 	}
 	g_aSession[client][CONNECTED] = GetTime();
 	
-	new String:name[MAX_NAME_LENGTH];
+	decl String:name[MAX_NAME_LENGTH];
 	GetClientName(client, name, sizeof(name));
 	strcopy(g_aClientName[client], MAX_NAME_LENGTH, name);
-	new String:sEscapeName[MAX_NAME_LENGTH * 2 + 1];
+	decl String:sEscapeName[MAX_NAME_LENGTH * 2 + 1];
 	SQL_EscapeString(g_hStatsDb, name, sEscapeName, sizeof(sEscapeName));
 	//ReplaceString(name, sizeof(name), "'", "");
-	new String:auth[64];
+	decl String:auth[32];
 	GetClientAuthId(client, AuthId_Steam2, auth, sizeof(auth));
-	strcopy(g_aClientSteam[client], 64, auth);
-	new String:ip[64];
+	strcopy(g_aClientSteam[client], sizeof(g_aClientSteam[]), auth);
+	decl String:ip[32];
 	GetClientIP(client, ip, sizeof(ip));
-	strcopy(g_aClientIp[client], 64, ip);
+	strcopy(g_aClientIp[client], sizeof(g_aClientIp[]), ip);
 	new String:query[10000];
 	if (g_RankBy == 1)
-		Format(query, sizeof(query), g_sSqlRetrieveClientName, g_sSQLTable, sEscapeName);
+		FormatEx(query, sizeof(query), g_sSqlRetrieveClientName, g_sSQLTable, sEscapeName);
 	else if (g_RankBy == 0)
-		Format(query, sizeof(query), g_sSqlRetrieveClient, g_sSQLTable, auth);
+		FormatEx(query, sizeof(query), g_sSqlRetrieveClient, g_sSQLTable, auth);
 	else if (g_RankBy == 2)
-		Format(query, sizeof(query), g_sSqlRetrieveClientIp, g_sSQLTable, ip);
+		FormatEx(query, sizeof(query), g_sSqlRetrieveClientIp, g_sSQLTable, ip);
 	
 	if (DEBUGGING) {
 		PrintToServer(query);
@@ -2203,17 +2203,17 @@ public SQL_LoadPlayerCallback(Handle:owner, Handle:hndl, const String:error[], a
 		return;
 	
 	if (g_RankBy == 1) {
-		new String:name[MAX_NAME_LENGTH];
+		decl String:name[MAX_NAME_LENGTH];
 		GetClientName(client, name, sizeof(name));
 		if (!StrEqual(name, g_aClientName[client]))
 			return;
 	} else if (g_RankBy == 0) {
-		new String:auth[64];
+		decl String:auth[64];
 		GetClientAuthId(client, AuthId_Steam2, auth, sizeof(auth));
 		if (!StrEqual(auth, g_aClientSteam[client]))
 			return;
 	} else if (g_RankBy == 2) {
-		new String:ip[64];
+		decl String:ip[64];
 		GetClientIP(client, ip, sizeof(ip));
 		if (!StrEqual(ip, g_aClientIp[client]))
 			return;
@@ -2247,9 +2247,9 @@ public SQL_LoadPlayerCallback(Handle:owner, Handle:hndl, const String:error[], a
 		g_aStats[client][MVP] = SQL_FetchInt(hndl, 73);
 		g_aStats[client][DAMAGE] = SQL_FetchInt(hndl, 74);
 	} else {
-		new String:query[10000];
+		decl String:query[10000];
 		
-		new String:sEscapeName[MAX_NAME_LENGTH * 2 + 1];
+		decl String:sEscapeName[MAX_NAME_LENGTH * 2 + 1];
 		SQL_EscapeString(g_hStatsDb, g_aClientName[client], sEscapeName, sizeof(sEscapeName));
 		//SQL_EscapeString(g_hStatsDb,name,name,sizeof(name));
 		//ReplaceString(name, sizeof(name), "'", "");
@@ -2323,9 +2323,12 @@ public SQL_DumpCallback(Handle:owner, Handle:hndl, const String:error[], any:Dat
 		return;
 	}
 	
-	new Handle:File1;
-	new String:fields_values[600];
-	new String:field[100];
+	decl Handle:File1;
+	decl String:fields_values[600];
+	decl String:field[100];
+	decl String:prepared_field[200];
+	
+	fields_values[0] = 0;
 	
 	File1 = OpenFile("rank.sql", "w");
 	if (File1 == INVALID_HANDLE) {
@@ -2355,15 +2358,16 @@ public SQL_DumpCallback(Handle:owner, Handle:hndl, const String:error[], any:Dat
 		first = true;
 		for (new i = 0; i <= fields - 1; i++) {
 			SQL_FetchString(hndl, i, field, sizeof(field));
-			ReplaceString(field, sizeof(field), "\\","\\\\",false);
-			ReplaceString(field,sizeof(field),"\"", "\\\"", false);
+			// ReplaceString(field, sizeof(field), "\\","\\\\",false);
+			// ReplaceString(field,sizeof(field),"\"", "\\\"", false);
+			SQL_EscapeString(g_hStatsDb, field, prepared_field, sizeof(prepared_field));
 			
 			if (first) {
-				Format(fields_values, sizeof(fields_values), "\"%s\"", field);
+				Format(fields_values, sizeof(fields_values), "\"%s\"", prepared_field);
 				first = false;
 			}
 			else
-				Format(fields_values, sizeof(fields_values), "%s,\"%s\"", fields_values, field);
+				Format(fields_values, sizeof(fields_values), "%s,\"%s\"", fields_values, prepared_field);
 		}
 		
 		WriteFileLine(File1, "INSERT INTO `%s` VALUES (%s);", g_sSQLTable, fields_values);
@@ -2644,10 +2648,11 @@ public RankConnectCallback(client, rank, any:data){
 	decl String:s_Country[32];
 	decl String:s_address[32];		
 	GetClientIP(client, s_address, 32);
-	Format(s_Country, 100, "Unknown");
-	GeoipCountry(s_address, s_Country, 100);     
-	if(!strcmp(s_Country, NULL_STRING))
-		Format( s_Country, 100, "Unknown", s_Country );
+	Format(s_Country, sizeof(g_Country), "Unknown");
+	GeoipCountry(s_address, s_Country, sizeof(s_Country));     
+	// if(!strcmp(s_Country, NULL_STRING))
+	if (s_Country[0] == 0)
+		Format( s_Country, sizeof(s_Country), "Unknown", s_Country );
 	else				
 		if( StrContains( s_Country, "United", false ) != -1 || 
 			StrContains( s_Country, "Republic", false ) != -1 || 
@@ -2660,7 +2665,7 @@ public RankConnectCallback(client, rank, any:data){
 			StrContains( s_Country, "Philippines", false ) != -1 || 
 			StrContains( s_Country, "Vatican", false ) != -1 )
 		{
-			Format( s_Country, 100, "The %s", s_Country );
+			Format( s_Country, sizeof(s_Country), "The %s", s_Country );
 		}			
 	
 	if(g_bAnnounceConnect){
