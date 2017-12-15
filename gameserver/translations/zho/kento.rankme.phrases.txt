@@ -228,6 +228,16 @@
 		"zho"		"{RED}請使用: {PINK}sm_statsme2 <名字 / #排名 / steam>"
 	}
 	
+	"Hide Rankme Chat"
+	{
+		"en"		"{RED}隱藏對話框訊息."
+	}
+	
+	"Show Rankme Chat"
+	{
+		"en"		"{LIGHTGREEN}顯示對話框訊息."
+	}
+	
 	//****************** PrintHintText ******************
 	
 	"PlayerJoinedHint"

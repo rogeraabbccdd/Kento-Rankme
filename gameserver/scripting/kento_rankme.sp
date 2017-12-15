@@ -125,6 +125,11 @@
 //Thanks Kxnrl.
 //
 //
+//3.0.3.Kento.26
+//https://github.com/rogeraabbccdd/Kento-Rankme/pull/49
+//New console command "sm_rankmechat" to disable chat messages.
+//
+//
 //WIP
 //Use TOGs SourcePawn Syntax Converter convert to new syntax.
 //https://forums.alliedmods.net/showthread.php?p=2472379
@@ -139,7 +144,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.25"
+#define PLUGIN_VERSION "3.0.3.Kento.26"
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -147,6 +152,7 @@
 #include <geoip>
 #include <sdktools>
 #include <cstrike>
+#include <clientprefs>
 
 //TOGs SourcePawn Syntax Converter
 //https://forums.alliedmods.net/showthread.php?p=2472379
@@ -354,11 +360,9 @@ new g_PointsMin;
 new Handle:g_cvarPointsMinEnabled;
 new bool:g_bPointsMinEnabled;
 
-/* Rankme Clan Tag (WIP)
-new bool:g_bClanTag;
-new Handle:g_cvarClanTag;
-new String:g_szClantag[MAXPLAYERS+1][32];
-*/
+/* Hide Chat */
+new Handle:hidechatcookie;
+new bool:hidechat[MAXPLAYERS+1];
 
 public Plugin:myinfo =  {
 	name = "RankMe", 
@@ -438,9 +442,6 @@ public OnPluginStart() {
 	g_arrayRankCache[0] = CreateArray(ByteCountToCells(128));
 	g_arrayRankCache[1] = CreateArray(ByteCountToCells(128));
 	g_arrayRankCache[2] = CreateArray(ByteCountToCells(128));
-	
-	/* Rankme Clan Tag (WIP) */
-	//g_cvarClanTag = CreateConVar("rankme_clan_tag", "0", "Enable Rankme Clan Tag?", _, true, 0.0, true, 1.0);
 	
 	// CVAR HOOK
 	HookConVarChange(g_cvarEnabled, OnConVarChanged);
@@ -601,8 +602,9 @@ public OnPluginStart() {
 	g_fwdOnPlayerLoaded = CreateGlobalForward("RankMe_OnPlayerLoaded", ET_Hook, Param_Cell);
 	g_fwdOnPlayerSaved = CreateGlobalForward("RankMe_OnPlayerSaved", ET_Hook, Param_Cell);
 	
-	/* Rankme Clan Tag (WIP) */
-	//CreateTimer(1.0, ClanTagTimer, INVALID_HANDLE, TIMER_FLAG_NO_MAPCHANGE | TIMER_REPEAT);
+	/* Hide chat */
+	RegConsoleCmd("sm_rankmechat", CMD_HideChat, "Disable rankme chat messages");
+	hidechatcookie = RegClientCookie("rankme_hidechat", "Hide rankme chat messages", CookieAccess_Private);
 }
 
 public OnConVarChanged_SQLTable(Handle:convar, const String:oldValue[], const String:newValue[]) {
@@ -890,10 +892,10 @@ public Native_GivePoint(Handle:plugin, numParams)
 		for (new i = 1; i <= MaxClients; i++)
 		if (IsClientInGame(i))
 			//CPrintToChatEx(i,i,"%s %t",MSG,"GotPointsBy",Name,g_aStats[iClient][SCORE],iPoints,Reason);
-		CPrintToChat(i, "%s %t", MSG, "GotPointsBy", Name, g_aStats[iClient][SCORE], iPoints, Reason);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "GotPointsBy", Name, g_aStats[iClient][SCORE], iPoints, Reason);
 	} else if (iPrintToPlayer == 1) {
 		//CPrintToChatEx(iClient,iClient,"%s %t",MSG,"GotPointsBy",Name,g_aStats[iClient][SCORE],iPoints,Reason);
-		CPrintToChat(iClient, "%s %t", MSG, "GotPointsBy", Name, g_aStats[iClient][SCORE], iPoints, Reason);
+		if(!hidechat[iClient]) CPrintToChat(iClient, "%s %t", MSG, "GotPointsBy", Name, g_aStats[iClient][SCORE], iPoints, Reason);
 	}
 }
 
@@ -1458,11 +1460,11 @@ public Action:Event_VipEscaped(Handle:event, const String:name[], bool:dontBroad
 		return;
 	for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "CT_VIPEscaped", g_PointsVipEscapedTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "CT_VIPEscaped", g_PointsVipEscapedTeam);
 	if (client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "VIPEscaped", g_aClientName[client], g_aStats[client][SCORE], g_PointsVipEscapedTeam + g_PointsVipEscapedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "VIPEscaped", g_aClientName[client], g_aStats[client][SCORE], g_PointsVipEscapedTeam + g_PointsVipEscapedPlayer);
 }
 
 public Action:Event_VipKilled(Handle:event, const String:name[], bool:dontBroadcast) {
@@ -1491,11 +1493,11 @@ public Action:Event_VipKilled(Handle:event, const String:name[], bool:dontBroadc
 		return;
 	for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "TR_VIPKilled", g_PointsVipKilledTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "TR_VIPKilled", g_PointsVipKilledTeam);
 	if (client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "VIPKilled", g_aClientName[client], g_aStats[client][SCORE], g_PointsVipKilledTeam + g_PointsVipKilledPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "VIPKilled", g_aClientName[client], g_aStats[client][SCORE], g_PointsVipKilledTeam + g_PointsVipKilledPlayer);
 }
 
 public Action:Event_HostageRescued(Handle:event, const String:name[], bool:dontBroadcast) {
@@ -1523,12 +1525,12 @@ public Action:Event_HostageRescued(Handle:event, const String:name[], bool:dontB
 	if (g_PointsHostageRescTeam > 0)
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "CT_Hostage", g_PointsHostageRescTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "CT_Hostage", g_PointsHostageRescTeam);
 	
 	if (g_PointsHostageRescPlayer > 0 && client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "Hostage", g_aClientName[client], g_aStats[client][SCORE], g_PointsHostageRescPlayer + g_PointsHostageRescTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "Hostage", g_aClientName[client], g_aStats[client][SCORE], g_PointsHostageRescPlayer + g_PointsHostageRescTeam);
 	
 }
 
@@ -1549,7 +1551,7 @@ public Action:Event_RoundMVP(Handle:event, const String:name[], bool:dontBroadca
 			g_aSession[client][SCORE] += g_PointsMvpTr;
 			for (new i = 1; i <= MaxClients; i++)
 			if (IsClientInGame(i))
-				CPrintToChat(i, "%s %t", MSG, "MVP", g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpTr);
+				if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "MVP", g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpTr);
 			
 		} else {
 			
@@ -1557,7 +1559,7 @@ public Action:Event_RoundMVP(Handle:event, const String:name[], bool:dontBroadca
 			g_aSession[client][SCORE] += g_PointsMvpCt;
 			for (new i = 1; i <= MaxClients; i++)
 			if (IsClientInGame(i))
-				CPrintToChat(i, "%s %t", MSG, "MVP", g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpCt);	
+				if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "MVP", g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpCt);	
 		}
 	}
 	g_aStats[client][MVP]++;
@@ -1581,7 +1583,7 @@ public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadca
 					if (!announced && g_bChatChange) {
 						for (new j = 1; j <= MaxClients; j++)
 						if (IsClientInGame(j))
-							CPrintToChat(j, "%s %t", MSG, "TR_Round", g_PointsRoundWin[TR]);
+							if(!hidechat[j]) CPrintToChat(j, "%s %t", MSG, "TR_Round", g_PointsRoundWin[TR]);
 						announced = true;
 					}
 				}
@@ -1594,7 +1596,7 @@ public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadca
 					if (!announced && g_bChatChange) {
 						for (new j = 1; j <= MaxClients; j++)
 						if (IsClientInGame(j))
-							CPrintToChat(j, "%s %t", MSG, "CT_Round", g_PointsRoundWin[CT]);
+							if(!hidechat[j]) CPrintToChat(j, "%s %t", MSG, "CT_Round", g_PointsRoundWin[CT]);
 						announced = true;
 					}
 				}
@@ -1609,14 +1611,6 @@ public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadca
 
 public EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	/* Rankme Clan Tag (WIP)
-	int client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if(g_bClanTag)
-	{
-		if(CanOverride(client)) OverwriteClanTag(client);
-	}
-	*/
-	
 	/* Old rounds played, this have been moved to round start.
 	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
 		return;
@@ -1685,11 +1679,11 @@ public Action:Event_BombPlanted(Handle:event, const String:name[], bool:dontBroa
 	if (g_PointsBombPlantedTeam > 0)
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "TR_Planting", g_PointsBombPlantedTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "TR_Planting", g_PointsBombPlantedTeam);
 	if (g_PointsBombPlantedPlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "Planting", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPlantedTeam + g_PointsBombPlantedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "Planting", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPlantedTeam + g_PointsBombPlantedPlayer);
 	
 }
 
@@ -1718,11 +1712,11 @@ public Action:Event_BombDefused(Handle:event, const String:name[], bool:dontBroa
 	if (g_PointsBombDefusedTeam > 0)
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "CT_Defusing", g_PointsBombDefusedTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "CT_Defusing", g_PointsBombDefusedTeam);
 	if (g_PointsBombDefusedPlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "Defusing", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDefusedTeam + g_PointsBombDefusedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "Defusing", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDefusedTeam + g_PointsBombDefusedPlayer);
 }
 
 public Action:Event_BombExploded(Handle:event, const String:name[], bool:dontBroadcast)
@@ -1754,11 +1748,11 @@ public Action:Event_BombExploded(Handle:event, const String:name[], bool:dontBro
 	if (g_PointsBombExplodeTeam > 0)
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "TR_Exploding", g_PointsBombExplodeTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "TR_Exploding", g_PointsBombExplodeTeam);
 	if (g_PointsBombExplodePlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		CPrintToChat(i, "%s %t", MSG, "Exploding", g_sC4PlantedByName, g_aStats[client][SCORE], g_PointsBombExplodeTeam + g_PointsBombExplodePlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "Exploding", g_sC4PlantedByName, g_aStats[client][SCORE], g_PointsBombExplodeTeam + g_PointsBombExplodePlayer);
 }
 
 public Action:Event_BombPickup(Handle:event, const String:name[], bool:dontBroadcast)
@@ -1774,7 +1768,7 @@ public Action:Event_BombPickup(Handle:event, const String:name[], bool:dontBroad
 	if (!g_bChatChange)
 		return;
 	if (g_PointsBombPickup > 0)
-		CPrintToChat(client, "%s %t", MSG, "BombPickup", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPickup);
+		if(!hidechat[client])	CPrintToChat(client, "%s %t", MSG, "BombPickup", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPickup);
 	
 }
 
@@ -1791,7 +1785,7 @@ public Action:Event_BombDropped(Handle:event, const String:name[], bool:dontBroa
 	if (!g_bChatChange)
 		return;
 	if (g_PointsBombDropped > 0 && client == 0)
-		CPrintToChat(client, "%s %t", MSG, "BombDropped", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDropped);
+		if(!hidechat[client])	CPrintToChat(client, "%s %t", MSG, "BombDropped", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDropped);
 	
 }
 
@@ -1824,8 +1818,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		}
 		
 		if (g_PointsLoseSuicide > 0 && g_bChatChange) {
-			
-			CPrintToChat(victim, "%s %t", MSG, "LostSuicide", g_aClientName[victim], g_aStats[victim][SCORE], g_PointsLoseSuicide);
+			if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "LostSuicide", g_aClientName[victim], g_aStats[victim][SCORE], g_PointsLoseSuicide);
 		}
 		
 	} else if (!g_bFfa && (GetClientTeam(victim) == GetClientTeam(attacker))) {
@@ -1845,9 +1838,8 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			}
 		
 			if (g_PointsLoseTk > 0 && g_bChatChange) {
-				
-				CPrintToChat(victim, "%s %t", MSG, "LostTK", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
-				CPrintToChat(attacker, "%s %t", MSG, "LostTK", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
+				if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "LostTK", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
+				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "LostTK", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
 			}
 		}
 	} else {
@@ -1929,28 +1921,28 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		if (g_MinimalKills == 0 || (g_aStats[victim][KILLS] >= g_MinimalKills && g_aStats[attacker][KILLS] >= g_MinimalKills)) {
 			if (g_bChatChange) {
 				//PrintToServer("%s %t",MSG,"Killing",g_aClientName[attacker],g_aStats[attacker][SCORE],score_dif,g_aClientName[victim],g_aStats[victim][SCORE]);
-				CPrintToChat(victim, "%s %t", MSG, "Killing", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
+				if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "Killing", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
 				if (attacker < MAXPLAYERS)
-					CPrintToChat(attacker, "%s %t", MSG, "Killing", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
+					if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "Killing", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
 			}
 		} else {
 			if (g_aStats[victim][KILLS] < g_MinimalKills && g_aStats[attacker][KILLS] < g_MinimalKills) {
 				if (g_bChatChange) {
-					CPrintToChat(victim, "%s %t", MSG, "KillingBothNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "KillingBothNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						CPrintToChat(attacker, "%s %t", MSG, "KillingBothNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
+						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "KillingBothNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
 				}
 			} else if (g_aStats[victim][KILLS] < g_MinimalKills) {
 				if (g_bChatChange) {
-					CPrintToChat(victim, "%s %t", MSG, "KillingVictimNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "KillingVictimNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						CPrintToChat(victim, "%s %t", MSG, "KillingVictimNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
+						if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "KillingVictimNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
 				}
 			} else {
 				if (g_bChatChange) {
-					CPrintToChat(victim, "%s %t", MSG, "KillingKillerNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "KillingKillerNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						CPrintToChat(attacker, "%s %t", MSG, "KillingKillerNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
+						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "KillingKillerNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
 				}
 			}
 		}
@@ -1959,7 +1951,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aStats[attacker][SCORE] += g_PointsHs;
 			g_aSession[attacker][SCORE] += g_PointsHs;
 			if (g_bChatChange && g_PointsHs > 0)
-				CPrintToChat(attacker, "%s %t", MSG, "Headshot", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsHs);
+				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "Headshot", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsHs);
 		}
 	}
 			
@@ -1978,7 +1970,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aSession[assist][ASSISTS]++;
 			
 			if(g_bChatChange && g_PointsAssistKill > 0){
-				CPrintToChat(assist, "%s %t", MSG, "AssistKill", g_aClientName[assist], g_aStats[assist][SCORE], g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
+				if(!hidechat[assist])	CPrintToChat(assist, "%s %t", MSG, "AssistKill", g_aClientName[assist], g_aStats[assist][SCORE], g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
 			}
 		}
 	}
@@ -2111,13 +2103,11 @@ public SalvarPlayer(client) {
 		
 		LogError("%s", query);
 	}
-	
 }
 
 
 public SQL_SaveCallback(Handle:owner, Handle:hndl, const String:error[], any:client)
 {
-	
 	if (hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Save Player Fail: %s", error);
@@ -2144,7 +2134,14 @@ public OnClientPutInServer(client) {
 	// If the database isn't connected, you can't run SQL_EscapeString.
 	if (g_hStatsDb != INVALID_HANDLE)
 		LoadPlayer(client);
-	
+		
+	// Cookie
+	if(IsValidClient(client) && !IsFakeClient(client)){
+		new String:buffer[5];
+		GetClientCookie(client, hidechatcookie, buffer, sizeof(buffer));
+		if(StrEqual(buffer, "") || StrEqual(buffer,"0"))	hidechat[client] = false;
+		else if(StrEqual(buffer,"1"))	hidechat[client] = true;
+	}
 }
 
 public LoadPlayer(client) {
@@ -2578,12 +2575,6 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 		g_bRankCache = GetConVarBool(g_cvarRankCache);
 	}
 	
-	/* Rankme Clan Tag (WIP)
-	else if (convar == g_cvarClanTag) {
-		g_bClanTag = GetConVarBool(g_cvarClanTag);
-	}
-	*/
-	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		new String:query[10000];
 		MakeSelectQuery(query, sizeof(query));
@@ -2624,10 +2615,6 @@ public Action:RankMe_OnPlayerLoaded(client){
 		return Plugin_Handled;
 	
 	RankMe_GetRank(client,RankConnectCallback);
-	
-	/* Rankme Clan Tag (WIP)
-	RankMe_GetRank(client,GetClientRankCallback);
-	*/
 	
 	return Plugin_Continue;
 }
@@ -2671,35 +2658,25 @@ public RankConnectCallback(client, rank, any:data){
 	if(g_bAnnounceConnect){
 		
 		if(g_bAnnounceConnectChat){
-		
 			CPrintToChatAll("%s %t",MSG,"PlayerJoinedChat",sClientName,g_aRankOnConnect[client],g_aPointsOnConnect[client],s_Country);
-			
 		}
 		
 		if(g_bAnnounceConnectHint){
-		
-			PrintHintTextToAll("%t","PlayerJoinedHint",sClientName,g_aRankOnConnect[client],g_aPointsOnConnect[client],s_Country);
-			
+			PrintHintTextToAll("%t","PlayerJoinedHint",sClientName,g_aRankOnConnect[client],g_aPointsOnConnect[client],s_Country);		
 		}
 	
 	}
 	
 	if(g_bAnnounceTopConnect && rank <= g_AnnounceTopPosConnect){
 		
-		if(g_bAnnounceTopConnectChat){
-		
-			CPrintToChatAll("%s %t",MSG,"TopPlayerJoinedChat",g_AnnounceTopPosConnect,sClientName,g_aRankOnConnect[client],s_Country);
-			
+		if(g_bAnnounceTopConnectChat){	
+			CPrintToChatAll("%s %t",MSG,"TopPlayerJoinedChat",g_AnnounceTopPosConnect,sClientName,g_aRankOnConnect[client],s_Country);			
 		}
 		
 		if(g_bAnnounceTopConnectHint){
-		
 			PrintHintTextToAll("%t","TopPlayerJoinedHint",g_AnnounceTopPosConnect,sClientName,g_aRankOnConnect[client],s_Country);
-			
 		}
-		
 	}
-	
 }
 
 public Action:Event_PlayerDisconnect(Handle:event, const String:name[], bool:dontBroadcast)
@@ -2744,59 +2721,16 @@ public OnGameFrame()
 	}	
 }
 
-/* Rankme Clan Tag (WIP)
-public Action ClanTagTimer(Handle timer, any client)
-{
-	for (new i = 1; i <= MaxClients; i++) 
-	{
-		if(g_bClanTag)
-		{
-			if(CanOverride(client)) OverwriteClanTag(client);
-		}
+/* Hide Chat */
+public Action:CMD_HideChat(client,args){
+	if(!hidechat[client]){
+		SetClientCookie(client, hidechatcookie, "1");
+		CPrintToChat(client, "%s %t Hide Rankme Chat", MSG);
+		hidechat[client] = true;
+	}
+	else if(hidechat[client]){
+		SetClientCookie(client, hidechatcookie, "0");
+		CPrintToChat(client, "%s %t Show Rankme Chat", MSG);
+		hidechat[client] = false;
 	}
 }
-public Action Event_PlayerTeam(Handle event, const char[] name, bool dontBroadcast)
-{
-	int client = GetClientOfUserId(GetEventInt(event, "userid"));
-	
-	if(g_bClanTag)
-	{
-		if(CanOverride(client)) OverwriteClanTag(client);
-	}
-}
-
-public void OnClientSettingsChanged(int client)
-{
-    if(g_bClanTag)
-	{
-		if(CanOverride(client)) OverwriteClanTag(client);
-	}
-}
-
-public int GetClientRankCallback(int client, int rank, any data)
-{
-	if(rank == 0)
-		strcopy(g_szClantag[client], 32, "NoRank");
-	else
-		Format(g_szClantag[client], 32, "TOP-%d", rank);
-}
-
-void OverwriteClanTag(int client)
-{
-	CS_SetClientClanTag(client, g_szClantag[client]);
-}
-
-bool CanOverride(int client)
-{
-	if(!(1 <= client <= MaxClients))
-		return false;
-	
-	if(!IsClientInGame(client))
-		return false;
-	
-	if(GetClientTeam(client) <= 1)
-		return false;
-
-	return true;
-}
-*/
