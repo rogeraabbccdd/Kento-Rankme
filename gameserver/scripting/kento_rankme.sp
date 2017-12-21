@@ -9,7 +9,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.27"
+#define PLUGIN_VERSION "3.0.3.Kento.27.1"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -1954,32 +1954,32 @@ public SalvarPlayer(client) {
 	
 	if (g_RankBy == 0) 
 	{
-		FormatEx(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
+		Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientSteam[client]);
 	
-		FormatEx(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
+		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
+			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
 	} 
 	
 	else if (g_RankBy == 1) 
 	{
-		FormatEx(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
+		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], sEscapeName);
 	
-		FormatEx(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
+		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
+			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
 	} 
 	
 	else if (g_RankBy == 2) 
 	{
-		FormatEx(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
+		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
 			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientIp[client]);
 	
-		FormatEx(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
+		Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
+			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
 	}
 	
 	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query, client, DBPrio_High);
