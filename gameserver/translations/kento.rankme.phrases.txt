@@ -224,7 +224,7 @@
 
 	"UsageStatsme2"
 	{
-		"en"		"{RED}Usage: {PINK}sm_statsme2 <name / #position on top / steam>"
+		"en"		"{RED}Usage: {PINK}sm_statsme2 <name | #position on top | steam>"
 	}
 	
 	"Hide Rankme Chat"
@@ -235,6 +235,36 @@
 	"Show Rankme Chat"
 	{
 		"en"		"{LIGHTGREEN}Show Rankme chat messages."
+	}
+	
+	"CT_Win"
+	{
+		"#format"	"{1:d}"
+		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}winning the match{NORMAL}."
+	}
+	
+	"TR_Win"
+	{
+		"#format"	"{1:d}"
+		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}winning the match{NORMAL}."
+	}
+	
+	"CT_Lose"
+	{
+		"#format"	"{1:d}"
+		"en"		"{BLUE}Counter-Terrorists {RED}lost {1} point(s) {NORMAL}for {RED}losing the match{NORMAL}."
+	}
+	
+	"TR_Lose"
+	{
+		"#format"	"{1:d}"
+		"en"		"{ORANGE}Terrorists {RED}lost {1} point(s) {NORMAL}for {RED}losing the match{NORMAL}."
+	}
+	
+	"Draw"
+	{
+		"#format"	"{1:d}"
+		"en"		"{RED}Match draw{NORMAL}, {PINK}Both teams {LIGHTGREEN}got {1} points {NORMAL}."
 	}
 	
 	//****************** PrintHintText ******************
@@ -610,5 +640,20 @@
 	"TOP Damage"
 	{
 		"en"		"TOP Damage"
+	}
+	
+	"Match Wins"
+	{
+		"en"		"Match Wins"
+	}
+	
+	"Match Loses"
+	{
+		"en"		"Match Loses"
+	}
+	
+	"Match Draws"
+	{
+		"en"		"Match Draws"
 	}
 }

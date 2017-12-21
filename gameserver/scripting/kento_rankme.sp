@@ -1,141 +1,6 @@
-//Changelog
-//
-//3.0.3.Kento.1
-//Add colors
-//Add csgo weapons
-//Fix Molotov & Inc Grenade Bug
-//Include rankme_connect_announcer
-//Fix knife_falchion, knife_push and knife_survival_bowie will not count bug
-//
-//
-//3.0.3.Kento.2
-//Add Assist Supprt
-//Code edited from pracc's rankme http://hlmod.ru/resources/cs-go-rankme-web.132/
-//
-//
-//3.0.3.Kento.3
-//Add Assist To Database
-//Add new commnad "topassists" & "toptk"
-//Remove topnade topknife toptaser (Useless, you can check them in topweapon, my friend)
-//"statsme2" is now open for everyone
-//Make more phrases translatable
-//
-//
-//3.0.3.Kento.4
-//Add country into connect and disconnect announce
-//
-//
-//3.0.3.Kento.5
-//Remove disconnect announce contry, I forgot this won't work
-//
-//
-//3.0.3.Kento.6
-//Fix some stats will not count bug
-//Remove useless message in disconnect announce
-//
-//
-//3.0.3.Kento.7
-//Fix a little bug
-//
-//
-//3.0.3.Kento.8
-//Fix toptk showing assists bug
-//
-//
-//3.0.3.Kento.9
-//Gotv bot will not add to database now.
-//Add disconnect reason to disconnect announce.
-//
-//
-//3.0.3.Kento.10
-//Add MVP to database
-//New Command "topmvp"
-//
-//
-//3.0.3.Kento.11
-//Add damage to database
-//Show damage in statsme & session
-//Show DPR(Damage Per Round) in statsme & session
-//Show KPR(Kill Per Round) in statsme & session
-//New command "topdamage"
-//Add topmvp & topdamage to !rankme menu
-//Change round played count from player spawn to round start (warmup have autorespawn)
-//
-//
-//3.0.3.Kento.12
-//Fix Client not connected bug.
-//
-//
-//3.0.3.Kento.13
-//Try to fix bugs.
-//
-//
-//3.0.3.Kento.14
-//Try to fix bugs.
-//Thanks Drum1low.
-//
-//
-//3.0.3.Kento.15
-//Try to fix bugs.
-//
-//
-//3.0.3.Kento.16
-//Fix round played stats not counting bug.
-//
-//
-//3.0.3.Kento.17
-//Add new cvar "rankme_gather_stats_warmup" to disable point count in warmup
-//
-//
-//3.0.3.Kento.18
-//SM1.9 Fix.
-//
-//
-//3.0.3.Kento.19
-//Bug Fix.
-//
-//
-//3.0.3.Kento.20
-//New cvar "rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false"
-//New cvar "rankme_points_min", "0", "Minimum points"
-//
-//
-//3.0.3.Kento.21
-//Now database will created in utf8mb4_general_ci
-//Try to fix bugs.
-//
-//
-//3.0.3.Kento.22
-//Fix kdr in !rank will only change after changing map bug.
-//Fix some translation phrases.
-//
-//
-//3.0.3.Kento.23
-//Fix cmd "Invalid client index 0" bug.
-//
-//
-//3.0.3.Kento.24
-//Fix sqlite query failed.
-//
-//
-//3.0.3.Kento.25
-//Add 3 array to store rank cache.
-//Auto rebuild cache on map start.
-//On get client rank use cache instead of query sql.
-//Thanks Kxnrl.
-//
-//
-//3.0.3.Kento.26
-//https://github.com/rogeraabbccdd/Kento-Rankme/pull/49
-//New console command "sm_rankmechat" to disable chat messages.
-//
-//
-//WIP
+//To do (if I'm not lazy)
 //Use TOGs SourcePawn Syntax Converter convert to new syntax.
 //https://forums.alliedmods.net/showthread.php?p=2472379
-//Include "https://github.com/Kxnrl/RankMe-Tag" and edit some code, but I don't know why it isn't work.
-//
-//To do (if I'm not lazy)
 //Add new commnad "topkdr"
 //Add new commnad "topkpr"
 //Add new commnad "topdpr"
@@ -144,7 +9,8 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.26"
+#define PLUGIN_VERSION "3.0.3.Kento.27"
+
 #include <sourcemod> 
 #include <adminmenu>
 #include <kento_csgocolors>
@@ -154,8 +20,6 @@
 #include <cstrike>
 #include <clientprefs>
 
-//TOGs SourcePawn Syntax Converter
-//https://forums.alliedmods.net/showthread.php?p=2472379
 //#pragma newdecls required
 
 #define MSG "\x04 [RankMe] \x01\x0B\x01"
@@ -166,9 +30,9 @@
 #define SENDER_WORLD					0
 #define MAX_LENGTH_MENU 470
 
-static const String:g_sSqliteCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC)";
-static const String:g_sMysqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
-static const String:g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
+static const String:g_sSqliteCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC)";
+static const String:g_sMysqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+static const String:g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
 
 /* Old
 new String:g_sSqlSave[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i',c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
@@ -180,9 +44,9 @@ new String:g_sSqlSaveIp[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths=
 static const String:g_sSqlSave[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE steam = '%s';";
 static const String:g_sSqlSaveName[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE name = '%s';";
 static const String:g_sSqlSaveIp[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE lastip = '%s';";
-static const String:g_sSqlSave2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
-static const String:g_sSqlSaveName2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', lastconnect='%i', connected='%i' WHERE name = '%s';";
-static const String:g_sSqlSaveIp2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s';";
+static const String:g_sSqlSave2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
+static const String:g_sSqlSaveName2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', lastconnect='%i', connected='%i' WHERE name = '%s';";
+static const String:g_sSqlSaveIp2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s';";
 
 static const String:g_sSqlRetrieveClient[] = "SELECT * FROM `%s` WHERE steam='%s';";
 static const String:g_sSqlRetrieveClientName[] = "SELECT * FROM `%s` WHERE name='%s';";
@@ -302,6 +166,13 @@ new g_aWeapons[MAXPLAYERS + 1][WEAPONS_ENUM];
 new g_aHitBox[MAXPLAYERS + 1][HITBOXES];
 new g_TotalPlayers;
 
+new Handle:g_cvarPointsMatchWin;
+new Handle:g_cvarPointsMatchDraw;
+new Handle:g_cvarPointsMatchLose;
+new g_PointsMatchWin;
+new g_PointsMatchDraw;
+new g_PointsMatchLose;
+
 new Handle:g_fwdOnPlayerLoaded;
 new Handle:g_fwdOnPlayerSaved;
 
@@ -366,7 +237,7 @@ new bool:hidechat[MAXPLAYERS+1];
 
 public Plugin:myinfo =  {
 	name = "RankMe", 
-	author = "lok1, Scooby, pracc, Kento, Kxnrl", 
+	author = "lok1, Scooby, Kento, pracc, Kxnrl, CrazyHackGUT", 
 	description = "Improved RankMe for CSGO", 
 	version = PLUGIN_VERSION, 
 	url = "https://github.com/rogeraabbccdd/Kento-Rankme"
@@ -426,6 +297,9 @@ public OnPluginStart() {
 	g_cvarPointsMvpTr = CreateConVar("rankme_points_mvp_tr", "1", "How many points a TR got for being the MVP?", _, true, 0.0);
 	g_cvarPointsBombPickup = CreateConVar("rankme_points_bomb_pickup", "0", "How many points a player gets for picking up the bomb?", _, true, 0.0);
 	g_cvarPointsBombDropped = CreateConVar("rankme_points_bomb_dropped", "0", "How many points a player loess for dropping the bomb?", _, true, 0.0);
+	g_cvarPointsMatchWin = CreateConVar("rankme_points_match_win", "2", "How many points a player win for winning the match?", _, true, 0.0);
+	g_cvarPointsMatchLose = CreateConVar("rankme_points_match_lose", "2", "How many points a player loess for losing the match?", _, true, 0.0);
+	g_cvarPointsMatchDraw = CreateConVar("rankme_points_match_draw", "0", "How many points a player win when match draw?", _, true, 0.0);
 	
 	/* Assist */
 	g_cvarPointsAssistKill = CreateConVar("rankme_points_assiist_kill","1","How many points a player gets for assist kill?",_,true,0.0);
@@ -495,6 +369,9 @@ public OnPluginStart() {
 	HookConVarChange(g_cvarPointsMvpTr, OnConVarChanged);
 	HookConVarChange(g_cvarPointsBombPickup, OnConVarChanged);
 	HookConVarChange(g_cvarPointsBombDropped, OnConVarChanged);
+	HookConVarChange(g_cvarPointsMatchWin, OnConVarChanged);
+	HookConVarChange(g_cvarPointsMatchDraw, OnConVarChanged);
+	HookConVarChange(g_cvarPointsMatchLose, OnConVarChanged);
 	
 	/* Assist */
 	HookConVarChange(g_cvarPointsAssistKill,OnConVarChanged);
@@ -525,6 +402,7 @@ public OnPluginStart() {
 	HookEventEx("player_changename", OnClientChangeName, EventHookMode_Pre);
 	HookEventEx("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre); 
 	//HookEvent("player_team", Event_PlayerTeam);	
+	HookEventEx("cs_win_panel_match", Event_WinPanelMatch);
 	
 	// ADMNIN COMMANDS
 	RegAdminCmd("sm_resetrank", CMD_ResetRank, ADMFLAG_ROOT, "RankMe: Resets the rank of a player");
@@ -654,6 +532,12 @@ public DB_Connect(bool:firstload) {
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_played NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_win NUMERIC", g_sSQLTable);
+		SQL_FastQuery(g_hStatsDb, sQuery);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_draw NUMERIC", g_sSQLTable);
+		SQL_FastQuery(g_hStatsDb, sQuery);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_lose NUMERIC", g_sSQLTable);
+		SQL_FastQuery(g_hStatsDb, sQuery);
 		SQL_UnlockDatabase(g_hStatsDb);
 		
 		for (new i = 1; i <= MaxClients; i++) {
@@ -725,6 +609,9 @@ public OnConfigsExecuted() {
 	g_PointsMvpTr = GetConVarInt(g_cvarPointsMvpTr);
 	g_PointsBombDropped = GetConVarInt(g_cvarPointsBombDropped);
 	g_PointsBombPickup = GetConVarInt(g_cvarPointsBombPickup);
+	g_PointsMatchWin = GetConVarInt(g_cvarPointsMatchWin);
+	g_PointsMatchDraw = GetConVarInt(g_cvarPointsMatchDraw);
+	g_PointsMatchLose = GetConVarInt(g_cvarPointsMatchLose);
 	
 	/* Assist */
 	g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
@@ -891,11 +778,11 @@ public Native_GivePoint(Handle:plugin, numParams)
 	if (iPrintToAll == 1) {
 		for (new i = 1; i <= MaxClients; i++)
 		if (IsClientInGame(i))
-			//CPrintToChatEx(i,i,"%s %t",MSG,"GotPointsBy",Name,g_aStats[iClient][SCORE],iPoints,Reason);
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "GotPointsBy", Name, g_aStats[iClient][SCORE], iPoints, Reason);
+			//CPrintToChatEx(i,i,"%s %T",MSG,"GotPointsBy",Name,g_aStats[iClient][SCORE],iPoints,Reason);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "GotPointsBy", i, Name, g_aStats[iClient][SCORE], iPoints, Reason);
 	} else if (iPrintToPlayer == 1) {
-		//CPrintToChatEx(iClient,iClient,"%s %t",MSG,"GotPointsBy",Name,g_aStats[iClient][SCORE],iPoints,Reason);
-		if(!hidechat[iClient]) CPrintToChat(iClient, "%s %t", MSG, "GotPointsBy", Name, g_aStats[iClient][SCORE], iPoints, Reason);
+		//CPrintToChatEx(iClient,iClient,"%s %T",MSG,"GotPointsBy",Name,g_aStats[iClient][SCORE],iPoints,Reason);
+		if(!hidechat[iClient]) CPrintToChat(iClient, "%s %T", MSG, "GotPointsBy", iClient, Name, g_aStats[iClient][SCORE], iPoints, Reason);
 	}
 }
 
@@ -1382,7 +1269,7 @@ public OnPluginEnd() {
 					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientSteam[client]);
 	
 				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
+					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
 			} 
 	
 			else if (g_RankBy == 1) 
@@ -1392,7 +1279,7 @@ public OnPluginEnd() {
 					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], sEscapeName);
 	
 				Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
+					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
 			} 
 	
 			else if (g_RankBy == 2) 
@@ -1402,7 +1289,7 @@ public OnPluginEnd() {
 					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientIp[client]);
 	
 				Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
+					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
 			}
 			
 			SQL_FastQuery(g_hStatsDb, query);
@@ -1460,11 +1347,11 @@ public Action:Event_VipEscaped(Handle:event, const String:name[], bool:dontBroad
 		return;
 	for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "CT_VIPEscaped", g_PointsVipEscapedTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "CT_VIPEscaped", i, g_PointsVipEscapedTeam);
 	if (client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "VIPEscaped", g_aClientName[client], g_aStats[client][SCORE], g_PointsVipEscapedTeam + g_PointsVipEscapedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "VIPEscaped", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsVipEscapedTeam + g_PointsVipEscapedPlayer);
 }
 
 public Action:Event_VipKilled(Handle:event, const String:name[], bool:dontBroadcast) {
@@ -1493,11 +1380,11 @@ public Action:Event_VipKilled(Handle:event, const String:name[], bool:dontBroadc
 		return;
 	for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "TR_VIPKilled", g_PointsVipKilledTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "TR_VIPKilled", i, g_PointsVipKilledTeam);
 	if (client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "VIPKilled", g_aClientName[client], g_aStats[client][SCORE], g_PointsVipKilledTeam + g_PointsVipKilledPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "VIPKilled", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsVipKilledTeam + g_PointsVipKilledPlayer);
 }
 
 public Action:Event_HostageRescued(Handle:event, const String:name[], bool:dontBroadcast) {
@@ -1525,12 +1412,12 @@ public Action:Event_HostageRescued(Handle:event, const String:name[], bool:dontB
 	if (g_PointsHostageRescTeam > 0)
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "CT_Hostage", g_PointsHostageRescTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "CT_Hostage", i, g_PointsHostageRescTeam);
 	
 	if (g_PointsHostageRescPlayer > 0 && client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "Hostage", g_aClientName[client], g_aStats[client][SCORE], g_PointsHostageRescPlayer + g_PointsHostageRescTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Hostage", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsHostageRescPlayer + g_PointsHostageRescTeam);
 	
 }
 
@@ -1551,7 +1438,7 @@ public Action:Event_RoundMVP(Handle:event, const String:name[], bool:dontBroadca
 			g_aSession[client][SCORE] += g_PointsMvpTr;
 			for (new i = 1; i <= MaxClients; i++)
 			if (IsClientInGame(i))
-				if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "MVP", g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpTr);
+				if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "MVP", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpTr);
 			
 		} else {
 			
@@ -1559,7 +1446,7 @@ public Action:Event_RoundMVP(Handle:event, const String:name[], bool:dontBroadca
 			g_aSession[client][SCORE] += g_PointsMvpCt;
 			for (new i = 1; i <= MaxClients; i++)
 			if (IsClientInGame(i))
-				if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "MVP", g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpCt);	
+				if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "MVP", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpCt);	
 		}
 	}
 	g_aStats[client][MVP]++;
@@ -1583,7 +1470,7 @@ public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadca
 					if (!announced && g_bChatChange) {
 						for (new j = 1; j <= MaxClients; j++)
 						if (IsClientInGame(j))
-							if(!hidechat[j]) CPrintToChat(j, "%s %t", MSG, "TR_Round", g_PointsRoundWin[TR]);
+							if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "TR_Round", j, g_PointsRoundWin[TR]);
 						announced = true;
 					}
 				}
@@ -1596,7 +1483,7 @@ public Action:Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadca
 					if (!announced && g_bChatChange) {
 						for (new j = 1; j <= MaxClients; j++)
 						if (IsClientInGame(j))
-							if(!hidechat[j]) CPrintToChat(j, "%s %t", MSG, "CT_Round", g_PointsRoundWin[CT]);
+							if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "CT_Round", j, g_PointsRoundWin[CT]);
 						announced = true;
 					}
 				}
@@ -1679,11 +1566,11 @@ public Action:Event_BombPlanted(Handle:event, const String:name[], bool:dontBroa
 	if (g_PointsBombPlantedTeam > 0)
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "TR_Planting", g_PointsBombPlantedTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "TR_Planting", i, g_PointsBombPlantedTeam);
 	if (g_PointsBombPlantedPlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "Planting", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPlantedTeam + g_PointsBombPlantedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Planting", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPlantedTeam + g_PointsBombPlantedPlayer);
 	
 }
 
@@ -1712,11 +1599,11 @@ public Action:Event_BombDefused(Handle:event, const String:name[], bool:dontBroa
 	if (g_PointsBombDefusedTeam > 0)
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "CT_Defusing", g_PointsBombDefusedTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "CT_Defusing", i, g_PointsBombDefusedTeam);
 	if (g_PointsBombDefusedPlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "Defusing", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDefusedTeam + g_PointsBombDefusedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Defusing", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDefusedTeam + g_PointsBombDefusedPlayer);
 }
 
 public Action:Event_BombExploded(Handle:event, const String:name[], bool:dontBroadcast)
@@ -1748,11 +1635,11 @@ public Action:Event_BombExploded(Handle:event, const String:name[], bool:dontBro
 	if (g_PointsBombExplodeTeam > 0)
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "TR_Exploding", g_PointsBombExplodeTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "TR_Exploding", i, g_PointsBombExplodeTeam);
 	if (g_PointsBombExplodePlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (new i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %t", MSG, "Exploding", g_sC4PlantedByName, g_aStats[client][SCORE], g_PointsBombExplodeTeam + g_PointsBombExplodePlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Exploding", i, g_sC4PlantedByName, g_aStats[client][SCORE], g_PointsBombExplodeTeam + g_PointsBombExplodePlayer);
 }
 
 public Action:Event_BombPickup(Handle:event, const String:name[], bool:dontBroadcast)
@@ -1768,7 +1655,7 @@ public Action:Event_BombPickup(Handle:event, const String:name[], bool:dontBroad
 	if (!g_bChatChange)
 		return;
 	if (g_PointsBombPickup > 0)
-		if(!hidechat[client])	CPrintToChat(client, "%s %t", MSG, "BombPickup", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPickup);
+		if(!hidechat[client])	CPrintToChat(client, "%s %T", MSG, "BombPickup", client, g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPickup);
 	
 }
 
@@ -1785,7 +1672,7 @@ public Action:Event_BombDropped(Handle:event, const String:name[], bool:dontBroa
 	if (!g_bChatChange)
 		return;
 	if (g_PointsBombDropped > 0 && client == 0)
-		if(!hidechat[client])	CPrintToChat(client, "%s %t", MSG, "BombDropped", g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDropped);
+		if(!hidechat[client])	CPrintToChat(client, "%s %T", MSG, "BombDropped", client, g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDropped);
 	
 }
 
@@ -1818,7 +1705,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		}
 		
 		if (g_PointsLoseSuicide > 0 && g_bChatChange) {
-			if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "LostSuicide", g_aClientName[victim], g_aStats[victim][SCORE], g_PointsLoseSuicide);
+			if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "LostSuicide", victim, g_aClientName[victim], g_aStats[victim][SCORE], g_PointsLoseSuicide);
 		}
 		
 	} else if (!g_bFfa && (GetClientTeam(victim) == GetClientTeam(attacker))) {
@@ -1838,8 +1725,8 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			}
 		
 			if (g_PointsLoseTk > 0 && g_bChatChange) {
-				if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "LostTK", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
-				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "LostTK", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
+				if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "LostTK", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
+				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "LostTK", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
 			}
 		}
 	} else {
@@ -1920,29 +1807,29 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		
 		if (g_MinimalKills == 0 || (g_aStats[victim][KILLS] >= g_MinimalKills && g_aStats[attacker][KILLS] >= g_MinimalKills)) {
 			if (g_bChatChange) {
-				//PrintToServer("%s %t",MSG,"Killing",g_aClientName[attacker],g_aStats[attacker][SCORE],score_dif,g_aClientName[victim],g_aStats[victim][SCORE]);
-				if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "Killing", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
+				//PrintToServer("%s %T",MSG,"Killing",g_aClientName[attacker],g_aStats[attacker][SCORE],score_dif,g_aClientName[victim],g_aStats[victim][SCORE]);
+				if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "Killing", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
 				if (attacker < MAXPLAYERS)
-					if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "Killing", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
+					if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "Killing", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
 			}
 		} else {
 			if (g_aStats[victim][KILLS] < g_MinimalKills && g_aStats[attacker][KILLS] < g_MinimalKills) {
 				if (g_bChatChange) {
-					if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "KillingBothNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingBothNotRanked", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "KillingBothNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
+						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "KillingBothNotRanked", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
 				}
 			} else if (g_aStats[victim][KILLS] < g_MinimalKills) {
 				if (g_bChatChange) {
-					if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "KillingVictimNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingVictimNotRanked", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "KillingVictimNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
+						if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingVictimNotRanked", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
 				}
 			} else {
 				if (g_bChatChange) {
-					if(!hidechat[victim])	CPrintToChat(victim, "%s %t", MSG, "KillingKillerNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingKillerNotRanked", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "KillingKillerNotRanked", g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
+						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "KillingKillerNotRanked", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
 				}
 			}
 		}
@@ -1951,7 +1838,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aStats[attacker][SCORE] += g_PointsHs;
 			g_aSession[attacker][SCORE] += g_PointsHs;
 			if (g_bChatChange && g_PointsHs > 0)
-				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %t", MSG, "Headshot", g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsHs);
+				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "Headshot", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsHs);
 		}
 	}
 			
@@ -1970,7 +1857,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 			g_aSession[assist][ASSISTS]++;
 			
 			if(g_bChatChange && g_PointsAssistKill > 0){
-				if(!hidechat[assist])	CPrintToChat(assist, "%s %t", MSG, "AssistKill", g_aClientName[assist], g_aStats[assist][SCORE], g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
+				if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistKill", assist, g_aClientName[assist], g_aStats[assist][SCORE], g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
 			}
 		}
 	}
@@ -2243,9 +2130,11 @@ public SQL_LoadPlayerCallback(Handle:owner, Handle:hndl, const String:error[], a
 		g_aStats[client][VIP_PLAYED] = SQL_FetchInt(hndl, 72);
 		g_aStats[client][MVP] = SQL_FetchInt(hndl, 73);
 		g_aStats[client][DAMAGE] = SQL_FetchInt(hndl, 74);
+		g_aStats[client][MATCH_WIN] = SQL_FetchInt(hndl, 75);
+		g_aStats[client][MATCH_DRAW] = SQL_FetchInt(hndl, 76);
+		g_aStats[client][MATCH_LOSE] = SQL_FetchInt(hndl, 77);
 	} else {
 		decl String:query[10000];
-		
 		decl String:sEscapeName[MAX_NAME_LENGTH * 2 + 1];
 		SQL_EscapeString(g_hStatsDb, g_aClientName[client], sEscapeName, sizeof(sEscapeName));
 		//SQL_EscapeString(g_hStatsDb,name,name,sizeof(name));
@@ -2575,6 +2464,18 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 		g_bRankCache = GetConVarBool(g_cvarRankCache);
 	}
 	
+	else if (convar == g_cvarPointsMatchWin) {
+		g_PointsMatchWin = GetConVarInt(g_cvarPointsMatchWin);
+	}
+	
+	else if (convar == g_cvarPointsMatchDraw) {
+		g_PointsMatchDraw = GetConVarInt(g_cvarPointsMatchDraw);
+	}
+	
+	else if (convar == g_cvarPointsMatchLose) {
+		g_PointsMatchLose = GetConVarInt(g_cvarPointsMatchLose);
+	}
+	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		new String:query[10000];
 		MakeSelectQuery(query, sizeof(query));
@@ -2725,12 +2626,80 @@ public OnGameFrame()
 public Action:CMD_HideChat(client,args){
 	if(!hidechat[client]){
 		SetClientCookie(client, hidechatcookie, "1");
-		CPrintToChat(client, "%s %t Hide Rankme Chat", MSG);
+		CPrintToChat(client, "%s %T Hide Rankme Chat", MSG, client);
 		hidechat[client] = true;
 	}
 	else if(hidechat[client]){
 		SetClientCookie(client, hidechatcookie, "0");
-		CPrintToChat(client, "%s %t Show Rankme Chat", MSG);
+		CPrintToChat(client, "%s %T Show Rankme Chat", MSG, client);
 		hidechat[client] = false;
+	}
+}
+
+public Action:Event_WinPanelMatch(Handle:event, const String:name[], bool:dontBroadcast) {
+	if(CS_GetTeamScore(CT) > CS_GetTeamScore(TR))
+	{
+		for(new i=1;i<=MaxClients;i++)
+		{
+			if(IsClientInGame(i))
+			{
+				if(!hidechat[i])
+				{
+					CPrintToChat(i, "%T", "CT_Win", i, g_PointsMatchWin);
+					CPrintToChat(i, "%T", "TR_Lose", i, g_PointsMatchLose);
+				}
+				
+				if(GetClientTeam(i) == TR)
+				{
+					g_aStats[i][MATCH_LOSE]++;
+					g_aStats[i][SCORE] -= g_PointsMatchLose;
+				}
+				else if (GetClientTeam(i) == CT)
+				{
+					g_aStats[i][MATCH_WIN]++;
+					g_aStats[i][SCORE] += g_PointsMatchWin;
+				}
+			}
+		}
+	}
+	
+	else if(CS_GetTeamScore(CT) == CS_GetTeamScore(TR))
+	{
+		for(new i=1;i<=MaxClients;i++)
+		{
+			if (IsClientInGame(i) && (GetClientTeam(i) == TR || GetClientTeam(i) == CT))
+			{
+				g_aStats[i][MATCH_DRAW]++;
+				g_aStats[i][SCORE] += g_PointsMatchDraw;
+				
+				if(!hidechat[i])	CPrintToChat(i, "%T", "Draw", i, g_PointsMatchDraw);
+			}
+		}
+	}
+	
+	else if(CS_GetTeamScore(CT) < CS_GetTeamScore(TR))
+	{
+		for(new i=1;i<=MaxClients;i++)
+		{
+			if(IsClientInGame(i))
+			{
+				if(!hidechat[i])
+				{
+					CPrintToChat(i, "%s %T", MSG, "TR_Win", i, g_PointsMatchWin);
+					CPrintToChat(i, "%s %T", MSG, "CT_Lose", i, g_PointsMatchLose);
+				}
+				
+				if(GetClientTeam(i) == TR)
+				{
+					g_aStats[i][MATCH_LOSE]++;
+					g_aStats[i][SCORE] -= g_PointsMatchLose;
+				}
+				else if (GetClientTeam(i) == CT)
+				{
+					g_aStats[i][MATCH_WIN]++;
+					g_aStats[i][SCORE] += g_PointsMatchWin;
+				}
+			}
+		}
 	}
 }

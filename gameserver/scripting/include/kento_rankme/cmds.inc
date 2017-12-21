@@ -1347,7 +1347,7 @@ public Action:CMD_Rank(client,args){
 		return Plugin_Handled;
 	//LogToFile("rankme.debug.log","\"sm_rank\" command called by client %d.",client);
 	if(g_aStats[client][KILLS] < g_MinimalKills){
-		CPrintToChat(client,"%s %t",MSG,"NotRanked",g_aStats[client][KILLS],g_MinimalKills);
+		CPrintToChat(client,"%s %T",MSG,"NotRanked",client,g_aStats[client][KILLS],g_MinimalKills);
 		return Plugin_Handled;
 	}
 	new String:query[2000];
@@ -1405,9 +1405,9 @@ public SQL_RankCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 			if(g_bShowRankAll){
 				for(new j = 1; j <= MaxClients;j++)
 					if(IsClientInGame(j))
-						CPrintToChat(j,"%s %t",MSG,"IsRankedAt", g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
+						CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
 			} else {
-				CPrintToChat(client,"%s %t",MSG,"IsRankedAt", g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
 			}
 			break;
 		}
@@ -1679,7 +1679,7 @@ public Action:CMD_StatsMe2(client,args){
 		
 		CloseHandle(hDatapack);
 		
-		CPrintToChat(client,MSG,"%T","UsageStatsme2",client);
+		CPrintToChat(client,"%s %T", MSG,"UsageStatsme2",client);
 		
 		return Plugin_Handled;
 	}
@@ -1802,7 +1802,7 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n ","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73));
+	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73), "Match Wins", client, SQL_FetchInt(hndl, 75), "Match Draws", client, SQL_FetchInt(hndl, 76), "Match Loses", client, SQL_FetchInt(hndl, 77));
 	StrCat(text,255,temp);
 	AddMenuItem(panel,"",text);
 	text="";
@@ -1931,7 +1931,7 @@ public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n ","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP]);
+	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP], "Match Wins", client, g_aStats[client][MATCH_WIN], "Match Draws", client, g_aStats[client][MATCH_DRAW], "Match Loses", client, g_aStats[client][MATCH_LOSE]);
 	StrCat(text,255,temp);
 	AddMenuItem(panel,"",text);
 	text="";
@@ -2097,7 +2097,7 @@ public Action:CMD_ResetOwnRank(client,args){
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	LogAction(client,-1,"[RankMe]: Reseted own rank (%s - %s - %s)",g_aClientName[client],g_aClientSteam[client],g_aClientIp[client]);
 	OnClientPutInServer(client);
-	CPrintToChat(client,"%s %t",MSG,"ResetMyRank");
+	CPrintToChat(client,"%s %T",MSG,"ResetMyRank", client);
 	return Plugin_Handled;
 }
 
