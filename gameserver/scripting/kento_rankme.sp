@@ -9,7 +9,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.27.1"
+#define PLUGIN_VERSION "3.0.3.Kento.27.2"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -2626,12 +2626,12 @@ public OnGameFrame()
 public Action:CMD_HideChat(client,args){
 	if(!hidechat[client]){
 		SetClientCookie(client, hidechatcookie, "1");
-		CPrintToChat(client, "%s %T Hide Rankme Chat", MSG, client);
+		CPrintToChat(client, "%s %T", MSG, "Hide Rankme Chat", client);
 		hidechat[client] = true;
 	}
 	else if(hidechat[client]){
 		SetClientCookie(client, hidechatcookie, "0");
-		CPrintToChat(client, "%s %T Show Rankme Chat", MSG, client);
+		CPrintToChat(client, "%s %T", MSG, "Show Rankme Chat", client);
 		hidechat[client] = false;
 	}
 }
