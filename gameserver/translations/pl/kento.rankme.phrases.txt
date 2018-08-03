@@ -602,5 +602,18 @@
 	{
 		"pl"		"TOP obrazenia"
 	}
+		"Match Wins"
+	{
+		"pl"		"Mecz wygrywa"
+	}
+	"Match Loses"
+	{
+		"pl"		"Mecz przegrywa"
+	}
+	
+	"Match Draws"
+	{
+		"pl"		"Mech zremisowany"
+	}
 }
  
