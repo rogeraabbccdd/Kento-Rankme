@@ -1894,10 +1894,14 @@ public Action:EventPlayerHurt(Handle:event, const String:name[], bool:dontBroadc
 	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 	if (!g_bRankBots && (attacker == 0 || IsFakeClient(victim) || IsFakeClient(attacker)))
 		return;
+		
 	if (victim != attacker && attacker > 0 && attacker < MAXPLAYERS) {
 		new hitgroup = GetEventInt(event, "hitgroup");
 		if (hitgroup == 0) // Player was hit by knife, he, flashbang, or smokegrenade.
 			return;
+		
+		if(hitgroup == 8) hitgroup = 1;
+		
 		g_aStats[attacker][HITS]++;
 		g_aSession[attacker][HITS]++;
 		g_aHitBox[attacker][hitgroup]++;
