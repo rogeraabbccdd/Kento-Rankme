@@ -1,14 +1,14 @@
 // FROM SMLIB
-stock Array_FindHighestValue(any:array[], size, start=0){
+stock int Array_FindHighestValue(any[] array, int size, int start = 0){
 	if (start < 0) {
 		start = 0;
 	}
 
-	new any:value = array[start];
-	new any:tempValue;
-	new x = start;
+	any value = array[start];
+	any tempValue;
+	int x = start;
 	
-	for (new i=start; i < size; i++) {
+	for (int i=start; i < size; i++) {
 		
 		tempValue = array[i];
 		
@@ -22,16 +22,16 @@ stock Array_FindHighestValue(any:array[], size, start=0){
 	return x;
 }
 
-public Action:CMD_ResetRank(client,args){
+public Action CMD_ResetRank(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new String:arg1[64];
+	char arg1[64];
 	GetCmdArg(1,arg1,sizeof(arg1));
-	new String:sEscapeArg1[129];
+	char sEscapeArg1[129];
 	SQL_EscapeString(g_hStatsDb,arg1,sEscapeArg1,sizeof(sEscapeArg1));
 	//ReplaceString(arg1,sizeof(arg1)," ","");
 	//ReplaceString(arg1,sizeof(arg1),"\"","");
-	new String:query[2000];
+	char query[2000];
 	if(g_RankBy == 1){
 		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTable,sEscapeArg1);
 	} else if (g_RankBy == 0){
@@ -41,10 +41,10 @@ public Action:CMD_ResetRank(client,args){
 	}
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	LogAction(client,-1,"[RankMe]: Rank has been reset (%s)",arg1);
-	new String:auth[64];
-	new String:name[MAX_NAME_LENGTH];
-	new String:ip[64];
-	for(new i=1;i<=MaxClients;i++){
+	char auth[64];
+	char name[MAX_NAME_LENGTH];
+	char ip[64];
+	for(int i=1;i<=MaxClients;i++){
 		if(IsClientInGame(i)){
 		
 			if(g_RankBy == 1){
@@ -73,17 +73,17 @@ public Action:CMD_ResetRank(client,args){
 	return Plugin_Handled;
 }
 
-public Action:CMD_ResetRankAll(client,args){
+public Action CMD_ResetRankAll(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 		
-	new String:query[2000];
+	char query[2000];
 	Format(query,sizeof(query),"DELETE FROM `%s` WHERE 1=1",g_sSQLTable);
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	
 	LogAction(client,-1,"[RankMe]: All rank data has been reset");
 	
-	for(new i=1;i<=MaxClients;i++){
+	for(int i=1;i<=MaxClients;i++){
 		if(IsClientInGame(i))
 			OnClientPutInServer(i);
 	}
@@ -91,24 +91,24 @@ public Action:CMD_ResetRankAll(client,args){
 	return Plugin_Handled;
 }
 
-public Action:CMD_Purge(client,args){
+public Action CMD_Purge(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new String:arg1[64];
+	char arg1[64];
 	
 	GetCmdArg(1,arg1,sizeof(arg1));
-	new String:sEscapeArg1[129];
+	char sEscapeArg1[129];
 	SQL_EscapeString(g_hStatsDb,arg1,sEscapeArg1,sizeof(sEscapeArg1));
 	//ReplaceString(arg1,sizeof(arg1)," ","");
 	//ReplaceString(arg1,sizeof(arg1),"\"","");
 	
-	new deletebefore;
+	int deletebefore;
 	if(StringToInt(arg1) == 0){
 		CPrintToChat(client, "%s %T", MSG, "Usagepurge",client);
 		return Plugin_Handled;
 	}
 	deletebefore = GetTime() - (StringToInt(arg1)*86400);
-	new String:query[2000];
+	char query[2000];
 	Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastconnect < '%d'",g_sSQLTable,deletebefore);
 	SQL_TQuery(g_hStatsDb,SQL_PurgeCallback,query);
 	LogAction(client,-1,"[RankMe]: Purged rank (%s days inactivity)",arg1);
@@ -116,7 +116,7 @@ public Action:CMD_Purge(client,args){
 	return Plugin_Handled;
 }
 
-public SQL_GetPlayersCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_GetPlayersCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -126,13 +126,13 @@ public SQL_GetPlayersCallback(Handle:owner, Handle:hndl, const String:error[], a
 	g_TotalPlayers =SQL_GetRowCount(hndl);
 }
 
-public Action:CMD_TopWeapon(client,args){
+public Action CMD_TopWeapon(int client, int args){
 	
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	if(args > 0){
-		new String:arg1[20];
-		new String:arg2[5];
+		char arg1[20];
+		char arg2[5];
 		GetCmdArg(1,arg1,sizeof(arg1));
 		GetCmdArg(2,arg2,sizeof(arg2));
 		if(!StrEqual(arg1,"") && StringToInt(arg2) != 0){
@@ -141,9 +141,9 @@ public Action:CMD_TopWeapon(client,args){
 			ShowTOPWeapon(client,GetWeaponNum(arg1),0);
 		}
 	} else {
-		new Handle:menu = CreateMenu(MenuHandler_TopWeapon_Choose);
+		Handle menu = CreateMenu(MenuHandler_TopWeapon_Choose);
 		SetMenuTitle(menu,"Top Weapon:");
-		for(new i=0;i<=39;i++){
+		for(int i=0;i<=39;i++){
 			AddMenuItem(menu,g_sWeaponsNamesGame[i],g_sWeaponsNamesFull[i]);
 		}
 		DisplayMenu(menu,client,MENU_TIME_FOREVER);
@@ -151,11 +151,11 @@ public Action:CMD_TopWeapon(client,args){
 	return Plugin_Handled;
 }
 
-public MenuHandler_TopWeapon_Choose(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopWeapon_Choose(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -168,10 +168,10 @@ public MenuHandler_TopWeapon_Choose(Handle:menu, MenuAction:action, param1, para
 	}
 }
 
-ShowTOPWeapon(client,weapon,at){
+void ShowTOPWeapon(int client, int weapon, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	WritePackCell(Datapack,weapon);
@@ -183,7 +183,7 @@ ShowTOPWeapon(client,weapon,at){
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
 	
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY %s DESC LIMIT %i, 10",query,g_sWeaponsNamesGame[weapon],at-1);
 	
@@ -191,7 +191,7 @@ ShowTOPWeapon(client,weapon,at){
 
 }
 
-public SQL_TopWeaponCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopWeaponCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -200,27 +200,27 @@ public SQL_TopWeaponCallback(Handle:owner, Handle:hndl, const String:error[], an
 	}
 	
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
 		
-	new weapon = ReadPackCell(Datapack);
-	new at = ReadPackCell(Datapack);
+	int weapon = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTOPWeapon(client,weapon,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopWeapon);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), MenuHandler_TopWeapon);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -233,7 +233,7 @@ public SQL_TopWeaponCallback(Handle:owner, Handle:hndl, const String:error[], an
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%d;%d",weapon,0);
 	AddMenuItem(menu,temp1,temp);
 	
@@ -251,15 +251,15 @@ public SQL_TopWeaponCallback(Handle:owner, Handle:hndl, const String:error[], an
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopWeapon(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopWeapon(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		
-		new String:v[2][5];
+		char v[2][5];
 		ExplodeString(temp,";",v,2,5);
 		if(StringToInt(v[1]) >= 0){
 			ShowTOPWeapon(param1,StringToInt(v[0]),StringToInt(v[1])+1);
@@ -273,11 +273,11 @@ public MenuHandler_TopWeapon(Handle:menu, MenuAction:action, param1, param2){
 	}
 }
 
-public Action:CMD_Top(client,args){
+public Action CMD_Top(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTOP(client,StringToInt(arg1));
@@ -287,10 +287,10 @@ public Action:CMD_Top(client,args){
 	return Plugin_Handled;
 }
 
-ShowTOP(client,at){
+void ShowTOP(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -300,7 +300,7 @@ ShowTOP(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	if(g_RankMode == 1)
 		Format(query,sizeof(query),"%s ORDER BY score DESC LIMIT %i, 10",query,at-1);
@@ -315,7 +315,7 @@ ShowTOP(client,at){
 
 }
 
-public SQL_TopCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -324,25 +324,25 @@ public SQL_TopCallback(Handle:owner, Handle:hndl, const String:error[], any:Data
 	}
 	
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTOP(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_Top);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_Top);
 	
-	new Float:kdr;
+	float kdr;
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -351,7 +351,7 @@ public SQL_TopCallback(Handle:owner, Handle:hndl, const String:error[], any:Data
 		SQL_FetchString(hndl,2,name,sizeof(name));
 			
 		
-		new deaths;
+		int deaths;
 		if(SQL_FetchInt(hndl,6) == 0)
 			deaths = 1;
 		else 
@@ -370,7 +370,7 @@ public SQL_TopCallback(Handle:owner, Handle:hndl, const String:error[], any:Data
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -382,11 +382,11 @@ public SQL_TopCallback(Handle:owner, Handle:hndl, const String:error[], any:Data
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_Top(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_Top(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -751,11 +751,11 @@ public MenuHandler_TopNade(Handle:menu, MenuAction:action, param1, param2){
 }
 */
 
-public Action:CMD_TopHS(client,args){
+public Action CMD_TopHS(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopHS(client,StringToInt(arg1));
@@ -765,10 +765,10 @@ public Action:CMD_TopHS(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopHS(client,at){
+void ShowTopHS(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -778,7 +778,7 @@ ShowTopHS(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY headshots DESC LIMIT %i, 10",query,at-1);
 		
@@ -786,7 +786,7 @@ ShowTopHS(client,at){
 
 }
 
-public SQL_TopHSCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopHSCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -794,24 +794,24 @@ public SQL_TopHSCallback(Handle:owner, Handle:hndl, const String:error[], any:Da
 		return;
 	}
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopHS(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopHS);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopHS);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -833,7 +833,7 @@ public SQL_TopHSCallback(Handle:owner, Handle:hndl, const String:error[], any:Da
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -845,11 +845,11 @@ public SQL_TopHSCallback(Handle:owner, Handle:hndl, const String:error[], any:Da
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopHS(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopHS(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -864,11 +864,11 @@ public MenuHandler_TopHS(Handle:menu, MenuAction:action, param1, param2){
 	}
 }
 
-public Action:CMD_TopKills(client,args){
+public Action CMD_TopKills(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopKills(client,StringToInt(arg1));
@@ -878,10 +878,10 @@ public Action:CMD_TopKills(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopKills(client,at){
+void ShowTopKills(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -891,7 +891,7 @@ ShowTopKills(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY kills DESC LIMIT %i, 10",query,at-1);
 		
@@ -899,7 +899,7 @@ ShowTopKills(client,at){
 
 }
 
-public SQL_TopKillsCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopKillsCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -907,24 +907,24 @@ public SQL_TopKillsCallback(Handle:owner, Handle:hndl, const String:error[], any
 		return;
 	}
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopKills(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopKills);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopKills);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -946,7 +946,7 @@ public SQL_TopKillsCallback(Handle:owner, Handle:hndl, const String:error[], any
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -958,11 +958,11 @@ public SQL_TopKillsCallback(Handle:owner, Handle:hndl, const String:error[], any
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopKills(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopKills(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -977,11 +977,11 @@ public MenuHandler_TopKills(Handle:menu, MenuAction:action, param1, param2){
 	}
 }
 
-public Action:CMD_TopDeaths(client,args){
+public Action CMD_TopDeaths(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopDeaths(client,StringToInt(arg1));
@@ -991,10 +991,10 @@ public Action:CMD_TopDeaths(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopDeaths(client,at){
+void ShowTopDeaths(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -1004,7 +1004,7 @@ ShowTopDeaths(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY deaths DESC LIMIT %i, 10",query,at-1);
 		
@@ -1012,7 +1012,7 @@ ShowTopDeaths(client,at){
 
 }
 
-public SQL_TopDeathsCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopDeathsCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -1020,24 +1020,24 @@ public SQL_TopDeathsCallback(Handle:owner, Handle:hndl, const String:error[], an
 		return;
 	}
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopDeaths(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopDeaths);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), MenuHandler_TopDeaths);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -1059,7 +1059,7 @@ public SQL_TopDeathsCallback(Handle:owner, Handle:hndl, const String:error[], an
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -1071,11 +1071,11 @@ public SQL_TopDeathsCallback(Handle:owner, Handle:hndl, const String:error[], an
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopDeaths(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopDeaths(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -1090,11 +1090,11 @@ public MenuHandler_TopDeaths(Handle:menu, MenuAction:action, param1, param2){
 	}
 }
 
-public Action:CMD_TopAcc(client,args){
+public Action CMD_TopAcc(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopAcc(client,StringToInt(arg1));
@@ -1104,10 +1104,10 @@ public Action:CMD_TopAcc(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopAcc(client,at){
+void ShowTopAcc(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -1117,7 +1117,7 @@ ShowTopAcc(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	
 	if(g_bMysql)
@@ -1129,7 +1129,7 @@ ShowTopAcc(client,at){
 
 }
 
-public SQL_TopAccCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopAccCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -1138,26 +1138,26 @@ public SQL_TopAccCallback(Handle:owner, Handle:hndl, const String:error[], any:D
 	}
 	
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopAcc(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopAcc);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopAcc);
 
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new shots;
-	new hits;
-	new String:sBuffer[200];
+	int shots;
+	int hits;
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -1183,7 +1183,7 @@ public SQL_TopAccCallback(Handle:owner, Handle:hndl, const String:error[], any:D
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -1195,11 +1195,11 @@ public SQL_TopAccCallback(Handle:owner, Handle:hndl, const String:error[], any:D
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopAcc(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopAcc(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -1214,11 +1214,11 @@ public MenuHandler_TopAcc(Handle:menu, MenuAction:action, param1, param2){
 	}
 }
 
-public Action:CMD_TopTime(client,args){
+public Action CMD_TopTime(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopTime(client,StringToInt(arg1));
@@ -1228,10 +1228,10 @@ public Action:CMD_TopTime(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopTime(client,at){
+void ShowTopTime(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -1241,7 +1241,7 @@ ShowTopTime(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY connected DESC LIMIT %i, 10",query,at-1);
 		
@@ -1249,7 +1249,7 @@ ShowTopTime(client,at){
 
 }
 
-public SQL_TopTimeCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopTimeCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -1257,27 +1257,27 @@ public SQL_TopTimeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 		return;
 	}
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopTime(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopTime);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopTime);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
-	new time;
-	new hours;
-	new minutes;
+	char sBuffer[200];
+	int time;
+	int hours;
+	int minutes;
 	
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -1304,7 +1304,7 @@ public SQL_TopTimeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -1316,11 +1316,11 @@ public SQL_TopTimeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopTime(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopTime(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -1335,14 +1335,14 @@ public MenuHandler_TopTime(Handle:menu, MenuAction:action, param1, param2){
 	}
 }
 
-public MenuHandler_DoNothing(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_DoNothing(Handle menu, MenuAction action, int param1, int param2){
 	if (action == MenuAction_End)
 	{
 		CloseHandle(menu);
 	}
 }
 
-public Action:CMD_Rank(client,args){
+public Action CMD_Rank(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	//LogToFile("rankme.debug.log","\"sm_rank\" command called by client %d.",client);
@@ -1358,7 +1358,7 @@ public Action:CMD_Rank(client,args){
 		return Plugin_Handled;
 	}
 	
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	
 	if(g_RankMode == 1)
@@ -1374,7 +1374,7 @@ public Action:CMD_Rank(client,args){
 	return Plugin_Handled;
 }
 
-public SQL_RankCallback(Handle:owner, Handle:hndl, const String:error[], any:client){
+public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any client){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -1383,23 +1383,23 @@ public SQL_RankCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 	if(client == 0 || !IsClientInGame(client))
 		return;
 	//LogToFile("rankme.debug.log","Rank SQL callback called by client %d.",client);
-	new i;
+	int i;
 	
 	g_TotalPlayers =SQL_GetRowCount(hndl);
-	new String:Name_receive[MAX_NAME_LENGTH];
-	new String:Auth_receive[64];
-	new String:Ip_receive[64];
+	char Name_receive[MAX_NAME_LENGTH];
+	char Auth_receive[64];
+	char Ip_receive[64];
 	
-	new ikills = g_aStats[client][KILLS];
-	new ideaths=g_aStats[client][DEATHS];
+	int ikills = g_aStats[client][KILLS];
+	int ideaths=g_aStats[client][DEATHS];
 	
-	new deaths;
+	int deaths;
 	if(ideaths == 0)
 		deaths = 1;
 	else 
 		deaths=ideaths;
 	
-	new Float:kills = IntToFloat(ikills);
+	float kills = IntToFloat(ikills);
 	
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -1412,7 +1412,7 @@ public SQL_RankCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 
 			if(g_bShowRankAll)
 			{
-				for(new j = 1; j <= MaxClients;j++)
+				for(int j = 1; j <= MaxClients;j++)
 				{
 					if(IsClientInGame(j))
 					{
@@ -1430,7 +1430,7 @@ public SQL_RankCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 	} 
 }
 
-public Action:KillRankAllTimer(Handle:timer, client)
+public Action KillRankAllTimer(Handle timer, int client)
 {
 	if(hRankTimer[client] != INVALID_HANDLE)
 	{
@@ -1438,40 +1438,40 @@ public Action:KillRankAllTimer(Handle:timer, client)
 	}
 }
 
-public Action:CMD_Session(client,args){
+public Action CMD_Session(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new Handle:panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
-	new String:text[255];
-	new String:temp[255];
+	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	char text[255];
+	char temp[255];
 	SetMenuPagination(panel,3);
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
 	StrCat(text,255,temp);
 	Format(temp,sizeof(temp),"%T: %i\n","Points",client,g_aSession[client][SCORE]);
 	StrCat(text,255,temp);
-	new ikills = g_aSession[client][KILLS];
-	new ideaths=g_aSession[client][DEATHS];
-	new deaths;
+	int ikills = g_aSession[client][KILLS];
+	int ideaths=g_aSession[client][DEATHS];
+	int deaths;
 	if(ideaths == 0)
 		deaths = 1;
 	else 
 		deaths=ideaths;
-	new Float:kills = IntToFloat(ikills);
+	float kills = IntToFloat(ikills);
 
-	new shots;
+	int shots;
 	if(g_aSession[client][SHOTS] == 0)
 		shots = 1;
 	else
 		shots = g_aSession[client][SHOTS];
 	
-	new rounds = g_aSession[client][ROUNDS_TR] + g_aSession[client][ROUNDS_CT];
+	int rounds = g_aSession[client][ROUNDS_TR] + g_aSession[client][ROUNDS_CT];
 	if((g_aSession[client][ROUNDS_TR] == 0) && (g_aSession[client][ROUNDS_CT] == 0))
 	{
 		rounds = 1;
 	}
 	
-	new idamage = g_aSession[client][DAMAGE];
-	new Float:damage = IntToFloat(idamage);
+	int idamage = g_aSession[client][DAMAGE];
+	float damage = IntToFloat(idamage);
 	
 	Format(temp,255,"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aSession[client][ASSISTS],kills/deaths);
 	StrCat(text,255,temp);
@@ -1516,11 +1516,11 @@ public Action:CMD_Session(client,args){
 	
 	Format(temp,sizeof(temp),"- %T\n","OtherStats",client);
 	StrCat(text,255,temp);
-	new time = GetTime()-g_aSession[client][CONNECTED];
-	new hours = RoundToFloor(time/3600.0);
+	int time = GetTime()-g_aSession[client][CONNECTED];
+	int hours = RoundToFloor(time/3600.0);
 	time = time-(hours*3600);
 	
-	new minutes = RoundToFloor(time/60.0);
+	int minutes = RoundToFloor(time/60.0);
 	time = time-(minutes*60);
 	
 	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
@@ -1532,16 +1532,16 @@ public Action:CMD_Session(client,args){
 	return Plugin_Handled;
 }
 
-public Action:CMD_HitBox(client,args){
+public Action CMD_HitBox(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new Handle:panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
-	new String:temp[255];
-	new ihits;
-	new Float:hits;
+	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	char temp[255];
+	int ihits;
+	float hits;
 	ihits = g_aHitBox[client][1]+g_aHitBox[client][2]+g_aHitBox[client][3]+g_aHitBox[client][4]+g_aHitBox[client][5]+g_aHitBox[client][6]+g_aHitBox[client][7];
-	new String:text[255];
+	char text[255];
 	if(ihits == 0)
 		hits= 1.0;
 	else
@@ -1570,18 +1570,18 @@ public Action:CMD_HitBox(client,args){
 	return Plugin_Handled;
 }
 
-public Action:CMD_WeaponMe(client,args){
+public Action CMD_WeaponMe(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new weapons_a[40];
-	for(new a=0;a<=39;a++){
+	int weapons_a[40];
+	for(int a=0;a<=39;a++){
 		weapons_a[a] = g_aWeapons[client][a];
 	}
-	new weapons_b[40][2];
-	new index;
-	new start;
-	new bool:indexs[40];
-	for(new a =0; a<=39;a++){
+	int weapons_b[40][2];
+	int index;
+	int start;
+	bool indexs[40];
+	for(int a =0; a<=39;a++){
 		index =Array_FindHighestValue(weapons_a, sizeof(weapons_a));
 		weapons_b[a][0] = index;
 		weapons_b[a][1] = weapons_a[index];
@@ -1595,7 +1595,7 @@ public Action:CMD_WeaponMe(client,args){
 		indexs[index]=true;
 	}
 
-	for(new b=0; b<=39; b++){
+	for(int b=0; b<=39; b++){
 	
 		if(indexs[b] ==false){
 			if(start <=39)
@@ -1604,20 +1604,20 @@ public Action:CMD_WeaponMe(client,args){
 			start++;
 		}
 	}
-	new Handle:panel = CreateMenu(MenuHandler_DoNothing);
+	Handle panel = CreateMenu(MenuHandler_DoNothing);
 	
-	new ikills =g_aStats[client][KILLS];
+	int ikills =g_aStats[client][KILLS];
 	
-	new Float:hits;
+	float hits;
 	if(ikills == 0)
 		hits= 1.0;
 	else
 		hits = IntToFloat(ikills);
 
-	new String:temp[255];
+	char temp[255];
 	Format(temp,sizeof(temp),"%T","WeaponsStats",client);
 	SetMenuTitle(panel, temp);
-	for(new i=0;i<=39;i++){
+	for(int i=0;i<=39;i++){
 		Format(temp,sizeof(temp),"%s: %d (%.2f%%)",g_sWeaponsNamesFull[weapons_b[i][0]],weapons_b[i][1],(weapons_b[i][1]/hits)*100);
 		AddMenuItem(panel,temp,temp,ITEMDRAW_DISABLED);
 	}
@@ -1626,10 +1626,10 @@ public Action:CMD_WeaponMe(client,args){
 	return Plugin_Handled;
 }
 
-public Action:CMD_StatsMe(client,args){
+public Action CMD_StatsMe(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	if(g_RankMode == 1)
 		Format(query,sizeof(query),"%s ORDER BY score DESC",query);
@@ -1645,17 +1645,17 @@ public Action:CMD_StatsMe(client,args){
 	
 }
 
-public Action:CMD_StatsMe2(client,args){
+public Action CMD_StatsMe2(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 		
-	new String:arg1[MAX_NAME_LENGTH];
+	char arg1[MAX_NAME_LENGTH];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	StripQuotes(arg1);
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	
-	new String:order[2000];
+	char order[2000];
 	if(g_RankMode == 1)
 		Format(order,sizeof(order),"ORDER BY score DESC");
 	else if(g_RankMode == 2){
@@ -1664,16 +1664,16 @@ public Action:CMD_StatsMe2(client,args){
 		else
 			Format(query,sizeof(query),"%s ORDER BY CAST(kills as float)/CAST(Case when deaths=0 then 1 ELSE deaths END as float) DESC, score DESC",query);
 	}	
-	new Handle:hDatapack = CreateDataPack();
+	Handle hDatapack = CreateDataPack();
 	
 	WritePackCell(hDatapack,client);
-	new bool:tn_is_ml;
-	new String:tname[MAX_NAME_LENGTH];
-	new targets[1];
+	bool tn_is_ml;
+	char tname[MAX_NAME_LENGTH];
+	int targets[1];
 	
 	
 	if(ProcessTargetString(arg1,0,targets,1,COMMAND_FILTER_NO_MULTI,tname,sizeof(tname),tn_is_ml) == 1){
-		new target = targets[0];
+		int target = targets[0];
 	
 		WritePackCell(hDatapack,0);
 		Format(query,sizeof(query),"%s %s", query,order);
@@ -1714,7 +1714,7 @@ public Action:CMD_StatsMe2(client,args){
 	
 }
 
-public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any:hDatapack){
+public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, any hDatapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -1723,18 +1723,18 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 	
 	ResetPack(hDatapack);
 	
-	new client = ReadPackCell(hDatapack);
+	int client = ReadPackCell(hDatapack);
 	
 	if(client == 0 || !IsClientInGame(client))
 		return;
 		
-	new type = ReadPackCell(hDatapack);
-	new i;
+	int type = ReadPackCell(hDatapack);
+	int i;
 	
-	new String:auth[64];
-	new String:name[MAX_NAME_LENGTH];
+	char auth[64];
+	char name[MAX_NAME_LENGTH];
 	
-	new target;
+	int target;
 	
 	if(type == 0){
 		
@@ -1754,8 +1754,8 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 		
 	}
 	CloseHandle(hDatapack);
-	new String:Auth_receive[64];
-	new String:Name_receive[MAX_NAME_LENGTH];
+	char Auth_receive[64];
+	char Name_receive[MAX_NAME_LENGTH];
 	
 	if(type != 1){
 		
@@ -1779,35 +1779,35 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 		return;
 	}
 	
-	new Handle:panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	
 	SetMenuTitle(panel,Name_receive);
 	
-	new String:text[255];
+	char text[255];
 	SetMenuPagination(panel,3);
-	new ikills = SQL_FetchInt(hndl,5);
-	new ideaths= SQL_FetchInt(hndl,6);
-	new deaths;
+	int ikills = SQL_FetchInt(hndl,5);
+	int ideaths= SQL_FetchInt(hndl,6);
+	int deaths;
 	if(ideaths == 0)
 		deaths = 1;
 	else 
 		deaths=ideaths;
-	new Float:kills = IntToFloat(ikills);
-	new shots = SQL_FetchInt(hndl,10);
+	float kills = IntToFloat(ikills);
+	int shots = SQL_FetchInt(hndl,10);
 	if(shots == 0)
 		shots = 1;
 	
-	new rounds = SQL_FetchInt(hndl,14) + SQL_FetchInt(hndl,15);
+	int rounds = SQL_FetchInt(hndl,14) + SQL_FetchInt(hndl,15);
 	if((SQL_FetchInt(hndl,14) == 0) && (SQL_FetchInt(hndl,15) == 0))
 	{
 		rounds = 1;
 	}
 
-	new idamage = SQL_FetchInt(hndl,74);
-	new Float:damage = IntToFloat(idamage);
+	int idamage = SQL_FetchInt(hndl,74);
+	float damage = IntToFloat(idamage);
 	
-	new hits = SQL_FetchInt(hndl,11);
-	new String:temp[255];
+	int hits = SQL_FetchInt(hndl,11);
+	char temp[255];
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
 	StrCat(text,255,temp);
 	if(i == 0)
@@ -1859,14 +1859,14 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 	Format(temp,sizeof(temp),"- %T\n","OtherStats",client);
 	StrCat(text,255,temp);
 	
-	new time = SQL_FetchInt(hndl,13);
+	int time = SQL_FetchInt(hndl,13);
 	if(target != 0 && IsClientInGame(target))
 		time += GetTime()-g_aSession[client][CONNECTED];
 		
-	new hours = RoundToFloor(time/3600.0);
+	int hours = RoundToFloor(time/3600.0);
 	time = time-(hours*3600);
 	
-	new minutes = RoundToFloor(time/60.0);
+	int minutes = RoundToFloor(time/60.0);
 	time = time-(minutes*60);
 	
 	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
@@ -1879,7 +1879,7 @@ public SQL_StatsMe2Callback(Handle:owner, Handle:hndl, const String:error[], any
 	
 }
 
-public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:client){
+public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, any client){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -1887,12 +1887,12 @@ public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	}
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new i;
+	int i;
 	
 	g_TotalPlayers =SQL_GetRowCount(hndl);
-	new String:Auth_receive[64];
-	new String:Name_receive[MAX_NAME_LENGTH];
-	new String:Ip_receive[64];
+	char Auth_receive[64];
+	char Name_receive[MAX_NAME_LENGTH];
+	char Ip_receive[64];
 	if(g_aStats[client][KILLS] >= g_MinimalKills){
 		
 		while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -1910,33 +1910,33 @@ public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	} else {
 		i = 0;
 	}
-	new Handle:panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
-	new String:text[255];
+	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	char text[255];
 	SetMenuPagination(panel,3);
-	new ikills = g_aStats[client][KILLS];
-	new ideaths=g_aStats[client][DEATHS];
-	new deaths;
+	int ikills = g_aStats[client][KILLS];
+	int ideaths=g_aStats[client][DEATHS];
+	int deaths;
 	if(ideaths == 0)
 		deaths = 1;
 	else 
 		deaths=ideaths;
-	new Float:kills = IntToFloat(ikills);
-	new shots;
+	float kills = IntToFloat(ikills);
+	int shots;
 	if(g_aStats[client][SHOTS] == 0)
 		shots = 1;
 	else
 		shots = g_aStats[client][SHOTS];
 	
-	new rounds = g_aStats[client][ROUNDS_TR] + g_aStats[client][ROUNDS_CT];
+	int rounds = g_aStats[client][ROUNDS_TR] + g_aStats[client][ROUNDS_CT];
 	if((g_aStats[client][ROUNDS_TR] ==0) && (g_aStats[client][ROUNDS_CT] == 0))
 	{
 		rounds = 1;
 	}
 	
-	new idamage = g_aStats[client][DAMAGE];
-	new Float:damage = IntToFloat(idamage);
+	int idamage = g_aStats[client][DAMAGE];
+	float damage = IntToFloat(idamage);
 
-	new String:temp[255];
+	char temp[255];
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
 	StrCat(text,255,temp);
 	if(i == 0)
@@ -1987,11 +1987,11 @@ public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	
 	Format(temp,sizeof(temp),"- %T\n","OtherStats",client);
 	StrCat(text,255,temp);
-	new time = g_aStats[client][CONNECTED] + GetTime()-g_aSession[client][CONNECTED];
-	new hours = RoundToFloor(time/3600.0);
+	int time = g_aStats[client][CONNECTED] + GetTime()-g_aSession[client][CONNECTED];
+	int hours = RoundToFloor(time/3600.0);
 	time = time-(hours*3600);
 	
-	new minutes = RoundToFloor(time/60.0);
+	int minutes = RoundToFloor(time/60.0);
 	time = time-(minutes*60);
 	
 	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
@@ -2004,16 +2004,16 @@ public SQL_StatsMeCallback(Handle:owner, Handle:hndl, const String:error[], any:
 	
 }
 
-public PanelNoHandle(Handle:menu, MenuAction:action, param1, param2){
+public int PanelNoHandle(Handle menu, MenuAction action, int param1, int param2){
 
 	
 
 }
 
-public Action:CMD_Next(client,args){
+public Action CMD_Next(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	if(g_RankMode == 1)
 		Format(query,sizeof(query),"%s ORDER BY score DESC",query);
@@ -2028,7 +2028,7 @@ public Action:CMD_Next(client,args){
 	return Plugin_Handled;
 }
 
-public SQL_NextCallback(Handle:owner, Handle:hndl, const String:error[], any:client){
+public void SQL_NextCallback(Handle owner, Handle hndl, const char[] error, any client){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -2036,16 +2036,16 @@ public SQL_NextCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 	}
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new i;
-	new a;
+	int i;
+	int a;
 	g_TotalPlayers =SQL_GetRowCount(hndl);
-	new String:next_players_name[10][MAX_NAME_LENGTH];
-	new next_players_score[10];
-	new bool:dobreak;
+	char next_players_name[10][MAX_NAME_LENGTH];
+	int next_players_score[10];
+	bool dobreak;
 	
-	new String:Auth_receive[64];
-	new String:Name_receive[MAX_NAME_LENGTH];
-	new String:Ip_receive[64];
+	char Auth_receive[64];
+	char Name_receive[MAX_NAME_LENGTH];
+	char Ip_receive[64];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		i++;
@@ -2078,19 +2078,19 @@ public SQL_NextCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 		if(dobreak)
 			break;
 	} 
-	new Handle:panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
-	new String:text[500];
-	new String:temp[255];
+	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	char text[500];
+	char temp[255];
 	Format(temp,sizeof(temp),"%T\n","Next9Players",client);
 	StrCat(text,255,temp);
 	
-	new max;
+	int max;
 	if(i<10){
 		max = i-1; 
 	} else {
 		max = 9;
 	}
-	for(new b=0;b<=max;b++){
+	for(int b=0;b<=max;b++){
 		if(!StrEqual(next_players_name[b],"",false)){
 			Format(temp,sizeof(temp),"- %s (%d) => +%d\n",next_players_name[b],next_players_score[b],next_players_score[b]-g_aStats[client][SCORE]);
 			StrCat(text,500,temp);
@@ -2103,14 +2103,14 @@ public SQL_NextCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 	CloseHandle(panel);
 }
 
-public Action:CMD_ResetOwnRank(client,args){
+public Action CMD_ResetOwnRank(int client, int args){
 
 	if(!g_bEnabled || !g_bResetOwnRank || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	new String:query[2000];
+	char query[2000];
 	if(g_RankBy == 1){
 		
-		new String:sEscape[MAX_NAME_LENGTH*2+1];
+		char sEscape[MAX_NAME_LENGTH*2+1];
 		SQL_EscapeString(g_hStatsDb,g_aClientName[client],sEscape,sizeof(sEscape));
 		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTable,sEscape);
 	} else if(g_RankBy == 0){
@@ -2125,22 +2125,22 @@ public Action:CMD_ResetOwnRank(client,args){
 	return Plugin_Handled;
 }
 
-public Float:IntToFloat(integer){
-	new String:s[300];
+public float IntToFloat(int integer){
+	char s[300];
 	IntToString(integer,s,sizeof(s));
 	return StringToFloat(s);
 }
 
-public FloatToInt(Float:ifloat){
-	new String:s[300];
+public int FloatToInt(float ifloat){
+	char s[300];
 	FloatToString(ifloat,s,sizeof(s));
 	return StringToInt(s);
 }
 
 
-public Action:CMD_RankMe(client,args){
+public Action CMD_RankMe(int client, int args){
 
-	new Handle:hMenu = CreateMenu(MenuHandler_RankMe);
+	Handle hMenu = CreateMenu(MenuHandler_RankMe);
 	
 	SetMenuExitButton(hMenu,true);
 	
@@ -2255,11 +2255,11 @@ public Action:CMD_RankMe(client,args){
 	
 }
 
-public MenuHandler_RankMe(Handle:menu, MenuAction:action, client, param2){
+public int MenuHandler_RankMe(Handle menu, MenuAction action, int client, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		
@@ -2330,14 +2330,14 @@ public MenuHandler_RankMe(Handle:menu, MenuAction:action, client, param2){
 			
 		else if(StrEqual(temp,"resetrank")){
 			
-			new Handle:hMenu = CreateMenu(MenuHandler_TargetResetRank);
+			Handle hMenu = CreateMenu(MenuHandler_TargetResetRank);
 			AddTargetsToMenu2(hMenu,0,COMMAND_FILTER_NO_BOTS);
 			
 			DisplayMenu(hMenu,client,MENU_TIME_FOREVER);
 		}
 		else if(StrEqual(temp,"statsme2")){
 			
-			new Handle:hMenu = CreateMenu(MenuHandler_TargetStatsMe2);
+			Handle hMenu = CreateMenu(MenuHandler_TargetStatsMe2);
 			AddTargetsToMenu2(hMenu,0,COMMAND_FILTER_NO_BOTS);
 			
 			DisplayMenu(hMenu,client,MENU_TIME_FOREVER);
@@ -2355,14 +2355,14 @@ public MenuHandler_RankMe(Handle:menu, MenuAction:action, client, param2){
 	
 }
 
-public MenuHandler_TargetResetRank(Handle:menu, MenuAction:action, client, param2){
+public int MenuHandler_TargetResetRank(Handle menu, MenuAction action, int client, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
-		new target = GetClientOfUserId(StringToInt(temp));
+		int target = GetClientOfUserId(StringToInt(temp));
 		
 		if(g_RankBy == 1){
 			
@@ -2382,14 +2382,14 @@ public MenuHandler_TargetResetRank(Handle:menu, MenuAction:action, client, param
 	
 }
 
-public MenuHandler_TargetStatsMe2(Handle:menu, MenuAction:action, client, param2){
+public int MenuHandler_TargetStatsMe2(Handle menu, MenuAction action, int client, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
-		new target = GetClientOfUserId(StringToInt(temp));
+		int target = GetClientOfUserId(StringToInt(temp));
 		
 		if(g_RankBy == 0 || g_RankBy == 2){
 			
@@ -2407,11 +2407,11 @@ public MenuHandler_TargetStatsMe2(Handle:menu, MenuAction:action, client, param2
 }
 
 /* Assist */
-public Action:CMD_TopAssists(client,args){
+public Action CMD_TopAssists(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopAssists(client,StringToInt(arg1));
@@ -2421,10 +2421,10 @@ public Action:CMD_TopAssists(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopAssists(client,at){
+void ShowTopAssists(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -2434,7 +2434,7 @@ ShowTopAssists(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY assists DESC LIMIT %i, 10",query,at-1);
 		
@@ -2442,7 +2442,7 @@ ShowTopAssists(client,at){
 
 }
 
-public SQL_TopAssistsCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopAssistsCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -2450,24 +2450,24 @@ public SQL_TopAssistsCallback(Handle:owner, Handle:hndl, const String:error[], a
 		return;
 	}
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopAssists(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopAssists);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopAssists);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -2487,7 +2487,7 @@ public SQL_TopAssistsCallback(Handle:owner, Handle:hndl, const String:error[], a
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -2499,11 +2499,11 @@ public SQL_TopAssistsCallback(Handle:owner, Handle:hndl, const String:error[], a
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopAssists(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopAssists(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -2519,11 +2519,11 @@ public MenuHandler_TopAssists(Handle:menu, MenuAction:action, param1, param2){
 }
 
 /* Top TK */
-public Action:CMD_TopTK(client,args){
+public Action CMD_TopTK(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopTK(client,StringToInt(arg1));
@@ -2533,10 +2533,10 @@ public Action:CMD_TopTK(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopTK(client,at){
+void ShowTopTK(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -2546,7 +2546,7 @@ ShowTopTK(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY tk DESC LIMIT %i, 10",query,at-1);
 		
@@ -2554,7 +2554,7 @@ ShowTopTK(client,at){
 
 }
 
-public SQL_TopTKCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopTKCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -2562,24 +2562,24 @@ public SQL_TopTKCallback(Handle:owner, Handle:hndl, const String:error[], any:Da
 		return;
 	}
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopTK(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopTK);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopTK);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -2601,7 +2601,7 @@ public SQL_TopTKCallback(Handle:owner, Handle:hndl, const String:error[], any:Da
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -2613,11 +2613,11 @@ public SQL_TopTKCallback(Handle:owner, Handle:hndl, const String:error[], any:Da
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopTK(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopTK(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -2633,11 +2633,11 @@ public MenuHandler_TopTK(Handle:menu, MenuAction:action, param1, param2){
 }
 
 /* Top MVP */
-public Action:CMD_TopMVP(client,args){
+public Action CMD_TopMVP(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopMVP(client,StringToInt(arg1));
@@ -2647,10 +2647,10 @@ public Action:CMD_TopMVP(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopMVP(client,at){
+void ShowTopMVP(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -2660,7 +2660,7 @@ ShowTopMVP(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY mvp DESC LIMIT %i, 10",query,at-1);
 		
@@ -2668,7 +2668,7 @@ ShowTopMVP(client,at){
 
 }
 
-public SQL_TopMVPCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopMVPCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -2676,24 +2676,24 @@ public SQL_TopMVPCallback(Handle:owner, Handle:hndl, const String:error[], any:D
 		return;
 	}
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopMVP(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopMVP);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopMVP);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -2715,7 +2715,7 @@ public SQL_TopMVPCallback(Handle:owner, Handle:hndl, const String:error[], any:D
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -2727,11 +2727,11 @@ public SQL_TopMVPCallback(Handle:owner, Handle:hndl, const String:error[], any:D
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopMVP(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopMVP(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
@@ -2747,11 +2747,11 @@ public MenuHandler_TopMVP(Handle:menu, MenuAction:action, param1, param2){
 }
 
 /* Top Damage */
-public Action:CMD_TopDamage(client,args){
+public Action CMD_TopDamage(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	new String:arg1[5];
+	char arg1[5];
 	GetCmdArg(1,arg1,sizeof(arg1));
 	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
 		ShowTopDamage(client,StringToInt(arg1));
@@ -2761,10 +2761,10 @@ public Action:CMD_TopDamage(client,args){
 	return Plugin_Handled;
 }
 
-ShowTopDamage(client,at){
+void ShowTopDamage(int client, int at){
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new Handle:Datapack= CreateDataPack();
+	Handle Datapack= CreateDataPack();
 	
 	WritePackCell(Datapack,client);
 	
@@ -2774,7 +2774,7 @@ ShowTopDamage(client,at){
 		WritePackCell(Datapack,0);
 		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
 	}
-	new String:query[2000];
+	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	Format(query,sizeof(query),"%s ORDER BY damage DESC LIMIT %i, 10",query,at-1);
 		
@@ -2782,7 +2782,7 @@ ShowTopDamage(client,at){
 
 }
 
-public SQL_TopDamageCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
+public void SQL_TopDamageCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -2790,24 +2790,24 @@ public SQL_TopDamageCallback(Handle:owner, Handle:hndl, const String:error[], an
 		return;
 	}
 	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
 	if(client == 0 || !IsClientInGame(client))
 		return;
-	new at = ReadPackCell(Datapack);
+	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
 		ShowTopDamage(client,g_TotalPlayers-9);
 		return;
 	}
-	new String:name[256];
-	new String:temp[500];
+	char name[256];
+	char temp[500];
 	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopDamage);
+	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopDamage);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
 	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
+	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		
@@ -2829,7 +2829,7 @@ public SQL_TopDamageCallback(Handle:owner, Handle:hndl, const String:error[], an
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
+	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
 		AddMenuItem(menu,temp,temp1);
@@ -2841,11 +2841,11 @@ public SQL_TopDamageCallback(Handle:owner, Handle:hndl, const String:error[], an
 	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
 }
 
-public MenuHandler_TopDamage(Handle:menu, MenuAction:action, param1, param2){
+public int MenuHandler_TopDamage(Handle menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
-		new String:temp[250];
+		char temp[250];
 	
 		GetMenuItem(menu, param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){

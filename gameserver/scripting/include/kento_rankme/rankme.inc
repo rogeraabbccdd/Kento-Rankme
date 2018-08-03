@@ -1,4 +1,3 @@
-
 #if defined _rankme_included
   #endinput
 #endif
@@ -88,7 +87,7 @@ enum HITBOXES{
 }
 
 
-public SharedPlugin:__pl_rankme= 
+public SharedPlugin __pl_rankme= 
 {
 	name = "rankme",
 	file = "kento_rankme.smx",
@@ -97,14 +96,14 @@ public SharedPlugin:__pl_rankme=
 	#else
 	required = 0
 	#endif
-};
+}
 
-funcenum RankCallback
+typeset RankCallback
 {
-	public(client, rank,any:data),
+	function Action (int client, int rank, any data);
 };
 
-public __pl_rankme_SetNTVOptional()
+public void __pl_rankme_SetNTVOptional()
 {
 	MarkNativeAsOptional("RankMe_GivePoint");
 	MarkNativeAsOptional("RankMe_GetRank");
@@ -125,7 +124,7 @@ public __pl_rankme_SetNTVOptional()
  * @param printtoall	Print the change to the everyone
  * @noreturn		
  *********************************************************/
-native RankMe_GivePoint(client,points,String:reason[],printtoplayer,printtoall);
+native RankMe_GivePoint(int client, int points, char [] reason, int printtoplayer, int printtoall);
 
 /*********************************************************
  * Get rank of a player on the server
@@ -135,7 +134,7 @@ native RankMe_GivePoint(client,points,String:reason[],printtoplayer,printtoall);
  * @param data	Any data you would like that return on the callback
  * @noreturn		
  *********************************************************/
-native RankMe_GetRank(client,RankCallback:callback,any:data=0);
+native RankMe_GetRank(client, RankCallback callback,any data=0);
 
 /*********************************************************
  * Get the score (points) of a player on the server
@@ -188,7 +187,7 @@ native RankMe_GetHitbox(client,hitbox_return[]);
  * @param         client        The client index of the player that has been loaded
  * @noreturn
  **********************************************************************/
-forward Action:RankMe_OnPlayerLoaded(client);
+forward Action RankMe_OnPlayerLoaded(client);
 
 /**********************************************************************
  * When a player has been saved
@@ -196,4 +195,4 @@ forward Action:RankMe_OnPlayerLoaded(client);
  * @param         client        The client index of the player that has been saved
  * @noreturn
  **********************************************************************/
-forward Action:RankMe_OnPlayerSaved(client);
+forward Action RankMe_OnPlayerSaved(client);
