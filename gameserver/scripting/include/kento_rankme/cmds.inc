@@ -1350,6 +1350,14 @@ public Action:CMD_Rank(client,args){
 		CPrintToChat(client,"%s %T",MSG,"NotRanked",client,g_aStats[client][KILLS],g_MinimalKills);
 		return Plugin_Handled;
 	}
+	
+	// check cooldown
+	if(g_bShowRankAll && hRankTimer[client] != INVALID_HANDLE)
+	{
+		CPrintToChat(client,"%s %T",MSG,"RankCooldown",client);
+		return Plugin_Handled;
+	}
+	
 	new String:query[2000];
 	MakeSelectQuery(query,sizeof(query));
 	
@@ -1402,16 +1410,32 @@ public SQL_RankCallback(Handle:owner, Handle:hndl, const String:error[], any:cli
 	//	PrintToServer("%d %s %s",i, Name_receive, Auth_receive);
 		if((g_RankBy == 1 && StrEqual(Name_receive,g_aClientName[client],false)) || (g_RankBy == 0 && StrEqual(Auth_receive,g_aClientSteam[client],false)) || (g_RankBy == 2 && StrEqual(Ip_receive,g_aClientIp[client],false))){
 
-			if(g_bShowRankAll){
+			if(g_bShowRankAll)
+			{
 				for(new j = 1; j <= MaxClients;j++)
+				{
 					if(IsClientInGame(j))
+					{
 						CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
-			} else {
+						if (g_fRankAllTimer > 0.0)hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
+					}
+				}
+			} 
+			else 
+			{
 				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
 			}
 			break;
 		}
 	} 
+}
+
+public Action:KillRankAllTimer(Handle:timer, client)
+{
+	if(hRankTimer[client] != INVALID_HANDLE)
+	{
+		hRankTimer[client] = INVALID_HANDLE;
+	}
 }
 
 public Action:CMD_Session(client,args){
@@ -2451,8 +2475,6 @@ public SQL_TopAssistsCallback(Handle:owner, Handle:hndl, const String:error[], a
 		
 		SQL_FetchString(hndl,2,name,sizeof(name));
 			
-		
-	
 		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %t: %d\n",i+at,name,SQL_FetchInt(hndl,4),"Assists",SQL_FetchInt(hndl,7));
 		
 		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
