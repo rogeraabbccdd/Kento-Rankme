@@ -96,6 +96,7 @@ new Handle:g_cvarMinimalKills;
 new Handle:g_cvarPercentPointsLose;
 new Handle:g_cvarPointsLoseRoundCeil;
 new Handle:g_cvarShowRankAll;
+new Handle:g_cvarRankAllTimer;
 new Handle:g_cvarResetOwnRank;
 new Handle:g_cvarMinimumPlayers;
 new Handle:g_cvarVipEnabled;
@@ -124,6 +125,7 @@ new bool:g_bMysql;
 new bool:g_bGatherStats;
 new bool:g_bDumpDB;
 new bool:g_bChatTriggers;
+new Float:g_fRankAllTimer;
 new g_RankBy;
 new g_PointsBombDefusedTeam;
 new g_PointsBombDefusedPlayer;
@@ -189,6 +191,9 @@ new String:g_aClientIp[MAXPLAYERS + 1][64];
 new Handle:g_cvarRankCache;
 new Handle:g_arrayRankCache[3];
 new bool:g_bRankCache;
+
+/* Cooldown Timer */
+new Handle:hRankTimer[MAXPLAYERS + 1] = INVALID_HANDLE;
 
 #include <kento_rankme/cmds>
 
@@ -274,6 +279,7 @@ public OnPluginStart() {
 	g_cvarPointsLoseRoundCeil = CreateConVar("rankme_points_lose_round_ceil", "1", "If the points is f1oat, round it to next the highest or lowest? 1 = highest 0 = lowest", _, true, 0.0, true, 1.0);
 	g_cvarChatChange = CreateConVar("rankme_changes_chat", "1", "Show points changes on chat? 1 = true 0 = false", _, true, 0.0, true, 1.0);
 	g_cvarShowRankAll = CreateConVar("rankme_show_rank_all", "0", "When rank command is used, show for all the rank of the player? 1 = true 0 = false", _, true, 0.0, true, 1.0);
+	g_cvarRankAllTimer = CreateConVar("rankme_rank_all_timer", "30.0", "Cooldown timer to prevent rank command spam.\n0.0 = disabled", _, true, 0.0);
 	g_cvarShowBotsOnRank = CreateConVar("rankme_show_bots_on_rank", "0", "Show bots on rank/top/etc? 1 = true 0 = false", _, true, 0.0, true, 1.0);
 	g_cvarResetOwnRank = CreateConVar("rankme_resetownrank", "0", "Allow player to reset his own rank? 1 = true 0 = false", _, true, 0.0, true, 1.0);
 	g_cvarMinimumPlayers = CreateConVar("rankme_minimumplayers", "2", "Minimum players to start giving points", _, true, 0.0);
@@ -322,6 +328,7 @@ public OnPluginStart() {
 	HookConVarChange(g_cvarChatChange, OnConVarChanged);
 	HookConVarChange(g_cvarShowBotsOnRank, OnConVarChanged);
 	HookConVarChange(g_cvarShowRankAll, OnConVarChanged);
+	HookConVarChange(g_cvarRankAllTimer, OnConVarChanged);
 	HookConVarChange(g_cvarResetOwnRank, OnConVarChanged);
 	HookConVarChange(g_cvarMinimumPlayers, OnConVarChanged);
 	HookConVarChange(g_cvarRankbots, OnConVarChanged);
@@ -566,6 +573,7 @@ public OnConfigsExecuted() {
 	g_bEnabled = GetConVarBool(g_cvarEnabled);
 	g_bChatChange = GetConVarBool(g_cvarChatChange);
 	g_bShowRankAll = GetConVarBool(g_cvarShowRankAll);
+	g_fRankAllTimer = GetConVarFloat(g_cvarRankAllTimer);
 	g_bRankBots = GetConVarBool(g_cvarRankbots);
 	g_bFfa = GetConVarBool(g_cvarFfa);
 	g_bDumpDB = GetConVarBool(g_cvarDumpDB);
@@ -2298,6 +2306,9 @@ public OnConVarChanged(Handle:convar, const String:oldValue[], const String:newV
 	}
 	else if (convar == g_cvarShowRankAll) {
 		g_bShowRankAll = GetConVarBool(g_cvarShowRankAll);
+	}
+	else if (convar == g_cvarRankAllTimer) {
+		g_fRankAllTimer = GetConVarFloat(g_cvarRankAllTimer);
 	}
 	else if (convar == g_cvarChatChange) {
 		g_bChatChange = GetConVarBool(g_cvarChatChange);

@@ -267,6 +267,12 @@
 		"en"		"{RED}Match draw{NORMAL}, {PINK}Both teams {LIGHTGREEN}got {1} points {NORMAL}."
 	}
 	
+	"RankCooldown"
+	{
+		"#format"	""
+		"en"		"{RED}We know you are the best player, please stop spamming!"
+	}
+	
 	//****************** PrintHintText ******************
 
 	"PlayerJoinedHint"

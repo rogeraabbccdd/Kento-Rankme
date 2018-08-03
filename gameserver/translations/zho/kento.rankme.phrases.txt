@@ -268,6 +268,12 @@
 		"zho"		"{RED}比賽平手{NORMAL}, {PINK}雙方 {LIGHTGREEN}獲得 {1} 點{NORMAL}."
 	}
 	
+	"Draw"
+	{
+		"#format"	""
+		"zho"		"{RED}我們知道你很厲害，所以請你不要洗頻."
+	}
+	
 	//****************** PrintHintText ******************
 	
 	"PlayerJoinedHint"
