@@ -1759,7 +1759,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		StrEqual(weapon, "knife_push") || 
 		StrEqual(weapon, "knife_survival_bowie") ||
 		StrEqual(weapon, "knife_ursus") || 
-		StrEqual(weapon, "knife_gypsy") || 
+		StrEqual(weapon, "knife_gypsy_jackknife") || 
 		StrEqual(weapon, "knife_stiletto") || 
 		StrEqual(weapon, "knife_widowmaker")
 		) {
