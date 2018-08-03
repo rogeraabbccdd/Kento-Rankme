@@ -1,11 +1,7 @@
 # RankMe Kento Edition
-Dev Aborted.  
-
 Rankme plugin for CSGO servers, improved from [benscobie's rankme](https://github.com/benscobie/sourcemod-rankme).  
 
 IF YOU WANT TO UPDATE YOUR RANKME TO MINE, YOU HAVE TO BACKUP YOUR OLD DATABSE, LOAD THIS PLUGIN AND THEN IMPORT YOUR OLD DATABSE.
-
-
 
 ## Forum Thread
 For more info please go here
