@@ -1736,7 +1736,25 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		GetEventString(event, "weapon", weapon, sizeof(weapon));
 		ReplaceString(weapon, sizeof(weapon), "weapon_", "");
 		
-		if (StrEqual(weapon, "knife_default_ct") || StrEqual(weapon, "knife_default_t") || StrEqual(weapon, "knife_t") || StrEqual(weapon, "knifegg") || StrEqual(weapon, "knife_flip") || StrEqual(weapon, "knife_gut") || StrEqual(weapon, "knife_karambit") || StrEqual(weapon, "bayonet") || StrEqual(weapon, "knife_m9_bayonet") || StrEqual(weapon, "knife_butterfly") || StrEqual(weapon, "knife_tactical") || StrEqual(weapon, "knife_falchion") || StrEqual(weapon, "knife_push") || StrEqual(weapon, "knife_survival_bowie")) {
+		if (StrEqual(weapon, "knife_default_ct") || 
+		StrEqual(weapon, "knife_default_t") || 
+		StrEqual(weapon, "knife_t") || 
+		StrEqual(weapon, "knifegg") || 
+		StrEqual(weapon, "knife_flip") || 
+		StrEqual(weapon, "knife_gut") || 
+		StrEqual(weapon, "knife_karambit") || 
+		StrEqual(weapon, "bayonet") || 
+		StrEqual(weapon, "knife_m9_bayonet") || 
+		StrEqual(weapon, "knife_butterfly") || 
+		StrEqual(weapon, "knife_tactical") || 
+		StrEqual(weapon, "knife_falchion") || 
+		StrEqual(weapon, "knife_push") || 
+		StrEqual(weapon, "knife_survival_bowie") ||
+		StrEqual(weapon, "knife_ursus") || 
+		StrEqual(weapon, "knife_gypsy") || 
+		StrEqual(weapon, "knife_stiletto") || 
+		StrEqual(weapon, "knife_widowmaker")
+		) {
 			weapon = "knife";
 		}
 		
