@@ -78,7 +78,7 @@
 	"IsRankedAt"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
-		"chi"		"玩家 {PINK} {1} {NORMAL}的排名是 {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} 点{NORMAL},{LIGHTGREEN} {5} 击杀{NORMAL},{RED} {6} 死亡{NORMAL},{ORANGE} {7} 助攻{NORMAL},{BLUE} KDR {8}{NORMAL},{DARKRED} TKs{NORMAL}, {YELLOW}{10} MVPs{NORMAL}."
+		"chi"		"玩家 {PINK} {1} {NORMAL}的排名是 {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} 点{NORMAL},{LIGHTGREEN} {5} 击杀{NORMAL},{RED} {6} 死亡{NORMAL},{ORANGE} {7} 助攻{NORMAL},{BLUE} KDR {8}{NORMAL},{DARKRED} {9} TKs{NORMAL}, {YELLOW}{10} MVPs{NORMAL}."
 	}
 	
 	"Killing"
@@ -225,7 +225,47 @@
 	
 	"UsageStatsme2"
 	{
-		"chi"		"{RED}请使用: {PINK}sm_statsme2 <名字 / #排名 / steam>"
+		"chi"		"{RED}请使用: {PINK}sm_statsme2 <名字 | #排名 | steam>"
+	}
+	
+	"Hide Rankme Chat"
+	{
+		"chi"		"{RED}隐藏对话框消息."
+	}
+	
+	"Show Rankme Chat"
+	{
+		"chi"		"{LIGHTGREEN}显示对话框消息."
+	}
+	
+	"CT_Win"
+	{
+		"#format"	"{1:d}"
+		"chi"		"{BLUE}反恐精英 {RED}赢得比赛{NORMAL},{LIGHTGREEN}获得 {1} 点{NORMAL}."
+	}
+	
+	"TR_Win"
+	{
+		"#format"	"{1:d}"
+		"chi"		"{ORANGE}恐怖分子 {RED}赢得比赛{NORMAL},{LIGHTGREEN}获得 {1} 点{NORMAL}."
+	}
+	
+	"CT_Lose"
+	{
+		"#format"	"{1:d}"
+		"chi"		"{BLUE}反恐精英 {RED}输掉比赛{NORMAL},{LIGHTGREEN}失去 {1} 点{NORMAL}."
+	}
+	
+	"TR_Lose"
+	{
+		"#format"	"{1:d}"
+		"chi"		"{ORANGE}恐怖分子 {RED}输掉比赛{NORMAL},{LIGHTGREEN}失去 {1} 点{NORMAL}."
+	}
+	
+	"Draw"
+	{
+		"#format"	"{1:d}"
+		"chi"		"{RED}比赛平手{NORMAL}, {PINK}双方 {LIGHTGREEN}获得 {1} 点{NORMAL}."
 	}
 	
 	//****************** PrintHintText ******************
@@ -600,5 +640,20 @@
 	"TOP Damage"
 	{
 		"chi"		"伤害排名"
+	}
+	
+	"Match Wins"
+	{
+		"en"		"胜场"
+	}
+	
+	"Match Loses"
+	{
+		"en"		"败场"
+	}
+	
+	"Match Draws"
+	{
+		"en"		"平手"
 	}
 }
