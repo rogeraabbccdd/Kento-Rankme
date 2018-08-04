@@ -1,7 +1,3 @@
-/* put the line below after all of the includes!
-#pragma newdecls required
-*/
-
 //To do (if I'm not lazy)
 //Use TOGs SourcePawn Syntax Converter convert to new syntax.
 //https://forums.alliedmods.net/showthread.php?p=2472379
@@ -62,58 +58,59 @@ static const char g_sSqlRemoveDuplicateNameMySQL[] = "delete from `%s` USING `%s
 static const char g_sSqlRemoveDuplicateIpMySQL[] = "delete from `%s` USING `%s`, `%s` as vtable WHERE (`%s`.id>vtable.id) AND (`%s`.ip=vtable.ip);";
 stock const char g_sWeaponsNamesGame[40][] =  { "knife", "glock", "hkp2000", "usp_silencer", "p250", "deagle", "elite", "fiveseven", "tec9", "cz75a", "revolver", "nova", "xm1014", "mag7", "sawedoff", "bizon", "mac10", "mp9", "mp7", "ump45", "p90", "galilar", "ak47", "scar20", "famas", "m4a1", "m4a1_silencer", "aug", "ssg08", "sg556", "awp", "g3sg1", "m249", "negev", "hegrenade", "flashbang", "smokegrenade", "inferno", "decoy", "taser" };
 stock const char g_sWeaponsNamesFull[40][] =  { "Knife", "Glock", "P2000", "USP-S", "P250", "Desert Eagle", "Dual Berettas", "Five-Seven", "Tec 9", "CZ75-Auto", "R8 Revolver", "Nova", "XM1014", "Mag 7", "Sawed-off", "PP-Bizon", "MAC-10", "MP9", "MP7", "UMP45", "P90", "Galil AR", "AK-47", "SCAR-20", "Famas", "M4A4", "M4A1-S", "AUG", "SSG 08", "SG 553", "AWP", "G3SG1", "M249", "Negev", "HE Grenade", "Flashbang", "Smoke Grenade", "Inferno", "Decoy", "Zeus x27" };
-Handle g_cvarEnabled;
-Handle g_cvarChatChange;
-Handle g_cvarRankbots;
-Handle g_cvarAutopurge;
-Handle g_cvarDumpDB;
-Handle g_cvarPointsBombDefusedTeam;
-Handle g_cvarPointsBombDefusedPlayer;
-Handle g_cvarPointsBombPlantedTeam;
-Handle g_cvarPointsBombPlantedPlayer;
-Handle g_cvarPointsBombExplodeTeam;
-Handle g_cvarPointsBombExplodePlayer;
-Handle g_cvarPointsBombPickup;
-Handle g_cvarPointsBombDropped;
-Handle g_cvarPointsHostageRescTeam;
-Handle g_cvarPointsHostageRescPlayer;
-Handle g_cvarPointsVipEscapedTeam;
-Handle g_cvarPointsVipEscapedPlayer;
-Handle g_cvarPointsVipKilledTeam;
-Handle g_cvarPointsVipKilledPlayer;
-Handle g_cvarPointsHs;
-Handle g_cvarPointsKillCt;
-Handle g_cvarPointsKillTr;
-Handle g_cvarPointsKillBonusCt;
-Handle g_cvarPointsKillBonusTr;
-Handle g_cvarPointsKillBonusDifCt;
-Handle g_cvarPointsKillBonusDifTr;
-Handle g_cvarPointsStart;
-Handle g_cvarPointsKnifeMultiplier;
-Handle g_cvarPointsTaserMultiplier;
-Handle g_cvarPointsTrRoundWin;
-Handle g_cvarPointsCtRoundWin;
-Handle g_cvarPointsMvpCt;
-Handle g_cvarPointsMvpTr;
-Handle g_cvarMinimalKills;
-Handle g_cvarPercentPointsLose;
-Handle g_cvarPointsLoseRoundCeil;
-Handle g_cvarShowRankAll;
-Handle g_cvarRankAllTimer;
-Handle g_cvarResetOwnRank;
-Handle g_cvarMinimumPlayers;
-Handle g_cvarVipEnabled;
-Handle g_cvarPointsLoseTk;
-Handle g_cvarPointsLoseSuicide;
-Handle g_cvarShowBotsOnRank;
-Handle g_cvarRankBy;
-Handle g_cvarFfa;
-Handle g_cvarMysql;
-Handle g_cvarGatherStats;
-Handle g_cvarDaysToNotShowOnRank;
-Handle g_cvarRankMode;
-Handle g_cvarSQLTable;
-Handle g_cvarChatTriggers;
+
+ConVar g_cvarEnabled;
+ConVar g_cvarChatChange;
+ConVar g_cvarRankbots;
+ConVar g_cvarAutopurge;
+ConVar g_cvarDumpDB;
+ConVar g_cvarPointsBombDefusedTeam;
+ConVar g_cvarPointsBombDefusedPlayer;
+ConVar g_cvarPointsBombPlantedTeam;
+ConVar g_cvarPointsBombPlantedPlayer;
+ConVar g_cvarPointsBombExplodeTeam;
+ConVar g_cvarPointsBombExplodePlayer;
+ConVar g_cvarPointsBombPickup;
+ConVar g_cvarPointsBombDropped;
+ConVar g_cvarPointsHostageRescTeam;
+ConVar g_cvarPointsHostageRescPlayer;
+ConVar g_cvarPointsVipEscapedTeam;
+ConVar g_cvarPointsVipEscapedPlayer;
+ConVar g_cvarPointsVipKilledTeam;
+ConVar g_cvarPointsVipKilledPlayer;
+ConVar g_cvarPointsHs;
+ConVar g_cvarPointsKillCt;
+ConVar g_cvarPointsKillTr;
+ConVar g_cvarPointsKillBonusCt;
+ConVar g_cvarPointsKillBonusTr;
+ConVar g_cvarPointsKillBonusDifCt;
+ConVar g_cvarPointsKillBonusDifTr;
+ConVar g_cvarPointsStart;
+ConVar g_cvarPointsKnifeMultiplier;
+ConVar g_cvarPointsTaserMultiplier;
+ConVar g_cvarPointsTrRoundWin;
+ConVar g_cvarPointsCtRoundWin;
+ConVar g_cvarPointsMvpCt;
+ConVar g_cvarPointsMvpTr;
+ConVar g_cvarMinimalKills;
+ConVar g_cvarPercentPointsLose;
+ConVar g_cvarPointsLoseRoundCeil;
+ConVar g_cvarShowRankAll;
+ConVar g_cvarRankAllTimer;
+ConVar g_cvarResetOwnRank;
+ConVar g_cvarMinimumPlayers;
+ConVar g_cvarVipEnabled;
+ConVar g_cvarPointsLoseTk;
+ConVar g_cvarPointsLoseSuicide;
+ConVar g_cvarShowBotsOnRank;
+ConVar g_cvarRankBy;
+ConVar g_cvarFfa;
+ConVar g_cvarMysql;
+ConVar g_cvarGatherStats;
+ConVar g_cvarDaysToNotShowOnRank;
+ConVar g_cvarRankMode;
+ConVar g_cvarSQLTable;
+ConVar g_cvarChatTriggers;
 
 bool g_bEnabled;
 bool g_bResetOwnRank;
@@ -171,9 +168,9 @@ int g_aWeapons[MAXPLAYERS + 1][WEAPONS_ENUM];
 int g_aHitBox[MAXPLAYERS + 1][HITBOXES];
 int g_TotalPlayers;
 
-Handle g_cvarPointsMatchWin;
-Handle g_cvarPointsMatchDraw;
-Handle g_cvarPointsMatchLose;
+ConVar g_cvarPointsMatchWin;
+ConVar g_cvarPointsMatchDraw;
+ConVar g_cvarPointsMatchLose;
 int g_PointsMatchWin;
 int g_PointsMatchDraw;
 int g_PointsMatchLose;
@@ -191,7 +188,7 @@ char g_aClientName[MAXPLAYERS + 1][MAX_NAME_LENGTH];
 char g_aClientIp[MAXPLAYERS + 1][64];
 
 /* Rank cache */
-Handle g_cvarRankCache;
+ConVar g_cvarRankCache;
 Handle g_arrayRankCache[3];
 bool g_bRankCache;
 
@@ -201,14 +198,14 @@ Handle hRankTimer[MAXPLAYERS + 1] = INVALID_HANDLE;
 #include <kento_rankme/cmds>
 
 /*RankMe Connect Announcer*/
-Handle g_cvarAnnounceConnect;
-Handle g_cvarAnnounceConnectChat;
-Handle g_cvarAnnounceConnectHint;
-Handle g_cvarAnnounceDisconnect;
-Handle g_cvarAnnounceTopConnect;
-Handle g_cvarAnnounceTopPosConnect;
-Handle g_cvarAnnounceTopConnectChat;
-Handle g_cvarAnnounceTopConnectHint;
+ConVar g_cvarAnnounceConnect;
+ConVar g_cvarAnnounceConnectChat;
+ConVar g_cvarAnnounceConnectHint;
+ConVar g_cvarAnnounceDisconnect;
+ConVar g_cvarAnnounceTopConnect;
+ConVar g_cvarAnnounceTopPosConnect;
+ConVar g_cvarAnnounceTopConnectChat;
+ConVar g_cvarAnnounceTopConnectHint;
 
 bool g_bAnnounceConnect;
 bool g_bAnnounceConnectChat;
@@ -226,17 +223,17 @@ int g_aRankOnConnect[MAXPLAYERS+1];
 char g_sBufferClientName[MAXPLAYERS+1][MAX_NAME_LENGTH];
 
 /* Assist */
-Handle g_cvarPointsAssistKill;
+ConVar g_cvarPointsAssistKill;
 int g_PointsAssistKill;
 
 /* Enable Or Disable Points In Warmup */
-Handle g_cvarGatherStatsWarmup;
+ConVar g_cvarGatherStatsWarmup;
 bool g_bGatherStatsWarmup;
 
 /* Min points */
-Handle g_cvarPointsMin;
+ConVar g_cvarPointsMin;
 int g_PointsMin;
-Handle g_cvarPointsMinEnabled;
+ConVar g_cvarPointsMinEnabled;
 bool g_bPointsMinEnabled;
 
 /* Hide Chat */
@@ -327,71 +324,71 @@ public void OnPluginStart() {
 	g_arrayRankCache[2] = CreateArray(ByteCountToCells(128));
 	
 	// CVAR HOOK
-	HookConVarChange(g_cvarEnabled, OnConVarChanged);
-	HookConVarChange(g_cvarChatChange, OnConVarChanged);
-	HookConVarChange(g_cvarShowBotsOnRank, OnConVarChanged);
-	HookConVarChange(g_cvarShowRankAll, OnConVarChanged);
-	HookConVarChange(g_cvarRankAllTimer, OnConVarChanged);
-	HookConVarChange(g_cvarResetOwnRank, OnConVarChanged);
-	HookConVarChange(g_cvarMinimumPlayers, OnConVarChanged);
-	HookConVarChange(g_cvarRankbots, OnConVarChanged);
-	HookConVarChange(g_cvarAutopurge, OnConVarChanged);
-	HookConVarChange(g_cvarPointsBombDefusedTeam, OnConVarChanged);
-	HookConVarChange(g_cvarPointsBombDefusedPlayer, OnConVarChanged);
-	HookConVarChange(g_cvarPointsBombPlantedTeam, OnConVarChanged);
-	HookConVarChange(g_cvarPointsBombPlantedPlayer, OnConVarChanged);
-	HookConVarChange(g_cvarPointsBombExplodeTeam, OnConVarChanged);
-	HookConVarChange(g_cvarPointsBombExplodePlayer, OnConVarChanged);
-	HookConVarChange(g_cvarPointsHostageRescTeam, OnConVarChanged);
-	HookConVarChange(g_cvarPointsHostageRescPlayer, OnConVarChanged);
-	HookConVarChange(g_cvarPointsHs, OnConVarChanged);
-	HookConVarChange(g_cvarPointsKillCt, OnConVarChanged);
-	HookConVarChange(g_cvarPointsKillTr, OnConVarChanged);
-	HookConVarChange(g_cvarPointsKillBonusCt, OnConVarChanged);
-	HookConVarChange(g_cvarPointsKillBonusTr, OnConVarChanged);
-	HookConVarChange(g_cvarPointsKillBonusDifCt, OnConVarChanged);
-	HookConVarChange(g_cvarPointsKillBonusDifTr, OnConVarChanged);
-	HookConVarChange(g_cvarPointsCtRoundWin, OnConVarChanged);
-	HookConVarChange(g_cvarPointsTrRoundWin, OnConVarChanged);
-	HookConVarChange(g_cvarPointsKnifeMultiplier, OnConVarChanged);
-	HookConVarChange(g_cvarPointsTaserMultiplier, OnConVarChanged);
-	HookConVarChange(g_cvarPointsStart, OnConVarChanged);
-	HookConVarChange(g_cvarMinimalKills, OnConVarChanged);
-	HookConVarChange(g_cvarPercentPointsLose, OnConVarChanged);
-	HookConVarChange(g_cvarPointsLoseRoundCeil, OnConVarChanged);
-	HookConVarChange(g_cvarVipEnabled, OnConVarChanged);
-	HookConVarChange(g_cvarPointsVipEscapedTeam, OnConVarChanged);
-	HookConVarChange(g_cvarPointsVipEscapedPlayer, OnConVarChanged);
-	HookConVarChange(g_cvarPointsVipKilledTeam, OnConVarChanged);
-	HookConVarChange(g_cvarPointsVipKilledPlayer, OnConVarChanged);
-	HookConVarChange(g_cvarPointsLoseTk, OnConVarChanged);
-	HookConVarChange(g_cvarPointsLoseSuicide, OnConVarChanged);
-	HookConVarChange(g_cvarRankBy, OnConVarChanged);
-	HookConVarChange(g_cvarFfa, OnConVarChanged);
-	HookConVarChange(g_cvarDumpDB, OnConVarChanged);
-	HookConVarChange(g_cvarGatherStats, OnConVarChanged);
-	HookConVarChange(g_cvarDaysToNotShowOnRank, OnConVarChanged);
-	HookConVarChange(g_cvarRankMode, OnConVarChanged);
-	HookConVarChange(g_cvarMysql, OnConVarChanged_MySQL);
-	HookConVarChange(g_cvarSQLTable, OnConVarChanged_SQLTable);
-	HookConVarChange(g_cvarChatTriggers, OnConVarChanged);
-	HookConVarChange(g_cvarPointsMvpCt, OnConVarChanged);
-	HookConVarChange(g_cvarPointsMvpTr, OnConVarChanged);
-	HookConVarChange(g_cvarPointsBombPickup, OnConVarChanged);
-	HookConVarChange(g_cvarPointsBombDropped, OnConVarChanged);
-	HookConVarChange(g_cvarPointsMatchWin, OnConVarChanged);
-	HookConVarChange(g_cvarPointsMatchDraw, OnConVarChanged);
-	HookConVarChange(g_cvarPointsMatchLose, OnConVarChanged);
+	g_cvarEnabled.AddChangeHook(OnConVarChanged);
+	g_cvarChatChange.AddChangeHook(OnConVarChanged);
+	g_cvarShowBotsOnRank.AddChangeHook(OnConVarChanged);
+	g_cvarShowRankAll.AddChangeHook(OnConVarChanged);
+	g_cvarRankAllTimer.AddChangeHook(OnConVarChanged);
+	g_cvarResetOwnRank.AddChangeHook(OnConVarChanged);
+	g_cvarMinimumPlayers.AddChangeHook(OnConVarChanged);
+	g_cvarRankbots.AddChangeHook(OnConVarChanged);
+	g_cvarAutopurge.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBombDefusedTeam.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBombDefusedPlayer.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBombPlantedTeam.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBombPlantedPlayer.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBombExplodeTeam.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBombExplodePlayer.AddChangeHook(OnConVarChanged);
+	g_cvarPointsHostageRescTeam.AddChangeHook(OnConVarChanged);
+	g_cvarPointsHostageRescPlayer.AddChangeHook(OnConVarChanged);
+	g_cvarPointsHs.AddChangeHook(OnConVarChanged);
+	g_cvarPointsKillCt.AddChangeHook(OnConVarChanged);
+	g_cvarPointsKillTr.AddChangeHook(OnConVarChanged);
+	g_cvarPointsKillBonusCt.AddChangeHook(OnConVarChanged);
+	g_cvarPointsKillBonusTr.AddChangeHook(OnConVarChanged);
+	g_cvarPointsKillBonusDifCt.AddChangeHook(OnConVarChanged);
+	g_cvarPointsKillBonusDifTr.AddChangeHook(OnConVarChanged);
+	g_cvarPointsCtRoundWin.AddChangeHook(OnConVarChanged);
+	g_cvarPointsTrRoundWin.AddChangeHook(OnConVarChanged);
+	g_cvarPointsKnifeMultiplier.AddChangeHook(OnConVarChanged);
+	g_cvarPointsTaserMultiplier.AddChangeHook(OnConVarChanged);
+	g_cvarPointsStart.AddChangeHook(OnConVarChanged);
+	g_cvarMinimalKills.AddChangeHook(OnConVarChanged);
+	g_cvarPercentPointsLose.AddChangeHook(OnConVarChanged);
+	g_cvarPointsLoseRoundCeil.AddChangeHook(OnConVarChanged);
+	g_cvarVipEnabled.AddChangeHook(OnConVarChanged);
+	g_cvarPointsVipEscapedTeam.AddChangeHook(OnConVarChanged);
+	g_cvarPointsVipEscapedPlayer.AddChangeHook(OnConVarChanged);
+	g_cvarPointsVipKilledTeam.AddChangeHook(OnConVarChanged);
+	g_cvarPointsVipKilledPlayer.AddChangeHook(OnConVarChanged);
+	g_cvarPointsLoseTk.AddChangeHook(OnConVarChanged);
+	g_cvarPointsLoseSuicide.AddChangeHook(OnConVarChanged);
+	g_cvarRankBy.AddChangeHook(OnConVarChanged);
+	g_cvarFfa.AddChangeHook(OnConVarChanged);
+	g_cvarDumpDB.AddChangeHook(OnConVarChanged);
+	g_cvarGatherStats.AddChangeHook(OnConVarChanged);
+	g_cvarDaysToNotShowOnRank.AddChangeHook(OnConVarChanged);
+	g_cvarRankMode.AddChangeHook(OnConVarChanged);
+	g_cvarMysql.AddChangeHook(OnConVarChanged_MySQL);
+	g_cvarSQLTable.AddChangeHook(OnConVarChanged_SQLTable);
+	g_cvarChatTriggers.AddChangeHook(OnConVarChanged);
+	g_cvarPointsMvpCt.AddChangeHook(OnConVarChanged);
+	g_cvarPointsMvpTr.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBombPickup.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBombDropped.AddChangeHook(OnConVarChanged);
+	g_cvarPointsMatchWin.AddChangeHook(OnConVarChanged);
+	g_cvarPointsMatchDraw.AddChangeHook(OnConVarChanged);
+	g_cvarPointsMatchLose.AddChangeHook(OnConVarChanged);
 	
 	/* Assist */
-	HookConVarChange(g_cvarPointsAssistKill,OnConVarChanged);
+	g_cvarPointsAssistKill.AddChangeHook(OnConVarChanged);
 	
 	/* Enable Or Disable Points In Warmup */
-	HookConVarChange(g_cvarGatherStatsWarmup,OnConVarChanged);
+	g_cvarGatherStatsWarmup.AddChangeHook(OnConVarChanged);
 	
 	/* Min points */
-	HookConVarChange(g_cvarPointsMinEnabled, OnConVarChanged);
-	HookConVarChange(g_cvarPointsMin, OnConVarChanged);
+	g_cvarPointsMinEnabled.AddChangeHook(OnConVarChanged);
+	g_cvarPointsMin.AddChangeHook(OnConVarChanged);
 	
 	// EVENTS
 	HookEventEx("player_death", EventPlayerDeath);
@@ -460,14 +457,14 @@ public void OnPluginStart() {
 	g_cvarAnnounceTopConnectChat = CreateConVar("rankme_announcer_top_player_connect_chat","1","Announce when a top player connect at chat?",_,true,0.0,true,1.0);
 	g_cvarAnnounceTopConnectHint = CreateConVar("rankme_announcer_top_player_connect_hint","0","Announce when a top player connect at hintbox?",_,true,0.0,true,1.0);
 	
-	HookConVarChange(g_cvarAnnounceConnect,OnConVarChanged);
-	HookConVarChange(g_cvarAnnounceConnectChat,OnConVarChanged);
-	HookConVarChange(g_cvarAnnounceConnectHint,OnConVarChanged);
-	HookConVarChange(g_cvarAnnounceDisconnect,OnConVarChanged);
-	HookConVarChange(g_cvarAnnounceTopConnect,OnConVarChanged);
-	HookConVarChange(g_cvarAnnounceTopPosConnect,OnConVarChanged);
-	HookConVarChange(g_cvarAnnounceTopConnectChat,OnConVarChanged);
-	HookConVarChange(g_cvarAnnounceTopConnectHint,OnConVarChanged);
+	g_cvarAnnounceConnect.AddChangeHook(OnConVarChanged);
+	g_cvarAnnounceConnectChat.AddChangeHook(OnConVarChanged);
+	g_cvarAnnounceConnectHint.AddChangeHook(OnConVarChanged);
+	g_cvarAnnounceDisconnect.AddChangeHook(OnConVarChanged);
+	g_cvarAnnounceTopConnect.AddChangeHook(OnConVarChanged);
+	g_cvarAnnounceTopPosConnect.AddChangeHook(OnConVarChanged);
+	g_cvarAnnounceTopConnectChat.AddChangeHook(OnConVarChanged);
+	g_cvarAnnounceTopConnectHint.AddChangeHook(OnConVarChanged);
 	
 	// LOAD RANKME.CFG
 	AutoExecConfig(true, "kento.rankme");
@@ -479,12 +476,12 @@ public void OnPluginStart() {
 	AddCommandListener(OnSayText, "say");
 	AddCommandListener(OnSayText, "say_team");
 	
-	Handle cvarVersion = CreateConVar("rankme_version", PLUGIN_VERSION, "RankMe Version", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DONTRECORD);
+	ConVar cvarVersion = CreateConVar("rankme_version", PLUGIN_VERSION, "RankMe Version", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DONTRECORD);
 	// UPDATE THE CVAR IF NEEDED
 	char sVersionOnCvar[10];
-	GetConVarString(cvarVersion, sVersionOnCvar, sizeof(sVersionOnCvar));
+	cvarVersion.GetString(sVersionOnCvar, sizeof(sVersionOnCvar));
 	if (!StrEqual(PLUGIN_VERSION, sVersionOnCvar))
-		SetConVarString(cvarVersion, PLUGIN_VERSION, true, true);
+		cvarVersion.SetString(PLUGIN_VERSION, true, true);
 	
 	// Create the forwards
 	g_fwdOnPlayerLoaded = CreateGlobalForward("RankMe_OnPlayerLoaded", ET_Hook, Param_Cell);
@@ -497,7 +494,7 @@ public void OnPluginStart() {
 
 public void OnConVarChanged_SQLTable(Handle convar, const char[] oldValue, const char[] newValue) {
 	
-	GetConVarString(g_cvarSQLTable, g_sSQLTable, sizeof(g_sSQLTable));
+	g_cvarSQLTable.GetString(g_sSQLTable, sizeof(g_sSQLTable));
 	DB_Connect(true); // Force reloading the stats
 }
 
@@ -507,9 +504,9 @@ public void OnConVarChanged_MySQL(Handle convar, const char[] oldValue, const ch
 
 public void DB_Connect(bool firstload) {
 	
-	if (g_bMysql != GetConVarBool(g_cvarMysql) || firstload) {  // NEEDS TO CONNECT IF CHANGED MYSQL CVAR OR NEVER CONNECTED
-		g_bMysql = GetConVarBool(g_cvarMysql);
-		GetConVarString(g_cvarSQLTable, g_sSQLTable, sizeof(g_sSQLTable));
+	if (g_bMysql != g_cvarMysql.BoolValue || firstload) {  // NEEDS TO CONNECT IF CHANGED MYSQL CVAR OR NEVER CONNECTED
+		g_bMysql = g_cvarMysql.BoolValue;
+		g_cvarSQLTable.GetString(g_sSQLTable, sizeof(g_sSQLTable));
 		char sError[256];
 		if (g_bMysql) {
 			g_hStatsDb = SQL_Connect("rankme", false, sError, sizeof(sError));
@@ -563,7 +560,7 @@ public void OnConfigsExecuted() {
 		DB_Connect(true);
 	else
 		DB_Connect(false);
-	int AutoPurge = GetConVarInt(g_cvarAutopurge);
+	int AutoPurge = g_cvarAutopurge.IntValue;
 	char sQuery[1000];
 	if (AutoPurge > 0) {
 		int DeleteBefore = GetTime() - (AutoPurge * 86400);
@@ -571,78 +568,78 @@ public void OnConfigsExecuted() {
 		SQL_TQuery(g_hStatsDb, SQL_PurgeCallback, sQuery);
 	}
 	
-	g_bShowBotsOnRank = GetConVarBool(g_cvarShowBotsOnRank);
-	g_RankBy = GetConVarInt(g_cvarRankBy);
-	g_bEnabled = GetConVarBool(g_cvarEnabled);
-	g_bChatChange = GetConVarBool(g_cvarChatChange);
-	g_bShowRankAll = GetConVarBool(g_cvarShowRankAll);
-	g_fRankAllTimer = GetConVarFloat(g_cvarRankAllTimer);
-	g_bRankBots = GetConVarBool(g_cvarRankbots);
-	g_bFfa = GetConVarBool(g_cvarFfa);
-	g_bDumpDB = GetConVarBool(g_cvarDumpDB);
-	g_PointsBombDefusedTeam = GetConVarInt(g_cvarPointsBombDefusedTeam);
-	g_PointsBombDefusedPlayer = GetConVarInt(g_cvarPointsBombDefusedPlayer);
-	g_PointsBombPlantedTeam = GetConVarInt(g_cvarPointsBombPlantedTeam);
-	g_PointsBombPlantedPlayer = GetConVarInt(g_cvarPointsBombPlantedPlayer);
-	g_PointsBombExplodeTeam = GetConVarInt(g_cvarPointsBombExplodeTeam);
-	g_PointsBombExplodePlayer = GetConVarInt(g_cvarPointsBombExplodePlayer);
-	g_PointsHostageRescTeam = GetConVarInt(g_cvarPointsHostageRescTeam);
-	g_PointsHostageRescPlayer = GetConVarInt(g_cvarPointsHostageRescPlayer);
-	g_PointsHs = GetConVarInt(g_cvarPointsHs);
-	g_PointsKill[CT] = GetConVarInt(g_cvarPointsKillCt);
-	g_PointsKill[TR] = GetConVarInt(g_cvarPointsKillTr);
-	g_PointsKillBonus[CT] = GetConVarInt(g_cvarPointsKillBonusCt);
-	g_PointsKillBonus[TR] = GetConVarInt(g_cvarPointsKillBonusTr);
-	g_PointsKillBonusDif[CT] = GetConVarInt(g_cvarPointsKillBonusDifCt);
-	g_PointsKillBonusDif[TR] = GetConVarInt(g_cvarPointsKillBonusDifTr);
-	g_PointsStart = GetConVarInt(g_cvarPointsStart);
-	g_fPointsKnifeMultiplier = GetConVarFloat(g_cvarPointsKnifeMultiplier);
-	g_fPointsTaserMultiplier = GetConVarFloat(g_cvarPointsTaserMultiplier);
-	g_PointsRoundWin[TR] = GetConVarInt(g_cvarPointsTrRoundWin);
-	g_PointsRoundWin[CT] = GetConVarInt(g_cvarPointsCtRoundWin);
-	g_MinimalKills = GetConVarInt(g_cvarMinimalKills);
-	g_fPercentPointsLose = GetConVarFloat(g_cvarPercentPointsLose);
-	g_bPointsLoseRoundCeil = GetConVarBool(g_cvarPointsLoseRoundCeil);
-	g_MinimumPlayers = GetConVarInt(g_cvarMinimumPlayers);
-	g_bResetOwnRank = GetConVarBool(g_cvarResetOwnRank);
-	g_PointsVipEscapedTeam = GetConVarInt(g_cvarPointsVipEscapedTeam);
-	g_PointsVipEscapedPlayer = GetConVarInt(g_cvarPointsVipEscapedPlayer);
-	g_PointsVipKilledTeam = GetConVarInt(g_cvarPointsVipKilledTeam);
-	g_PointsVipKilledPlayer = GetConVarInt(g_cvarPointsVipKilledPlayer);
-	g_bVipEnabled = GetConVarBool(g_cvarVipEnabled);
-	g_PointsLoseTk = GetConVarInt(g_cvarPointsLoseTk);
-	g_PointsLoseSuicide = GetConVarInt(g_cvarPointsLoseSuicide);
-	g_DaysToNotShowOnRank = GetConVarInt(g_cvarDaysToNotShowOnRank);
-	g_bGatherStats = GetConVarBool(g_cvarGatherStats);
-	g_RankMode = GetConVarInt(g_cvarRankMode);
-	g_bChatTriggers = GetConVarBool(g_cvarChatTriggers);
-	g_PointsMvpCt = GetConVarInt(g_cvarPointsMvpCt);
-	g_PointsMvpTr = GetConVarInt(g_cvarPointsMvpTr);
-	g_PointsBombDropped = GetConVarInt(g_cvarPointsBombDropped);
-	g_PointsBombPickup = GetConVarInt(g_cvarPointsBombPickup);
-	g_PointsMatchWin = GetConVarInt(g_cvarPointsMatchWin);
-	g_PointsMatchDraw = GetConVarInt(g_cvarPointsMatchDraw);
-	g_PointsMatchLose = GetConVarInt(g_cvarPointsMatchLose);
+	g_bShowBotsOnRank = g_cvarShowBotsOnRank.BoolValue;
+	g_RankBy = g_cvarRankBy.IntValue;
+	g_bEnabled = g_cvarEnabled.BoolValue;
+	g_bChatChange = g_cvarChatChange.BoolValue;
+	g_bShowRankAll = g_cvarShowRankAll.BoolValue;
+	g_fRankAllTimer = g_cvarRankAllTimer.FloatValue;
+	g_bRankBots = g_cvarRankbots.BoolValue;
+	g_bFfa = g_cvarFfa.BoolValue;
+	g_bDumpDB = g_cvarDumpDB.BoolValue;
+	g_PointsBombDefusedTeam = g_cvarPointsBombDefusedTeam.IntValue;
+	g_PointsBombDefusedPlayer = g_cvarPointsBombDefusedPlayer.IntValue;
+	g_PointsBombPlantedTeam = g_cvarPointsBombPlantedTeam.IntValue;
+	g_PointsBombPlantedPlayer = g_cvarPointsBombPlantedPlayer.IntValue;
+	g_PointsBombExplodeTeam = g_cvarPointsBombExplodeTeam.IntValue;
+	g_PointsBombExplodePlayer = g_cvarPointsBombExplodePlayer.IntValue;
+	g_PointsHostageRescTeam = g_cvarPointsHostageRescTeam.IntValue;
+	g_PointsHostageRescPlayer = g_cvarPointsHostageRescPlayer.IntValue;
+	g_PointsHs = g_cvarPointsHs.IntValue;
+	g_PointsKill[CT] = g_cvarPointsKillCt.IntValue;
+	g_PointsKill[TR] = g_cvarPointsKillTr.IntValue;
+	g_PointsKillBonus[CT] = g_cvarPointsKillBonusCt.IntValue;
+	g_PointsKillBonus[TR] = g_cvarPointsKillBonusTr.IntValue;
+	g_PointsKillBonusDif[CT] = g_cvarPointsKillBonusDifCt.IntValue;
+	g_PointsKillBonusDif[TR] = g_cvarPointsKillBonusDifTr.IntValue;
+	g_PointsStart = g_cvarPointsStart.IntValue;
+	g_fPointsKnifeMultiplier = g_cvarPointsKnifeMultiplier.FloatValue;
+	g_fPointsTaserMultiplier = g_cvarPointsTaserMultiplier.FloatValue;
+	g_PointsRoundWin[TR] = g_cvarPointsTrRoundWin.IntValue;
+	g_PointsRoundWin[CT] = g_cvarPointsCtRoundWin.IntValue;
+	g_MinimalKills = g_cvarMinimalKills.IntValue;
+	g_fPercentPointsLose = g_cvarPercentPointsLose.FloatValue;
+	g_bPointsLoseRoundCeil = g_cvarPointsLoseRoundCeil.BoolValue;
+	g_MinimumPlayers = g_cvarMinimumPlayers.IntValue;
+	g_bResetOwnRank = g_cvarResetOwnRank.BoolValue;
+	g_PointsVipEscapedTeam = g_cvarPointsVipEscapedTeam.IntValue;
+	g_PointsVipEscapedPlayer = g_cvarPointsVipEscapedPlayer.IntValue;
+	g_PointsVipKilledTeam = g_cvarPointsVipKilledTeam.IntValue;
+	g_PointsVipKilledPlayer = g_cvarPointsVipKilledPlayer.IntValue;
+	g_bVipEnabled = g_cvarVipEnabled.BoolValue;
+	g_PointsLoseTk = g_cvarPointsLoseTk.IntValue;
+	g_PointsLoseSuicide = g_cvarPointsLoseSuicide.IntValue;
+	g_DaysToNotShowOnRank = g_cvarDaysToNotShowOnRank.IntValue;
+	g_bGatherStats = g_cvarGatherStats.BoolValue;
+	g_RankMode = g_cvarRankMode.IntValue;
+	g_bChatTriggers = g_cvarChatTriggers.BoolValue;
+	g_PointsMvpCt = g_cvarPointsMvpCt.IntValue;
+	g_PointsMvpTr = g_cvarPointsMvpTr.IntValue;
+	g_PointsBombDropped = g_cvarPointsBombDropped.IntValue;
+	g_PointsBombPickup = g_cvarPointsBombPickup.IntValue;
+	g_PointsMatchWin = g_cvarPointsMatchWin.IntValue;
+	g_PointsMatchDraw = g_cvarPointsMatchDraw.IntValue;
+	g_PointsMatchLose = g_cvarPointsMatchLose.IntValue;
 	
 	/* Assist */
-	g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
+	g_PointsAssistKill = g_cvarPointsAssistKill.IntValue;
 	
 	/* Enable Or Disable Points In Warmup */
-	g_bGatherStatsWarmup = GetConVarBool(g_cvarGatherStatsWarmup);
+	g_bGatherStatsWarmup = g_cvarGatherStatsWarmup.BoolValue;
 	
 	/* Min points */
-	g_PointsMin = GetConVarInt(g_cvarPointsMin);
-	g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMin);
+	g_PointsMin = g_cvarPointsMin.IntValue;
+	g_bPointsMinEnabled = g_cvarPointsMin.BoolValue;
 	
 	/*RankMe Connect Announcer*/
-	g_bAnnounceConnect = GetConVarBool(g_cvarAnnounceConnect);
-	g_bAnnounceConnectChat = GetConVarBool(g_cvarAnnounceConnectChat);
-	g_bAnnounceConnectHint = GetConVarBool(g_cvarAnnounceConnectHint);
-	g_bAnnounceDisconnect = GetConVarBool(g_cvarAnnounceDisconnect);
-	g_bAnnounceTopConnect = GetConVarBool(g_cvarAnnounceTopConnect);
-	g_AnnounceTopPosConnect = GetConVarInt(g_cvarAnnounceTopPosConnect);
-	g_bAnnounceTopConnectChat = GetConVarBool(g_cvarAnnounceTopConnectChat);
-	g_bAnnounceTopConnectHint = GetConVarBool(g_cvarAnnounceTopConnectHint);
+	g_bAnnounceConnect = g_cvarAnnounceConnect.BoolValue;
+	g_bAnnounceConnectChat = g_cvarAnnounceConnectChat.BoolValue;
+	g_bAnnounceConnectHint = g_cvarAnnounceConnectHint.BoolValue;
+	g_bAnnounceDisconnect = g_cvarAnnounceDisconnect.BoolValue;
+	g_bAnnounceTopConnect = g_cvarAnnounceTopConnect.BoolValue;
+	g_AnnounceTopPosConnect = g_cvarAnnounceTopPosConnect.BoolValue;
+	g_bAnnounceTopConnectChat = g_cvarAnnounceTopConnectChat.BoolValue;
+	g_bAnnounceTopConnectHint = g_cvarAnnounceTopConnectHint.BoolValue;
 	
 	if (g_bRankBots)
 		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTable, g_MinimalKills);
@@ -1251,24 +1248,6 @@ public void OnPluginEnd() {
 			for (int i = 0; i <= 39; i++) {
 				Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
 			}
-			
-			// Old query
-			/*
-			new String:query[2000];
-			if (g_RankBy == 1) {
-				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
-			} else if (g_RankBy == 0) {
-				Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
-			} else if (g_RankBy == 2) {
-				Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
-			}
-			*/
 			
 			/* SM1.9 Fix */
 			char query[2000];
@@ -1962,25 +1941,6 @@ public void SalvarPlayer(int client) {
 		Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
 	}
 	
-	// Old query
-	/*
-	new String:query[2000];
-	if (g_RankBy == 1) {
-		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
-	} else if (g_RankBy == 0) {
-		Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
-	} else if (g_RankBy == 2) {
-		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
-	}
-	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query, client, DBPrio_High);
-	*/
-	
 	/* SM1.9 Fix*/
 	char query[2000];
 	char query2[2000];
@@ -2298,218 +2258,218 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	int g_bQueryPlayerCount;
 	
 	if (convar == g_cvarShowBotsOnRank) {
-		g_bShowBotsOnRank = GetConVarBool(g_cvarShowBotsOnRank);
+		g_bShowBotsOnRank = g_cvarShowBotsOnRank.BoolValue;
 		g_bQueryPlayerCount = true;
 	}
 	else if (convar == g_cvarRankBy) {
-		g_RankBy = GetConVarBool(g_cvarRankBy);
+		g_RankBy = g_cvarRankBy.IntValue;
 	}
 	else if (convar == g_cvarEnabled) {
-		g_bEnabled = GetConVarBool(g_cvarEnabled);
+		g_bEnabled = g_cvarEnabled.BoolValue;
 	}
 	else if (convar == g_cvarShowRankAll) {
-		g_bShowRankAll = GetConVarBool(g_cvarShowRankAll);
+		g_bShowRankAll = g_cvarShowRankAll.BoolValue;
 	}
 	else if (convar == g_cvarRankAllTimer) {
-		g_fRankAllTimer = GetConVarFloat(g_cvarRankAllTimer);
+		g_fRankAllTimer = g_cvarRankAllTimer.FloatValue;
 	}
 	else if (convar == g_cvarChatChange) {
-		g_bChatChange = GetConVarBool(g_cvarChatChange);
+		g_bChatChange = g_cvarChatChange.BoolValue;
 	}
 	else if (convar == g_cvarRankbots) {
-		g_bRankBots = GetConVarBool(g_cvarRankbots);
+		g_bRankBots = g_cvarRankbots.BoolValue;
 		g_bQueryPlayerCount = true;
 	}
 	else if (convar == g_cvarFfa) {
-		g_bFfa = GetConVarBool(g_cvarFfa);
+		g_bFfa = g_cvarFfa.BoolValue;
 	}
 	else if (convar == g_cvarDumpDB) {
-		g_bDumpDB = GetConVarBool(g_cvarDumpDB);
+		g_bDumpDB = g_cvarDumpDB.BoolValue;
 	}
 	else if (convar == g_cvarPointsBombDefusedTeam) {
-		g_PointsBombDefusedTeam = GetConVarInt(g_cvarPointsBombDefusedTeam);
+		g_PointsBombDefusedTeam = g_cvarPointsBombDefusedTeam.IntValue;
 	}
 	else if (convar == g_cvarPointsBombDefusedPlayer) {
-		g_PointsBombDefusedPlayer = GetConVarInt(g_cvarPointsBombDefusedPlayer);
+		g_PointsBombDefusedPlayer = g_cvarPointsBombDefusedPlayer.IntValue;
 	}
 	else if (convar == g_cvarPointsBombPlantedTeam) {
-		g_PointsBombPlantedTeam = GetConVarInt(g_cvarPointsBombPlantedTeam);
+		g_PointsBombPlantedTeam = g_cvarPointsBombPlantedTeam.IntValue;
 	}
 	else if (convar == g_cvarPointsBombPlantedPlayer) {
-		g_PointsBombPlantedPlayer = GetConVarInt(g_cvarPointsBombPlantedPlayer);
+		g_PointsBombPlantedPlayer = g_cvarPointsBombPlantedPlayer.IntValue;
 	}
 	else if (convar == g_cvarPointsBombExplodeTeam) {
-		g_PointsBombExplodeTeam = GetConVarInt(g_cvarPointsBombExplodeTeam);
+		g_PointsBombExplodeTeam = g_cvarPointsBombExplodeTeam.IntValue;
 	}
 	else if (convar == g_cvarPointsBombExplodePlayer) {
-		g_PointsBombExplodePlayer = GetConVarInt(g_cvarPointsBombExplodePlayer);
+		g_PointsBombExplodePlayer = g_cvarPointsBombExplodePlayer.IntValue;
 	}
 	else if (convar == g_cvarPointsHostageRescTeam) {
-		g_PointsHostageRescTeam = GetConVarInt(g_cvarPointsHostageRescTeam);
+		g_PointsHostageRescTeam = g_cvarPointsHostageRescTeam.IntValue;
 	}
 	else if (convar == g_cvarPointsHostageRescPlayer) {
-		g_PointsHostageRescPlayer = GetConVarInt(g_cvarPointsHostageRescPlayer);
+		g_PointsHostageRescPlayer = g_cvarPointsHostageRescPlayer.IntValue;
 	}
 	else if (convar == g_cvarPointsHs) {
-		g_PointsHs = GetConVarInt(g_cvarPointsHs);
+		g_PointsHs = g_cvarPointsHs.IntValue;
 	}
 	else if (convar == g_cvarPointsKillCt) {
-		g_PointsKill[CT] = GetConVarInt(g_cvarPointsKillCt);
+		g_PointsKill[CT] = g_cvarPointsKillCt.IntValue;
 	}
 	else if (convar == g_cvarPointsKillTr) {
-		g_PointsKill[TR] = GetConVarInt(g_cvarPointsKillTr);
+		g_PointsKill[TR] = g_cvarPointsKillTr.IntValue;
 	}
 	else if (convar == g_cvarPointsKillBonusCt) {
-		g_PointsKillBonus[CT] = GetConVarInt(g_cvarPointsKillBonusCt);
+		g_PointsKillBonus[CT] = g_cvarPointsKillBonusCt.IntValue;
 	}
 	else if (convar == g_cvarPointsKillBonusTr) {
-		g_PointsKillBonus[TR] = GetConVarInt(g_cvarPointsKillBonusTr);
+		g_PointsKillBonus[TR] = g_cvarPointsKillBonusTr.IntValue;
 	}
 	else if (convar == g_cvarPointsKillBonusDifCt) {
-		g_PointsKillBonusDif[CT] = GetConVarInt(g_cvarPointsKillBonusDifCt);
+		g_PointsKillBonusDif[CT] = g_cvarPointsKillBonusDifCt.IntValue;
 	}
 	else if (convar == g_cvarPointsKillBonusDifTr) {
-		g_PointsKillBonusDif[TR] = GetConVarInt(g_cvarPointsKillBonusDifTr);
+		g_PointsKillBonusDif[TR] = g_cvarPointsKillBonusDifTr.IntValue;
 	}
 	else if (convar == g_cvarPointsStart) {
-		g_PointsStart = GetConVarInt(g_cvarPointsStart);
+		g_PointsStart = g_cvarPointsStart.IntValue;
 	}
 	else if (convar == g_cvarPointsKnifeMultiplier) {
-		g_fPointsKnifeMultiplier = GetConVarFloat(g_cvarPointsKnifeMultiplier);
+		g_fPointsKnifeMultiplier = g_cvarPointsKnifeMultiplier.FloatValue;
 	}
 	else if (convar == g_cvarPointsTaserMultiplier) {
-		g_fPointsTaserMultiplier = GetConVarFloat(g_cvarPointsTaserMultiplier);
+		g_fPointsTaserMultiplier = g_cvarPointsTaserMultiplier.FloatValue;
 	}
 	else if (convar == g_cvarPointsTrRoundWin) {
-		g_PointsRoundWin[TR] = GetConVarInt(g_cvarPointsTrRoundWin);
+		g_PointsRoundWin[TR] = g_cvarPointsTrRoundWin.IntValue;
 	}
 	else if (convar == g_cvarPointsCtRoundWin) {
-		g_PointsRoundWin[CT] = GetConVarInt(g_cvarPointsCtRoundWin);
+		g_PointsRoundWin[CT] = g_cvarPointsCtRoundWin.IntValue;
 	}
 	else if (convar == g_cvarMinimalKills) {
-		g_MinimalKills = GetConVarInt(g_cvarMinimalKills);
+		g_MinimalKills = g_cvarMinimalKills.IntValue;
 	}
 	else if (convar == g_cvarPercentPointsLose) {
-		g_fPercentPointsLose = GetConVarFloat(g_cvarPercentPointsLose);
+		g_fPercentPointsLose = g_cvarPercentPointsLose.FloatValue;
 	}
 	else if (convar == g_cvarPointsLoseRoundCeil) {
-		g_bPointsLoseRoundCeil = GetConVarBool(g_cvarPointsLoseRoundCeil);
+		g_bPointsLoseRoundCeil = g_cvarPointsLoseRoundCeil.BoolValue;
 	}
 	else if (convar == g_cvarMinimumPlayers) {
-		g_MinimumPlayers = GetConVarInt(g_cvarMinimumPlayers);
+		g_MinimumPlayers = g_cvarMinimumPlayers.IntValue;
 	}
 	else if (convar == g_cvarResetOwnRank) {
-		g_bResetOwnRank = GetConVarBool(g_cvarResetOwnRank);
+		g_bResetOwnRank = g_cvarResetOwnRank.BoolValue;
 	}
 	else if (convar == g_cvarPointsVipEscapedTeam) {
-		g_PointsVipEscapedTeam = GetConVarInt(g_cvarPointsVipEscapedTeam);
+		g_PointsVipEscapedTeam = g_cvarPointsVipEscapedTeam.IntValue;
 	}
 	else if (convar == g_cvarPointsVipEscapedPlayer) {
-		g_PointsVipEscapedPlayer = GetConVarInt(g_cvarPointsVipEscapedPlayer);
+		g_PointsVipEscapedPlayer = g_cvarPointsVipEscapedPlayer.IntValue;
 	}
 	else if (convar == g_cvarPointsVipKilledTeam) {
-		g_PointsVipKilledTeam = GetConVarInt(g_cvarPointsVipKilledTeam);
+		g_PointsVipKilledTeam = g_cvarPointsVipKilledTeam.IntValue;
 	}
 	else if (convar == g_cvarPointsVipKilledPlayer) {
-		g_PointsVipKilledPlayer = GetConVarInt(g_cvarPointsVipKilledPlayer);
+		g_PointsVipKilledPlayer = g_cvarPointsVipKilledPlayer.IntValue;
 	}
 	else if (convar == g_cvarVipEnabled) {
-		g_bVipEnabled = GetConVarBool(g_cvarVipEnabled);
+		g_bVipEnabled = g_cvarVipEnabled.BoolValue;
 	}
 	else if (convar == g_cvarDaysToNotShowOnRank) {
-		g_DaysToNotShowOnRank = GetConVarInt(g_cvarDaysToNotShowOnRank);
+		g_DaysToNotShowOnRank = g_cvarDaysToNotShowOnRank.IntValue;
 		g_bQueryPlayerCount = true;
 	}
 	else if (convar == g_cvarGatherStats) {
-		g_bGatherStats = GetConVarBool(g_cvarGatherStats);
+		g_bGatherStats = g_cvarGatherStats.BoolValue;
 	}
 	else if (convar == g_cvarRankMode) {
-		g_RankMode = GetConVarInt(g_cvarRankMode);
+		g_RankMode = g_cvarRankMode.IntValue;
 		BuildRankCache();
 	}
 	else if (convar == g_cvarChatTriggers) {
-		g_bChatTriggers = GetConVarBool(g_cvarChatTriggers);
+		g_bChatTriggers = g_cvarChatTriggers.BoolValue;
 	}
 	else if (convar == g_cvarPointsMvpCt) {
-		g_PointsMvpCt = GetConVarInt(g_cvarPointsMvpCt);
+		g_PointsMvpCt = g_cvarPointsMvpCt.IntValue;
 	}
 	else if (convar == g_cvarPointsMvpTr) {
-		g_PointsMvpTr = GetConVarInt(g_cvarPointsMvpTr);
+		g_PointsMvpTr = g_cvarPointsMvpTr.IntValue;
 	}
 	else if (convar == g_cvarPointsBombPickup) {
-		g_PointsBombDropped = GetConVarInt(g_cvarPointsBombPickup);
+		g_PointsBombDropped = g_cvarPointsBombPickup.IntValue;
 	}
 	else if (convar == g_cvarPointsBombDropped) {
-		g_PointsBombDropped = GetConVarInt(g_cvarPointsBombDropped);
+		g_PointsBombDropped = g_cvarPointsBombDropped.IntValue;
 	}
 	
 	/*RankMe Connect Announcer*/
 	else if(convar == g_cvarAnnounceConnect) {
-		g_bAnnounceConnect = GetConVarBool(g_cvarAnnounceConnect);
+		g_bAnnounceConnect = g_cvarAnnounceConnect.BoolValue;
 	}
 	
 	else if(convar == g_cvarAnnounceConnectChat) {
-		g_bAnnounceConnectChat = GetConVarBool(g_cvarAnnounceConnectChat);
+		g_bAnnounceConnectChat = g_cvarAnnounceConnectChat.BoolValue;
 	}
 	
 	else if(convar == g_cvarAnnounceConnectHint) {
-		g_bAnnounceConnectHint = GetConVarBool(g_cvarAnnounceConnectHint);
+		g_bAnnounceConnectHint = g_cvarAnnounceConnectHint.BoolValue;
 	}
 	
 	else if(convar == g_cvarAnnounceDisconnect) {
-		g_bAnnounceDisconnect = GetConVarBool(g_cvarAnnounceDisconnect);
+		g_bAnnounceDisconnect = g_cvarAnnounceDisconnect.BoolValue;
 	}
 	
 	else if(convar == g_cvarAnnounceTopConnect) {
-		g_bAnnounceTopConnect = GetConVarBool(g_cvarAnnounceTopConnect);
+		g_bAnnounceTopConnect = g_cvarAnnounceTopConnect.BoolValue;
 	}
 	
 	else if(convar == g_cvarAnnounceTopPosConnect) {
-		g_AnnounceTopPosConnect = GetConVarInt(g_cvarAnnounceTopPosConnect);
+		g_AnnounceTopPosConnect = g_cvarAnnounceTopPosConnect.IntValue;
 	}
 	
 	else if(convar == g_cvarAnnounceTopConnectChat) {
-		g_bAnnounceTopConnectChat = GetConVarBool(g_cvarAnnounceTopConnectChat);
+		g_bAnnounceTopConnectChat = g_cvarAnnounceTopConnectChat.BoolValue;
 	}
 	
 	else if(convar == g_cvarAnnounceTopConnectHint) {
-		g_bAnnounceTopConnectHint = GetConVarBool(g_cvarAnnounceTopConnectHint);
+		g_bAnnounceTopConnectHint = g_cvarAnnounceTopConnectHint.BoolValue;
 	}
 	
 	/* Assist */
 	else if (convar == g_cvarPointsAssistKill){
-		g_PointsAssistKill = GetConVarInt(g_cvarPointsAssistKill);
+		g_PointsAssistKill = g_cvarPointsAssistKill.IntValue;
 	}
 	
 	/* Enable Or Disable Points In Warmup */
 	else if (convar == g_cvarGatherStatsWarmup){
-		g_bGatherStatsWarmup = GetConVarBool(g_cvarGatherStatsWarmup);
+		g_bGatherStatsWarmup = g_cvarGatherStatsWarmup.BoolValue;
 	}
 	
 	/* Min points */
 	else if (convar == g_cvarPointsMin){
-		g_PointsMin = GetConVarInt(g_cvarPointsMin);
+		g_PointsMin = g_cvarPointsMin.IntValue;
 	}
 	
 	else if (convar == g_cvarPointsMinEnabled){
-		g_bPointsMinEnabled = GetConVarBool(g_cvarPointsMinEnabled);
+		g_bPointsMinEnabled = g_cvarPointsMinEnabled.BoolValue;
 	}
 	
 	/* Rank Cache */
 	else if (convar == g_cvarRankCache) {
-		g_bRankCache = GetConVarBool(g_cvarRankCache);
+		g_bRankCache = g_cvarRankCache.BoolValue;
 	}
 	
 	else if (convar == g_cvarPointsMatchWin) {
-		g_PointsMatchWin = GetConVarInt(g_cvarPointsMatchWin);
+		g_PointsMatchWin = g_cvarPointsMatchWin.IntValue;
 	}
 	
 	else if (convar == g_cvarPointsMatchDraw) {
-		g_PointsMatchDraw = GetConVarInt(g_cvarPointsMatchDraw);
+		g_PointsMatchDraw = g_cvarPointsMatchDraw.IntValue;
 	}
 	
 	else if (convar == g_cvarPointsMatchLose) {
-		g_PointsMatchLose = GetConVarInt(g_cvarPointsMatchLose);
+		g_PointsMatchLose = g_cvarPointsMatchLose.IntValue;
 	}
 	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
