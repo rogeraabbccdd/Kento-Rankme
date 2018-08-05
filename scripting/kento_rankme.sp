@@ -187,8 +187,6 @@ bool g_bRankCache;
 /* Cooldown Timer */
 Handle hRankTimer[MAXPLAYERS + 1] = INVALID_HANDLE;
 
-#include <kento_rankme/cmds>
-
 /*RankMe Connect Announcer*/
 ConVar g_cvarAnnounceConnect;
 ConVar g_cvarAnnounceConnectChat;
@@ -231,6 +229,8 @@ bool g_bPointsMinEnabled;
 /* Hide Chat */
 Handle hidechatcookie;
 bool hidechat[MAXPLAYERS+1];
+
+#include <kento_rankme/cmds>
 
 public Plugin myinfo =  {
 	name = "RankMe", 

@@ -1066,8 +1066,9 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 				{
 					if(IsClientInGame(j))
 					{
-						CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
-						if (g_fRankAllTimer > 0.0)hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
+						if(client == j || !hidechat[j])	
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStats[client][SCORE],g_aStats[client][KILLS],g_aStats[client][DEATHS],g_aStats[client][ASSISTS],kills/deaths,g_aStats[client][TK],g_aStats[client][MVP]);
+						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
 					}
 				}
 			} 
