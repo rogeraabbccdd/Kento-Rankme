@@ -2673,13 +2673,13 @@ public Action Event_WinPanelMatch(Handle event, const char[] name, bool dontBroa
 				
 				if(GetClientTeam(i) == TR)
 				{
-					g_aStats[i][MATCH_LOSE]++;
-					g_aStats[i][SCORE] -= g_PointsMatchLose;
+					g_aStats[i][MATCH_WIN]++;
+					g_aStats[i][SCORE] += g_PointsMatchWin;
 				}
 				else if (GetClientTeam(i) == CT)
 				{
-					g_aStats[i][MATCH_WIN]++;
-					g_aStats[i][SCORE] += g_PointsMatchWin;
+					g_aStats[i][MATCH_LOSE]++;
+					g_aStats[i][SCORE] -= g_PointsMatchLose;
 				}
 			}
 		}
