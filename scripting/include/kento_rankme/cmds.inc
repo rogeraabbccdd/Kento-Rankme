@@ -141,30 +141,30 @@ public Action CMD_TopWeapon(int client, int args){
 			ShowTOPWeapon(client,GetWeaponNum(arg1),0);
 		}
 	} else {
-		Handle menu = CreateMenu(MenuHandler_TopWeapon_Choose);
-		SetMenuTitle(menu,"Top Weapon:");
+		Menu menu = CreateMenu(MenuHandler_TopWeapon_Choose);
+		menu.SetTitle("Top Weapon:");
 		for(int i=0;i<=39;i++){
-			AddMenuItem(menu,g_sWeaponsNamesGame[i],g_sWeaponsNamesFull[i]);
+			menu.AddItem(g_sWeaponsNamesGame[i],g_sWeaponsNamesFull[i]);
 		}
-		DisplayMenu(menu,client,MENU_TIME_FOREVER);
+		menu.Display(client,MENU_TIME_FOREVER);
 	}
 	return Plugin_Handled;
 }
 
-public int MenuHandler_TopWeapon_Choose(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopWeapon_Choose(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTOPWeapon(param1,GetWeaponNum(temp),0);
 		}
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -216,10 +216,10 @@ public void SQL_TopWeaponCallback(Handle owner, Handle hndl, const char[] error,
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), MenuHandler_TopWeapon);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), MenuHandler_TopWeapon);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -235,29 +235,29 @@ public void SQL_TopWeaponCallback(Handle owner, Handle hndl, const char[] error,
 	Format(temp,sizeof(temp),"%s\n ",temp);
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%d;%d",weapon,0);
-	AddMenuItem(menu,temp1,temp);
+	menu.AddItem(temp1,temp);
 	
 	
 	Format(temp,sizeof(temp),"%d;%d",weapon,at+i);
 	
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	Format(temp,sizeof(temp),"%d;%d",weapon,at-i);
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
-public int MenuHandler_TopWeapon(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopWeapon(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		
 		char v[2][5];
 		ExplodeString(temp,";",v,2,5);
@@ -269,7 +269,7 @@ public int MenuHandler_TopWeapon(Handle menu, MenuAction action, int param1, int
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -337,11 +337,11 @@ public void SQL_TopCallback(Handle owner, Handle hndl, const char[] error, any D
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_Top);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_Top);
 	
 	float kdr;
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -366,29 +366,29 @@ public void SQL_TopCallback(Handle owner, Handle hndl, const char[] error, any D
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
-public int MenuHandler_Top(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_Top(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTOP(param1,StringToInt(temp)+1);
 		} else {
@@ -397,359 +397,9 @@ public int MenuHandler_Top(Handle menu, MenuAction action, int param1, int param
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
-
-/*
-public Action:CMD_TopKnife(client,args){
-	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
-		return Plugin_Handled;
-
-	new String:arg1[5];
-	GetCmdArg(1,arg1,sizeof(arg1));
-	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
-		ShowTOPKnife(client,StringToInt(arg1));
-	}	else {
-		ShowTOPKnife(client,0);
-	}
-	return Plugin_Handled;
-}
-
-ShowTOPKnife(client,at){
-	if(client == 0 || !IsClientInGame(client))
-		return;
-	new Handle:Datapack= CreateDataPack();
-	
-	WritePackCell(Datapack,client);
-	
-	if(at>0){
-		WritePackCell(Datapack,at-1);
-	}	else {
-		WritePackCell(Datapack,0);
-		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
-	}
-	new String:query[2000];
-	MakeSelectQuery(query,sizeof(query));
-	Format(query,sizeof(query),"%s ORDER BY knife DESC LIMIT %i, 10",query,at-1);
-		
-	SQL_TQuery(g_hStatsDb,SQL_TopKnifeCallback,query,Datapack);
-
-}
-
-public SQL_TopKnifeCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
-	if(hndl == INVALID_HANDLE)
-	{
-		LogError("[RankMe] Query Fail: %s", error);
-		PrintToServer(error);
-		return;
-	}
-	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
-	if(client == 0 || !IsClientInGame(client))
-		return;
-	new at = ReadPackCell(Datapack);
-	CloseHandle(Datapack);
-	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPKnife(client,g_TotalPlayers-9);
-		return;
-	}
-	new String:name[256];
-	new String:temp[500];
-	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopKnife);
-	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
-	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
-	{
-		
-		i++;
-		
-		SQL_FetchString(hndl,2,name,sizeof(name));
-			
-		
-	
-		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %T: %d\n",i+at,name,SQL_FetchInt(hndl,4),"KnifeKills",client,SQL_FetchInt(hndl,17));
-		
-		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
-			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
-			sBuffer="\0";
-		}
-	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
-	
-	
-	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
-	Format(temp1,sizeof(temp1),"%T","Next",client);
-	if(i>9)
-		AddMenuItem(menu,temp,temp1);
-	IntToString(at-i,temp,sizeof(temp));
-	Format(temp1,sizeof(temp1),"%T","Back",client);
-	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
-
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
-}
-
-public MenuHandler_TopKnife(Handle:menu, MenuAction:action, param1, param2){
-	
-	if (action == MenuAction_Select)
-	{
-		new String:temp[250];
-	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
-		if(StringToInt(temp) >= 0){
-			ShowTOPKnife(param1,StringToInt(temp)+1);
-		} else {
-			ShowTOPKnife(param1,0);
-		}
-	}
-	if (action == MenuAction_End)
-	{
-		CloseHandle(menu);
-	}
-}
-
-public Action:CMD_TopTaser(client,args){
-	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
-		return Plugin_Handled;
-
-	new String:arg1[5];
-	GetCmdArg(1,arg1,sizeof(arg1));
-	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
-		ShowTOPTaser(client,StringToInt(arg1));
-	}	else {
-		ShowTOPTaser(client,0);
-	}
-	return Plugin_Handled;
-}
-
-ShowTOPTaser(client,at){
-	if(client == 0 || !IsClientInGame(client))
-		return;
-	new Handle:Datapack= CreateDataPack();
-	
-	WritePackCell(Datapack,client);
-	
-	if(at>0){
-		WritePackCell(Datapack,at-1);
-	}	else {
-		WritePackCell(Datapack,0);
-		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
-	}
-	new String:query[2000];
-	MakeSelectQuery(query,sizeof(query));
-	Format(query,sizeof(query),"%s ORDER BY taser DESC LIMIT %i, 10",query,at-1);
-		
-	SQL_TQuery(g_hStatsDb,SQL_TopTaserCallback,query,Datapack);
-
-}
-
-public SQL_TopTaserCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
-	if(hndl == INVALID_HANDLE)
-	{
-		LogError("[RankMe] Query Fail: %s", error);
-		PrintToServer(error);
-		return;
-	}
-	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
-	if(client == 0 || !IsClientInGame(client))
-		return;
-	new at = ReadPackCell(Datapack);
-	CloseHandle(Datapack);
-	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPTaser(client,g_TotalPlayers-9);
-		return;
-	}
-	new String:name[256];
-	new String:temp[500];
-	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopTaser);
-	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
-	new String:sBuffer[200];
-	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
-	{
-		
-		i++;
-		
-		SQL_FetchString(hndl,2,name,sizeof(name));
-			
-		
-	
-		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %T: %d\n",i+at,name,SQL_FetchInt(hndl,4),"TaserKills",client,SQL_FetchInt(hndl,55));
-		
-		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
-			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
-			sBuffer="\0";
-		}
-	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
-	
-	
-	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
-	Format(temp1,sizeof(temp1),"%T","Next",client);
-	if(i>9)
-		AddMenuItem(menu,temp,temp1);
-	IntToString(at-i,temp,sizeof(temp));
-	Format(temp1,sizeof(temp1),"%T","Back",client);
-	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
-
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
-}
-
-public MenuHandler_TopTaser(Handle:menu, MenuAction:action, param1, param2){
-	
-	if (action == MenuAction_Select)
-	{
-		new String:temp[250];
-	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
-		if(StringToInt(temp) >= 0){
-			ShowTOPTaser(param1,StringToInt(temp)+1);
-		} else {
-			ShowTOPTaser(param1,0);
-		}
-	}
-	if (action == MenuAction_End)
-	{
-		CloseHandle(menu);
-	}
-}
-
-public Action:CMD_TopNade(client,args){
-	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
-		return Plugin_Handled;
-
-	new String:arg1[5];
-	GetCmdArg(1,arg1,sizeof(arg1));
-	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
-		ShowTOPNade(client,StringToInt(arg1));
-	}	else {
-		ShowTOPNade(client,0);
-	}
-	return Plugin_Handled;
-}
-
-ShowTOPNade(client,at){
-	if(client == 0 || !IsClientInGame(client))
-		return;
-	new Handle:Datapack= CreateDataPack();
-	
-	WritePackCell(Datapack,client);
-	
-	if(at>0){
-		WritePackCell(Datapack,at-1);
-	}	else {
-		WritePackCell(Datapack,0);
-		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
-	}
-	new String:sQuery[400];
-	// Make basic query
-	Format(sQuery,sizeof(sQuery),"SELECT name,score,hegrenade+flashbang+smokegrenade as nadekill FROM `%s` where kills >= '%d'",g_sSQLTable,g_MinimalKills);
-		
-	// Append check for bots
-	if(g_bRankBots && g_bShowBotsOnRank)
-		Format(sQuery,sizeof(sQuery),"%s AND steam <> 'BOT'",sQuery);
-	
-	// Append check for inactivity
-	if(g_DaysToNotShowOnRank > 0)
-		Format(sQuery,sizeof(sQuery),"%s AND lastconnect >= '%d'",sQuery,GetTime()-(g_DaysToNotShowOnRank*86400));
-	
-	Format(sQuery,sizeof(sQuery),"%s ORDER BY nadekill DESC LIMIT %i, 10",sQuery,at-1);
-			
-	SQL_TQuery(g_hStatsDb,SQL_TopNadeCallback,sQuery,Datapack);
-
-}
-
-public SQL_TopNadeCallback(Handle:owner, Handle:hndl, const String:error[], any:Datapack){
-	if(hndl == INVALID_HANDLE)
-	{
-		LogError("[RankMe] Query Fail: %s", error);
-		PrintToServer(error);
-		return;
-	}
-	ResetPack(Datapack);
-	new i;
-	new client = ReadPackCell(Datapack);
-	if(client == 0 || !IsClientInGame(client))
-		return;
-	new at = ReadPackCell(Datapack);
-	CloseHandle(Datapack);
-	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPNade(client,g_TotalPlayers-9);
-		return;
-	}
-	new String:name[256];
-	new String:temp[500];
-	
-	new Handle:menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle:MenuStyle_Radio),MenuHandler_TopNade);
-	new String:sBuffer[200];
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
-	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
-	{
-		
-		i++;
-		
-		SQL_FetchString(hndl,0,name,sizeof(name));
-			
-		
-	
-		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %T: %d\n",i+at,name,SQL_FetchInt(hndl,1),"Kills",client,SQL_FetchInt(hndl,2));
-		
-		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
-			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
-			sBuffer="\0";
-		}
-	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
-	
-	
-	IntToString(at+i,temp,sizeof(temp));
-	new String:temp1[20];
-	Format(temp1,sizeof(temp1),"%T","Next",client);
-	if(i>9)
-		AddMenuItem(menu,temp,temp1);
-	IntToString(at-i,temp,sizeof(temp));
-	Format(temp1,sizeof(temp1),"%T","Back",client);
-	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
-
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
-}
-
-public MenuHandler_TopNade(Handle:menu, MenuAction:action, param1, param2){
-	
-	if (action == MenuAction_Select)
-	{
-		new String:temp[250];
-	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
-		if(StringToInt(temp) >= 0){
-			ShowTOPNade(param1,StringToInt(temp)+1);
-		} else {
-			ShowTOPNade(param1,0);
-		}
-	}
-	if (action == MenuAction_End)
-	{
-		CloseHandle(menu);
-	}
-}
-*/
 
 public Action CMD_TopHS(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
@@ -807,10 +457,10 @@ public void SQL_TopHSCallback(Handle owner, Handle hndl, const char[] error, any
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopHS);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopHS);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -829,29 +479,29 @@ public void SQL_TopHSCallback(Handle owner, Handle hndl, const char[] error, any
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopHS(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopHS(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopHS(param1,StringToInt(temp)+1);
 		} else {
@@ -860,7 +510,7 @@ public int MenuHandler_TopHS(Handle menu, MenuAction action, int param1, int par
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -920,10 +570,10 @@ public void SQL_TopKillsCallback(Handle owner, Handle hndl, const char[] error, 
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopKills);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopKills);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -942,29 +592,29 @@ public void SQL_TopKillsCallback(Handle owner, Handle hndl, const char[] error, 
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopKills(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopKills(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopKills(param1,StringToInt(temp)+1);
 		} else {
@@ -973,7 +623,7 @@ public int MenuHandler_TopKills(Handle menu, MenuAction action, int param1, int 
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -1033,10 +683,10 @@ public void SQL_TopDeathsCallback(Handle owner, Handle hndl, const char[] error,
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), MenuHandler_TopDeaths);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), MenuHandler_TopDeaths);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -1055,29 +705,29 @@ public void SQL_TopDeathsCallback(Handle owner, Handle hndl, const char[] error,
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopDeaths(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopDeaths(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopDeaths(param1,StringToInt(temp)+1);
 		} else {
@@ -1086,7 +736,7 @@ public int MenuHandler_TopDeaths(Handle menu, MenuAction action, int param1, int
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -1151,10 +801,10 @@ public void SQL_TopAccCallback(Handle owner, Handle hndl, const char[] error, an
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopAcc);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopAcc);
 
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	int shots;
 	int hits;
 	char sBuffer[200];
@@ -1179,29 +829,29 @@ public void SQL_TopAccCallback(Handle owner, Handle hndl, const char[] error, an
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopAcc(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopAcc(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopAcc(param1,StringToInt(temp)+1);
 		} else {
@@ -1210,7 +860,7 @@ public int MenuHandler_TopAcc(Handle menu, MenuAction action, int param1, int pa
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -1270,10 +920,10 @@ public void SQL_TopTimeCallback(Handle owner, Handle hndl, const char[] error, a
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopTime);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopTime);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	int time;
 	int hours;
@@ -1300,29 +950,29 @@ public void SQL_TopTimeCallback(Handle owner, Handle hndl, const char[] error, a
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopTime(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopTime(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopTime(param1,StringToInt(temp)+1);
 		} else {
@@ -1331,14 +981,14 @@ public int MenuHandler_TopTime(Handle menu, MenuAction action, int param1, int p
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
-public int MenuHandler_DoNothing(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_DoNothing(Menu menu, MenuAction action, int param1, int param2){
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -1441,10 +1091,10 @@ public Action KillRankAllTimer(Handle timer, int client)
 public Action CMD_Session(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	char text[255];
 	char temp[255];
-	SetMenuPagination(panel,3);
+	panel.Pagination = 3;
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
 	StrCat(text,255,temp);
 	Format(temp,sizeof(temp),"%T: %i\n","Points",client,g_aSession[client][SCORE]);
@@ -1479,21 +1129,21 @@ public Action CMD_Session(int client, int args){
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d   %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds,"DPR", client, damage/rounds);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n ","TRWins",client,g_aSession[client][TR_WIN],g_aSession[client][ROUNDS_TR],"CTWins",client,g_aSession[client][CT_WIN],g_aSession[client][ROUNDS_CT],"MVPs",client,g_aSession[client][MVP]);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","HitStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d   %T: %d   %T: %.2f%%\n ","Shots",client,shots,"Hits",client,g_aSession[client][HITS],"Accuracy",client,IntToFloat(g_aSession[client][HITS])/shots*100);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
@@ -1502,7 +1152,7 @@ public Action CMD_Session(int client, int args){
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d","RescuedHostages",client,g_aSession[client][HOSTAGES_RESCUED]);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
 	if(g_bVipEnabled){
@@ -1510,7 +1160,7 @@ public Action CMD_Session(int client, int args){
 		StrCat(text,255,temp);
 		Format(temp,255,"%T: %d/%d   %T: %d\n ","VIPEscapes",client,g_aSession[client][VIP_ESCAPED],g_aSession[client][VIP_PLAYED],"VIPsKilled",client,g_aSession[client][VIP_KILLED]);
 		StrCat(text,255,temp);
-		AddMenuItem(panel,"",text);
+		panel.AddItem("",text);
 		text="";
 	}
 	
@@ -1525,10 +1175,10 @@ public Action CMD_Session(int client, int args){
 	
 	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
-	DisplayMenu(panel,client,MENU_TIME_FOREVER);
+	panel.Display(client,MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 
@@ -1536,7 +1186,7 @@ public Action CMD_HitBox(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 
-	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	char temp[255];
 	int ihits;
 	float hits;
@@ -1563,9 +1213,9 @@ public Action CMD_HitBox(int client, int args){
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d (%.2f%%)","RightLeg",client,g_aHitBox[client][7],(g_aHitBox[client][7]/hits)*100);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 
-	DisplayMenu(panel,client,MENU_TIME_FOREVER);
+	panel.Display(client,MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -1604,7 +1254,7 @@ public Action CMD_WeaponMe(int client, int args){
 			start++;
 		}
 	}
-	Handle panel = CreateMenu(MenuHandler_DoNothing);
+	Menu panel = CreateMenu(MenuHandler_DoNothing);
 	
 	int ikills =g_aStats[client][KILLS];
 	
@@ -1616,13 +1266,13 @@ public Action CMD_WeaponMe(int client, int args){
 
 	char temp[255];
 	Format(temp,sizeof(temp),"%T","WeaponsStats",client);
-	SetMenuTitle(panel, temp);
+	panel.SetTitle(temp);
 	for(int i=0;i<=39;i++){
 		Format(temp,sizeof(temp),"%s: %d (%.2f%%)",g_sWeaponsNamesFull[weapons_b[i][0]],weapons_b[i][1],(weapons_b[i][1]/hits)*100);
-		AddMenuItem(panel,temp,temp,ITEMDRAW_DISABLED);
+		panel.AddItem(temp,temp,ITEMDRAW_DISABLED);
 	}
 	
-	DisplayMenu(panel,client,MENU_TIME_FOREVER);
+	panel.Display(client,MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 
@@ -1779,12 +1429,12 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 		return;
 	}
 	
-	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	
-	SetMenuTitle(panel,Name_receive);
+	panel.SetTitle(Name_receive);
 	
 	char text[255];
-	SetMenuPagination(panel,3);
+	panel.Pagination = 3;
 	int ikills = SQL_FetchInt(hndl,5);
 	int ideaths= SQL_FetchInt(hndl,6);
 	int deaths;
@@ -1821,21 +1471,21 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d   %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73), "Match Wins", client, SQL_FetchInt(hndl, 75), "Match Draws", client, SQL_FetchInt(hndl, 76), "Match Loses", client, SQL_FetchInt(hndl, 77));
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","HitStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d   %T: %d   %T: %.2f%%\n ","Shots",client,shots,"Hits",client,hits,"Accuracy",client,IntToFloat(hits)/shots*100);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
@@ -1844,7 +1494,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d","RescuedHostages",client,SQL_FetchInt(hndl,69));
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 				
 	if(g_bVipEnabled){
@@ -1852,7 +1502,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 		StrCat(text,255,temp);
 		Format(temp,255,"%T: %d/%d   %T: %d\n ","VIPEscapes",client,SQL_FetchInt(hndl,71),SQL_FetchInt(hndl,72),"VIPsKilled",client,SQL_FetchInt(hndl,70));
 		StrCat(text,255,temp);
-		AddMenuItem(panel,"",text);
+		panel.AddItem("",text);
 		text="";
 	}
 	
@@ -1871,12 +1521,9 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	
 	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
-	DisplayMenu(panel,client,MENU_TIME_FOREVER);
-			
-		
-	
+	panel.Display(client,MENU_TIME_FOREVER);
 }
 
 public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, any client){
@@ -1910,9 +1557,9 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	} else {
 		i = 0;
 	}
-	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	char text[255];
-	SetMenuPagination(panel,3);
+	panel.Pagination = 3;
 	int ikills = g_aStats[client][KILLS];
 	int ideaths=g_aStats[client][DEATHS];
 	int deaths;
@@ -1950,21 +1597,21 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d  %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP], "Match Wins", client, g_aStats[client][MATCH_WIN], "Match Draws", client, g_aStats[client][MATCH_DRAW], "Match Loses", client, g_aStats[client][MATCH_LOSE]);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","HitStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d   %T: %d   %T: %.2f%%\n ","Shots",client,shots,"Hits",client,g_aStats[client][HITS],"Accuracy",client,IntToFloat(g_aStats[client][HITS])/shots*100);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
@@ -1973,7 +1620,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d","RescuedHostages",client,g_aStats[client][HOSTAGES_RESCUED]);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
 				
 	if(g_bVipEnabled){
@@ -1981,7 +1628,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 		StrCat(text,255,temp);
 		Format(temp,255,"%T: %d/%d   %T: %d\n ","VIPEscapes",client,g_aStats[client][VIP_ESCAPED],g_aStats[client][VIP_PLAYED],"VIPsKilled",client,g_aStats[client][VIP_KILLED]);
 		StrCat(text,255,temp);
-		AddMenuItem(panel,"",text);
+		panel.AddItem("",text);
 		text="";
 	}
 	
@@ -1996,15 +1643,15 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	
 	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
 	StrCat(text,255,temp);
-	AddMenuItem(panel,"",text);
+	panel.AddItem("",text);
 	text="";
-	DisplayMenu(panel,client,MENU_TIME_FOREVER);
+	panel.Display(client,MENU_TIME_FOREVER);
 			
 		
 	
 }
 
-public int PanelNoHandle(Handle menu, MenuAction action, int param1, int param2){
+public int PanelNoHandle(Menu menu, MenuAction action, int param1, int param2){
 
 	
 
@@ -2078,7 +1725,7 @@ public void SQL_NextCallback(Handle owner, Handle hndl, const char[] error, any 
 		if(dobreak)
 			break;
 	} 
-	Handle panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
+	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	char text[500];
 	char temp[255];
 	Format(temp,sizeof(temp),"%T\n","Next9Players",client);
@@ -2097,8 +1744,8 @@ public void SQL_NextCallback(Handle owner, Handle hndl, const char[] error, any 
 		}
 		
 	}
-	AddMenuItem(panel,"",text);
-	DisplayMenu(panel,client,MENU_TIME_FOREVER);
+	panel.AddItem("",text);
+	panel.Display(client,MENU_TIME_FOREVER);
 	
 	CloseHandle(panel);
 }
@@ -2140,128 +1787,114 @@ public int FloatToInt(float ifloat){
 
 public Action CMD_RankMe(int client, int args){
 
-	Handle hMenu = CreateMenu(MenuHandler_RankMe);
+	Menu hMenu = CreateMenu(MenuHandler_RankMe);
 	
 	SetMenuExitButton(hMenu,true);
 	
-	SetMenuTitle(hMenu,"%t", "RankMe Menu");
+	hMenu.SetTitle("%t", "RankMe Menu");
 	
 	char myrank[512];
 	Format(myrank, sizeof(myrank), "%t", "My Rank");
-	AddMenuItem(hMenu,"rank", myrank);
+	hMenu.AddItem("rank", myrank);
 	
 	if(g_bResetOwnRank)
 	{
 		char resetmyrank[512];
 		Format(resetmyrank, sizeof(resetmyrank), "%t", "Reset My Rank");
-		AddMenuItem(hMenu,"resetmyrank", resetmyrank);
+		hMenu.AddItem("resetmyrank", resetmyrank);
 	}
 	
 	char mystats[512];
 	Format(mystats, sizeof(mystats), "%t", "My Stats");
-	AddMenuItem(hMenu,"statsme", mystats);
+	hMenu.AddItem("statsme", mystats);
 	
 	char session[512];
 	Format(session, sizeof(session), "%t", "Session");
-	AddMenuItem(hMenu,"session", session);
+	hMenu.AddItem("session", session);
 	
 	char otherstats[512];
 	Format(otherstats, sizeof(otherstats), "%t", "Show Other Players Stats");
-	AddMenuItem(hMenu,"statsme2", otherstats);
+	hMenu.AddItem("statsme2", otherstats);
 	
 	char hitboxme[512];
 	Format(hitboxme, sizeof(hitboxme), "%t", "My HitBox Stats");
-	AddMenuItem(hMenu,"hitboxme", hitboxme);
+	hMenu.AddItem("hitboxme", hitboxme);
 	
 	char weaponme[512];
 	Format(weaponme, sizeof(weaponme), "%t", "My Weapon Stats");
-	AddMenuItem(hMenu,"weaponme", weaponme);
+	hMenu.AddItem("weaponme", weaponme);
 	
 	char next[512];
 	Format(next, sizeof(next), "%t", "Show Players Above Me");
-	AddMenuItem(hMenu,"next", next);
+	hMenu.AddItem("next", next);
 	
 	char top10[512];
 	Format(top10, sizeof(top10), "%t", "TOP 10");
-	AddMenuItem(hMenu,"top10", top10);
+	hMenu.AddItem("top10", top10);
 
 	char topkills[512];
 	Format(topkills, sizeof(topkills), "%t", "TOP Kills");
-	AddMenuItem(hMenu,"topkills", topkills);
+	hMenu.AddItem("topkills", topkills);
 
 	char topdeaths[512];
 	Format(topdeaths, sizeof(topdeaths), "%t", "TOP Deaths");
-	AddMenuItem(hMenu,"topdeaths", topdeaths);
+	hMenu.AddItem("topdeaths", topdeaths);
 	
 	char topassists[512];
 	Format(topassists, sizeof(topassists), "%t", "TOP Assists");
-	AddMenuItem(hMenu,"topassists", topassists);
+	hMenu.AddItem("topassists", topassists);
 	
 	char tophs[512];
 	Format(tophs, sizeof(tophs), "%t", "TOP HS");
-	AddMenuItem(hMenu,"tophs", tophs);
+	hMenu.AddItem("tophs", tophs);
 	
 	char topweapon[512];
 	Format(topweapon, sizeof(topweapon), "%t", "TOP Weapon");
-	AddMenuItem(hMenu,"topweapon", topweapon);
+	hMenu.AddItem("topweapon", topweapon);
 	
 	char toptk[512];
 	Format(toptk, sizeof(toptk), "%t", "TOP TK");
-	AddMenuItem(hMenu,"toptk", toptk);
+	hMenu.AddItem("toptk", toptk);
 	
 	char topmvp[512];
 	Format(topmvp, sizeof(topmvp), "%t", "TOP MVP");
-	AddMenuItem(hMenu,"topmvp", topmvp);
+	hMenu.AddItem("topmvp", topmvp);
 	
 	char topdamage[512];
 	Format(topdamage, sizeof(topdamage), "%t", "TOP Damage");
-	AddMenuItem(hMenu,"topdamage", topdamage);
-	
-	/*
-	char topnade[512];
-	Format(topnade, sizeof(topnade), "%t", "TOP Grenade");
-	AddMenuItem(hMenu,"topnade", topnade);
-	
-	char topnknife[512];
-	Format(topnknife, sizeof(topnknife), "%t", "TOP Knife");
-	AddMenuItem(hMenu,"topnade", topnknife);
-	
-	char toptaser[512];
-	Format(toptaser, sizeof(toptaser), "%t", "TOP Taser");
-	AddMenuItem(hMenu,"topnade", toptaser);
-	*/
+	hMenu.AddItem("topdamage", topdamage);
 	
 	char topacc[512];
 	Format(topacc, sizeof(topacc), "%t", "TOP Accuracy");
-	AddMenuItem(hMenu,"topacc", topacc);
+	hMenu.AddItem("topacc", topacc);
 
 	char toptime[512];
 	Format(toptime, sizeof(toptime), "%t", "TOP Time Connected");
-	AddMenuItem(hMenu,"toptime", toptime);
+	hMenu.AddItem("toptime", toptime);
 	
 	if(CheckCommandAccess(client, "sm_resetrank", ADMFLAG_ROOT))
 	{
 		char resetrank[512];
 		Format(resetrank, sizeof(resetrank), "%t", "Reset a player rank");
-		AddMenuItem(hMenu,"resetrank", resetrank);
+		hMenu.AddItem("resetrank", resetrank);
 	}	
 	if(CheckCommandAccess(client, "sm_resetrank_all", ADMFLAG_ROOT))
 	{
 		char resetrankall[512];
 		Format(resetrankall, sizeof(resetrankall), "%t", "Reset all the rank");
-		AddMenuItem(hMenu,"resetrankall", resetrankall);
+		hMenu.AddItem("resetrankall", resetrankall);
 	}
-	DisplayMenu(hMenu,client,MENU_TIME_FOREVER);
 	
+	hMenu.Display(client,MENU_TIME_FOREVER);
 }
 
-public int MenuHandler_RankMe(Handle menu, MenuAction action, int client, int param2){
+public int MenuHandler_RankMe(Menu menu, MenuAction action, int client, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		
 		if(StrEqual(temp,"rank"))
 			CMD_Rank(client,0);
@@ -2330,17 +1963,17 @@ public int MenuHandler_RankMe(Handle menu, MenuAction action, int client, int pa
 			
 		else if(StrEqual(temp,"resetrank")){
 			
-			Handle hMenu = CreateMenu(MenuHandler_TargetResetRank);
+			Menu hMenu = CreateMenu(MenuHandler_TargetResetRank);
 			AddTargetsToMenu2(hMenu,0,COMMAND_FILTER_NO_BOTS);
 			
-			DisplayMenu(hMenu,client,MENU_TIME_FOREVER);
+			hMenu.Display(client,MENU_TIME_FOREVER);
 		}
 		else if(StrEqual(temp,"statsme2")){
 			
-			Handle hMenu = CreateMenu(MenuHandler_TargetStatsMe2);
+			Menu hMenu = CreateMenu(MenuHandler_TargetStatsMe2);
 			AddTargetsToMenu2(hMenu,0,COMMAND_FILTER_NO_BOTS);
 			
-			DisplayMenu(hMenu,client,MENU_TIME_FOREVER);
+			hMenu.Display(client,MENU_TIME_FOREVER);
 		}
 		
 		else if(StrEqual(temp,"resetrankall"))
@@ -2350,18 +1983,18 @@ public int MenuHandler_RankMe(Handle menu, MenuAction action, int client, int pa
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 	
 }
 
-public int MenuHandler_TargetResetRank(Handle menu, MenuAction action, int client, int param2){
+public int MenuHandler_TargetResetRank(Menu menu, MenuAction action, int client, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		int target = GetClientOfUserId(StringToInt(temp));
 		
 		if(g_RankBy == 1){
@@ -2377,18 +2010,18 @@ public int MenuHandler_TargetResetRank(Handle menu, MenuAction action, int clien
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 	
 }
 
-public int MenuHandler_TargetStatsMe2(Handle menu, MenuAction action, int client, int param2){
+public int MenuHandler_TargetStatsMe2(Menu menu, MenuAction action, int client, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		int target = GetClientOfUserId(StringToInt(temp));
 		
 		if(g_RankBy == 0 || g_RankBy == 2){
@@ -2401,7 +2034,7 @@ public int MenuHandler_TargetStatsMe2(Handle menu, MenuAction action, int client
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 	
 }
@@ -2463,10 +2096,10 @@ public void SQL_TopAssistsCallback(Handle owner, Handle hndl, const char[] error
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopAssists);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopAssists);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -2483,29 +2116,29 @@ public void SQL_TopAssistsCallback(Handle owner, Handle hndl, const char[] error
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopAssists(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopAssists(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopAssists(param1,StringToInt(temp)+1);
 		} else {
@@ -2514,7 +2147,7 @@ public int MenuHandler_TopAssists(Handle menu, MenuAction action, int param1, in
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -2575,10 +2208,10 @@ public void SQL_TopTKCallback(Handle owner, Handle hndl, const char[] error, any
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopTK);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopTK);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -2597,29 +2230,29 @@ public void SQL_TopTKCallback(Handle owner, Handle hndl, const char[] error, any
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopTK(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopTK(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopTK(param1,StringToInt(temp)+1);
 		} else {
@@ -2628,7 +2261,7 @@ public int MenuHandler_TopTK(Handle menu, MenuAction action, int param1, int par
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -2689,10 +2322,10 @@ public void SQL_TopMVPCallback(Handle owner, Handle hndl, const char[] error, an
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopMVP);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopMVP);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -2711,29 +2344,29 @@ public void SQL_TopMVPCallback(Handle owner, Handle hndl, const char[] error, an
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopMVP(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopMVP(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopMVP(param1,StringToInt(temp)+1);
 		} else {
@@ -2742,7 +2375,7 @@ public int MenuHandler_TopMVP(Handle menu, MenuAction action, int param1, int pa
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
 
@@ -2803,10 +2436,10 @@ public void SQL_TopDamageCallback(Handle owner, Handle hndl, const char[] error,
 	char name[256];
 	char temp[500];
 	
-	Handle menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopDamage);
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopDamage);
 	
 	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
-	SetMenuTitle(menu,"");
+	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
@@ -2825,29 +2458,29 @@ public void SQL_TopDamageCallback(Handle owner, Handle hndl, const char[] error,
 		}
 	} 
 	Format(temp,sizeof(temp),"%s\n ",temp);
-	AddMenuItem(menu,temp,temp);
+	menu.AddItem(temp,temp);
 	
 	
 	IntToString(at+i,temp,sizeof(temp));
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%T","Next",client);
 	if(i>9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 	IntToString(at-i,temp,sizeof(temp));
 	Format(temp1,sizeof(temp1),"%T","Back",client);
 	if(at+i-1 >9)
-		AddMenuItem(menu,temp,temp1);
+		menu.AddItem(temp,temp1);
 
-	DisplayMenuAtItem(menu,client,at,MENU_TIME_FOREVER);
+	
 }
 
-public int MenuHandler_TopDamage(Handle menu, MenuAction action, int param1, int param2){
+public int MenuHandler_TopDamage(Menu menu, MenuAction action, int param1, int param2){
 	
 	if (action == MenuAction_Select)
 	{
 		char temp[250];
 	
-		GetMenuItem(menu, param2, temp, sizeof(temp));
+		menu.GetItem(param2, temp, sizeof(temp));
 		if(StringToInt(temp) >= 0){
 			ShowTopDamage(param1,StringToInt(temp)+1);
 		} else {
@@ -2856,6 +2489,6 @@ public int MenuHandler_TopDamage(Handle menu, MenuAction action, int param1, int
 	}
 	if (action == MenuAction_End)
 	{
-		CloseHandle(menu);
+		delete menu;
 	}
 }
