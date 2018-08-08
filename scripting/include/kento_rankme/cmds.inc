@@ -1,22 +1,21 @@
 // FROM SMLIB
-stock int Array_FindHighestValue(any[] array, int size, int start = 0){
-	if (start < 0) {
-		start = 0;
-	}
+stock int Array_FindHighestValue(any[] array, int size, int start = 0)
+{
+	if (start < 0) start = 0;
 
 	any value = array[start];
 	any tempValue;
 	int x = start;
 	
-	for (int i=start; i < size; i++) {
-		
+	for (int i=start; i < size; i++) 
+	{
 		tempValue = array[i];
 		
-		if (tempValue > value) {
+		if (tempValue > value) 
+		{
 			value = tempValue;
 			x = i;
 		}
-		
 	}
 	
 	return x;
@@ -433,7 +432,6 @@ void ShowTopHS(int client, int at){
 	Format(query,sizeof(query),"%s ORDER BY headshots DESC LIMIT %i, 10",query,at-1);
 		
 	SQL_TQuery(g_hStatsDb,SQL_TopHSCallback,query,Datapack);
-
 }
 
 public void SQL_TopHSCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
@@ -492,7 +490,7 @@ public void SQL_TopHSCallback(Handle owner, Handle hndl, const char[] error, any
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopHS(Menu menu, MenuAction action, int param1, int param2){
@@ -605,7 +603,7 @@ public void SQL_TopKillsCallback(Handle owner, Handle hndl, const char[] error, 
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopKills(Menu menu, MenuAction action, int param1, int param2){
@@ -718,7 +716,7 @@ public void SQL_TopDeathsCallback(Handle owner, Handle hndl, const char[] error,
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopDeaths(Menu menu, MenuAction action, int param1, int param2){
@@ -842,7 +840,7 @@ public void SQL_TopAccCallback(Handle owner, Handle hndl, const char[] error, an
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 	
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopAcc(Menu menu, MenuAction action, int param1, int param2){
@@ -963,7 +961,7 @@ public void SQL_TopTimeCallback(Handle owner, Handle hndl, const char[] error, a
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopTime(Menu menu, MenuAction action, int param1, int param2){
@@ -2130,7 +2128,7 @@ public void SQL_TopAssistsCallback(Handle owner, Handle hndl, const char[] error
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopAssists(Menu menu, MenuAction action, int param1, int param2){
@@ -2244,7 +2242,7 @@ public void SQL_TopTKCallback(Handle owner, Handle hndl, const char[] error, any
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopTK(Menu menu, MenuAction action, int param1, int param2){
@@ -2358,7 +2356,7 @@ public void SQL_TopMVPCallback(Handle owner, Handle hndl, const char[] error, an
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopMVP(Menu menu, MenuAction action, int param1, int param2){
@@ -2472,7 +2470,7 @@ public void SQL_TopDamageCallback(Handle owner, Handle hndl, const char[] error,
 	if(at+i-1 >9)
 		menu.AddItem(temp,temp1);
 
-	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
 }
 
 public int MenuHandler_TopDamage(Menu menu, MenuAction action, int param1, int param2){
