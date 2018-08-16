@@ -142,7 +142,7 @@ public Action CMD_TopWeapon(int client, int args){
 	} else {
 		Menu menu = CreateMenu(MenuHandler_TopWeapon_Choose);
 		menu.SetTitle("Top Weapon:");
-		for(int i=0;i<=39;i++){
+		for(int i=0;i<41;i++){
 			menu.AddItem(g_sWeaponsNamesGame[i],g_sWeaponsNamesFull[i]);
 		}
 		menu.Display(client,MENU_TIME_FOREVER);
@@ -1222,15 +1222,15 @@ public Action CMD_HitBox(int client, int args){
 public Action CMD_WeaponMe(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	int weapons_a[40];
-	for(int a=0;a<=39;a++){
+	int weapons_a[41];
+	for(int a=0;a<41;a++){
 		weapons_a[a] = g_aWeapons[client][a];
 	}
-	int weapons_b[40][2];
+	int weapons_b[41][2];
 	int index;
 	int start;
-	bool indexs[40];
-	for(int a =0; a<=39;a++){
+	bool indexs[41];
+	for(int a =0; a<41;a++){
 		index =Array_FindHighestValue(weapons_a, sizeof(weapons_a));
 		weapons_b[a][0] = index;
 		weapons_b[a][1] = weapons_a[index];
@@ -1244,10 +1244,10 @@ public Action CMD_WeaponMe(int client, int args){
 		indexs[index]=true;
 	}
 
-	for(int b=0; b<=39; b++){
+	for(int b=0; b<41; b++){
 	
 		if(indexs[b] ==false){
-			if(start <=39)
+			if(start <=40)
 				weapons_b[start][0]=b;
 			
 			start++;
@@ -1266,7 +1266,7 @@ public Action CMD_WeaponMe(int client, int args){
 	char temp[255];
 	Format(temp,sizeof(temp),"%T","WeaponsStats",client);
 	panel.SetTitle(temp);
-	for(int i=0;i<=39;i++){
+	for(int i=0;i<41;i++){
 		Format(temp,sizeof(temp),"%s: %d (%.2f%%)",g_sWeaponsNamesFull[weapons_b[i][0]],weapons_b[i][1],(weapons_b[i][1]/hits)*100);
 		panel.AddItem(temp,temp,ITEMDRAW_DISABLED);
 	}
