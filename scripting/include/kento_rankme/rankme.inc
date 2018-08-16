@@ -44,6 +44,7 @@ enum WEAPONS_ENUM{
 	INFERNO,
 	DECOY,
 	TASER,
+	MP5SD,
 }
 
 enum STATS_NAMES{
