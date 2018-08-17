@@ -6,7 +6,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.29"
+#define PLUGIN_VERSION "3.0.3.Kento.29.1"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -1231,14 +1231,14 @@ public void OnPluginEnd() {
 			//ReplaceString(name, sizeof(name), "'", "");
 			
 			
-			char weapons_query[1000] = "";
+			char weapons_query[2000] = "";
 			for (int i = 0; i <= 40; i++) {
 				Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
 			}
 			
 			/* SM1.9 Fix */
-			char query[2000];
-			char query2[2000];
+			char query[4000];
+			char query2[4000];
 	
 			if (g_RankBy == 0) 
 			{
@@ -1270,6 +1270,8 @@ public void OnPluginEnd() {
 					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
 			}
 			
+			LogMessage(query);
+			LogMessage(query2);
 			SQL_FastQuery(g_hStatsDb, query);
 			SQL_FastQuery(g_hStatsDb, query2);
 			
@@ -1929,8 +1931,8 @@ public void SalvarPlayer(int client) {
 	}
 	
 	/* SM1.9 Fix*/
-	char query[2000];
-	char query2[2000];
+	char query[4000];
+	char query2[4000];
 	
 	if (g_RankBy == 0) 
 	{
@@ -1967,8 +1969,9 @@ public void SalvarPlayer(int client) {
 	
 	if (DEBUGGING) {
 		PrintToServer(query);
-		
+		PrintToServer(query2);
 		LogError("%s", query);
+		LogError("%s", query2);
 	}
 }
 
@@ -2099,20 +2102,20 @@ public void SQL_LoadPlayerCallback(Handle owner, Handle hndl, const char[] error
 			g_aHitBox[client][i] = SQL_FetchInt(hndl, 56 + i);
 		}
 		
-		g_aStats[client][C4_PLANTED] = SQL_FetchInt(hndl, 64);
-		g_aStats[client][C4_EXPLODED] = SQL_FetchInt(hndl, 65);
-		g_aStats[client][C4_DEFUSED] = SQL_FetchInt(hndl, 66);
-		g_aStats[client][CT_WIN] = SQL_FetchInt(hndl, 67);
-		g_aStats[client][TR_WIN] = SQL_FetchInt(hndl, 68);
-		g_aStats[client][HOSTAGES_RESCUED] = SQL_FetchInt(hndl, 69);
-		g_aStats[client][VIP_KILLED] = SQL_FetchInt(hndl, 70);
-		g_aStats[client][VIP_ESCAPED] = SQL_FetchInt(hndl, 71);
-		g_aStats[client][VIP_PLAYED] = SQL_FetchInt(hndl, 72);
-		g_aStats[client][MVP] = SQL_FetchInt(hndl, 73);
-		g_aStats[client][DAMAGE] = SQL_FetchInt(hndl, 74);
-		g_aStats[client][MATCH_WIN] = SQL_FetchInt(hndl, 75);
-		g_aStats[client][MATCH_DRAW] = SQL_FetchInt(hndl, 76);
-		g_aStats[client][MATCH_LOSE] = SQL_FetchInt(hndl, 77);
+		g_aStats[client][C4_PLANTED] = SQL_FetchInt(hndl, 65);
+		g_aStats[client][C4_EXPLODED] = SQL_FetchInt(hndl, 66);
+		g_aStats[client][C4_DEFUSED] = SQL_FetchInt(hndl, 67);
+		g_aStats[client][CT_WIN] = SQL_FetchInt(hndl, 68);
+		g_aStats[client][TR_WIN] = SQL_FetchInt(hndl, 69);
+		g_aStats[client][HOSTAGES_RESCUED] = SQL_FetchInt(hndl, 70);
+		g_aStats[client][VIP_KILLED] = SQL_FetchInt(hndl, 71);
+		g_aStats[client][VIP_ESCAPED] = SQL_FetchInt(hndl, 72);
+		g_aStats[client][VIP_PLAYED] = SQL_FetchInt(hndl, 73);
+		g_aStats[client][MVP] = SQL_FetchInt(hndl, 74);
+		g_aStats[client][DAMAGE] = SQL_FetchInt(hndl, 75);
+		g_aStats[client][MATCH_WIN] = SQL_FetchInt(hndl, 76);
+		g_aStats[client][MATCH_DRAW] = SQL_FetchInt(hndl, 77);
+		g_aStats[client][MATCH_LOSE] = SQL_FetchInt(hndl, 78);
 	} else {
 		char query[10000];
 		char sEscapeName[MAX_NAME_LENGTH * 2 + 1];
