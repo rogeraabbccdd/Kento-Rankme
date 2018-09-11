@@ -602,16 +602,16 @@
 	{
 		"pl"		"TOP obrazenia"
 	}
-		"Match Wins"
+		"MatchWins"
 	{
 		"pl"		"Mecz wygrywa"
 	}
-	"Match Loses"
+	"MatchLosses"
 	{
 		"pl"		"Mecz przegrywa"
 	}
 	
-	"Match Draws"
+	"MatchDraws"
 	{
 		"pl"		"Mech zremisowany"
 	}

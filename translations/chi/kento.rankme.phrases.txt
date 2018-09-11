@@ -642,17 +642,17 @@
 		"chi"		"伤害排名"
 	}
 	
-	"Match Wins"
+	"MatchWins"
 	{
 		"en"		"胜场"
 	}
 	
-	"Match Loses"
+	"MatchLosses"
 	{
 		"en"		"败场"
 	}
 	
-	"Match Draws"
+	"MatchDraws"
 	{
 		"en"		"平手"
 	}

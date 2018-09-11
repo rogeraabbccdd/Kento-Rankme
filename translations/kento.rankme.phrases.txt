@@ -648,17 +648,17 @@
 		"en"		"TOP Damage"
 	}
 	
-	"Match Wins"
+	"MatchWins"
 	{
 		"en"		"Match Wins"
 	}
 	
-	"Match Loses"
+	"MatchLosses"
 	{
-		"en"		"Match Loses"
+		"en"		"Match Losses"
 	}
 	
-	"Match Draws"
+	"MatchDraws"
 	{
 		"en"		"Match Draws"
 	}
