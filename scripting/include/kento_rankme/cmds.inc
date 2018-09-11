@@ -1475,7 +1475,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73), "Match Wins", client, SQL_FetchInt(hndl, 75), "Match Draws", client, SQL_FetchInt(hndl, 76), "Match Loses", client, SQL_FetchInt(hndl, 77));
+	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73), "MatchWins", client, SQL_FetchInt(hndl, 75), "MatchDraws", client, SQL_FetchInt(hndl, 76), "MatchLosses", client, SQL_FetchInt(hndl, 77));
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
@@ -1601,7 +1601,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP], "Match Wins", client, g_aStats[client][MATCH_WIN], "Match Draws", client, g_aStats[client][MATCH_DRAW], "Match Loses", client, g_aStats[client][MATCH_LOSE]);
+	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP], "MatchWins", client, g_aStats[client][MATCH_WIN], "MatchDraws", client, g_aStats[client][MATCH_DRAW], "MatchLosses", client, g_aStats[client][MATCH_LOSE]);
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";

@@ -648,17 +648,17 @@
 		"zho"		"傷害排名"
 	}
 	
-	"Match Wins"
+	"MatchWins"
 	{
 		"en"		"勝場"
 	}
 	
-	"Match Loses"
+	"MatchLosses"
 	{
 		"en"		"敗場"
 	}
 	
-	"Match Draws"
+	"MatchDraws"
 	{
 		"en"		"平手"
 	}
