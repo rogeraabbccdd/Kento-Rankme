@@ -6,7 +6,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.29.1"
+#define PLUGIN_VERSION "3.0.3.Kento.29.2"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -1715,27 +1715,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 		GetEventString(event, "weapon", weapon, sizeof(weapon));
 		ReplaceString(weapon, sizeof(weapon), "weapon_", "");
 		
-		if (StrEqual(weapon, "knife_default_ct") || 
-		StrEqual(weapon, "knife_default_t") || 
-		StrEqual(weapon, "knife_t") || 
-		StrEqual(weapon, "knifegg") || 
-		StrEqual(weapon, "knife_flip") || 
-		StrEqual(weapon, "knife_gut") || 
-		StrEqual(weapon, "knife_karambit") || 
-		StrEqual(weapon, "bayonet") || 
-		StrEqual(weapon, "knife_m9_bayonet") || 
-		StrEqual(weapon, "knife_butterfly") || 
-		StrEqual(weapon, "knife_tactical") || 
-		StrEqual(weapon, "knife_falchion") || 
-		StrEqual(weapon, "knife_push") || 
-		StrEqual(weapon, "knife_survival_bowie") ||
-		StrEqual(weapon, "knife_ursus") || 
-		StrEqual(weapon, "knife_gypsy_jackknife") || 
-		StrEqual(weapon, "knife_stiletto") || 
-		StrEqual(weapon, "knife_widowmaker")
-		) {
-			weapon = "knife";
-		}
+		if (StrContains(weapon, "knife") != -1)		weapon = "knife";
 		
 		int score_dif;
 		if (attacker < MAXPLAYERS)
@@ -1901,13 +1881,23 @@ public Action EventWeaponFire(Handle event, const char[] name, bool dontBroadcas
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	if (!g_bRankBots && (!IsValidClient(client) || IsFakeClient(client)))
 		return;
+		
+	// Don't count knife being used neither hegrenade, flashbang and smokegrenade being threw
 	char sWeaponUsed[50];
 	GetEventString(event, "weapon", sWeaponUsed, sizeof(sWeaponUsed));
-	if (StrEqual(sWeaponUsed, "knife") || StrEqual(sWeaponUsed, "hegrenade") || StrEqual(sWeaponUsed, "flashbang") || StrEqual(sWeaponUsed, "smokegrenade") || StrEqual(sWeaponUsed, "inferno") || StrEqual(sWeaponUsed, "molotov") || StrEqual(sWeaponUsed, "incgrenade") || StrEqual(sWeaponUsed, "decoy"))
-		return; // Don't count knife being used neither hegrenade, flashbang and smokegrenade being threw
+	ReplaceString(sWeaponUsed, sizeof(sWeaponUsed), "weapon_", "");
+	if (StrContains(sWeaponUsed, "knife") != -1 || 
+		StrEqual(sWeaponUsed, "hegrenade") || 
+		StrEqual(sWeaponUsed, "flashbang") || 
+		StrEqual(sWeaponUsed, "smokegrenade") || 
+		StrEqual(sWeaponUsed, "inferno") || 
+		StrEqual(sWeaponUsed, "molotov") || 
+		StrEqual(sWeaponUsed, "incgrenade") ||
+		StrEqual(sWeaponUsed, "decoy"))
+		return; 
+	
 	g_aStats[client][SHOTS]++;
 	g_aSession[client][SHOTS]++;
-	
 }
 
 public void SalvarPlayer(int client) {
