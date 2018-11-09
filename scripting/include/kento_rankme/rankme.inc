@@ -99,7 +99,7 @@ public SharedPlugin __pl_rankme=
 	#endif
 }
 
-typedef RankCallback = function void(int client, int rank, any data);
+typedef RankCallback = function Action(int client, int rank, any data);
 
 public void __pl_rankme_SetNTVOptional()
 {
