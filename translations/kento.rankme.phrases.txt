@@ -109,6 +109,12 @@
 		"#format"	"{1:s},{2:d},{3:d}"
 		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Headshot{NORMAL}."
 	}
+	
+	"First Blood"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}First Blood{NORMAL}."
+	}
 
 	"TR_Planting"
 	{

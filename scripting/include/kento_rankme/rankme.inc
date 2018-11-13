@@ -74,6 +74,7 @@ enum STATS_NAMES{
 	MATCH_WIN,
 	MATCH_DRAW,
 	MATCH_LOSE,
+	FB,
 }
 
 enum HITBOXES{
