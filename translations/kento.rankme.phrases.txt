@@ -115,6 +115,12 @@
 		"#format"	"{1:s},{2:d},{3:d}"
 		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}First Blood{NORMAL}."
 	}
+	
+	"No Scope"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}noscoped {PINK}{4} {NORMAL}with {ORANGE}{5} {NORMAL}who was {RED}{6}{NORMAL} meters away."
+	}
 
 	"TR_Planting"
 	{

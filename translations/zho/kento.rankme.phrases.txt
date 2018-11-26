@@ -117,6 +117,12 @@
 		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}首殺,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
+	"No Scope"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}在 {RED}{6} {NORMAL}公尺外使用 {ORANGE}{5} {RED}盲狙 {PINK}{4} {LIGHTGREEN}獲得 {3} 點{NORMAL}"
+	}
+	
 	"TR_Planting"
 	{
 		"#format"	"{1:d}"

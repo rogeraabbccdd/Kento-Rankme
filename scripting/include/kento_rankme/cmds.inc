@@ -1,4 +1,6 @@
 // FROM SMLIB
+#define GAMEUNITS_TO_METERS	0.01905
+
 stock int Array_FindHighestValue(any[] array, int size, int start = 0)
 {
 	if (start < 0) start = 0;
@@ -19,6 +21,32 @@ stock int Array_FindHighestValue(any[] array, int size, int start = 0)
 	}
 	
 	return x;
+}
+
+stock float Math_UnitsToMeters(float units)
+{
+	return (units * GAMEUNITS_TO_METERS);
+}
+
+stock float Entity_GetDistanceOrigin(int entity, const float vec[3])
+{
+	float entityVec[3];
+	Entity_GetAbsOrigin(entity, entityVec);
+
+	return GetVectorDistance(entityVec, vec);
+}
+
+stock float Entity_GetDistance(int entity, int target)
+{
+	float targetVec[3];
+	Entity_GetAbsOrigin(target, targetVec);
+
+	return Entity_GetDistanceOrigin(entity, targetVec);
+}
+
+stock void Entity_GetAbsOrigin(int entity, float vec[3])
+{
+	GetEntPropVector(entity, Prop_Send, "m_vecOrigin", vec);
 }
 
 public Action CMD_ResetRank(int client, int args){
@@ -1356,6 +1384,7 @@ public Action CMD_StatsMe2(int client, int args){
 		
 		return Plugin_Handled;
 	}
+	
 	//PrintToServer(query);
 	SQL_TQuery(g_hStatsDb,SQL_StatsMe2Callback,query,hDatapack);
 	
@@ -1475,7 +1504,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73), "MatchWins", client, SQL_FetchInt(hndl, 75), "MatchDraws", client, SQL_FetchInt(hndl, 76), "MatchLosses", client, SQL_FetchInt(hndl, 77));
+	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73), "Match Wins", client, SQL_FetchInt(hndl, 75), "Match Draws", client, SQL_FetchInt(hndl, 76), "Match Losses", client, SQL_FetchInt(hndl, 77));
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
@@ -1601,7 +1630,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP], "MatchWins", client, g_aStats[client][MATCH_WIN], "MatchDraws", client, g_aStats[client][MATCH_DRAW], "MatchLosses", client, g_aStats[client][MATCH_LOSE]);
+	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP], "Match Wins", client, g_aStats[client][MATCH_WIN], "Match Draws", client, g_aStats[client][MATCH_DRAW], "Match Losses", client, g_aStats[client][MATCH_LOSE]);
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
@@ -1921,17 +1950,6 @@ public int MenuHandler_RankMe(Menu menu, MenuAction action, int client, int para
 			
 		else if(StrEqual(temp,"topweapon"))
 			CMD_TopWeapon(client,0);
-		
-		/*
-		else if(StrEqual(temp,"toptaser"))
-			CMD_TopTaser(client,0);
-			
-		else if(StrEqual(temp,"topknife"))
-			CMD_TopKnife(client,0);
-		
-		else if(StrEqual(temp,"topnade"))
-			ShowTOPNade(client, 0);
-		*/
 		
 		else if(StrEqual(temp,"topacc"))
 			ShowTopAcc(client,0);

@@ -8,6 +8,7 @@
 // [ ]noscope
 // [*]first blood (add to !session and statsme)
 // [ ]round lose
+// [*]fix bayonet
 
 #pragma semicolon  1
 
@@ -32,17 +33,17 @@
 #define SENDER_WORLD 0
 #define MAX_LENGTH_MENU 470
 
-static const char g_sSqliteCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC))";
-static const char g_sMysqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
-static const char g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
+static const char g_sSqliteCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC))";
+static const char g_sMysqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+static const char g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
 
 /* SM1.9 Fix */
 static const char g_sSqlSave[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE steam = '%s';";
 static const char g_sSqlSaveName[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE name = '%s';";
 static const char g_sSqlSaveIp[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE lastip = '%s';";
-static const char g_sSqlSave2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
-static const char g_sSqlSaveName2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', lastconnect='%i', connected='%i' WHERE name = '%s';";
-static const char g_sSqlSaveIp2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s';";
+static const char g_sSqlSave2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
+static const char g_sSqlSaveName2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', lastconnect='%i', connected='%i' WHERE name = '%s';";
+static const char g_sSqlSaveIp2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s';";
 
 static const char g_sSqlRetrieveClient[] = "SELECT * FROM `%s` WHERE steam='%s';";
 static const char g_sSqlRetrieveClientName[] = "SELECT * FROM `%s` WHERE name='%s';";
@@ -240,6 +241,12 @@ bool firstblood = false;
 ConVar g_cvarPointsFb;
 int g_PointsFb;
 
+/* No scope */
+ConVar g_cvarPointsNS;
+int g_PointsNS;
+ConVar g_cvarNSAllSnipers;
+bool g_bNSAllSnipers;
+
 #include <kento_rankme/cmds>
 
 public Plugin myinfo =  {
@@ -293,6 +300,8 @@ public void OnPluginStart() {
 	g_cvarPointsLoseTk = CreateConVar("rankme_points_lose_tk", "0", "How many points a player lose for Team Killing?", _, true, 0.0);
 	g_cvarPointsLoseSuicide = CreateConVar("rankme_points_lose_suicide", "0", "How many points a player lose for Suiciding?", _, true, 0.0);
 	g_cvarPointsFb = CreateConVar("rankme_points_fb", "1", "How many additional points a player got for a First Blood?", _, true, 0.0);
+	g_cvarPointsNS = CreateConVar("rankme_points_ns", "1", "How many additional points a player got for a no scope kill?", _, true, 0.0);	
+	g_cvarNSAllSnipers = CreateConVar("rankme_points_ns_allsnipers", "0", "0: ssg08 and awp only, 1: ssg08, awp, g3sg1, scar20", _, true, 0.0, true, 1.0);	
 	g_cvarRankBy = CreateConVar("rankme_rank_by", "0", "Rank players by? 0 = STEAM:ID 1 = Name 2 = IP", _, true, 0.0, true, 2.0);
 	g_cvarFfa = CreateConVar("rankme_ffa", "0", "Free-For-All (FFA) mode? 1 = true 0 = false", _, true, 0.0, true, 1.0);
 	g_cvarMysql = CreateConVar("rankme_mysql", "0", "Using MySQL? 1 = true 0 = false (SQLite)", _, true, 0.0, true, 1.0);
@@ -383,6 +392,8 @@ public void OnPluginStart() {
 	g_cvarPointsMatchDraw.AddChangeHook(OnConVarChanged);
 	g_cvarPointsMatchLose.AddChangeHook(OnConVarChanged);
 	g_cvarPointsFb.AddChangeHook(OnConVarChanged);
+	g_cvarPointsNS.AddChangeHook(OnConVarChanged);
+	g_cvarNSAllSnipers.AddChangeHook(OnConVarChanged);
 	
 	/* Assist */
 	g_cvarPointsAssistKill.AddChangeHook(OnConVarChanged);
@@ -546,6 +557,8 @@ public void DB_Connect(bool firstload) {
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN first_blood NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope NUMERIC", g_sSQLTable);
+		SQL_FastQuery(g_hStatsDb, sQuery);
 		SQL_UnlockDatabase(g_hStatsDb);
 		
 		for (int i = 1; i <= MaxClients; i++) {
@@ -622,6 +635,8 @@ public void OnConfigsExecuted() {
 	g_PointsMatchDraw = g_cvarPointsMatchDraw.IntValue;
 	g_PointsMatchLose = g_cvarPointsMatchLose.IntValue;
 	g_PointsFb = g_cvarPointsFb.IntValue;
+	g_PointsNS = g_cvarPointsNS.IntValue;
+	g_bNSAllSnipers = g_cvarNSAllSnipers.BoolValue;
 	
 	/* Assist */
 	g_PointsAssistKill = g_cvarPointsAssistKill.IntValue;
@@ -1083,42 +1098,7 @@ public Action OnSayText(int client, const char[] command, int argc)
 	{
 		CMD_TopDamage(client, 0);
 	}
-	
-	/*
-	else if (StrContains(sWords[0], "topknife", false) == 0)
-	{
-		if (strcmp(cpMessage, "topknife") == 0)
-		{
-			ShowTOPKnife(client, 0);
-		}
-		else
-		{
-			ShowTOPKnife(client, StringToInt(cpMessage[8]));
-		}
-	}
-	else if (StrContains(sWords[0], "toptaser", false) == 0)
-	{
-		if (strcmp(cpMessage, "toptaser") == 0)
-		{
-			ShowTOPTaser(client, 0);
-		}
-		else
-		{
-			ShowTOPTaser(client, StringToInt(cpMessage[8]));
-		}
-	}
-	else if (StrContains(sWords[0], "topnade", false) == 0)
-	{
-		if (strcmp(cpMessage, "topnade") == 0)
-		{
-			ShowTOPNade(client, 0);
-		}
-		else
-		{
-			ShowTOPNade(client, StringToInt(cpMessage[7]));
-		}
-	}
-	*/
+
 	
 	else if (StrContains(sWords[0], "tophs", false) == 0)
 	{
@@ -1262,7 +1242,7 @@ public void OnPluginEnd() {
 					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientSteam[client]);
 	
 				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
+					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
 			} 
 	
 			else if (g_RankBy == 1) 
@@ -1272,7 +1252,7 @@ public void OnPluginEnd() {
 					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], sEscapeName);
 	
 				Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
+					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
 			} 
 	
 			else if (g_RankBy == 2) 
@@ -1282,7 +1262,7 @@ public void OnPluginEnd() {
 					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientIp[client]);
 	
 				Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
+					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
 			}
 			
 			LogMessage(query);
@@ -1682,6 +1662,10 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 	int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 	int assist = GetClientOfUserId(GetEventInt(event, "assister"));
 	
+	char weapon[64];
+	GetEventString(event, "weapon", weapon, sizeof(weapon));
+	ReplaceString(weapon, sizeof(weapon), "weapon_", "");
+	
 	if (!g_bRankBots && attacker != 0 && (IsFakeClient(victim) || IsFakeClient(attacker)))
 		return;
 	
@@ -1728,11 +1712,8 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 	} else {
 		int team = GetClientTeam(attacker);
 		bool headshot = GetEventBool(event, "headshot");
-		char weapon[64];
-		GetEventString(event, "weapon", weapon, sizeof(weapon));
-		ReplaceString(weapon, sizeof(weapon), "weapon_", "");
 		
-		if (StrContains(weapon, "knife") != -1)		weapon = "knife";
+		if (StrContains(weapon, "knife") != -1 ||  StrContains(weapon, "bayonet") != -1 )		weapon = "knife";
 		
 		int score_dif;
 		if (attacker < MAXPLAYERS)
@@ -1852,17 +1833,31 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			if (g_bChatChange && g_PointsFb > 0)
 				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "First Blood", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsFb);
 		}
+		
+		if( attacker < MAXPLAYERS && ((StrContains(weapon, "awp") != -1 || StrContains(weapon, "ssg08") != -1) || (g_bNSAllSnipers && (StrContains(weapon, "g3sg1") != -1 || StrContains(weapon, "scar20") != -1))) && (GetEntProp(attacker, Prop_Data, "m_iFOV") <= 0 || GetEntProp(attacker, Prop_Data, "m_iFOV") == GetEntProp(attacker, Prop_Data, "m_iDefaultFOV")))
+		{
+			g_aStats[attacker][SCORE]+= g_PointsNS;
+			g_aSession[attacker][SCORE]+= g_PointsNS;
+			g_aStats[attacker][NS]++;
+			g_aSession[attacker][NS]++;
+			
+			if(g_bChatChange && g_PointsNS > 0){
+				if(!hidechat[attacker])	
+				{
+					float NoscopeDistance = Math_UnitsToMeters(Entity_GetDistance(victim, attacker));
+					CPrintToChat(attacker, "%s %T", MSG, "No Scope", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsNS, g_aClientName[victim], weapon, NoscopeDistance);
+				}
+			}
+		}
 	}
 			
 	/* Assist */
 	if(assist && attacker < MAXPLAYERS){
 		
 		//Do not attack your teammate, my friend
-		if(GetClientTeam(victim) == GetClientTeam(assist)){
-			return;
-		}
-		
-		else{
+		if(GetClientTeam(victim) == GetClientTeam(assist))	return;
+		else
+		{
 			g_aStats[assist][SCORE]+= g_PointsAssistKill;
 			g_aSession[assist][SCORE]+= g_PointsAssistKill;
 			g_aStats[assist][ASSISTS]++;
@@ -1924,6 +1919,7 @@ public Action EventWeaponFire(Handle event, const char[] name, bool dontBroadcas
 	GetEventString(event, "weapon", sWeaponUsed, sizeof(sWeaponUsed));
 	ReplaceString(sWeaponUsed, sizeof(sWeaponUsed), "weapon_", "");
 	if (StrContains(sWeaponUsed, "knife") != -1 || 
+		StrContains(sWeaponUsed, "bayonet") != -1 || 
 		StrEqual(sWeaponUsed, "hegrenade") || 
 		StrEqual(sWeaponUsed, "flashbang") || 
 		StrEqual(sWeaponUsed, "smokegrenade") || 
@@ -1968,7 +1964,7 @@ public void SalvarPlayer(int client) {
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientSteam[client]);
 	
 		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
+			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
 	} 
 	
 	else if (g_RankBy == 1) 
@@ -1978,7 +1974,7 @@ public void SalvarPlayer(int client) {
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], sEscapeName);
 	
 		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
+			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
 	} 
 	
 	else if (g_RankBy == 2) 
@@ -1988,7 +1984,7 @@ public void SalvarPlayer(int client) {
 			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientIp[client]);
 	
 		Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB] , GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
+			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
 	}
 	
 	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query, client, DBPrio_High);
@@ -2144,6 +2140,7 @@ public void SQL_LoadPlayerCallback(Handle owner, Handle hndl, const char[] error
 		g_aStats[client][MATCH_DRAW] = SQL_FetchInt(hndl, 77);
 		g_aStats[client][MATCH_LOSE] = SQL_FetchInt(hndl, 78);
 		g_aStats[client][FB] = SQL_FetchInt(hndl, 79);
+		g_aStats[client][NS] = SQL_FetchInt(hndl, 80);
 	} else {
 		char query[10000];
 		char sEscapeName[MAX_NAME_LENGTH * 2 + 1];
@@ -2492,6 +2489,14 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	
 	else if (convar == g_cvarPointsFb) {
 		g_PointsFb = g_cvarPointsFb.IntValue;
+	}
+	
+	else if (convar == g_cvarPointsNS) {
+		g_PointsNS = g_cvarPointsNS.IntValue;
+	}
+	
+	else if (convar == g_cvarNSAllSnipers) {
+		g_bNSAllSnipers = g_cvarNSAllSnipers.BoolValue;
 	}
 	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
