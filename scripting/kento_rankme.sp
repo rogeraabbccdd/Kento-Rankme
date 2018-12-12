@@ -1709,7 +1709,8 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			StrEqual(weapon, "melee") || 
 			StrEqual(weapon, "axe") || 
 			StrEqual(weapon, "hammer") || 
-			StrEqual(weapon, "spanner"))		weapon = "knife";
+			StrEqual(weapon, "spanner") ||
+			StrEqual(weapon, "fists"))		weapon = "knife";
 		
 		/* breachcharge has projectile */
 		if (StrContains(weapon, "breachcharge") != -1) weapon = "breachcharge";
@@ -1848,11 +1849,17 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			g_aStats[attacker][NS]++;
 			g_aSession[attacker][NS]++;
 			
-			float NoscopeDistance = Math_UnitsToMeters(Entity_GetDistance(victim, attacker));		
+			float fNSD = Math_UnitsToMeters(Entity_GetDistance(victim, attacker));	
+			
+			// stats are int, so we change it from m to cm
+			int iNSD = RoundToFloor(fNSD * 100);
+			if(iNSD > g_aStats[attacker][NSD]) g_aStats[attacker][NSD] = iNSD;
+			if(iNSD > g_aSession[attacker][NSD]) g_aSession[attacker][NSD] = iNSD;
+			
 			if(g_bChatChange && g_PointsNS > 0){
 				if(!hidechat[attacker])	
 				{
-					CPrintToChat(attacker, "%s %T", MSG, "No Scope", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsNS, g_aClientName[victim], weapon, NoscopeDistance);
+					CPrintToChat(attacker, "%s %T", MSG, "No Scope", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsNS, g_aClientName[victim], weapon, fNSD);
 				}
 			}
 		}
@@ -1932,13 +1939,14 @@ public Action EventWeaponFire(Handle event, const char[] name, bool dontBroadcas
 		StrEqual(sWeaponUsed, "axe") || 
 		StrEqual(sWeaponUsed, "hammer") || 
 		StrEqual(sWeaponUsed, "spanner") || 
+		StrEqual(sWeaponUsed, "fists") || 
 		StrEqual(sWeaponUsed, "hegrenade") || 
 		StrEqual(sWeaponUsed, "flashbang") || 
 		StrEqual(sWeaponUsed, "smokegrenade") || 
 		StrEqual(sWeaponUsed, "inferno") || 
 		StrEqual(sWeaponUsed, "molotov") || 
 		StrEqual(sWeaponUsed, "incgrenade") ||
-		StrEqual(sWeaponUsed, "decoy") ||
+		StrContains(sWeaponUsed, "decoy") != -1 ||
 		StrEqual(sWeaponUsed, "firebomb") ||
 		StrEqual(sWeaponUsed, "diversion") ||
 		StrContains(sWeaponUsed, "breachcharge") != -1)
