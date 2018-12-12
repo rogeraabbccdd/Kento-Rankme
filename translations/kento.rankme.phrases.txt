@@ -109,6 +109,18 @@
 		"#format"	"{1:s},{2:d},{3:d}"
 		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Headshot{NORMAL}."
 	}
+	
+	"First Blood"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}First Blood{NORMAL}."
+	}
+	
+	"No Scope"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}noscoped {PINK}{4} {NORMAL}with {ORANGE}{5} {NORMAL}who was {RED}{6}{NORMAL} meters away."
+	}
 
 	"TR_Planting"
 	{
@@ -163,11 +175,23 @@
 		"#format"	"{1:d}"
 		"en"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Winning the Round{NORMAL}."
 	}
+	
+	"CT_Round_Lose"
+	{
+		"#format"	"{1:d}"
+		"en"		"{BLUE}Counter-Terrorists{NORMAL} {RED}lost {1} points {NORMAL}for {RED}Losing the Round{NORMAL}."
+	}
 
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
 		"en"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Winning the Round{NORMAL}."
+	}
+	
+	"TR_Round_Lose"
+	{
+		"#format"	"{1:d}"
+		"en"		"{ORANGE}Terrorists{NORMAL} {RED}lost {1} points {NORMAL}for {RED}Losing the Round{NORMAL}."
 	}
 
 	"PlayerJoinedChat"
@@ -661,5 +685,25 @@
 	"MatchDraws"
 	{
 		"en"		"Match Draws"
+	}
+	
+	"First Bloods"
+	{
+		"en"		"First Bloods"
+	}
+	
+	"NoScopeStats"
+	{
+		"en"		"No Scope Stats"
+	}
+	
+	"NoScopes"
+	{
+		"en"		"No Scopes"
+	}
+	
+	"Farthest"
+	{
+		"en"		"Farthest"
 	}
 }

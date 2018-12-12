@@ -1,4 +1,6 @@
 // FROM SMLIB
+#define GAMEUNITS_TO_METERS	0.01905
+
 stock int Array_FindHighestValue(any[] array, int size, int start = 0)
 {
 	if (start < 0) start = 0;
@@ -19,6 +21,32 @@ stock int Array_FindHighestValue(any[] array, int size, int start = 0)
 	}
 	
 	return x;
+}
+
+stock float Math_UnitsToMeters(float units)
+{
+	return (units * GAMEUNITS_TO_METERS);
+}
+
+stock float Entity_GetDistanceOrigin(int entity, const float vec[3])
+{
+	float entityVec[3];
+	Entity_GetAbsOrigin(entity, entityVec);
+
+	return GetVectorDistance(entityVec, vec);
+}
+
+stock float Entity_GetDistance(int entity, int target)
+{
+	float targetVec[3];
+	Entity_GetAbsOrigin(target, targetVec);
+
+	return Entity_GetDistanceOrigin(entity, targetVec);
+}
+
+stock void Entity_GetAbsOrigin(int entity, float vec[3])
+{
+	GetEntPropVector(entity, Prop_Send, "m_vecOrigin", vec);
 }
 
 public Action CMD_ResetRank(int client, int args){
@@ -142,7 +170,7 @@ public Action CMD_TopWeapon(int client, int args){
 	} else {
 		Menu menu = CreateMenu(MenuHandler_TopWeapon_Choose);
 		menu.SetTitle("Top Weapon:");
-		for(int i=0;i<41;i++){
+		for(int i=0;i<42;i++){
 			menu.AddItem(g_sWeaponsNamesGame[i],g_sWeaponsNamesFull[i]);
 		}
 		menu.Display(client,MENU_TIME_FOREVER);
@@ -1222,15 +1250,15 @@ public Action CMD_HitBox(int client, int args){
 public Action CMD_WeaponMe(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	int weapons_a[41];
-	for(int a=0;a<41;a++){
+	int weapons_a[42];
+	for(int a=0;a<42;a++){
 		weapons_a[a] = g_aWeapons[client][a];
 	}
-	int weapons_b[41][2];
+	int weapons_b[42][2];
 	int index;
 	int start;
-	bool indexs[41];
-	for(int a =0; a<41;a++){
+	bool indexs[42];
+	for(int a =0; a<42;a++){
 		index =Array_FindHighestValue(weapons_a, sizeof(weapons_a));
 		weapons_b[a][0] = index;
 		weapons_b[a][1] = weapons_a[index];
@@ -1244,10 +1272,10 @@ public Action CMD_WeaponMe(int client, int args){
 		indexs[index]=true;
 	}
 
-	for(int b=0; b<41; b++){
+	for(int b=0; b<42; b++){
 	
 		if(indexs[b] ==false){
-			if(start <=40)
+			if(start <42)
 				weapons_b[start][0]=b;
 			
 			start++;
@@ -1266,7 +1294,7 @@ public Action CMD_WeaponMe(int client, int args){
 	char temp[255];
 	Format(temp,sizeof(temp),"%T","WeaponsStats",client);
 	panel.SetTitle(temp);
-	for(int i=0;i<41;i++){
+	for(int i=0;i<42;i++){
 		Format(temp,sizeof(temp),"%s: %d (%.2f%%)",g_sWeaponsNamesFull[weapons_b[i][0]],weapons_b[i][1],(weapons_b[i][1]/hits)*100);
 		panel.AddItem(temp,temp,ITEMDRAW_DISABLED);
 	}
@@ -1356,6 +1384,7 @@ public Action CMD_StatsMe2(int client, int args){
 		
 		return Plugin_Handled;
 	}
+	
 	//PrintToServer(query);
 	SQL_TQuery(g_hStatsDb,SQL_StatsMe2Callback,query,hDatapack);
 	
@@ -1452,7 +1481,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 		rounds = 1;
 	}
 
-	int idamage = SQL_FetchInt(hndl,74);
+	int idamage = SQL_FetchInt(hndl,76);
 	float damage = IntToFloat(idamage);
 	
 	int hits = SQL_FetchInt(hndl,11);
@@ -1468,30 +1497,39 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","Headshots", client, SQL_FetchInt(hndl,12),"Suicides",client,SQL_FetchInt(hndl,8),"TKs",client,SQL_FetchInt(hndl,9));
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
+	Format(temp,255,"%T: %d   %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
+	StrCat(text,255,temp);
+	Format(temp,255,"%T: %d  \n ","First Bloods", client, SQL_FetchInt(hndl, 80));
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
 
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n","TRWins",client,SQL_FetchInt(hndl,68),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,67),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,73), "MatchWins", client, SQL_FetchInt(hndl, 75), "MatchDraws", client, SQL_FetchInt(hndl, 76), "MatchLosses", client, SQL_FetchInt(hndl, 77));
+	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n ","TRWins",client,SQL_FetchInt(hndl,70),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,69),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,75), "MatchWins", client, SQL_FetchInt(hndl, 77), "MatchDraws", client, SQL_FetchInt(hndl, 78), "MatchLosses", client, SQL_FetchInt(hndl, 79));
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","HitStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %.2f%%\n ","Shots",client,shots,"Hits",client,hits,"Accuracy",client,IntToFloat(hits)/shots*100);
+	Format(temp,255,"%T: %d   %T: %d   %T: %.2f%% \n ","Shots",client,shots,"Hits",client,hits,"Accuracy",client,IntToFloat(hits)/shots*100);
+	StrCat(text,255,temp);
+	panel.AddItem("",text);
+	text="";
+	
+	Format(temp,sizeof(temp),"- %T\n","NoScopeStats",client);
+	StrCat(text,255,temp);
+	Format(temp,255,"%T: %d   %T: %.2fm \n ","NoScopes",client,SQL_FetchInt(hndl,81), "Farthest", client, IntToFloat(SQL_FetchInt(hndl,82))/100 );
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,SQL_FetchInt(hndl,64),"ExplodedBombs",client,SQL_FetchInt(hndl,65),"DefusedBombs",client,SQL_FetchInt(hndl,66));
+	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,SQL_FetchInt(hndl,66),"ExplodedBombs",client,SQL_FetchInt(hndl,67),"DefusedBombs",client,SQL_FetchInt(hndl,68));
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d","RescuedHostages",client,SQL_FetchInt(hndl,69));
+	Format(temp,255,"%T: %d\n ","RescuedHostages",client,SQL_FetchInt(hndl,71));
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
@@ -1499,7 +1537,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	if(g_bVipEnabled){
 		Format(temp,sizeof(temp),"- %T\n","VIPStats",client);
 		StrCat(text,255,temp);
-		Format(temp,255,"%T: %d/%d   %T: %d\n ","VIPEscapes",client,SQL_FetchInt(hndl,71),SQL_FetchInt(hndl,72),"VIPsKilled",client,SQL_FetchInt(hndl,70));
+		Format(temp,255,"%T: %d/%d   %T: %d\n ","VIPEscapes",client,SQL_FetchInt(hndl,73),SQL_FetchInt(hndl,74),"VIPsKilled",client,SQL_FetchInt(hndl,72));
 		StrCat(text,255,temp);
 		panel.AddItem("",text);
 		text="";
@@ -1594,14 +1632,16 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d  %T: %d  %T: %d\n","Headshots",client,g_aStats[client][HEADSHOTS],"Suicides",client,g_aStats[client][SUICIDES],"TKs",client,g_aStats[client][TK]);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d  %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
+	Format(temp,255,"%T: %d  %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
+	StrCat(text,255,temp);
+	Format(temp,255,"%T: %d  \n ","First Bloods", client, SQL_FetchInt(hndl, 80));
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP], "MatchWins", client, g_aStats[client][MATCH_WIN], "MatchDraws", client, g_aStats[client][MATCH_DRAW], "MatchLosses", client, g_aStats[client][MATCH_LOSE]);
+	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n ","TRWins",client,g_aStats[client][TR_WIN],g_aStats[client][ROUNDS_TR],"CTWins",client,g_aStats[client][CT_WIN],g_aStats[client][ROUNDS_CT],"MVPs",client,g_aStats[client][MVP], "MatchWins", client, g_aStats[client][MATCH_WIN], "MatchDraws", client, g_aStats[client][MATCH_DRAW], "MatchLosses", client, g_aStats[client][MATCH_LOSE]);
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
@@ -1613,11 +1653,18 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	panel.AddItem("",text);
 	text="";
 	
+	Format(temp,sizeof(temp),"- %T\n","NoScopeStats",client);
+	StrCat(text,255,temp);
+	Format(temp,255,"%T: %d   %T: %.2fm \n ","NoScopes",client,g_aStats[client][NS], "Farthest", client, IntToFloat(g_aStats[client][NSD])/100 );
+	StrCat(text,255,temp);
+	panel.AddItem("",text);
+	text="";
+	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,g_aStats[client][C4_PLANTED],"ExplodedBombs",client,g_aStats[client][C4_EXPLODED],"DefusedBombs",client,g_aStats[client][C4_DEFUSED]);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d","RescuedHostages",client,g_aStats[client][HOSTAGES_RESCUED]);
+	Format(temp,255,"%T: %d \n ","RescuedHostages",client,g_aStats[client][HOSTAGES_RESCUED]);
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
@@ -1921,17 +1968,6 @@ public int MenuHandler_RankMe(Menu menu, MenuAction action, int client, int para
 			
 		else if(StrEqual(temp,"topweapon"))
 			CMD_TopWeapon(client,0);
-		
-		/*
-		else if(StrEqual(temp,"toptaser"))
-			CMD_TopTaser(client,0);
-			
-		else if(StrEqual(temp,"topknife"))
-			CMD_TopKnife(client,0);
-		
-		else if(StrEqual(temp,"topnade"))
-			ShowTOPNade(client, 0);
-		*/
 		
 		else if(StrEqual(temp,"topacc"))
 			ShowTopAcc(client,0);

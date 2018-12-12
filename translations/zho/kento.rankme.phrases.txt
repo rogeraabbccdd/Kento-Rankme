@@ -111,6 +111,18 @@
 		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}爆頭,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
+	"First Blood"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}首殺,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+	
+	"No Scope"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}在 {RED}{6} {NORMAL}公尺外使用 {ORANGE}{5} {RED}盲狙 {PINK}{4} {LIGHTGREEN}獲得 {3} 點{NORMAL}"
+	}
+	
 	"TR_Planting"
 	{
 		"#format"	"{1:d}"
@@ -162,13 +174,25 @@
 	"CT_Round"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{BLUE}反恐小組{RED} 勝利,在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{BLUE}反恐小組{RED} 勝利{NORMAL},在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"CT_Round_Lose"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{BLUE}反恐小組{RED} 戰敗{NORMAL},在這回合{RED}失去 {1} 點{NORMAL}."
 	}
 	
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
-		"zho"		"{ORANGE}恐怖份子{RED} 勝利,在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+		"zho"		"{ORANGE}恐怖份子{RED} 勝利{NORMAL},在這回合{LIGHTGREEN}獲得 {1} 點{NORMAL}."
+	}
+	
+	"TR_Round_Lose"
+	{
+		"#format"	"{1:d}"
+		"zho"		"{ORANGE}恐怖份子{RED} 戰敗{NORMAL},在這回合{RED}失去 {1} 點{NORMAL}."
 	}
 	
 	"NotRanked"
@@ -650,17 +674,37 @@
 	
 	"MatchWins"
 	{
-		"en"		"勝場"
+		"zho"		"勝場"
 	}
 	
 	"MatchLosses"
 	{
-		"en"		"敗場"
+		"zho"		"敗場"
 	}
 	
 	"MatchDraws"
 	{
-		"en"		"平手"
+		"zho"		"平手"
+	}
+	
+	"First Bloods"
+	{
+		"zho"		"首殺"
+	}
+	
+	"NoScopeStats"
+	{
+		"zho"		"盲狙統計"
+	}
+	
+	"NoScopes"
+	{
+		"zho"		"盲狙"
+	}
+	
+	"Farthest"
+	{
+		"zho"		"最遠距離"
 	}
 }
  
