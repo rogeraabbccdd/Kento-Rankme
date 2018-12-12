@@ -674,4 +674,24 @@
 	{
 		"en"		"Match Draws"
 	}
+	
+	"First Bloods"
+	{
+		"en"		"First Bloods"
+	}
+	
+	"NoScopeStats"
+	{
+		"en"		"No Scope Stats"
+	}
+	
+	"NoScopes"
+	{
+		"en"		"No Scopes"
+	}
+	
+	"Farthest"
+	{
+		"en"		"Farthest"
+	}
 }

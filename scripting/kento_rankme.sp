@@ -42,8 +42,8 @@ static const char g_sSqlRemoveDuplicateIpSQLite[] = "delete from `%s` where `%s`
 static const char g_sSqlRemoveDuplicateMySQL[] = "delete from `%s` USING `%s`, `%s` as vtable WHERE (`%s`.id>vtable.id) AND (`%s`.steam=vtable.steam);";
 static const char g_sSqlRemoveDuplicateNameMySQL[] = "delete from `%s` USING `%s`, `%s` as vtable WHERE (`%s`.id>vtable.id) AND (`%s`.name=vtable.name);";
 static const char g_sSqlRemoveDuplicateIpMySQL[] = "delete from `%s` USING `%s`, `%s` as vtable WHERE (`%s`.id>vtable.id) AND (`%s`.ip=vtable.ip);";
-stock const char g_sWeaponsNamesGame[41][] =  { "knife", "glock", "hkp2000", "usp_silencer", "p250", "deagle", "elite", "fiveseven", "tec9", "cz75a", "revolver", "nova", "xm1014", "mag7", "sawedoff", "bizon", "mac10", "mp9", "mp7", "ump45", "p90", "galilar", "ak47", "scar20", "famas", "m4a1", "m4a1_silencer", "aug", "ssg08", "sg556", "awp", "g3sg1", "m249", "negev", "hegrenade", "flashbang", "smokegrenade", "inferno", "decoy", "taser", "mp5sd"};
-stock const char g_sWeaponsNamesFull[41][] =  { "Knife", "Glock", "P2000", "USP-S", "P250", "Desert Eagle", "Dual Berettas", "Five-Seven", "Tec 9", "CZ75-Auto", "R8 Revolver", "Nova", "XM1014", "Mag 7", "Sawed-off", "PP-Bizon", "MAC-10", "MP9", "MP7", "UMP45", "P90", "Galil AR", "AK-47", "SCAR-20", "Famas", "M4A4", "M4A1-S", "AUG", "SSG 08", "SG 553", "AWP", "G3SG1", "M249", "Negev", "HE Grenade", "Flashbang", "Smoke Grenade", "Inferno", "Decoy", "Zeus x27", "MP5-SD"};
+stock const char g_sWeaponsNamesGame[42][] =  { "knife", "glock", "hkp2000", "usp_silencer", "p250", "deagle", "elite", "fiveseven", "tec9", "cz75a", "revolver", "nova", "xm1014", "mag7", "sawedoff", "bizon", "mac10", "mp9", "mp7", "ump45", "p90", "galilar", "ak47", "scar20", "famas", "m4a1", "m4a1_silencer", "aug", "ssg08", "sg556", "awp", "g3sg1", "m249", "negev", "hegrenade", "flashbang", "smokegrenade", "inferno", "decoy", "taser", "mp5sd", "breachcharge"};
+stock const char g_sWeaponsNamesFull[42][] =  { "Knife", "Glock", "P2000", "USP-S", "P250", "Desert Eagle", "Dual Berettas", "Five-Seven", "Tec 9", "CZ75-Auto", "R8 Revolver", "Nova", "XM1014", "Mag 7", "Sawed-off", "PP-Bizon", "MAC-10", "MP9", "MP7", "UMP45", "P90", "Galil AR", "AK-47", "SCAR-20", "Famas", "M4A4", "M4A1-S", "AUG", "SSG 08", "SG 553", "AWP", "G3SG1", "M249", "Negev", "HE Grenade", "Flashbang", "Smoke Grenade", "Inferno", "Decoy", "Zeus x27", "MP5-SD", "Breach Charges"};
 
 ConVar g_cvarEnabled;
 ConVar g_cvarChatChange;
@@ -543,6 +543,8 @@ public void DB_Connect(bool firstload) {
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN mp5sd NUMERIC AFTER taser", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN breachcharge NUMERIC AFTER mp5sd", g_sSQLTable);
+		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN first_blood NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope NUMERIC", g_sSQLTable);
@@ -959,7 +961,7 @@ public int Native_GetWeaponStats(Handle plugin, int numParams)
 {
 	int iClient = GetNativeCell(1);
 	int array[41];
-	for (int i = 0; i < 41; i++)
+	for (int i = 0; i < 42; i++)
 	array[i] = g_aWeapons[iClient][i];
 	
 	SetNativeArray(2, array, 41);
@@ -1008,7 +1010,7 @@ public Action OnClientChangeName(Handle event, const char[] name, bool dontBroad
 				g_aStats[client][i] = 0;
 			}
 			g_aStats[client][SCORE] = g_PointsStart;
-			for (int i = 0; i <= 40; i++) {
+			for (int i = 0; i < 42; i++) {
 				g_aWeapons[client][i] = 0;
 			}
 			g_aSession[client][CONNECTED] = GetTime();
@@ -1217,7 +1219,7 @@ public void OnPluginEnd() {
 			
 			
 			char weapons_query[2000] = "";
-			for (int i = 0; i <= 40; i++) {
+			for (int i = 0; i < 42; i++) {
 				Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
 			}
 			
@@ -1279,11 +1281,11 @@ public void OnPluginEnd() {
 
 public int GetWeaponNum(char[] weaponname) 
 {
-	for (int i = 0; i <= 40; i++) {
+	for (int i = 0; i < 42; i++) {
 		if (StrEqual(weaponname, g_sWeaponsNamesGame[i]))
 			return i;
 	}
-	return 40;
+	return 43;
 }
 
 public Action Event_VipEscaped(Handle event, const char[] name, bool dontBroadcast) {
@@ -1782,7 +1784,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 		if (attacker < MAXPLAYERS) {
 			g_aStats[attacker][SCORE] += score_dif;
 			g_aSession[attacker][SCORE] += score_dif;
-			if (GetWeaponNum(weapon) < 41)
+			if (GetWeaponNum(weapon) < 42)
 				g_aWeapons[attacker][GetWeaponNum(weapon)]++;
 		}
 		
@@ -1931,7 +1933,6 @@ public Action EventWeaponFire(Handle event, const char[] name, bool dontBroadcas
 	// Don't count knife being used neither hegrenade, flashbang and smokegrenade being threw
 	char sWeaponUsed[50];
 	GetEventString(event, "weapon", sWeaponUsed, sizeof(sWeaponUsed));
-	
 	ReplaceString(sWeaponUsed, sizeof(sWeaponUsed), "weapon_", "");
 	if (StrContains(sWeaponUsed, "knife") != -1 || 
 		StrEqual(sWeaponUsed, "bayonet") || 
@@ -1972,7 +1973,7 @@ public void SalvarPlayer(int client) {
 	//ReplaceString(name, sizeof(name), "'", "");
 	
 	char weapons_query[1000] = "";
-	for (int i = 0; i <= 40; i++) {
+	for (int i = 0; i < 42; i++) {
 		Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
 	}
 	
@@ -2068,7 +2069,7 @@ public void LoadPlayer(int client) {
 		g_aStats[client][i] = 0;
 	}
 	g_aStats[client][SCORE] = g_PointsStart;
-	for (int i = 0; i <= 40; i++) {
+	for (int i = 0; i < 42; i++) {
 		g_aWeapons[client][i] = 0;
 	}
 	g_aSession[client][CONNECTED] = GetTime();
@@ -2139,32 +2140,32 @@ public void SQL_LoadPlayerCallback(Handle owner, Handle hndl, const char[] error
 		}
 		
 		//ALL 41 Weapons
-		for (int i = 0; i <= 40; i++) {
+		for (int i = 0; i < 42; i++) {
 			g_aWeapons[client][i] = SQL_FetchInt(hndl, 17 + i);
 		}
 		
 		//ALL 8 Hitboxes
 		for (int i = 1; i <= 7; i++) {
-			g_aHitBox[client][i] = SQL_FetchInt(hndl, 56 + i);
+			g_aHitBox[client][i] = SQL_FetchInt(hndl, 57 + i);
 		}
 		
-		g_aStats[client][C4_PLANTED] = SQL_FetchInt(hndl, 65);
-		g_aStats[client][C4_EXPLODED] = SQL_FetchInt(hndl, 66);
-		g_aStats[client][C4_DEFUSED] = SQL_FetchInt(hndl, 67);
-		g_aStats[client][CT_WIN] = SQL_FetchInt(hndl, 68);
-		g_aStats[client][TR_WIN] = SQL_FetchInt(hndl, 69);
-		g_aStats[client][HOSTAGES_RESCUED] = SQL_FetchInt(hndl, 70);
-		g_aStats[client][VIP_KILLED] = SQL_FetchInt(hndl, 71);
-		g_aStats[client][VIP_ESCAPED] = SQL_FetchInt(hndl, 72);
-		g_aStats[client][VIP_PLAYED] = SQL_FetchInt(hndl, 73);
-		g_aStats[client][MVP] = SQL_FetchInt(hndl, 74);
-		g_aStats[client][DAMAGE] = SQL_FetchInt(hndl, 75);
-		g_aStats[client][MATCH_WIN] = SQL_FetchInt(hndl, 76);
-		g_aStats[client][MATCH_DRAW] = SQL_FetchInt(hndl, 77);
-		g_aStats[client][MATCH_LOSE] = SQL_FetchInt(hndl, 78);
-		g_aStats[client][FB] = SQL_FetchInt(hndl, 79);
-		g_aStats[client][NS] = SQL_FetchInt(hndl, 80);
-		g_aStats[client][NSD] = SQL_FetchInt(hndl, 81);
+		g_aStats[client][C4_PLANTED] = SQL_FetchInt(hndl, 66);
+		g_aStats[client][C4_EXPLODED] = SQL_FetchInt(hndl, 67);
+		g_aStats[client][C4_DEFUSED] = SQL_FetchInt(hndl, 68);
+		g_aStats[client][CT_WIN] = SQL_FetchInt(hndl, 69);
+		g_aStats[client][TR_WIN] = SQL_FetchInt(hndl, 70);
+		g_aStats[client][HOSTAGES_RESCUED] = SQL_FetchInt(hndl, 71);
+		g_aStats[client][VIP_KILLED] = SQL_FetchInt(hndl, 72);
+		g_aStats[client][VIP_ESCAPED] = SQL_FetchInt(hndl, 73);
+		g_aStats[client][VIP_PLAYED] = SQL_FetchInt(hndl, 74);
+		g_aStats[client][MVP] = SQL_FetchInt(hndl, 75);
+		g_aStats[client][DAMAGE] = SQL_FetchInt(hndl, 76);
+		g_aStats[client][MATCH_WIN] = SQL_FetchInt(hndl, 77);
+		g_aStats[client][MATCH_DRAW] = SQL_FetchInt(hndl, 78);
+		g_aStats[client][MATCH_LOSE] = SQL_FetchInt(hndl, 79);
+		g_aStats[client][FB] = SQL_FetchInt(hndl, 80);
+		g_aStats[client][NS] = SQL_FetchInt(hndl, 81);
+		g_aStats[client][NSD] = SQL_FetchInt(hndl, 82);
 	} else {
 		char query[10000];
 		char sEscapeName[MAX_NAME_LENGTH * 2 + 1];

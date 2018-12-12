@@ -120,7 +120,7 @@
 	"No Scope"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}在 {RED}{6} {NORMAL}公尺外使用 {ORANGE}{5} {RED}盲狙 {PINK}{4} {LIGHTGREEN}獲得 {3} 點{NORMAL}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}在 {RED}{6} {NORMAL}公尺外使用 {ORANGE}{5} {RED}盲狙 {PINK}{4} {LIGHTGREEN}獲得 {3} 點{NORMAL}"
 	}
 	
 	"TR_Planting"
@@ -662,17 +662,37 @@
 	
 	"MatchWins"
 	{
-		"en"		"勝場"
+		"zho"		"勝場"
 	}
 	
 	"MatchLosses"
 	{
-		"en"		"敗場"
+		"zho"		"敗場"
 	}
 	
 	"MatchDraws"
 	{
-		"en"		"平手"
+		"zho"		"平手"
+	}
+	
+	"First Bloods"
+	{
+		"zho"		"首殺"
+	}
+	
+	"NoScopeStats"
+	{
+		"zho"		"盲狙統計"
+	}
+	
+	"NoScopes"
+	{
+		"zho"		"盲狙"
+	}
+	
+	"Farthest"
+	{
+		"zho"		"最遠距離"
 	}
 }
  
