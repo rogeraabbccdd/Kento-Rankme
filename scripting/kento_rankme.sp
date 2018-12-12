@@ -269,10 +269,10 @@ public void OnPluginStart() {
 	g_cvarPointsKillBonusTr = CreateConVar("rankme_points_kill_bonus_tr", "1", "How many points a TR got for killing additional by the diffrence of points?", _, true, 0.0);
 	g_cvarPointsKillBonusDifCt = CreateConVar("rankme_points_kill_bonus_dif_ct", "100", "How many points of diffrence is needed for a CT to got the bonus?", _, true, 0.0);
 	g_cvarPointsKillBonusDifTr = CreateConVar("rankme_points_kill_bonus_dif_tr", "100", "How many points of diffrence is needed for a TR to got the bonus?", _, true, 0.0);
-	g_cvarPointsCtRoundWin = CreateConVar("rankme_points_ct_round_win", "0", "How many points an alive CT got for winning the round?", _, true, 0.0);
-	g_cvarPointsTrRoundWin = CreateConVar("rankme_points_tr_round_win", "0", "How many points an alive TR got for winning the round?", _, true, 0.0);
-	g_cvarPointsCtRoundLose = CreateConVar("rankme_points_ct_round_lose", "0", "How many points an alive CT lost for losing the round?", _, true, 0.0);
-	g_cvarPointsTrRoundLose = CreateConVar("rankme_points_tr_round_lose", "0", "How many points an alive TR lost for losing the round?", _, true, 0.0);
+	g_cvarPointsCtRoundWin = CreateConVar("rankme_points_ct_round_win", "0", "How many points CT got for winning the round?", _, true, 0.0);
+	g_cvarPointsTrRoundWin = CreateConVar("rankme_points_tr_round_win", "0", "How many points TR got for winning the round?", _, true, 0.0);
+	g_cvarPointsCtRoundLose = CreateConVar("rankme_points_ct_round_lose", "0", "How many points CT lost for losing the round?", _, true, 0.0);
+	g_cvarPointsTrRoundLose = CreateConVar("rankme_points_tr_round_lose", "0", "How many points TR lost for losing the round?", _, true, 0.0);
 	g_cvarPointsKnifeMultiplier = CreateConVar("rankme_points_knife_multiplier", "2.0", "Multiplier of points by knife", _, true, 0.0);
 	g_cvarPointsTaserMultiplier = CreateConVar("rankme_points_taser_multiplier", "2.0", "Multiplier of points by taser", _, true, 0.0);
 	g_cvarPointsStart = CreateConVar("rankme_points_start", "1000", "Starting points", _, true, 0.0);
