@@ -76,6 +76,8 @@ ConVar g_cvarPointsKnifeMultiplier;
 ConVar g_cvarPointsTaserMultiplier;
 ConVar g_cvarPointsTrRoundWin;
 ConVar g_cvarPointsCtRoundWin;
+ConVar g_cvarPointsTrRoundLose;
+ConVar g_cvarPointsCtRoundLose;
 ConVar g_cvarPointsMvpCt;
 ConVar g_cvarPointsMvpTr;
 ConVar g_cvarMinimalKills;
@@ -136,6 +138,7 @@ float g_fPointsKnifeMultiplier;
 float g_fPointsTaserMultiplier;
 float g_fPercentPointsLose;
 int g_PointsRoundWin[4];
+int g_PointsRoundLose[4];
 int g_MinimumPlayers;
 int g_PointsLoseTk;
 int g_PointsLoseSuicide;
@@ -268,6 +271,8 @@ public void OnPluginStart() {
 	g_cvarPointsKillBonusDifTr = CreateConVar("rankme_points_kill_bonus_dif_tr", "100", "How many points of diffrence is needed for a TR to got the bonus?", _, true, 0.0);
 	g_cvarPointsCtRoundWin = CreateConVar("rankme_points_ct_round_win", "0", "How many points an alive CT got for winning the round?", _, true, 0.0);
 	g_cvarPointsTrRoundWin = CreateConVar("rankme_points_tr_round_win", "0", "How many points an alive TR got for winning the round?", _, true, 0.0);
+	g_cvarPointsCtRoundLose = CreateConVar("rankme_points_ct_round_lose", "0", "How many points an alive CT lost for losing the round?", _, true, 0.0);
+	g_cvarPointsTrRoundLose = CreateConVar("rankme_points_tr_round_lose", "0", "How many points an alive TR lost for losing the round?", _, true, 0.0);
 	g_cvarPointsKnifeMultiplier = CreateConVar("rankme_points_knife_multiplier", "2.0", "Multiplier of points by knife", _, true, 0.0);
 	g_cvarPointsTaserMultiplier = CreateConVar("rankme_points_taser_multiplier", "2.0", "Multiplier of points by taser", _, true, 0.0);
 	g_cvarPointsStart = CreateConVar("rankme_points_start", "1000", "Starting points", _, true, 0.0);
@@ -350,6 +355,8 @@ public void OnPluginStart() {
 	g_cvarPointsKillBonusDifTr.AddChangeHook(OnConVarChanged);
 	g_cvarPointsCtRoundWin.AddChangeHook(OnConVarChanged);
 	g_cvarPointsTrRoundWin.AddChangeHook(OnConVarChanged);
+	g_cvarPointsCtRoundLose.AddChangeHook(OnConVarChanged);
+	g_cvarPointsTrRoundLose.AddChangeHook(OnConVarChanged);
 	g_cvarPointsKnifeMultiplier.AddChangeHook(OnConVarChanged);
 	g_cvarPointsTaserMultiplier.AddChangeHook(OnConVarChanged);
 	g_cvarPointsStart.AddChangeHook(OnConVarChanged);
@@ -603,6 +610,8 @@ public void OnConfigsExecuted() {
 	g_fPointsTaserMultiplier = g_cvarPointsTaserMultiplier.FloatValue;
 	g_PointsRoundWin[TR] = g_cvarPointsTrRoundWin.IntValue;
 	g_PointsRoundWin[CT] = g_cvarPointsCtRoundWin.IntValue;
+	g_PointsRoundLose[TR] = g_cvarPointsTrRoundLose.IntValue;
+	g_PointsRoundLose[CT] = g_cvarPointsCtRoundLose.IntValue;
 	g_MinimalKills = g_cvarMinimalKills.IntValue;
 	g_fPercentPointsLose = g_cvarPercentPointsLose.FloatValue;
 	g_bPointsLoseRoundCeil = g_cvarPointsLoseRoundCeil.BoolValue;
@@ -1427,32 +1436,58 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 	for (i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i) && (g_bRankBots || !IsFakeClient(i))) {
-			if (Winner == TR && GetClientTeam(i) == TR) {
-				g_aSession[i][TR_WIN]++;
-				g_aStats[i][TR_WIN]++;
-				if (g_PointsRoundWin[TR] > 0 && IsPlayerAlive(i)) {
-					g_aSession[i][SCORE] += g_PointsRoundWin[TR];
-					g_aStats[i][SCORE] += g_PointsRoundWin[TR];
-					if (!announced && g_bChatChange) {
-						for (int j = 1; j <= MaxClients; j++)
-						if (IsClientInGame(j))
-							if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "TR_Round", j, g_PointsRoundWin[TR]);
-						announced = true;
+			if (Winner == TR) {
+				if(GetClientTeam(i) == TR){
+					g_aSession[i][TR_WIN]++;
+					g_aStats[i][TR_WIN]++;
+					if (g_PointsRoundWin[TR] > 0 && IsPlayerAlive(i)) {
+						g_aSession[i][SCORE] += g_PointsRoundWin[TR];
+						g_aStats[i][SCORE] += g_PointsRoundWin[TR];
+						if (!announced && g_bChatChange) {
+							for (int j = 1; j <= MaxClients; j++)
+							if (IsClientInGame(j))
+								if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "TR_Round", j, g_PointsRoundWin[TR]);
+						}
 					}
 				}
-			} else if (Winner == CT && GetClientTeam(i) == CT) {
-				g_aSession[i][CT_WIN]++;
-				g_aStats[i][CT_WIN]++;
-				if (g_PointsRoundWin[CT] > 0 && IsPlayerAlive(i)) {
-					g_aSession[i][SCORE] += g_PointsRoundWin[CT];
-					g_aStats[i][SCORE] += g_PointsRoundWin[CT];
-					if (!announced && g_bChatChange) {
-						for (int j = 1; j <= MaxClients; j++)
-						if (IsClientInGame(j))
-							if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "CT_Round", j, g_PointsRoundWin[CT]);
-						announced = true;
+				else if(GetClientTeam(i) == CT){
+					if (g_PointsRoundLose[CT] > 0 && IsPlayerAlive(i)) {
+						g_aSession[i][SCORE] -= g_PointsRoundLose[CT];
+						g_aStats[i][SCORE] -= g_PointsRoundLose[CT];
+						if (!announced && g_bChatChange) {
+							for (int j = 1; j <= MaxClients; j++)
+							if (IsClientInGame(j))
+								if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "CT_Round_Lose", j, g_PointsRoundLose[CT]);
+						}
 					}
 				}
+				announced = true;
+			} else if (Winner == CT) {
+				if(GetClientTeam(i) == CT){
+					g_aSession[i][CT_WIN]++;
+					g_aStats[i][CT_WIN]++;
+					if (g_PointsRoundWin[CT] > 0 && IsPlayerAlive(i)) {
+						g_aSession[i][SCORE] += g_PointsRoundWin[CT];
+						g_aStats[i][SCORE] += g_PointsRoundWin[CT];
+						if (!announced && g_bChatChange) {
+							for (int j = 1; j <= MaxClients; j++)
+							if (IsClientInGame(j))
+								if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "CT_Round", j, g_PointsRoundWin[CT]);
+						}
+					}
+				}
+				else if(GetClientTeam(i) == TR){
+					if (g_PointsRoundLose[TR] > 0 && IsPlayerAlive(i)) {
+						g_aSession[i][SCORE] -= g_PointsRoundLose[TR];
+						g_aStats[i][SCORE] -= g_PointsRoundLose[TR];
+						if (!announced && g_bChatChange) {
+							for (int j = 1; j <= MaxClients; j++)
+							if (IsClientInGame(j))
+								if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "TR_Round_Lose", j, g_PointsRoundLose[TR]);
+						}
+					}
+				}
+				announced = true;
 			}
 			SalvarPlayer(i);
 		}
@@ -2385,6 +2420,12 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	}
 	else if (convar == g_cvarPointsCtRoundWin) {
 		g_PointsRoundWin[CT] = g_cvarPointsCtRoundWin.IntValue;
+	}
+	else if (convar == g_cvarPointsTrRoundLose) {
+		g_PointsRoundLose[TR] = g_cvarPointsTrRoundLose.IntValue;
+	}
+	else if (convar == g_cvarPointsCtRoundLose) {
+		g_PointsRoundLose[CT] = g_cvarPointsCtRoundLose.IntValue;
 	}
 	else if (convar == g_cvarMinimalKills) {
 		g_MinimalKills = g_cvarMinimalKills.IntValue;
