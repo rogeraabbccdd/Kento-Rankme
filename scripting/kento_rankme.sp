@@ -1440,7 +1440,7 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 				if(GetClientTeam(i) == TR){
 					g_aSession[i][TR_WIN]++;
 					g_aStats[i][TR_WIN]++;
-					if (g_PointsRoundWin[TR] > 0 && IsPlayerAlive(i)) {
+					if (g_PointsRoundWin[TR] > 0) {
 						g_aSession[i][SCORE] += g_PointsRoundWin[TR];
 						g_aStats[i][SCORE] += g_PointsRoundWin[TR];
 						if (!announced && g_bChatChange) {
@@ -1451,7 +1451,7 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 					}
 				}
 				else if(GetClientTeam(i) == CT){
-					if (g_PointsRoundLose[CT] > 0 && IsPlayerAlive(i)) {
+					if (g_PointsRoundLose[CT] > 0) {
 						g_aSession[i][SCORE] -= g_PointsRoundLose[CT];
 						g_aStats[i][SCORE] -= g_PointsRoundLose[CT];
 						if (!announced && g_bChatChange) {
@@ -1466,7 +1466,7 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 				if(GetClientTeam(i) == CT){
 					g_aSession[i][CT_WIN]++;
 					g_aStats[i][CT_WIN]++;
-					if (g_PointsRoundWin[CT] > 0 && IsPlayerAlive(i)) {
+					if (g_PointsRoundWin[CT] > 0) {
 						g_aSession[i][SCORE] += g_PointsRoundWin[CT];
 						g_aStats[i][SCORE] += g_PointsRoundWin[CT];
 						if (!announced && g_bChatChange) {
@@ -1477,7 +1477,7 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 					}
 				}
 				else if(GetClientTeam(i) == TR){
-					if (g_PointsRoundLose[TR] > 0 && IsPlayerAlive(i)) {
+					if (g_PointsRoundLose[TR] > 0) {
 						g_aSession[i][SCORE] -= g_PointsRoundLose[TR];
 						g_aStats[i][SCORE] -= g_PointsRoundLose[TR];
 						if (!announced && g_bChatChange) {
