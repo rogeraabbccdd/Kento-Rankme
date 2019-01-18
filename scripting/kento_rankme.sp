@@ -1615,8 +1615,10 @@ public Action Event_PlayerDisconnect(Handle event, const char[] name, bool dontB
 {
 	if(!g_bAnnounceDisconnect)
 		return;
-		
+
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+
+	if(ShouldHideAnnounce(client))	return;
 	
 	if (client <= 0 || client > MaxClients || !IsClientConnected(client) || !g_bRankBots)
 		return;
