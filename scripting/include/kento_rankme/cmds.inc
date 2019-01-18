@@ -170,7 +170,7 @@ public Action CMD_TopWeapon(int client, int args){
 	} else {
 		Menu menu = CreateMenu(MenuHandler_TopWeapon_Choose);
 		menu.SetTitle("Top Weapon:");
-		for(int i=0;i<42;i++){
+		for(int i=0;i<43;i++){
 			menu.AddItem(g_sWeaponsNamesGame[i],g_sWeaponsNamesFull[i]);
 		}
 		menu.Display(client,MENU_TIME_FOREVER);
@@ -1121,7 +1121,6 @@ public Action CMD_Session(int client, int args){
 	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	char text[255];
 	char temp[255];
-	panel.Pagination = 3;
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
 	StrCat(text,255,temp);
 	Format(temp,sizeof(temp),"%T: %i\n","Points",client,g_aSession[client][SCORE]);
@@ -1204,7 +1203,7 @@ public Action CMD_Session(int client, int args){
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
-	
+	panel.Pagination = 2;
 	panel.Display(client,MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
@@ -1250,15 +1249,15 @@ public Action CMD_HitBox(int client, int args){
 public Action CMD_WeaponMe(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	int weapons_a[42];
-	for(int a=0;a<42;a++){
+	int weapons_a[43];
+	for(int a=0;a<43;a++){
 		weapons_a[a] = g_aWeapons[client][a];
 	}
-	int weapons_b[42][2];
+	int weapons_b[43][2];
 	int index;
 	int start;
-	bool indexs[42];
-	for(int a =0; a<42;a++){
+	bool indexs[43];
+	for(int a =0; a<43;a++){
 		index =Array_FindHighestValue(weapons_a, sizeof(weapons_a));
 		weapons_b[a][0] = index;
 		weapons_b[a][1] = weapons_a[index];
@@ -1272,10 +1271,10 @@ public Action CMD_WeaponMe(int client, int args){
 		indexs[index]=true;
 	}
 
-	for(int b=0; b<42; b++){
+	for(int b=0; b<43; b++){
 	
 		if(indexs[b] ==false){
-			if(start <42)
+			if(start <43)
 				weapons_b[start][0]=b;
 			
 			start++;
@@ -1294,7 +1293,7 @@ public Action CMD_WeaponMe(int client, int args){
 	char temp[255];
 	Format(temp,sizeof(temp),"%T","WeaponsStats",client);
 	panel.SetTitle(temp);
-	for(int i=0;i<42;i++){
+	for(int i=0;i<43;i++){
 		Format(temp,sizeof(temp),"%s: %d (%.2f%%)",g_sWeaponsNamesFull[weapons_b[i][0]],weapons_b[i][1],(weapons_b[i][1]/hits)*100);
 		panel.AddItem(temp,temp,ITEMDRAW_DISABLED);
 	}
@@ -1462,7 +1461,6 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	panel.SetTitle(Name_receive);
 	
 	char text[255];
-	panel.Pagination = 3;
 	int ikills = SQL_FetchInt(hndl,5);
 	int ideaths= SQL_FetchInt(hndl,6);
 	int deaths;
@@ -1560,6 +1558,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
+	panel.Pagination = 2;
 	panel.Display(client,MENU_TIME_FOREVER);
 }
 
@@ -1596,7 +1595,6 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	}
 	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	char text[255];
-	panel.Pagination = 3;
 	int ikills = g_aStats[client][KILLS];
 	int ideaths=g_aStats[client][DEATHS];
 	int deaths;
@@ -1634,7 +1632,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	StrCat(text,255,temp);
 	Format(temp,255,"%T: %d  %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
 	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d  \n ","First Bloods", client, SQL_FetchInt(hndl, 80));
+	Format(temp,255,"%T: %d  \n ","First Bloods", client, g_aStats[client][FB]);
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
@@ -1691,10 +1689,8 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	StrCat(text,255,temp);
 	panel.AddItem("",text);
 	text="";
+	panel.Pagination = 2;
 	panel.Display(client,MENU_TIME_FOREVER);
-			
-		
-	
 }
 
 public int PanelNoHandle(Menu menu, MenuAction action, int param1, int param2){
@@ -1917,6 +1913,14 @@ public Action CMD_RankMe(int client, int args){
 	char toptime[512];
 	Format(toptime, sizeof(toptime), "%t", "TOP Time Connected");
 	hMenu.AddItem("toptime", toptime);
+
+	char topkdr[512];
+	Format(topkdr, sizeof(topkdr), "%t", "TOP KDR");
+	hMenu.AddItem("topkdr", topkdr);
+
+	char toppoints[512];
+	Format(toppoints, sizeof(toppoints), "%t", "TOP Points");
+	hMenu.AddItem("toppoints", toppoints);
 	
 	if(CheckCommandAccess(client, "sm_resetrank", ADMFLAG_ROOT))
 	{
@@ -1995,6 +1999,12 @@ public int MenuHandler_RankMe(Menu menu, MenuAction action, int client, int para
 			
 		else if(StrEqual(temp,"topdamage"))
 			ShowTopDamage(client,0);
+		
+		else if(StrEqual(temp,"topkdr"))
+			ShowTOPKDR(client,0);
+
+		else if(StrEqual(temp,"toppoints"))
+			ShowTOPPoints(client,0);
 			
 		else if(StrEqual(temp,"resetrank")){
 			
@@ -2525,5 +2535,419 @@ public int MenuHandler_TopDamage(Menu menu, MenuAction action, int param1, int p
 	if (action == MenuAction_End)
 	{
 		delete menu;
+	}
+}
+/* KDR */
+public Action CMD_TopKDR(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+	
+	char arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTOPKDR(client,StringToInt(arg1));
+	}	else {
+		ShowTOPKDR(client,0);
+	}
+	return Plugin_Handled;
+}
+
+void ShowTOPKDR(int client, int at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	Handle Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	if(g_bMysql)
+		Format(query,sizeof(query),"%s ORDER BY CAST(kills as DECIMAL)/CAST(Case when deaths=0 then 1 ELSE deaths END as DECIMAL) DESC, score DESC LIMIT %i, 10",query,at-1);
+	else
+		Format(query,sizeof(query),"%s ORDER BY CAST(kills as float)/CAST(Case when deaths=0 then 1 ELSE deaths END as float) DESC, score DESC LIMIT %i, 10",query,at-1);
+	
+	SQL_TQuery(g_hStatsDb,SQL_TopKDRCallback,query,Datapack);
+
+}
+
+public void SQL_TopKDRCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	
+	ResetPack(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	int at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTOPKDR(client,g_TotalPlayers-9);
+		return;
+	}
+	char name[256];
+	char temp[500];
+	
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopKDR);
+	
+	float kdr;
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	menu.SetTitle("");
+	char sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		
+		i++;
+		
+		SQL_FetchString(hndl,2,name,sizeof(name));
+			
+		
+		int deaths;
+		if(SQL_FetchInt(hndl,6) == 0)
+			deaths = 1;
+		else 
+			deaths=SQL_FetchInt(hndl,6);
+		
+		kdr = SQL_FetchFloat(hndl,5)/deaths;
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - KDR: %.2f\n",i+at,name,SQL_FetchInt(hndl,4),kdr);
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n ",temp);
+	menu.AddItem(temp,temp);
+	
+	
+	IntToString(at+i,temp,sizeof(temp));
+	char temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		menu.AddItem(temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		menu.AddItem(temp,temp1);
+	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_TopKDR(Menu menu, MenuAction action, int param1, int param2){
+	
+	if (action == MenuAction_Select)
+	{
+		char temp[250];
+	
+		menu.GetItem(param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTOPKDR(param1,StringToInt(temp)+1);
+		} else {
+			ShowTOPKDR(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+/* Points */
+public Action CMD_TopPoints(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+	
+	char arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTOPPoints(client,StringToInt(arg1));
+	}	else {
+		ShowTOPPoints(client,0);
+	}
+	return Plugin_Handled;
+}
+
+void ShowTOPPoints(int client, int at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	Handle Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	Format(query,sizeof(query),"%s ORDER BY score DESC LIMIT %i, 10",query,at-1);
+	SQL_TQuery(g_hStatsDb,SQL_TopPointsCallback,query,Datapack);
+}
+
+public void SQL_TopPointsCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	
+	ResetPack(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	int at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTOPPoints(client,g_TotalPlayers-9);
+		return;
+	}
+	char name[256];
+	char temp[500];
+	
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopPoints);
+	
+	float kdr;
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	menu.SetTitle("");
+	char sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		
+		i++;
+		
+		SQL_FetchString(hndl,2,name,sizeof(name));
+			
+		
+		int deaths;
+		if(SQL_FetchInt(hndl,6) == 0)
+			deaths = 1;
+		else 
+			deaths=SQL_FetchInt(hndl,6);
+		
+		kdr = SQL_FetchFloat(hndl,5)/deaths;
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - KDR: %.2f\n",i+at,name,SQL_FetchInt(hndl,4),kdr);
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n ",temp);
+	menu.AddItem(temp,temp);
+	
+	
+	IntToString(at+i,temp,sizeof(temp));
+	char temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		menu.AddItem(temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		menu.AddItem(temp,temp1);
+	
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_TopPoints(Menu menu, MenuAction action, int param1, int param2){
+	
+	if (action == MenuAction_Select)
+	{
+		char temp[250];
+	
+		menu.GetItem(param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTOPPoints(param1,StringToInt(temp)+1);
+		} else {
+			ShowTOPPoints(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+// Code made by Antithasys
+public Action OnSayText(int client, const char[] command, int argc)
+{
+	if (!g_bEnabled || !g_bChatTriggers || client == SENDER_WORLD || IsChatTrigger())
+	{  // Don't parse if plugin is disabled or if is from the console or a chat trigger (e.g: ! or /)
+		return Plugin_Continue;
+	}
+	
+	char cpMessage[256];
+	char sWords[64][256];
+	GetCmdArgString(cpMessage, sizeof(cpMessage)); // Get the message
+	StripQuotes(cpMessage); // Text come inside quotes
+	//ReplaceString(cpMessage,sizeof(cpMessage),"\"","");
+	ExplodeString(cpMessage, " ", sWords, sizeof(sWords), sizeof(sWords[])); // Explode it for use at top, topknife, topnade and topweapon
+	
+	// Proccess the text
+	if (StrEqual(cpMessage, "rank", false))
+	{
+		//LogToFile("rankme.debug.log","\"rank\" chat hook called by client %d.",client);
+		CMD_Rank(client, 0);
+	}
+	else if (StrEqual(cpMessage, "statsme", false))
+	{
+		CMD_StatsMe(client, 0);
+	}
+	else if (StrEqual(cpMessage, "hitboxme", false))
+	{
+		CMD_HitBox(client, 0);
+	}
+	else if (StrEqual(cpMessage, "weaponme", false))
+	{
+		CMD_WeaponMe(client, 0);
+	}
+	else if (StrEqual(cpMessage, "session", false))
+	{
+		CMD_Session(client, 0);
+	}
+	else if (StrEqual(cpMessage[0], "next", false))
+	{
+		CMD_Next(client, 0);
+	}
+	else if (StrContains(sWords[0], "toptk", false) == 0)
+	{
+		CMD_TopTK(client, 0);
+	}
+	else if (StrContains(sWords[0], "topmvp", false) == 0)
+	{
+		CMD_TopMVP(client, 0);
+	}
+	else if (StrContains(sWords[0], "topdamage", false) == 0)
+	{
+		CMD_TopDamage(client, 0);
+	}
+	else if (StrContains(sWords[0], "topkdr", false) == 0)
+	{
+		CMD_TopKDR(client, 0);
+	}
+	
+	else if (StrContains(sWords[0], "tophs", false) == 0)
+	{
+		if (strcmp(cpMessage, "tophs") == 0)
+		{
+			ShowTopHS(client, 0);
+		}
+		else
+		{
+			ShowTopHS(client, StringToInt(cpMessage[7]));
+		}
+	}
+	else if (StrContains(sWords[0], "topkills", false) == 0)
+	{
+		if (strcmp(cpMessage, "topkills") == 0)
+		{
+			ShowTopKills(client, 0);
+		}
+		else
+		{
+			ShowTopKills(client, StringToInt(cpMessage[7]));
+		}
+	}
+	else if (StrContains(sWords[0], "topdeaths", false) == 0)
+	{
+		if (strcmp(cpMessage, "topdeaths") == 0)
+		{
+			ShowTopDeaths(client, 0);
+		}
+		else
+		{
+			ShowTopDeaths(client, StringToInt(cpMessage[7]));
+		}
+	}
+	else if (StrContains(sWords[0], "topassists", false) == 0)
+	{
+		if (strcmp(cpMessage, "topassists") == 0)
+		{
+			ShowTopAssists(client, 0);
+		}
+		else
+		{
+			ShowTopAssists(client, StringToInt(cpMessage[7]));
+		}
+	}
+	else if (StrContains(sWords[0], "topacc", false) == 0)
+	{
+		if (strcmp(cpMessage, "topacc") == 0)
+		{
+			ShowTopAcc(client, 0);
+		}
+		else
+		{
+			ShowTopAcc(client, StringToInt(cpMessage[7]));
+		}
+	}
+	else if (StrContains(sWords[0], "toptime", false) == 0)
+	{
+		if (strcmp(cpMessage, "toptime") == 0)
+		{
+			ShowTopTime(client, 0);
+		}
+		else
+		{
+			ShowTopTime(client, StringToInt(cpMessage[7]));
+		}
+	}
+	else if (StrContains(sWords[0], "topweapon", false) == 0)
+	{
+		if (strcmp(cpMessage, "topweapon") == 0)
+		{
+			CMD_TopWeapon(client, 0); // Build the menu on the next frame
+		}
+		else
+		{
+			if (GetWeaponNum(sWords[1]) == 30)
+			{
+				CMD_TopWeapon(client, 0);
+			}
+			else
+			{
+				ShowTOPWeapon(client, GetWeaponNum(sWords[1]), StringToInt(sWords[2]));
+			}
+		}
+	}
+	else if (StrContains(sWords[0], "top", false) == 0)
+	{
+		if (strcmp(cpMessage, "top") == 0)
+		{
+			ShowTOP(client, 0);
+		}
+		else
+		{
+			ShowTOP(client, StringToInt(cpMessage[3]));
+		}
+	}
+	return Plugin_Continue;
+}
+
+/* Hide Chat */
+public Action CMD_HideChat(int client, int args){
+	if(!hidechat[client]){
+		SetClientCookie(client, hidechatcookie, "1");
+		CPrintToChat(client, "%s %T", MSG, "Hide Rankme Chat", client);
+		hidechat[client] = true;
+	}
+	else if(hidechat[client]){
+		SetClientCookie(client, hidechatcookie, "0");
+		CPrintToChat(client, "%s %T", MSG, "Show Rankme Chat", client);
+		hidechat[client] = false;
 	}
 }
