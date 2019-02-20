@@ -114,6 +114,7 @@ public void __pl_rankme_SetNTVOptional()
 	MarkNativeAsOptional("RankMe_GetSession");
 	MarkNativeAsOptional("RankMe_GetWeaponStats");
 	MarkNativeAsOptional("RankMe_GetHitbox");
+	MarkNativeAsOptional("RankMe_IsPlayerLoaded");
 }
 
 /*********************************************************
@@ -182,6 +183,14 @@ native void RankMe_GetWeaponStats(int client, int[] weapons_return);
  * @noreturn		
  *********************************************************/
 native void RankMe_GetHitbox(int client, int[] hitbox_return);
+
+/*********************************************************
+ * Get if player is loaded 
+ *
+ * @param client	Client index
+ * @return			If the client is loaded
+ *********************************************************/
+native void RankMe_IsPlayerLoaded(int client);
 
 /**********************************************************************
  * When a player has been loaded
