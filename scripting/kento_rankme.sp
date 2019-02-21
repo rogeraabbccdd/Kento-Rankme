@@ -687,7 +687,7 @@ void BuildRankCache()
 	if (g_RankMode == 1)
 		Format(query, sizeof(query), "%s ORDER BY score DESC", query);
 	else if(g_RankMode == 2)
-		Format(query, sizeof(query), "%s ORDER BY CAST(CAST(kills as float)/CAST (deaths as float) as float) DESC", query);
+		Format(query, sizeof(query), "%s ORDER BY kills/deaths DESC", query);
 	
 	SQL_TQuery(g_hStatsDb, SQL_BuildRankCache, query);
 }
