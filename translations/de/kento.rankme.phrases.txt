@@ -174,7 +174,7 @@
 	//{1} = ClientName | {2} = RankOnConnect | {3} = PointsOnConnect
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"de"		"{PINK}{1}{NORMAL} hat dem Server begetreten. {YELLOW}(Pos {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}Punkte){NORMAL}."
+		"de"		"{PINK}{1}{NORMAL} hat dem Server betreten. {YELLOW}(Pos {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}Punkte){NORMAL}."
 	}
 	
 	"TopPlayerJoinedChat"
@@ -193,7 +193,7 @@
 	"NotRanked"
 	{
 		"#format"	"{1:d},{2:d}"
-		"de"		"{RED}Bisher keinen Rang. {NORMAL}Du brauchst {RED}{2}{NORMAL} kills um einen Rang zu bekommen. Derzeit {LIGHTGREEN}{1}{NORMAL}."
+		"de"		"{RED}Bisher keinen Rang. {NORMAL}Du brauchst {RED}{2}{NORMAL} Kills um einen Rang zu bekommen. Derzeit {LIGHTGREEN}{1}{NORMAL}."
 	}
 	
 	"AssistKill"
@@ -207,7 +207,7 @@
 	"PlayerJoinedHint"
 	{
 		"#format"	"{1:s},{2:d},{3:d},"
-		"de"		"<font color='#28FF28'>Info</font> \n <font color='#B15BFF'>{1}</font> hat dem Server begetreten. \n Pos <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> Punkte"	
+		"de"		"<font color='#28FF28'>Info</font> \n <font color='#B15BFF'>{1}</font> hat den Server betreten. \n Pos <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> Punkte"	
 	}
 	
 	"TopPlayerJoinedHint"
