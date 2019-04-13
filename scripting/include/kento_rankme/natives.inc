@@ -7,6 +7,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	CreateNative("RankMe_GetSession", Native_GetSession);
 	CreateNative("RankMe_GetWeaponStats", Native_GetWeaponStats);
 	CreateNative("RankMe_GetHitbox", Native_GetHitbox);
+	CreateNative("RankMe_IsPlayerLoaded", Native_IsPlayerLoaded);
 	
 	RegPluginLibrary("rankme");
 	
@@ -219,4 +220,10 @@ public int Native_GetHitbox(Handle plugin, int numParams)
 	array[i] = g_aHitBox[iClient][i];
 	
 	SetNativeArray(2, array, 8);
+}
+
+public int Native_IsPlayerLoaded(Handle plugin, int numParams)
+{
+	int iClient = GetNativeCell(1);
+	return OnDB[iClient];
 }
