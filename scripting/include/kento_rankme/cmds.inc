@@ -72,27 +72,19 @@ public Action CMD_ResetRank(int client, int args){
 	char name[MAX_NAME_LENGTH];
 	char ip[64];
 	for(int i=1;i<=MaxClients;i++){
-		if(IsClientInGame(i)){
-		
+		if(IsClientInGame(i)){		
 			if(g_RankBy == 1){
-				
-				GetClientName(i,name,sizeof(name));
-				
+				GetClientName(i,name,sizeof(name));				
 				if(StrEqual(name,arg1,false))
-					OnClientPutInServer(i);
-			
+					OnClientPutInServer(i);			
 			} else if(g_RankBy == 0){
-				GetClientAuthId(i,AuthId_Steam2,auth,sizeof(auth));
-				
+				GetClientAuthId(i,AuthId_Steam2,auth,sizeof(auth));	
 				if(StrEqual(auth,arg1,false))
 					OnClientPutInServer(i);
-			} else if(g_RankBy == 2){
-				
-				GetClientIP(i,ip,sizeof(ip));
-				
+			} else if(g_RankBy == 2){			
+				GetClientIP(i,ip,sizeof(ip));				
 				if(StrEqual(ip,arg1,false))
 					OnClientPutInServer(i);
-			
 			}
 		}
 	}
@@ -1249,20 +1241,18 @@ public Action CMD_HitBox(int client, int args){
 public Action CMD_WeaponMe(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
-	int weapons_a[43];
-	for(int a=0;a<43;a++){
+	int weapons_a[42];
+	for(int a=0;a<42;a++){
 		weapons_a[a] = g_aWeapons[client][a];
 	}
-	int weapons_b[43][2];
+	int weapons_b[42][2];
 	int index;
 	int start;
-	bool indexs[43];
-	for(int a =0; a<43;a++){
+	bool indexs[42];
+	for(int a =0; a<42;a++){
 		index =Array_FindHighestValue(weapons_a, sizeof(weapons_a));
 		weapons_b[a][0] = index;
 		weapons_b[a][1] = weapons_a[index];
-		
-		
 		if(weapons_a[index] == 0){
 			start=a;
 			break;
@@ -1271,10 +1261,10 @@ public Action CMD_WeaponMe(int client, int args){
 		indexs[index]=true;
 	}
 
-	for(int b=0; b<43; b++){
+	for(int b=0; b<42; b++){
 	
 		if(indexs[b] ==false){
-			if(start <43)
+			if(start <42)
 				weapons_b[start][0]=b;
 			
 			start++;
@@ -1293,7 +1283,7 @@ public Action CMD_WeaponMe(int client, int args){
 	char temp[255];
 	Format(temp,sizeof(temp),"%T","WeaponsStats",client);
 	panel.SetTitle(temp);
-	for(int i=0;i<43;i++){
+	for(int i=0;i<42;i++){
 		Format(temp,sizeof(temp),"%s: %d (%.2f%%)",g_sWeaponsNamesFull[weapons_b[i][0]],weapons_b[i][1],(weapons_b[i][1]/hits)*100);
 		panel.AddItem(temp,temp,ITEMDRAW_DISABLED);
 	}
@@ -1798,7 +1788,6 @@ public Action CMD_ResetOwnRank(int client, int args){
 		return Plugin_Handled;
 	char query[2000];
 	if(g_RankBy == 1){
-		
 		char sEscape[MAX_NAME_LENGTH*2+1];
 		SQL_EscapeString(g_hStatsDb,g_aClientName[client],sEscape,sizeof(sEscape));
 		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTable,sEscape);
@@ -1825,7 +1814,6 @@ public int FloatToInt(float ifloat){
 	FloatToString(ifloat,s,sizeof(s));
 	return StringToInt(s);
 }
-
 
 public Action CMD_RankMe(int client, int args){
 

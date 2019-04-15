@@ -1276,15 +1276,21 @@ public void OnClientPutInServer(int client) {
 public void LoadPlayer(int client) {
 	
 	OnDB[client] = false;
-	for (int i = 0; i <= 19; i++) {
+	// stats
+	for (int i = 0; i <= 28; i++) {
 		g_aSession[client][i] = 0;
 		g_aStats[client][i] = 0;
 	}
 	g_aStats[client][SCORE] = g_PointsStart;
+	// weapons
 	for (int i = 0; i < 42; i++) {
 		g_aWeapons[client][i] = 0;
 	}
 	g_aSession[client][CONNECTED] = GetTime();
+	//hitboxes
+	for (int i = 1; i <= 7; i++) {
+		g_aHitBox[client][i] = 0;
+	}
 	
 	char name[MAX_NAME_LENGTH];
 	GetClientName(client, name, sizeof(name));
@@ -1390,7 +1396,6 @@ public void SQL_LoadPlayerCallback(Handle owner, Handle hndl, const char[] error
 		
 		if (DEBUGGING) {
 			PrintToServer(query);
-			
 			LogError("%s", query);
 		}
 	}
