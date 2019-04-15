@@ -9,6 +9,12 @@
 "Phrases"
 {
 	//******************* PrintToChat *******************
+
+	"Chat Prefix"
+	{
+		"en"		"{GREEN}[RankMe]"
+	}
+
 	"ResetMyRank"
 	{
 		"en"		"{RED}Your rank has been reseted"

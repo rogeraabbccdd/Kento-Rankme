@@ -22,7 +22,6 @@
 
 #pragma newdecls required
 
-#define MSG "\x04 [RankMe] \x01\x0B\x01"
 #define SPEC 1
 #define TR 2
 #define CT 3
@@ -81,6 +80,8 @@ Handle hRankTimer[MAXPLAYERS + 1] = INVALID_HANDLE;
 /* Hide Chat */
 Handle hidechatcookie;
 bool hidechat[MAXPLAYERS+1];
+
+char MSG[64];
 
 #include <kento_rankme/cvars>
 #include <kento_rankme/natives>
@@ -174,6 +175,8 @@ public void OnPluginStart() {
 	
 	/* Hide chat */
 	hidechatcookie = RegClientCookie("rankme_hidechat", "Hide rankme chat messages", CookieAccess_Private);
+
+	Format(MSG, sizeof(MSG), "%t", "Chat Prefix");
 }
 
 public void OnConVarChanged_SQLTable(Handle convar, const char[] oldValue, const char[] newValue) {

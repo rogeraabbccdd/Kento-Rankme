@@ -9,7 +9,12 @@
 "Phrases"
 {	
 	//******************* PrintToChat *******************
-	
+
+	"Chat Prefix"
+	{
+		"zho"		"{GREEN}[RankMe]"
+	}
+
 	"ResetMyRank"
 	{
 		"zho"		"{RED}你的排名已經重置"
