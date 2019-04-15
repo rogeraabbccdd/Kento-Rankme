@@ -1364,7 +1364,7 @@ public void SQL_LoadPlayerCallback(Handle owner, Handle hndl, const char[] error
 		
 		//ALL 8 Hitboxes
 		for (int i = 1; i <= 7; i++) {
-			g_aHitBox[client][i] = SQL_FetchInt(hndl, 57 + i);
+			g_aHitBox[client][i] = SQL_FetchInt(hndl, 58 + i);
 		}
 		
 		g_aStats[client][C4_PLANTED] = SQL_FetchInt(hndl, 66);
