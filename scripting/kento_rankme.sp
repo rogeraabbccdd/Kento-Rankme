@@ -177,7 +177,7 @@ public void OnPluginStart() {
 }
 
 public void OnConVarChanged_SQLTable(Handle convar, const char[] oldValue, const char[] newValue) {
-	
+
 	g_cvarSQLTable.GetString(g_sSQLTable, sizeof(g_sSQLTable));
 	DB_Connect(true); // Force reloading the stats
 }
@@ -249,7 +249,6 @@ public void DB_Connect(bool firstload) {
 	
 }
 public void OnConfigsExecuted() {
-	
 	if (g_hStatsDb == INVALID_HANDLE)
 		DB_Connect(true);
 	else
@@ -264,14 +263,47 @@ public void OnConfigsExecuted() {
 	
 	GetCvarValues();
 	
-	if (g_bRankBots)
+	if (g_bRankBots){
 		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTable, g_MinimalKills);
-	else
+	}
+	else{
 		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT'", g_sSQLTable, g_MinimalKills);
-	
+	}
 	SQL_TQuery(g_hStatsDb, SQL_GetPlayersCallback, sQuery);
-	
+
+	CheckUnique();
 	BuildRankCache();
+}
+
+void CheckUnique(){
+	char sQuery[1000];
+	Format(sQuery, sizeof(sQuery), "SHOW INDEX FROM `%s` WHERE Key_name = 'steam'", g_sSQLTable);
+	SQL_TQuery(g_hStatsDb, SQL_SetUniqueCallback, sQuery);
+}
+
+public void SQL_SetUniqueCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	bool hasunique;
+	if(SQL_GetRowCount(hndl) > 0)	hasunique = true;
+	else hasunique = false;
+
+	char sQuery[1000];
+	if (g_bRankBots){
+		//only drop it when theres unique key
+		if(hasunique){
+			Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` DROP INDEX steam", g_sSQLTable);
+			SQL_TQuery(g_hStatsDb, SQL_NothingCallback, sQuery);
+		}
+	}
+	else{
+		Format(sQuery, sizeof(sQuery), "DELETE FROM `%s` WHERE steam = 'BOT'" ,g_sSQLTable);
+		SQL_TQuery(g_hStatsDb, SQL_NothingCallback, sQuery);
+
+		// check unique key is exists or not
+		if(SQL_GetRowCount(hndl) < 1){
+			Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD UNIQUE(steam)" ,g_sSQLTable);
+			SQL_TQuery(g_hStatsDb, SQL_NothingCallback, sQuery);
+		}
+	}
 }
 
 void BuildRankCache()

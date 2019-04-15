@@ -410,6 +410,7 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	else if (convar == g_cvarRankbots) {
 		g_bRankBots = g_cvarRankbots.BoolValue;
 		g_bQueryPlayerCount = true;
+		CheckUnique();
 	}
 	else if (convar == g_cvarFfa) {
 		g_bFfa = g_cvarFfa.BoolValue;
