@@ -9,6 +9,12 @@
 "Phrases"
 {
 	//******************* PrintToChat *******************
+
+	"Chat Prefix"
+	{
+		"en"		"{GREEN}[RankMe]"
+	}
+
 	"ResetMyRank"
 	{
 		"en"		"{RED}Your rank has been reseted"
@@ -587,10 +593,10 @@
 		"en"		"TOP Assists"
 	}
 
-//	"TOP KDR"
-//	{
-//		"en"		"TOP KDR"
-//	}
+	"TOP KDR"
+	{
+		"en"		"TOP KDR"
+	}
 
 	"TOP TK"
 	{
@@ -601,21 +607,6 @@
 	{
 		"en"		"TOP Weapon"
 	}
-
-//	"TOP Grenade"
-//	{
-//		"en"		"TOP Grenade"
-//	}
-//
-//	"TOP Knife"
-//	{
-//		"en"		"TOP Knife"
-//	}
-//
-//	"TOP Taser"
-//	{
-//		"en"		"TOP Taser"
-//	}
 
 	"TOP Accuracy"
 	{
@@ -630,6 +621,11 @@
 	"TOP Time Connected"
 	{
 		"en"		"TOP Time Connected"
+	}
+
+	"TOP Points"
+	{
+		"en"		"TOP Points"
 	}
 
 	"Reset a player rank"

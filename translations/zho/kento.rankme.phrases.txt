@@ -9,7 +9,12 @@
 "Phrases"
 {	
 	//******************* PrintToChat *******************
-	
+
+	"Chat Prefix"
+	{
+		"zho"		"{GREEN}[RankMe]"
+	}
+
 	"ResetMyRank"
 	{
 		"zho"		"{RED}你的排名已經重置"
@@ -587,10 +592,10 @@
 		"zho"		"助攻排名"
 	}
 	
-//	"TOP KDR"
-//	{
-//		"zho"		"KDR排名"
-//	}
+	"TOP KDR"
+	{
+		"zho"		"KDR排名"
+	}
 	
 	"TOP TK"
 	{
@@ -601,21 +606,6 @@
 	{
 		"zho"		"武器排名"
 	}
-	
-//	"TOP Grenade"
-//	{
-//		"zho"		"TOP Grenade"
-//	}
-//	
-//	"TOP Knife"
-//	{
-//		"zho"		"TOP Knife"
-//	}
-//	
-//	"TOP Taser"
-//	{
-//		"zho"		"TOP Taser"
-//	}
 	
 	"TOP Accuracy"
 	{
@@ -632,6 +622,11 @@
 		"zho"		"連線時間排名"
 	}
 	
+	"TOP Points"
+	{
+		"zho"		"積分排名"
+	}
+
 	"Reset a player rank"
 	{
 		"zho"		"重置玩家排名"
