@@ -11,7 +11,7 @@
 	//******************* PrintToChat *******************
 	"ResetMyRank"
 	{
-		"es"		"{RED}Tu rango ha sido reseteado"
+		"es"		"{RED}Tu rango ha sido reiniciado"
 	}
 
 	"BombPickup"
@@ -23,7 +23,7 @@
 	"BombDropped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"es"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}perdio {3} punto(s) {NORMAL}por {RED}dejar caer la Bomba{NORMAL}."
+		"es"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}perdió {3} punto(s) {NORMAL}por {RED}dejar caer la Bomba{NORMAL}."
 	}
 
 	"MVP"
@@ -35,19 +35,19 @@
 	"LostSuicide"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"es"		"{PINK}{1}{PURPLE} ({2}) {RED}perdio {3} punto(s) {NORMAL}por {RED}Suicidarse{NORMAL}."
+		"es"		"{PINK}{1}{PURPLE} ({2}) {RED}perdió {3} punto(s) {NORMAL}por {RED}Suicidarse{NORMAL}."
 	}
 
 	"LostTK"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-		"es"		"{PINK}{1}{PURPLE} ({2}) {RED}perdio {3} punto(s) {NORMAL}por matar a su equipo {PINK}{4}{NORMAL}."
+		"es"		"{PINK}{1}{PURPLE} ({2}) {RED}perdió {3} punto(s) {NORMAL}por matar a su equipo {PINK}{4}{NORMAL}."
 	}
 
 	"CT_VIPEscaped"
 	{
 		"#format"	"{1:d}"
-		"es"		"{BLUE}Counter-Terroristas{NORMAL} {LIGHTGREEN}obtiene {1} puntos {NORMAL}por {RED}Escapar como VIP{NORMAL}."
+		"es"		"{BLUE}Antiterroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Escapar como VIP{NORMAL}."
 	}
 
 	"VIPEscaped"
@@ -59,7 +59,7 @@
 	"TR_VIPKilled"
 	{
 		"#format"	"{1:d}"
-		"es"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}obtiene {1} puntos {NORMAL}por {RED}Matar al VIP{NORMAL}."
+		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Matar al VIP{NORMAL}."
 	}
 
 	"VIPKilled"
@@ -113,7 +113,7 @@
 	"TR_Planting"
 	{
 		"#format"	"{1:d}"
-		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtiene {1} puntos {NORMAL}por {RED}Plantar la Bomba{NORMAL}."
+		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Plantar la Bomba{NORMAL}."
 	}
 
 	"Planting"
@@ -125,7 +125,7 @@
 	"TR_Exploding"
 	{
 		"#format"	"{1:d}"
-		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtiene {1} puntos {NORMAL}por {RED}Explotar la Bomba{NORMAL}."
+		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Explotar la Bomba{NORMAL}."
 	}
 
 	"Exploding"
@@ -137,7 +137,7 @@
 	"CT_Defusing"
 	{
 		"#format"	"{1:d}"
-		"es"		"{BLUE}Counter-Terroristas{NORMAL} {LIGHTGREEN}obtiene {1} puntos {NORMAL}por {RED}Defusar la Bomba{NORMAL}."
+		"es"		"{BLUE}Antiterroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Defusar la Bomba{NORMAL}."
 	}
 
 	"Defusing"
@@ -149,7 +149,7 @@
 	"CT_Hostage"
 	{
 		"#format"	"{1:d}"
-		"es"		"{BLUE}Counter-Terroristas{NORMAL} {LIGHTGREEN}obtiene {1} puntos {NORMAL}por {RED}Rescatar al Rehen{NORMAL}."
+		"es"		"{BLUE}Antiterroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Rescatar al Rehen{NORMAL}."
 	}
 
 	"Hostage"
@@ -161,13 +161,13 @@
 	"CT_Round"
 	{
 		"#format"	"{1:d}"
-		"es"		"{BLUE}Counter-Terroristas{NORMAL} {LIGHTGREEN}obtiene {1} puntos {NORMAL}por {RED}Ganar la Ronda{NORMAL}."
+		"es"		"{BLUE}Antiterroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Ganar la Ronda{NORMAL}."
 	}
 
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
-		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtiene {1} puntos {NORMAL}por {RED}Ganar la Ronda{NORMAL}."
+		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Ganar la Ronda{NORMAL}."
 	}
 
 	"PlayerJoinedChat"
@@ -193,7 +193,7 @@
 	"NotRanked"
 	{
 		"#format"	"{1:d},{2:d}"
-		"es"		"{RED}Sin rango aun. {NORMAL}Tu necesitas {RED}{2}{NORMAL} muertes para obtener un rango. Actualmente {LIGHTGREEN}{1}{NORMAL}."
+		"es"		"{RED}Sin rango aún. {NORMAL}Tu necesitas {RED}{2}{NORMAL} muertes para obtener un rango. Actualmente {LIGHTGREEN}{1}{NORMAL}."
 	}
 
 	"AssistKill"
@@ -204,17 +204,17 @@
 
 	"The rank has been reset"
 	{
-		"es"		"{RED}El rango ha sido reseteado"
+		"es"		"{RED}El rango ha sido reiniciado"
 	}
 
 	"All rank data has been reset"
 	{
-		"es"		"{RED}Todos los datos de rangos han sido reseteados"
+		"es"		"{RED}Todos los datos de rangos han sido reiniciados"
 	}
 
 	"Usagepurge"
 	{
-		"es"		"{RED}Uso: {PINK}rankpurge X (donde X equivale a la cantidad de dias inactivos)"
+		"es"		"{RED}Uso: {PINK}rankpurge X (donde X equivale a la cantidad de días inactivos)"
 	}
 
 	"Purged"
@@ -224,7 +224,7 @@
 
 	"UsageStatsme2"
 	{
-		"es"		"{RED}Uso: {PINK}sm_statsme2 <nombre / #posicion en el top / steam>"
+		"es"		"{RED}Uso: {PINK}sm_statsme2 <nombre / #posición en el top / steam>"
 	}
 
 	//****************** PrintHintText ******************
@@ -251,7 +251,7 @@
 
 	"Kills"
 	{
-		"es"		"Matadoss"
+		"es"		"Matados"
 	}
 
 	"VIPStats"
@@ -282,7 +282,7 @@
 
 	"Back"
 	{
-		"es"		"Atras"
+		"es"		"Anterior"
 	}
 
 	"KnifeKills"
@@ -297,7 +297,7 @@
 
 	"Position"
 	{
-		"es"		"Posicion"
+		"es"		"Posición"
 	}
 
 	"Points"
@@ -307,7 +307,7 @@
 
 	"BasicStats"
 	{
-		"es"		"Estadisticas Basicas"
+		"es"		"Estadísticas Básicas"
 	}
 
 	"KillsDeathsAssists"
@@ -323,7 +323,7 @@
 
 	"RoundStats"
 	{
-		"es"		"Estadisticas de Rondas"
+		"es"		"Estadísticas de Rondas"
 	}
 
 	"TRWins"
@@ -338,7 +338,7 @@
 
 	"HitStats"
 	{
-		"es"		"Estadisticas de Aciertos"
+		"es"		"Estadísticas de Aciertos"
 	}
 
 	"Shots"
@@ -353,12 +353,12 @@
 
 	"Accuracy"
 	{
-		"es"		"Precision"
+		"es"		"Precisión"
 	}
 
 	"BombHostagesStats"
 	{
-		"es"		"Estadisticas de Bombas/Rehenes"
+		"es"		"Estadísticas de Bombas/Rehenes"
 	}
 
 	"PlantedBombs"
@@ -383,7 +383,7 @@
 
 	"OtherStats"
 	{
-		"es"		"Otras Estadisticas"
+		"es"		"Otras Estadísticas"
 	}
 
 	"TimeConnected"
@@ -404,7 +404,7 @@
 
 	"Stomach"
 	{
-		"es"		"Estomago"
+		"es"		"Estómago"
 	}
 
 	"LeftArm"
@@ -429,12 +429,12 @@
 
 	"Next9Players"
 	{
-		"es"		"Proximos 9 jugadores"
+		"es"		"Próximos 9 jugadores"
 	}
 
 	"WeaponsStats"
 	{
-		"es"		"Estadisticas de Armas"
+		"es"		"Estadísticas de Armas"
 	}
 
 	"Headshots"
@@ -464,12 +464,12 @@
 
 	"Reset My Rank"
 	{
-		"es"		"Resetear mi Rango"
+		"es"		"Reiniciar mi Rango"
 	}
 
 	"My Stats"
 	{
-		"es"		"Mis Estadisticas"
+		"es"		"Mis Estadísticas"
 	}
 
 	"Show Other Players Stats"
@@ -479,17 +479,17 @@
 
 	"Session"
 	{
-		"es"		"Sesion"
+		"es"		"Sesión"
 	}
 
 	"My HitBox Stats"
 	{
-		"es"		"Mis Estadisticas de Precision"
+		"es"		"Mis Estadísticas de Precisión"
 	}
 
 	"My Weapon Stats"
 	{
-		"es"		"Mis Estadisticas de Armas"
+		"es"		"Mis Estadísticas de Armas"
 	}
 
 	"Show Players Above Me"
@@ -549,7 +549,7 @@
 
 	"TOP Accuracy"
 	{
-		"es"		"TOP Precision"
+		"es"		"TOP Precisión"
 	}
 
 	"TOP HS"
@@ -564,12 +564,12 @@
 
 	"Reset a player rank"
 	{
-		"es"		"Resetear Rango de un Jugador"
+		"es"		"Reiniciar Rango de un Jugador"
 	}
 
 	"Reset all the rank"
 	{
-		"es"		"Resetear Todos los Rangos"
+		"es"		"Reiniciar Todos los Rangos"
 	}
 
 	"MVPs"
