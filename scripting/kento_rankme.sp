@@ -287,6 +287,12 @@ void CheckUnique(){
 }
 
 public void SQL_SetUniqueCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if (hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Save Player Fail: %s", error);
+		return;
+	}
+	
 	bool hasunique;
 	if(SQL_GetRowCount(hndl) > 0)	hasunique = true;
 	else hasunique = false;
