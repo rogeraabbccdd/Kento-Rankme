@@ -9,7 +9,7 @@
 
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.31"
+#define PLUGIN_VERSION "3.0.3.Kento.31.1"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -29,7 +29,7 @@
 #define SENDER_WORLD 0
 #define MAX_LENGTH_MENU 470
 
-static const char g_sSqliteCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam VARCHAR(20) NOT NULL, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC)";
+static const char g_sSqliteCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam VARCHAR(40) NOT NULL, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC)";
 static const char g_sMysqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 static const char g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
 
@@ -242,7 +242,7 @@ public void DB_Connect(bool firstload) {
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope_dis NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` CHANGE steam steam VARCHAR(20)", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` CHANGE steam steam VARCHAR(40)", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		SQL_UnlockDatabase(g_hStatsDb);
 		
@@ -282,7 +282,8 @@ public void OnConfigsExecuted() {
 
 void CheckUnique(){
 	char sQuery[1000];
-	Format(sQuery, sizeof(sQuery), "SHOW INDEX FROM `%s` WHERE Key_name = 'steam'", g_sSQLTable);
+	if(g_bMysql)	Format(sQuery, sizeof(sQuery), "SHOW INDEX FROM `%s` WHERE Key_name = 'steam'", g_sSQLTable);
+	else			Format(sQuery, sizeof(sQuery), "PRAGMA INDEX_LIST('%s')", g_sSQLTable);
 	SQL_TQuery(g_hStatsDb, SQL_SetUniqueCallback, sQuery);
 }
 
@@ -301,7 +302,8 @@ public void SQL_SetUniqueCallback(Handle owner, Handle hndl, const char[] error,
 	if (g_bRankBots){
 		//only drop it when theres unique key
 		if(hasunique){
-			Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` DROP INDEX steam", g_sSQLTable);
+			if(g_bMysql)	Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` DROP INDEX steam", g_sSQLTable);
+			else			Format(sQuery, sizeof(sQuery), "DROP INDEX steam");
 			SQL_TQuery(g_hStatsDb, SQL_NothingCallback, sQuery);
 		}
 	}
@@ -311,7 +313,8 @@ public void SQL_SetUniqueCallback(Handle owner, Handle hndl, const char[] error,
 
 		// check unique key is exists or not
 		if(SQL_GetRowCount(hndl) < 1){
-			Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD UNIQUE(steam)" ,g_sSQLTable);
+			if(g_bMysql)	Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD UNIQUE(steam)" ,g_sSQLTable);
+			else			Format(sQuery, sizeof(sQuery), "CREATE UNIQUE INDEX steam ON `%s`(steam)" ,g_sSQLTable);
 			SQL_TQuery(g_hStatsDb, SQL_NothingCallback, sQuery);
 		}
 	}
