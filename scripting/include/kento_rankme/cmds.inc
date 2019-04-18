@@ -162,7 +162,7 @@ public Action CMD_TopWeapon(int client, int args){
 	} else {
 		Menu menu = CreateMenu(MenuHandler_TopWeapon_Choose);
 		menu.SetTitle("Top Weapon:");
-		for(int i=0;i<43;i++){
+		for(int i=0;i<42;i++){
 			menu.AddItem(g_sWeaponsNamesGame[i],g_sWeaponsNamesFull[i]);
 		}
 		menu.Display(client,MENU_TIME_FOREVER);
