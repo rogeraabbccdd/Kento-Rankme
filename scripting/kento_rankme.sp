@@ -1,15 +1,6 @@
-// hide admin announce (ok)
-// top kdr (ok)
-// top points (ok)
-// menu items per page
-//
-// to do
-// sm_resetscore 
-// min kill to get bonus
-
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.31.1"
+#define PLUGIN_VERSION "3.0.3.Kento.31.2"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -21,6 +12,7 @@
 #include <kento_rankme/rankme>
 
 #pragma newdecls required
+#pragma dynamic 131072 
 
 #define SPEC 1
 #define TR 2
@@ -290,7 +282,7 @@ void CheckUnique(){
 public void SQL_SetUniqueCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if (hndl == INVALID_HANDLE)
 	{
-		LogError("[RankMe] Save Player Fail: %s", error);
+		LogError("[RankMe] Check Unique Key Fail: %s", error);
 		return;
 	}
 	
