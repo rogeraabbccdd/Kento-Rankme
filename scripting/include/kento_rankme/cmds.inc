@@ -1072,7 +1072,7 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		i++;
-		SQL_FetchString(hndl,2,Name_receive,MAX_NAME_LENGTH*2+1);
+		SQL_FetchString(hndl,2,Name_receive,MAX_NAME_LENGTH);
 		SQL_FetchString(hndl,1,Auth_receive,64);
 		SQL_FetchString(hndl,3,Ip_receive,64);
 	//	PrintToServer("%d %s %s",i, Name_receive, Auth_receive);
