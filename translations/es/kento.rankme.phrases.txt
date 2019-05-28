@@ -1,4 +1,4 @@
-//**********************************************  Valid Colors	********************************************************
+﻿//**********************************************  Valid Colors	********************************************************
 // {NORMAL}, {DARKRED}, {PINK}, {YELLOW}, {GREEN}, {LIGHTGREEN}, {RED}, {GRAY}, {BLUE}, {DARKBLUE}, {PURPLE}, {ORANGE} *
 //**********************************************************************************************************************
 //                                     http://i.imgur.com/q2wb8Cu.png                                                  *
@@ -9,6 +9,12 @@
 "Phrases"
 {
 	//******************* PrintToChat *******************
+
+	"Chat Prefix"
+	{
+		"es"		"{GREEN}[RankMe]"
+	}
+
 	"ResetMyRank"
 	{
 		"es"		"{RED}Tu rango ha sido reiniciado"
@@ -77,7 +83,7 @@
 	"IsRankedAt"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
-		"es"		"El Jugador{PINK} {1} {NORMAL}esta en el rango {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} puntos{NORMAL},{LIGHTGREEN} {5} matados{NORMAL},{RED} {6} muertes{NORMAL},{ORANGE} {7} asistencias{NORMAL}, {BLUE} KDR {8} {NORMAL}, {DARKRED}{9} fuego amigo {NORMAL}y {YELLOW}{10} MVPs{NORMAL}."
+		"es"		"{NORMAL}El jugador{PINK} {1} {NORMAL}está en el rango {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} puntos{NORMAL},{LIGHTGREEN} {5} matados{NORMAL},{RED} {6} muertes{NORMAL},{ORANGE} {7} asistencias{NORMAL}, {BLUE} KDR {8} {NORMAL}, {DARKRED}{9} TKs {NORMAL}y {YELLOW}{10} MVPs{NORMAL}."
 	}
 
 	"Killing"
@@ -107,7 +113,19 @@
 	"Headshot"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"es"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}obtiene {3} punto {NORMAL}por {RED}tiro en la cabeza!{NORMAL}."
+		"es"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}obtiene {3} punto {NORMAL}por {RED}Tiro en la Cabeza{NORMAL}."
+	}
+	
+	"First Blood"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"es"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}obtiene {3} punto {NORMAL}por {RED}Primera Baja{NORMAL}."
+	}
+	
+	"No Scope"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
+		"es"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}obtiene {3} punto {NORMAL}por {RED}NoScoped {PINK}{4} {NORMAL}con {ORANGE}{5} {NORMAL}cuando estaba {RED}{6}{NORMAL} metros de distancia."
 	}
 
 	"TR_Planting"
@@ -163,11 +181,23 @@
 		"#format"	"{1:d}"
 		"es"		"{BLUE}Antiterroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Ganar la Ronda{NORMAL}."
 	}
+	
+	"CT_Round_Lose"
+	{
+		"#format"	"{1:d}"
+		"es"		"{BLUE}Antiterroristas{NORMAL} {RED}pierden {1} puntos {NORMAL}por {RED}Perder la Ronda{NORMAL}."
+	}
 
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
 		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Ganar la Ronda{NORMAL}."
+	}
+	
+	"TR_Round_Lose"
+	{
+		"#format"	"{1:d}"
+		"es"		"{ORANGE}Terroristas{NORMAL} {RED}pierden {1} puntos {NORMAL}por {RED}Perder la Ronda{NORMAL}"
 	}
 
 	"PlayerJoinedChat"
@@ -219,12 +249,58 @@
 
 	"Purged"
 	{
-		"es"		"{RED}Castigado"
+		"es"		"{RED}Purgado"
 	}
 
 	"UsageStatsme2"
 	{
 		"es"		"{RED}Uso: {PINK}sm_statsme2 <nombre / #posición en el top / steam>"
+	}
+	
+	"Hide Rankme Chat"
+	{
+		"es"		"{RED}Ocultar mensajes de Rankme."
+	}
+	
+	"Show Rankme Chat"
+	{
+		"es"		"{LIGHTGREEN}Mostrar mensajes de Rankme."
+	}
+	
+	"CT_Win"
+	{
+		"#format"	"{1:d}"
+		"es"		"{BLUE}Antiterroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Ganar la Partida{NORMAL}."
+	}
+	
+	"TR_Win"
+	{
+		"#format"	"{1:d}"
+		"es"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}obtienen {1} puntos {NORMAL}por {RED}Ganar la Partida{NORMAL}."
+	}
+	
+	"CT_Lose"
+	{
+		"#format"	"{1:d}"
+		"es"		"{BLUE}Antiterroristas {RED}pierden {1} punto(s) {NORMAL}por {RED}Perder la Partida{NORMAL}."
+	}
+	
+	"TR_Lose"
+	{
+		"#format"	"{1:d}"
+		"es"		"{ORANGE}Terroristas {RED}pierden {1} punto(s) {NORMAL}por {RED}Perder la Partida{NORMAL}."
+	}
+	
+	"Draw"
+	{
+		"#format"	"{1:d}"
+		"es"		"{RED}Partido Empatado{NORMAL}, {PINK}ambos equipos {LIGHTGREEN}obtienen {1} puntos {NORMAL}."
+	}
+	
+	"RankCooldown"
+	{
+		"#format"	""
+		"es"		"{RED}Sabemos que eres el mejor jugador, por favor deja de enviar spam."
 	}
 
 	//****************** PrintHintText ******************
@@ -256,7 +332,7 @@
 
 	"VIPStats"
 	{
-		"es"		"Estadisticas de VIP"
+		"es"		"Estadísticas de VIP"
 	}
 
 	"VIPEscapes"
@@ -328,7 +404,7 @@
 
 	"TRWins"
 	{
-		"es"		"Ganadas de TE"
+		"es"		"Ganadas de T"
 	}
 
 	"CTWins"
@@ -474,7 +550,7 @@
 
 	"Show Other Players Stats"
 	{
-		"es"		"Mostrar Estadisticas de Jugadores"
+		"es"		"Mostrar Estadísticas de Jugadores"
 	}
 
 	"Session"
@@ -517,10 +593,10 @@
 		"es"		"TOP Asistencias"
 	}
 
-//	"TOP KDR"
-//	{
-//		"es"		"TOP KDR"
-//	}
+	"TOP KDR"
+	{
+		"es"		"TOP KDR"
+	}
 
 	"TOP TK"
 	{
@@ -539,7 +615,7 @@
 //
 //	"TOP Knife"
 //	{
-//		"es"		"TOP Cuchillos"
+//		"es"		"TOP Cuchillo"
 //	}
 //
 //	"TOP Taser"
@@ -560,6 +636,11 @@
 	"TOP Time Connected"
 	{
 		"es"		"TOP Tiempo Conectado"
+	}
+
+	"TOP Points"
+	{
+		"es"		"TOP Puntos"
 	}
 
 	"Reset a player rank"
@@ -600,5 +681,40 @@
 	"TOP Damage"
 	{
 		"es"		"TOP Daño"
+	}
+	
+	"MatchWins"
+	{
+		"es"		"Partidos Ganados"
+	}
+	
+	"MatchLosses"
+	{
+		"es"		"Partidos Perdidos"
+	}
+	
+	"MatchDraws"
+	{
+		"es"		"Partidos Empatados"
+	}
+	
+	"First Bloods"
+	{
+		"es"		"Primeras Bajas"
+	}
+	
+	"NoScopeStats"
+	{
+		"es"		"NoScope Estadísticas"
+	}
+	
+	"NoScopes"
+	{
+		"es"		"NoScopes"
+	}
+	
+	"Farthest"
+	{
+		"es"		"Más lejano"
 	}
 }
