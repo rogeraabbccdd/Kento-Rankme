@@ -666,13 +666,25 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 				}
 				else if(GetClientTeam(i) == CT){
 					if (g_PointsRoundLose[CT] > 0) {
-						g_aSession[i][SCORE] -= g_PointsRoundLose[CT];
 						g_aStats[i][SCORE] -= g_PointsRoundLose[CT];
+
+						/* Min points */
+						if (g_bPointsMinEnabled && g_aStats[i][SCORE] < g_PointsMin)
+						{
+							int diff = g_PointsMin - g_aStats[i][SCORE];
+							g_aStats[i][SCORE] = g_PointsMin;
+							g_aSession[i][SCORE] -= diff;
+						}
+						else{
+							g_aSession[i][SCORE] -= g_PointsRoundLose[CT];
+						}
+
 						if (!announced && g_bChatChange) {
 							for (int j = 1; j <= MaxClients; j++)
 							if (IsClientInGame(j))
 								if(!hidechat[j]) CPrintToChat(j, "%s %T", MSG, "CT_Round_Lose", j, g_PointsRoundLose[CT]);
 						}
+						
 					}
 				}
 				announced = true;
@@ -692,8 +704,19 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 				}
 				else if(GetClientTeam(i) == TR){
 					if (g_PointsRoundLose[TR] > 0) {
-						g_aSession[i][SCORE] -= g_PointsRoundLose[TR];
 						g_aStats[i][SCORE] -= g_PointsRoundLose[TR];
+
+						/* Min points */
+						if (g_bPointsMinEnabled && g_aStats[i][SCORE] < g_PointsMin)
+						{
+							int diff = g_PointsMin - g_aStats[i][SCORE];
+							g_aStats[i][SCORE] = g_PointsMin;
+							g_aSession[i][SCORE] -= diff;
+						}
+						else{
+							g_aSession[i][SCORE] -= g_PointsRoundLose[TR];
+						}
+
 						if (!announced && g_bChatChange) {
 							for (int j = 1; j <= MaxClients; j++)
 							if (IsClientInGame(j))
@@ -884,7 +907,17 @@ public Action Event_BombDropped(Handle event, const char[] name, bool dontBroadc
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
 	g_aStats[client][SCORE] -= g_PointsBombDropped;
-	g_aSession[client][SCORE] -= g_PointsBombDropped;
+	
+	/* Min points */
+	if (g_bPointsMinEnabled && g_aStats[client][SCORE] < g_PointsMin)
+	{
+		int diff = g_PointsMin - g_aStats[client][SCORE];
+		g_aStats[client][SCORE] = g_PointsMin;
+		g_aSession[client][SCORE] -= diff;
+	}
+	else{
+		g_aSession[client][SCORE] -= g_PointsBombDropped;
+	}
 	
 	if (!g_bChatChange)
 		return;
@@ -914,15 +947,16 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 		g_aStats[victim][SUICIDES]++;
 		g_aSession[victim][SUICIDES]++;
 		g_aStats[victim][SCORE] -= g_PointsLoseSuicide;
-		g_aSession[victim][SCORE] -= g_PointsLoseSuicide;
 		
 		/* Min points */
-		if (g_bPointsMinEnabled)
+		if (g_bPointsMinEnabled && g_aStats[victim][SCORE] < g_PointsMin)
 		{
-			if (g_aStats[victim][SCORE] < g_PointsMin)
-			{
-				g_aStats[victim][SCORE] = g_PointsMin;
-			}
+			int diff = g_PointsMin - g_aStats[victim][SCORE];
+			g_aStats[victim][SCORE] = g_PointsMin;
+			g_aSession[victim][SCORE] -= diff;
+		}
+		else{
+			g_aSession[victim][SCORE] -= g_PointsLoseSuicide;
 		}
 		
 		if (g_PointsLoseSuicide > 0 && g_bChatChange) {
@@ -934,15 +968,16 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			g_aStats[attacker][TK]++;
 			g_aSession[attacker][TK]++;
 			g_aStats[attacker][SCORE] -= g_PointsLoseTk;
-			g_aSession[attacker][SCORE] -= g_PointsLoseTk;
 			
 			/* Min points */
-			if (g_bPointsMinEnabled)
+			if (g_bPointsMinEnabled && g_aStats[attacker][SCORE] < g_PointsMin)
 			{
-				if (g_aStats[victim][SCORE] < g_PointsMin)
-				{
-					g_aStats[victim][SCORE] = g_PointsMin;
-				}
+				int diff = g_PointsMin - g_aStats[attacker][SCORE];
+				g_aStats[attacker][SCORE] = g_PointsMin;
+				g_aSession[attacker][SCORE] -= diff;
+			}
+			else{
+				g_aSession[attacker][SCORE] -= g_PointsLoseTk;
 			}
 		
 			if (g_PointsLoseTk > 0 && g_bChatChange) {
@@ -1005,17 +1040,17 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 		if (g_bPointsLoseRoundCeil) 
 		{
 			g_aStats[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
-			g_aSession[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
 			
 			/* Min points */
-			if (g_bPointsMinEnabled)
+			if (g_bPointsMinEnabled && g_aStats[victim][SCORE] < g_PointsMin)
 			{
-				if (g_aStats[victim][SCORE] < g_PointsMin)
-				{
-					g_aStats[victim][SCORE] = g_PointsMin;
-				}
+				int diff = g_PointsMin - g_aStats[victim][SCORE];
+				g_aStats[victim][SCORE] = g_PointsMin;
+				g_aSession[victim][SCORE] -= diff;
 			}
-			
+			else{
+				g_aSession[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
+			}
 		} 
 		else 
 		{
@@ -1023,12 +1058,14 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			g_aSession[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			
 			/* Min points */
-			if (g_bPointsMinEnabled)
+			if (g_bPointsMinEnabled && g_aStats[victim][SCORE] < g_PointsMin)
 			{
-				if (g_aStats[victim][SCORE] < g_PointsMin)
-				{
-					g_aStats[victim][SCORE] = g_PointsMin;
-				}
+				int diff = g_PointsMin - g_aStats[victim][SCORE];
+				g_aStats[victim][SCORE] = g_PointsMin;
+				g_aSession[victim][SCORE] -= diff;
+			}
+			else{
+				g_aSession[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			}
 		}
 		if (attacker < MAXPLAYERS) {
@@ -1715,11 +1752,23 @@ public Action Event_WinPanelMatch(Handle event, const char[] name, bool dontBroa
 				{
 					g_aStats[i][MATCH_LOSE]++;
 					g_aStats[i][SCORE] -= g_PointsMatchLose;
+
+					/* Min points */
+					if (g_bPointsMinEnabled && g_aStats[i][SCORE] < g_PointsMin)
+					{
+						int diff = g_PointsMin - g_aStats[i][SCORE];
+						g_aStats[i][SCORE] = g_PointsMin;
+						g_aSession[i][SCORE] -= diff;
+					}
+					else{
+						g_aSession[i][SCORE] -= g_PointsMatchLose;
+					}
 				}
 				else if (GetClientTeam(i) == CT)
 				{
 					g_aStats[i][MATCH_WIN]++;
 					g_aStats[i][SCORE] += g_PointsMatchWin;
+					g_aSession[i][SCORE] += g_PointsMatchWin;
 				}
 			}
 		}
@@ -1733,6 +1782,7 @@ public Action Event_WinPanelMatch(Handle event, const char[] name, bool dontBroa
 			{
 				g_aStats[i][MATCH_DRAW]++;
 				g_aStats[i][SCORE] += g_PointsMatchDraw;
+				g_aSession[i][SCORE] += g_PointsMatchDraw;
 				
 				if(!hidechat[i])	CPrintToChat(i, "%T", "Draw", i, g_PointsMatchDraw);
 			}
@@ -1755,11 +1805,23 @@ public Action Event_WinPanelMatch(Handle event, const char[] name, bool dontBroa
 				{
 					g_aStats[i][MATCH_WIN]++;
 					g_aStats[i][SCORE] += g_PointsMatchWin;
+					g_aSession[i][SCORE] += g_PointsMatchWin;
 				}
 				else if (GetClientTeam(i) == CT)
 				{
 					g_aStats[i][MATCH_LOSE]++;
 					g_aStats[i][SCORE] -= g_PointsMatchLose;
+
+					/* Min points */
+					if (g_bPointsMinEnabled && g_aStats[i][SCORE] < g_PointsMin)
+					{
+						int diff = g_PointsMin - g_aStats[i][SCORE];
+						g_aStats[i][SCORE] = g_PointsMin;
+						g_aSession[i][SCORE] -= diff;
+					}
+					else{
+						g_aSession[i][SCORE] -= g_PointsMatchLose;
+					}
 				}
 			}
 		}
