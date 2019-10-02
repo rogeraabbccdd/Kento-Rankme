@@ -1157,8 +1157,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 	/* Assist */
 	if(assist && attacker < MAXPLAYERS){
 		
-		//Do not attack your teammate, my friend
-		if(GetClientTeam(victim) == GetClientTeam(assist))	return;
+		if(GetClientTeam(victim) == GetClientTeam(assist) && !g_bFfa)	return;
 		else
 		{
 			g_aStats[assist][SCORE]+= g_PointsAssistKill;
