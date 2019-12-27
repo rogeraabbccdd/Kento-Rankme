@@ -3,12 +3,13 @@
 //**********************************************************************************************************************
 //                                     http://i.imgur.com/q2wb8Cu.png                                                  *
 //{NORMAL} = x01 | {DARKRED} = x02 | {PINK} = x03 | {GREEN} = x04 | {YELLOW} = x09 | {LIGHTGREEN} = x06 | {RED} = x07  *
-//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E|  {ORANGE} = x10                                     *
+//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E |  {ORANGE} = x10                                    *
 //**********************************************************************************************************************
 
 "Phrases"
 {	
 	//******************* PrintToChat *******************
+	
 	"ResetMyRank"
 	{
 		"pl"		"{RED}Twój ranking został zresetowany"
@@ -247,7 +248,6 @@
 	{
 		"pl"		"Śmierci"
 	}
-
 
 	"Kills"
 	{
@@ -597,15 +597,16 @@
 		"pl"		"obrazenia"
 	}
 	
-		
 	"TOP Damage"
 	{
 		"pl"		"TOP obrazenia"
 	}
-		"MatchWins"
+	
+	"MatchWins"
 	{
 		"pl"		"Mecz wygrywa"
 	}
+	
 	"MatchLosses"
 	{
 		"pl"		"Mecz przegrywa"
@@ -616,4 +617,3 @@
 		"pl"		"Mech zremisowany"
 	}
 }
- 
