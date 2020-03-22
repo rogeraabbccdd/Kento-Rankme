@@ -15,7 +15,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 }
 public int Native_GivePoint(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
+	int client = GetNativeCell(1);
 	int iPoints = GetNativeCell(2);
 	
 	int len;
@@ -32,19 +32,19 @@ public int Native_GivePoint(Handle plugin, int numParams)
 	GetNativeString(3, Reason, len + 1);
 	int iPrintToPlayer = GetNativeCell(4);
 	int iPrintToAll = GetNativeCell(5);
-	g_aStats[iClient][SCORE] += iPoints;
-	g_aSession[iClient][SCORE] += iPoints;
-	GetClientName(iClient, Name, sizeof(Name));
+	g_aStats[client].SCORE += iPoints;
+	g_aSession[client].SCORE += iPoints;
+	GetClientName(client, Name, sizeof(Name));
 	if (!g_bChatChange)
 		return;
 	if (iPrintToAll == 1) {
 		for (int i = 1; i <= MaxClients; i++)
 		if (IsClientInGame(i))
-			//CPrintToChatEx(i,i,"%s %T",MSG,"GotPointsBy",Name,g_aStats[iClient][SCORE],iPoints,Reason);
-		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "GotPointsBy", i, Name, g_aStats[iClient][SCORE], iPoints, Reason);
+			//CPrintToChatEx(i,i,"%s %T",MSG,"GotPointsBy",Name,g_aStats[client].SCORE,iPoints,Reason);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "GotPointsBy", i, Name, g_aStats[client].SCORE, iPoints, Reason);
 	} else if (iPrintToPlayer == 1) {
-		//CPrintToChatEx(iClient,iClient,"%s %T",MSG,"GotPointsBy",Name,g_aStats[iClient][SCORE],iPoints,Reason);
-		if(!hidechat[iClient]) CPrintToChat(iClient, "%s %T", MSG, "GotPointsBy", iClient, Name, g_aStats[iClient][SCORE], iPoints, Reason);
+		//CPrintToChatEx(client,client,"%s %T",MSG,"GotPointsBy",Name,g_aStats[client].SCORE,iPoints,Reason);
+		if(!hidechat[client]) CPrintToChat(client, "%s %T", MSG, "GotPointsBy", client, Name, g_aStats[client].SCORE, iPoints, Reason);
 	}
 }
 
@@ -178,52 +178,44 @@ void CallRankCallback(int client, int rank, Function callback, any data, Handle 
 
 public int Native_GetPoints(Handle plugin, int numParams)
 {
-	int Client = GetNativeCell(1);
-	return g_aStats[Client][SCORE];
+	int client = GetNativeCell(1);
+	return g_aStats[client].SCORE;
 }
 
 public int Native_GetStats(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
-	int array[20];
-	for (int i = 0; i < 20; i++)
-	array[i] = g_aStats[iClient][i];
-	
-	SetNativeArray(2, array, 20);
+	int client = GetNativeCell(1);
+	int array[29];
+	g_aStats[client].GetData(array);
+	SetNativeArray(2, array, 29);
 }
 
 public int Native_GetSession(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
-	int array[20];
-	for (int i = 0; i < 20; i++)
-	array[i] = g_aSession[iClient][i];
-	
-	SetNativeArray(2, array, 20);
+	int client = GetNativeCell(1);
+	int array[29];
+	g_aSession[client].GetData(array);
+	SetNativeArray(2, array, 29);
 }
 
 public int Native_GetWeaponStats(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
+	int client = GetNativeCell(1);
 	int array[42];
-	for (int i = 0; i < 42; i++)
-	array[i] = g_aWeapons[iClient][i];
-	
+	g_aWeapons[client].GetData(array);
 	SetNativeArray(2, array, 42);
 }
 
 public int Native_GetHitbox(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
+	int client = GetNativeCell(1);
 	int array[8];
-	for (int i = 0; i < 8; i++)
-	array[i] = g_aHitBox[iClient][i];
-	
+	g_aHitBox[client].GetData(array);
 	SetNativeArray(2, array, 8);
 }
 
 public int Native_IsPlayerLoaded(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
-	return OnDB[iClient];
+	int client = GetNativeCell(1);
+	return OnDB[client];
 }

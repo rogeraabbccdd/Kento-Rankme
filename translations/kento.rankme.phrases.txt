@@ -3,7 +3,7 @@
 //**********************************************************************************************************************
 //                                     http://i.imgur.com/q2wb8Cu.png                                                  *
 //{NORMAL} = x01 | {DARKRED} = x02 | {PINK} = x03 | {GREEN} = x04 | {YELLOW} = x09 | {LIGHTGREEN} = x06 | {RED} = x07  *
-//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E|  {ORANGE} = x10                                     *
+//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E |  {ORANGE} = x10                                    *
 //**********************************************************************************************************************
 
 "Phrases"
@@ -259,12 +259,12 @@
 	
 	"Hide Rankme Chat"
 	{
-		"en"		"{RED}Hide Rankme chat messages."
+		"en"		"{RED}Hide RankME chat messages."
 	}
 	
 	"Show Rankme Chat"
 	{
-		"en"		"{LIGHTGREEN}Show Rankme chat messages."
+		"en"		"{LIGHTGREEN}Show RankME chat messages."
 	}
 	
 	"CT_Win"
@@ -323,7 +323,6 @@
 	{
 		"en"		"Deaths"
 	}
-
 
 	"Kills"
 	{

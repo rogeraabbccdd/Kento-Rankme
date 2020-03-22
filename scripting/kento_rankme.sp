@@ -1,6 +1,6 @@
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.31.3"
+#define PLUGIN_VERSION "3.0.3.Kento.31.4"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -48,10 +48,10 @@ stock const char g_sWeaponsNamesFull[42][] =  { "Knife", "Glock", "P2000", "USP-
 char g_sSQLTable[200];
 Handle g_hStatsDb;
 bool OnDB[MAXPLAYERS + 1];
-int g_aSession[MAXPLAYERS + 1][STATS_NAMES];
-int g_aStats[MAXPLAYERS + 1][STATS_NAMES];
-int g_aWeapons[MAXPLAYERS + 1][WEAPONS_ENUM];
-int g_aHitBox[MAXPLAYERS + 1][HITBOXES];
+STATS_NAMES g_aSession[MAXPLAYERS + 1];
+STATS_NAMES g_aStats[MAXPLAYERS + 1];
+WEAPONS_ENUM g_aWeapons[MAXPLAYERS + 1];
+HITBOXES g_aHitBox[MAXPLAYERS + 1];
 int g_TotalPlayers;
 
 Handle g_fwdOnPlayerLoaded;
@@ -381,15 +381,11 @@ public Action OnClientChangeName(Handle event, const char[] name, bool dontBroad
 		char query[10000];
 		if (g_RankBy == 1) {
 			OnDB[client] = false;
-			for (int i = 0; i <= 19; i++) {
-				g_aSession[client][i] = 0;
-				g_aStats[client][i] = 0;
-			}
-			g_aStats[client][SCORE] = g_PointsStart;
-			for (int i = 0; i < 42; i++) {
-				g_aWeapons[client][i] = 0;
-			}
-			g_aSession[client][CONNECTED] = GetTime();
+			g_aSession[client].Reset();
+			g_aStats[client].Reset();
+			g_aStats[client].SCORE = g_PointsStart;
+			g_aWeapons[client].Reset();
+			g_aSession[client].CONNECTED = GetTime();
 			
 			strcopy(g_aClientName[client], MAX_NAME_LENGTH, clientnewname);
 			
@@ -440,44 +436,45 @@ public void OnPluginEnd() {
 			// Make SQL-safe
 			//ReplaceString(name, sizeof(name), "'", "");
 			
-			
 			char weapons_query[2000] = "";
+			int weapon_array[42];
+			g_aWeapons[client].GetData(weapon_array);
 			for (int i = 0; i < 42; i++) {
-				Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
+				Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], weapon_array[i]);
 			}
-			
+
 			/* SM1.9 Fix */
 			char query[4000];
 			char query2[4000];
 	
 			if (g_RankBy == 0) 
 			{
-				Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientSteam[client]);
+				Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+					g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
+					g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], g_aStats[client][NSD], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
+				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+					g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, GetTime(), g_aStats[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientSteam[client]);
 			} 
 	
 			else if (g_RankBy == 1) 
 			{
-				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], sEscapeName);
+				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+					g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
+					g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, sEscapeName);
 	
-				Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], g_aStats[client][NSD], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
+				Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+					g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, GetTime(), g_aStats[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, sEscapeName);
 			} 
 	
 			else if (g_RankBy == 2) 
 			{
-				Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-					g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientIp[client]);
+				Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+					g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
+					g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, g_aClientIp[client]);
 	
-				Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-					g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], g_aStats[client][NSD], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
+				Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+					g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, GetTime(), g_aStats[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientIp[client]);
 			}
 			
 			LogMessage(query);
@@ -519,18 +516,18 @@ public Action Event_VipEscaped(Handle event, const char[] name, bool dontBroadca
 	for (int i = 1; i <= MaxClients; i++) {
 		
 		if (IsClientInGame(i) && GetClientTeam(i) == CT) {
-			g_aStats[i][SCORE] += g_PointsVipEscapedTeam;
-			g_aSession[i][SCORE] += g_PointsVipEscapedTeam;
+			g_aStats[i].SCORE += g_PointsVipEscapedTeam;
+			g_aSession[i].SCORE += g_PointsVipEscapedTeam;
 			
 		}
 		
 	}
-	g_aStats[client][VIP_PLAYED]++;
-	g_aSession[client][VIP_PLAYED]++;
-	g_aStats[client][VIP_ESCAPED]++;
-	g_aSession[client][VIP_ESCAPED]++;
-	g_aStats[client][SCORE] += g_PointsVipEscapedPlayer;
-	g_aSession[client][SCORE] += g_PointsVipEscapedPlayer;
+	g_aStats[client].VIP_PLAYED++;
+	g_aSession[client].VIP_PLAYED++;
+	g_aStats[client].VIP_ESCAPED++;
+	g_aSession[client].VIP_ESCAPED++;
+	g_aStats[client].SCORE += g_PointsVipEscapedPlayer;
+	g_aSession[client].SCORE += g_PointsVipEscapedPlayer;
 	
 	if (!g_bChatChange)
 		return;
@@ -540,7 +537,7 @@ public Action Event_VipEscaped(Handle event, const char[] name, bool dontBroadca
 	if (client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (int i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "VIPEscaped", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsVipEscapedTeam + g_PointsVipEscapedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "VIPEscaped", i, g_aClientName[client], g_aStats[client].SCORE, g_PointsVipEscapedTeam + g_PointsVipEscapedPlayer);
 }
 
 public Action Event_VipKilled(Handle event, const char[] name, bool dontBroadcast) {
@@ -552,18 +549,18 @@ public Action Event_VipKilled(Handle event, const char[] name, bool dontBroadcas
 	for (int i = 1; i <= MaxClients; i++) {
 		
 		if (IsClientInGame(i) && GetClientTeam(i) == TR) {
-			g_aStats[i][SCORE] += g_PointsVipKilledTeam;
-			g_aSession[i][SCORE] += g_PointsVipKilledTeam;
+			g_aStats[i].SCORE += g_PointsVipKilledTeam;
+			g_aSession[i].SCORE += g_PointsVipKilledTeam;
 			
 		}
 		
 	}
-	g_aStats[client][VIP_PLAYED]++;
-	g_aSession[client][VIP_PLAYED]++;
-	g_aStats[killer][VIP_KILLED]++;
-	g_aSession[killer][VIP_KILLED]++;
-	g_aStats[killer][SCORE] += g_PointsVipKilledPlayer;
-	g_aSession[killer][SCORE] += g_PointsVipKilledPlayer;
+	g_aStats[client].VIP_PLAYED++;
+	g_aSession[client].VIP_PLAYED++;
+	g_aStats[killer].VIP_KILLED++;
+	g_aSession[killer].VIP_KILLED++;
+	g_aStats[killer].SCORE += g_PointsVipKilledPlayer;
+	g_aSession[killer].SCORE += g_PointsVipKilledPlayer;
 	
 	if (!g_bChatChange)
 		return;
@@ -573,7 +570,7 @@ public Action Event_VipKilled(Handle event, const char[] name, bool dontBroadcas
 	if (client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (int i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "VIPKilled", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsVipKilledTeam + g_PointsVipKilledPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "VIPKilled", i, g_aClientName[client], g_aStats[client].SCORE, g_PointsVipKilledTeam + g_PointsVipKilledPlayer);
 }
 
 public Action Event_HostageRescued(Handle event, const char[] name, bool dontBroadcast) {
@@ -585,16 +582,16 @@ public Action Event_HostageRescued(Handle event, const char[] name, bool dontBro
 	for (int i = 1; i <= MaxClients; i++) {
 		
 		if (IsClientInGame(i) && GetClientTeam(i) == CT) {
-			g_aStats[i][SCORE] += g_PointsHostageRescTeam;
-			g_aSession[i][SCORE] += g_PointsHostageRescTeam;
+			g_aStats[i].SCORE += g_PointsHostageRescTeam;
+			g_aSession[i].SCORE += g_PointsHostageRescTeam;
 			
 		}
 		
 	}
-	g_aSession[client][HOSTAGES_RESCUED]++;
-	g_aStats[client][HOSTAGES_RESCUED]++;
-	g_aStats[client][SCORE] += g_PointsHostageRescPlayer;
-	g_aSession[client][SCORE] += g_PointsHostageRescPlayer;
+	g_aSession[client].HOSTAGES_RESCUED++;
+	g_aStats[client].HOSTAGES_RESCUED++;
+	g_aStats[client].SCORE += g_PointsHostageRescPlayer;
+	g_aSession[client].SCORE += g_PointsHostageRescPlayer;
 	
 	if (!g_bChatChange)
 		return;
@@ -606,7 +603,7 @@ public Action Event_HostageRescued(Handle event, const char[] name, bool dontBro
 	if (g_PointsHostageRescPlayer > 0 && client != 0 && (g_bRankBots && !IsFakeClient(client)))
 		for (int i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Hostage", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsHostageRescPlayer + g_PointsHostageRescTeam);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Hostage", i, g_aClientName[client], g_aStats[client].SCORE, g_PointsHostageRescPlayer + g_PointsHostageRescTeam);
 	
 }
 
@@ -623,23 +620,23 @@ public Action Event_RoundMVP(Handle event, const char[] name, bool dontBroadcast
 		
 		if (team == 2) {
 			
-			g_aStats[client][SCORE] += g_PointsMvpTr;
-			g_aSession[client][SCORE] += g_PointsMvpTr;
+			g_aStats[client].SCORE += g_PointsMvpTr;
+			g_aSession[client].SCORE += g_PointsMvpTr;
 			for (int i = 1; i <= MaxClients; i++)
 			if (IsClientInGame(i))
-				if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "MVP", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpTr);
+				if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "MVP", i, g_aClientName[client], g_aStats[client].SCORE, g_PointsMvpTr);
 			
 		} else {
 			
-			g_aStats[client][SCORE] += g_PointsMvpCt;
-			g_aSession[client][SCORE] += g_PointsMvpCt;
+			g_aStats[client].SCORE += g_PointsMvpCt;
+			g_aSession[client].SCORE += g_PointsMvpCt;
 			for (int i = 1; i <= MaxClients; i++)
 			if (IsClientInGame(i))
-				if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "MVP", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsMvpCt);	
+				if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "MVP", i, g_aClientName[client], g_aStats[client].SCORE, g_PointsMvpCt);	
 		}
 	}
-	g_aStats[client][MVP]++;
-	g_aSession[client][MVP]++;
+	g_aStats[client].MVP++;
+	g_aSession[client].MVP++;
 }
 public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast) {
 	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
@@ -652,11 +649,11 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 		if (IsClientInGame(i) && (g_bRankBots || !IsFakeClient(i))) {
 			if (Winner == TR) {
 				if(GetClientTeam(i) == TR){
-					g_aSession[i][TR_WIN]++;
-					g_aStats[i][TR_WIN]++;
+					g_aSession[i].TR_WIN++;
+					g_aStats[i].TR_WIN++;
 					if (g_PointsRoundWin[TR] > 0) {
-						g_aSession[i][SCORE] += g_PointsRoundWin[TR];
-						g_aStats[i][SCORE] += g_PointsRoundWin[TR];
+						g_aSession[i].SCORE += g_PointsRoundWin[TR];
+						g_aStats[i].SCORE += g_PointsRoundWin[TR];
 						if (!announced && g_bChatChange) {
 							for (int j = 1; j <= MaxClients; j++)
 							if (IsClientInGame(j))
@@ -666,17 +663,17 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 				}
 				else if(GetClientTeam(i) == CT){
 					if (g_PointsRoundLose[CT] > 0) {
-						g_aStats[i][SCORE] -= g_PointsRoundLose[CT];
+						g_aStats[i].SCORE -= g_PointsRoundLose[CT];
 
 						/* Min points */
-						if (g_bPointsMinEnabled && g_aStats[i][SCORE] < g_PointsMin)
+						if (g_bPointsMinEnabled && g_aStats[i].SCORE < g_PointsMin)
 						{
-							int diff = g_PointsMin - g_aStats[i][SCORE];
-							g_aStats[i][SCORE] = g_PointsMin;
-							g_aSession[i][SCORE] -= diff;
+							int diff = g_PointsMin - g_aStats[i].SCORE;
+							g_aStats[i].SCORE = g_PointsMin;
+							g_aSession[i].SCORE -= diff;
 						}
 						else{
-							g_aSession[i][SCORE] -= g_PointsRoundLose[CT];
+							g_aSession[i].SCORE -= g_PointsRoundLose[CT];
 						}
 
 						if (!announced && g_bChatChange) {
@@ -690,11 +687,11 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 				announced = true;
 			} else if (Winner == CT) {
 				if(GetClientTeam(i) == CT){
-					g_aSession[i][CT_WIN]++;
-					g_aStats[i][CT_WIN]++;
+					g_aSession[i].CT_WIN++;
+					g_aStats[i].CT_WIN++;
 					if (g_PointsRoundWin[CT] > 0) {
-						g_aSession[i][SCORE] += g_PointsRoundWin[CT];
-						g_aStats[i][SCORE] += g_PointsRoundWin[CT];
+						g_aSession[i].SCORE += g_PointsRoundWin[CT];
+						g_aStats[i].SCORE += g_PointsRoundWin[CT];
 						if (!announced && g_bChatChange) {
 							for (int j = 1; j <= MaxClients; j++)
 							if (IsClientInGame(j))
@@ -704,17 +701,17 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 				}
 				else if(GetClientTeam(i) == TR){
 					if (g_PointsRoundLose[TR] > 0) {
-						g_aStats[i][SCORE] -= g_PointsRoundLose[TR];
+						g_aStats[i].SCORE -= g_PointsRoundLose[TR];
 
 						/* Min points */
-						if (g_bPointsMinEnabled && g_aStats[i][SCORE] < g_PointsMin)
+						if (g_bPointsMinEnabled && g_aStats[i].SCORE < g_PointsMin)
 						{
-							int diff = g_PointsMin - g_aStats[i][SCORE];
-							g_aStats[i][SCORE] = g_PointsMin;
-							g_aSession[i][SCORE] -= diff;
+							int diff = g_PointsMin - g_aStats[i].SCORE;
+							g_aStats[i].SCORE = g_PointsMin;
+							g_aSession[i].SCORE -= diff;
 						}
 						else{
-							g_aSession[i][SCORE] -= g_PointsRoundLose[TR];
+							g_aSession[i].SCORE -= g_PointsRoundLose[TR];
 						}
 
 						if (!announced && g_bChatChange) {
@@ -744,11 +741,11 @@ public void EventPlayerSpawn(Handle event, const char[] name, bool dontBroadcast
 	if (!g_bRankBots && IsFakeClient(client))
 		return;
 	if (GetClientTeam(client) == TR) {
-		g_aStats[client][ROUNDS_TR]++;
-		g_aSession[client][ROUNDS_TR]++;
+		g_aStats[client].ROUNDS_TR++;
+		g_aSession[client].ROUNDS_TR++;
 	} else if (GetClientTeam(client) == CT) {
-		g_aStats[client][ROUNDS_CT]++;
-		g_aSession[client][ROUNDS_CT]++;
+		g_aStats[client].ROUNDS_CT++;
+		g_aSession[client].ROUNDS_CT++;
 	}
 	*/
 }
@@ -766,13 +763,13 @@ public void Event_RoundStart(Handle event, const char[] name, bool dontBroadcast
 	{
 		if (IsClientInGame(i) && GetClientTeam(i) == TR) 
 		{
-			g_aStats[i][ROUNDS_TR]++;
-			g_aSession[i][ROUNDS_TR]++;
+			g_aStats[i].ROUNDS_TR++;
+			g_aSession[i].ROUNDS_TR++;
 		} 
 		else if (IsClientInGame(i) && GetClientTeam(i) == CT) 
 		{
-			g_aStats[i][ROUNDS_CT]++;
-			g_aSession[i][ROUNDS_CT]++;
+			g_aStats[i].ROUNDS_CT++;
+			g_aSession[i].ROUNDS_CT++;
 		}
 	}
 }
@@ -789,16 +786,16 @@ public Action Event_BombPlanted(Handle event, const char[] name, bool dontBroadc
 	for (int i = 1; i <= MaxClients; i++) {
 		
 		if (IsClientInGame(i) && GetClientTeam(i) == TR) {
-			g_aStats[i][SCORE] += g_PointsBombPlantedTeam;
-			g_aSession[i][SCORE] += g_PointsBombPlantedTeam;
+			g_aStats[i].SCORE += g_PointsBombPlantedTeam;
+			g_aSession[i].SCORE += g_PointsBombPlantedTeam;
 			
 		}
 		
 	}
-	g_aStats[client][C4_PLANTED]++;
-	g_aSession[client][C4_PLANTED]++;
-	g_aStats[client][SCORE] += g_PointsBombPlantedPlayer;
-	g_aSession[client][SCORE] += g_PointsBombPlantedPlayer;
+	g_aStats[client].C4_PLANTED++;
+	g_aSession[client].C4_PLANTED++;
+	g_aStats[client].SCORE += g_PointsBombPlantedPlayer;
+	g_aSession[client].SCORE += g_PointsBombPlantedPlayer;
 	
 	strcopy(g_sC4PlantedByName, sizeof(g_sC4PlantedByName), g_aClientName[client]);
 	if (!g_bChatChange)
@@ -810,7 +807,7 @@ public Action Event_BombPlanted(Handle event, const char[] name, bool dontBroadc
 	if (g_PointsBombPlantedPlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (int i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Planting", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPlantedTeam + g_PointsBombPlantedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Planting", i, g_aClientName[client], g_aStats[client].SCORE, g_PointsBombPlantedTeam + g_PointsBombPlantedPlayer);
 	
 }
 
@@ -823,16 +820,16 @@ public Action Event_BombDefused(Handle event, const char[] name, bool dontBroadc
 	for (int i = 1; i <= MaxClients; i++) {
 		
 		if (IsClientInGame(i) && GetClientTeam(i) == CT) {
-			g_aStats[i][SCORE] += g_PointsBombDefusedTeam;
-			g_aSession[i][SCORE] += g_PointsBombDefusedTeam;
+			g_aStats[i].SCORE += g_PointsBombDefusedTeam;
+			g_aSession[i].SCORE += g_PointsBombDefusedTeam;
 			
 		}
 		
 	}
-	g_aStats[client][C4_DEFUSED]++;
-	g_aSession[client][C4_DEFUSED]++;
-	g_aStats[client][SCORE] += g_PointsBombDefusedPlayer;
-	g_aSession[client][SCORE] += g_PointsBombDefusedPlayer;
+	g_aStats[client].C4_DEFUSED++;
+	g_aSession[client].C4_DEFUSED++;
+	g_aStats[client].SCORE += g_PointsBombDefusedPlayer;
+	g_aSession[client].SCORE += g_PointsBombDefusedPlayer;
 	
 	if (!g_bChatChange)
 		return;
@@ -843,7 +840,7 @@ public Action Event_BombDefused(Handle event, const char[] name, bool dontBroadc
 	if (g_PointsBombDefusedPlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (int i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Defusing", i, g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDefusedTeam + g_PointsBombDefusedPlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Defusing", i, g_aClientName[client], g_aStats[client].SCORE, g_PointsBombDefusedTeam + g_PointsBombDefusedPlayer);
 }
 
 public Action Event_BombExploded(Handle event, const char[] name, bool dontBroadcast)
@@ -859,16 +856,16 @@ public Action Event_BombExploded(Handle event, const char[] name, bool dontBroad
 	for (int i = 1; i <= MaxClients; i++) {
 		
 		if (IsClientInGame(i) && GetClientTeam(i) == TR) {
-			g_aStats[i][SCORE] += g_PointsBombExplodeTeam;
-			g_aSession[i][SCORE] += g_PointsBombExplodeTeam;
+			g_aStats[i].SCORE += g_PointsBombExplodeTeam;
+			g_aSession[i].SCORE += g_PointsBombExplodeTeam;
 			
 		}
 		
 	}
-	g_aStats[client][C4_EXPLODED]++;
-	g_aSession[client][C4_EXPLODED]++;
-	g_aStats[client][SCORE] += g_PointsBombExplodePlayer;
-	g_aSession[client][SCORE] += g_PointsBombExplodePlayer;
+	g_aStats[client].C4_EXPLODED++;
+	g_aSession[client].C4_EXPLODED++;
+	g_aStats[client].SCORE += g_PointsBombExplodePlayer;
+	g_aSession[client].SCORE += g_PointsBombExplodePlayer;
 	
 	if (!g_bChatChange)
 		return;
@@ -879,7 +876,7 @@ public Action Event_BombExploded(Handle event, const char[] name, bool dontBroad
 	if (g_PointsBombExplodePlayer > 0 && client != 0 && (g_bRankBots || !IsFakeClient(client)))
 		for (int i = 1; i <= MaxClients; i++)
 	if (IsClientInGame(i))
-		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Exploding", i, g_sC4PlantedByName, g_aStats[client][SCORE], g_PointsBombExplodeTeam + g_PointsBombExplodePlayer);
+		if(!hidechat[i]) CPrintToChat(i, "%s %T", MSG, "Exploding", i, g_sC4PlantedByName, g_aStats[client].SCORE, g_PointsBombExplodeTeam + g_PointsBombExplodePlayer);
 }
 
 public Action Event_BombPickup(Handle event, const char[] name, bool dontBroadcast)
@@ -889,13 +886,13 @@ public Action Event_BombPickup(Handle event, const char[] name, bool dontBroadca
 	
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
-	g_aStats[client][SCORE] += g_PointsBombPickup;
-	g_aSession[client][SCORE] += g_PointsBombPickup;
+	g_aStats[client].SCORE += g_PointsBombPickup;
+	g_aSession[client].SCORE += g_PointsBombPickup;
 	
 	if (!g_bChatChange)
 		return;
 	if (g_PointsBombPickup > 0)
-		if(!hidechat[client])	CPrintToChat(client, "%s %T", MSG, "BombPickup", client, g_aClientName[client], g_aStats[client][SCORE], g_PointsBombPickup);
+		if(!hidechat[client])	CPrintToChat(client, "%s %T", MSG, "BombPickup", client, g_aClientName[client], g_aStats[client].SCORE, g_PointsBombPickup);
 	
 }
 
@@ -906,23 +903,23 @@ public Action Event_BombDropped(Handle event, const char[] name, bool dontBroadc
 	
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
-	g_aStats[client][SCORE] -= g_PointsBombDropped;
+	g_aStats[client].SCORE -= g_PointsBombDropped;
 	
 	/* Min points */
-	if (g_bPointsMinEnabled && g_aStats[client][SCORE] < g_PointsMin)
+	if (g_bPointsMinEnabled && g_aStats[client].SCORE < g_PointsMin)
 	{
-		int diff = g_PointsMin - g_aStats[client][SCORE];
-		g_aStats[client][SCORE] = g_PointsMin;
-		g_aSession[client][SCORE] -= diff;
+		int diff = g_PointsMin - g_aStats[client].SCORE;
+		g_aStats[client].SCORE = g_PointsMin;
+		g_aSession[client].SCORE -= diff;
 	}
 	else{
-		g_aSession[client][SCORE] -= g_PointsBombDropped;
+		g_aSession[client].SCORE -= g_PointsBombDropped;
 	}
 	
 	if (!g_bChatChange)
 		return;
 	if (g_PointsBombDropped > 0 && client == 0)
-		if(!hidechat[client])	CPrintToChat(client, "%s %T", MSG, "BombDropped", client, g_aClientName[client], g_aStats[client][SCORE], g_PointsBombDropped);
+		if(!hidechat[client])	CPrintToChat(client, "%s %T", MSG, "BombDropped", client, g_aClientName[client], g_aStats[client].SCORE, g_PointsBombDropped);
 	
 }
 
@@ -944,45 +941,45 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 		return;
 	
 	if (victim == attacker || attacker == 0) {
-		g_aStats[victim][SUICIDES]++;
-		g_aSession[victim][SUICIDES]++;
-		g_aStats[victim][SCORE] -= g_PointsLoseSuicide;
+		g_aStats[victim].SUICIDES++;
+		g_aSession[victim].SUICIDES++;
+		g_aStats[victim].SCORE -= g_PointsLoseSuicide;
 		
 		/* Min points */
-		if (g_bPointsMinEnabled && g_aStats[victim][SCORE] < g_PointsMin)
+		if (g_bPointsMinEnabled && g_aStats[victim].SCORE < g_PointsMin)
 		{
-			int diff = g_PointsMin - g_aStats[victim][SCORE];
-			g_aStats[victim][SCORE] = g_PointsMin;
-			g_aSession[victim][SCORE] -= diff;
+			int diff = g_PointsMin - g_aStats[victim].SCORE;
+			g_aStats[victim].SCORE = g_PointsMin;
+			g_aSession[victim].SCORE -= diff;
 		}
 		else{
-			g_aSession[victim][SCORE] -= g_PointsLoseSuicide;
+			g_aSession[victim].SCORE -= g_PointsLoseSuicide;
 		}
 		
 		if (g_PointsLoseSuicide > 0 && g_bChatChange) {
-			if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "LostSuicide", victim, g_aClientName[victim], g_aStats[victim][SCORE], g_PointsLoseSuicide);
+			if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "LostSuicide", victim, g_aClientName[victim], g_aStats[victim].SCORE, g_PointsLoseSuicide);
 		}
 		
 	} else if (!g_bFfa && (GetClientTeam(victim) == GetClientTeam(attacker))) {
 		if (attacker < MAXPLAYERS) {
-			g_aStats[attacker][TK]++;
-			g_aSession[attacker][TK]++;
-			g_aStats[attacker][SCORE] -= g_PointsLoseTk;
+			g_aStats[attacker].TK++;
+			g_aSession[attacker].TK++;
+			g_aStats[attacker].SCORE -= g_PointsLoseTk;
 			
 			/* Min points */
-			if (g_bPointsMinEnabled && g_aStats[attacker][SCORE] < g_PointsMin)
+			if (g_bPointsMinEnabled && g_aStats[attacker].SCORE < g_PointsMin)
 			{
-				int diff = g_PointsMin - g_aStats[attacker][SCORE];
-				g_aStats[attacker][SCORE] = g_PointsMin;
-				g_aSession[attacker][SCORE] -= diff;
+				int diff = g_PointsMin - g_aStats[attacker].SCORE;
+				g_aStats[attacker].SCORE = g_PointsMin;
+				g_aSession[attacker].SCORE -= diff;
 			}
 			else{
-				g_aSession[attacker][SCORE] -= g_PointsLoseTk;
+				g_aSession[attacker].SCORE -= g_PointsLoseTk;
 			}
 		
 			if (g_PointsLoseTk > 0 && g_bChatChange) {
-				if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "LostTK", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
-				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "LostTK", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsLoseTk, g_aClientName[victim]);
+				if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "LostTK", victim, g_aClientName[attacker], g_aStats[attacker].SCORE, g_PointsLoseTk, g_aClientName[victim]);
+				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "LostTK", attacker, g_aClientName[attacker], g_aStats[attacker].SCORE, g_PointsLoseTk, g_aClientName[victim]);
 			}
 		}
 	} 
@@ -1010,15 +1007,15 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 		
 		int score_dif;
 		if (attacker < MAXPLAYERS)
-			score_dif = g_aStats[victim][SCORE] - g_aStats[attacker][SCORE];
+			score_dif = g_aStats[victim].SCORE - g_aStats[attacker].SCORE;
 		
 		if (score_dif < 0 || attacker >= MAXPLAYERS) {
 			score_dif = g_PointsKill[team];
 		} else {
 			if (g_PointsKillBonusDif[team] == 0)
-				score_dif = g_PointsKill[team] + ((g_aStats[victim][SCORE] - g_aStats[attacker][SCORE]) * g_PointsKillBonus[team]);
+				score_dif = g_PointsKill[team] + ((g_aStats[victim].SCORE - g_aStats[attacker].SCORE) * g_PointsKillBonus[team]);
 			else
-				score_dif = g_PointsKill[team] + (((g_aStats[victim][SCORE] - g_aStats[attacker][SCORE]) / g_PointsKillBonusDif[team]) * g_PointsKillBonus[team]);
+				score_dif = g_PointsKill[team] + (((g_aStats[victim].SCORE - g_aStats[attacker].SCORE) / g_PointsKillBonusDif[team]) * g_PointsKillBonus[team]);
 		}
 		if (StrEqual(weapon, "knife")) {
 			score_dif = RoundToCeil(score_dif * g_fPointsKnifeMultiplier);
@@ -1027,128 +1024,257 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			score_dif = RoundToCeil(score_dif * g_fPointsTaserMultiplier);
 		}
 		if (headshot && attacker < MAXPLAYERS) {
-			g_aStats[attacker][HEADSHOTS]++;
-			g_aSession[attacker][HEADSHOTS]++;
+			g_aStats[attacker].HEADSHOTS++;
+			g_aSession[attacker].HEADSHOTS++;
 		}
 		
-		g_aStats[victim][DEATHS]++;
-		g_aSession[victim][DEATHS]++;
+		g_aStats[victim].DEATHS++;
+		g_aSession[victim].DEATHS++;
 		if (attacker < MAXPLAYERS) {
-			g_aStats[attacker][KILLS]++;
-			g_aSession[attacker][KILLS]++;
+			g_aStats[attacker].KILLS++;
+			g_aSession[attacker].KILLS++;
 		}
 		if (g_bPointsLoseRoundCeil) 
 		{
-			g_aStats[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
+			g_aStats[victim].SCORE -= RoundToCeil(score_dif * g_fPercentPointsLose);
 			
 			/* Min points */
-			if (g_bPointsMinEnabled && g_aStats[victim][SCORE] < g_PointsMin)
+			if (g_bPointsMinEnabled && g_aStats[victim].SCORE < g_PointsMin)
 			{
-				int diff = g_PointsMin - g_aStats[victim][SCORE];
-				g_aStats[victim][SCORE] = g_PointsMin;
-				g_aSession[victim][SCORE] -= diff;
+				int diff = g_PointsMin - g_aStats[victim].SCORE;
+				g_aStats[victim].SCORE = g_PointsMin;
+				g_aSession[victim].SCORE -= diff;
 			}
 			else{
-				g_aSession[victim][SCORE] -= RoundToCeil(score_dif * g_fPercentPointsLose);
+				g_aSession[victim].SCORE -= RoundToCeil(score_dif * g_fPercentPointsLose);
 			}
 		} 
 		else 
 		{
-			g_aStats[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
-			g_aSession[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
+			g_aStats[victim].SCORE -= RoundToFloor(score_dif * g_fPercentPointsLose);
+			g_aSession[victim].SCORE -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			
 			/* Min points */
-			if (g_bPointsMinEnabled && g_aStats[victim][SCORE] < g_PointsMin)
+			if (g_bPointsMinEnabled && g_aStats[victim].SCORE < g_PointsMin)
 			{
-				int diff = g_PointsMin - g_aStats[victim][SCORE];
-				g_aStats[victim][SCORE] = g_PointsMin;
-				g_aSession[victim][SCORE] -= diff;
+				int diff = g_PointsMin - g_aStats[victim].SCORE;
+				g_aStats[victim].SCORE = g_PointsMin;
+				g_aSession[victim].SCORE -= diff;
 			}
 			else{
-				g_aSession[victim][SCORE] -= RoundToFloor(score_dif * g_fPercentPointsLose);
+				g_aSession[victim].SCORE -= RoundToFloor(score_dif * g_fPercentPointsLose);
 			}
 		}
 		if (attacker < MAXPLAYERS) {
-			g_aStats[attacker][SCORE] += score_dif;
-			g_aSession[attacker][SCORE] += score_dif;
-			if (GetWeaponNum(weapon) < 42)
-				g_aWeapons[attacker][GetWeaponNum(weapon)]++;
+			g_aStats[attacker].SCORE += score_dif;
+			g_aSession[attacker].SCORE += score_dif;
+			int num = GetWeaponNum(weapon); 
+			if (num < 42) {
+				switch(num) {
+					case 0: {
+						g_aWeapons[attacker].KNIFE++;
+					}
+					case 1: {
+						g_aWeapons[attacker].GLOCK++;
+					}
+					case 2: {
+						g_aWeapons[attacker].HKP2000++;
+					}
+					case 3: {
+						g_aWeapons[attacker].USP_SILENCER++;
+					}
+					case 4: {
+						g_aWeapons[attacker].P250++;
+					}
+					case 5: {
+						g_aWeapons[attacker].DEAGLE++;
+					}
+					case 6: {
+						g_aWeapons[attacker].ELITE++;
+					}
+					case 7: {
+						g_aWeapons[attacker].FIVESEVEN++;
+					}
+					case 8: {
+						g_aWeapons[attacker].TEC9++;
+					}
+					case 9: {
+						g_aWeapons[attacker].CZ75A++;
+					}
+					case 10: {
+						g_aWeapons[attacker].REVOLVER++;
+					}
+					case 11: {
+						g_aWeapons[attacker].NOVA++;
+					}
+					case 12: {
+						g_aWeapons[attacker].XM1014++;
+					}
+					case 13: {
+						g_aWeapons[attacker].MAG7++;
+					}
+					case 14: {
+						g_aWeapons[attacker].SAWEDOFF++;
+					}
+					case 15: {
+						g_aWeapons[attacker].BIZON++;
+					}
+					case 16: {
+						g_aWeapons[attacker].MAC10++;
+					}
+					case 17: {
+						g_aWeapons[attacker].MP9++;
+					}
+					case 18: {
+						g_aWeapons[attacker].MP7++;
+					}
+					case 19: {
+						g_aWeapons[attacker].UMP45++;
+					}
+					case 20: {
+						g_aWeapons[attacker].P90++;
+					}
+					case 21: {
+						g_aWeapons[attacker].GALILAR++;
+					}
+					case 22: {
+						g_aWeapons[attacker].AK47++;
+					}
+					case 23: {
+						g_aWeapons[attacker].SCAR20++;
+					}
+					case 24: {
+						g_aWeapons[attacker].FAMAS++;
+					}
+					case 25: {
+						g_aWeapons[attacker].M4A1++;
+					}
+					case 26: {
+						g_aWeapons[attacker].M4A1_SILENCER++;
+					}
+					case 27: {
+						g_aWeapons[attacker].AUG++;
+					}
+					case 28: {
+						g_aWeapons[attacker].SSG08++;
+					}
+					case 29: {
+						g_aWeapons[attacker].SG556++;
+					}
+					case 30: {
+						g_aWeapons[attacker].AWP++;
+					}
+					case 31: {
+						g_aWeapons[attacker].G3SG1++;
+					}
+					case 32: {
+						g_aWeapons[attacker].M249++;
+					}
+					case 33: {
+						g_aWeapons[attacker].NEGEV++;
+					}
+					case 34: {
+						g_aWeapons[attacker].HEGRENADE++;
+					}
+					case 35: {
+						g_aWeapons[attacker].FLASHBANG++;
+					}
+					case 36: {
+						g_aWeapons[attacker].SMOKEGRENADE++;
+					}
+					case 37: {
+						g_aWeapons[attacker].INFERNO++;
+					}
+					case 38: {
+						g_aWeapons[attacker].DECOY++;
+					}
+					case 39: {
+						g_aWeapons[attacker].TASER++;
+					}
+					case 40: {
+						g_aWeapons[attacker].MP5SD++;
+					}
+					case 41: {
+						g_aWeapons[attacker].BREACHCHARGE++;
+					}
+				}
+			}
 		}
 		
-		if (g_MinimalKills == 0 || (g_aStats[victim][KILLS] >= g_MinimalKills && g_aStats[attacker][KILLS] >= g_MinimalKills)) {
+		if (g_MinimalKills == 0 || (g_aStats[victim].KILLS >= g_MinimalKills && g_aStats[attacker].KILLS >= g_MinimalKills)) {
 			if (g_bChatChange) {
-				//PrintToServer("%s %T",MSG,"Killing",g_aClientName[attacker],g_aStats[attacker][SCORE],score_dif,g_aClientName[victim],g_aStats[victim][SCORE]);
+				//PrintToServer("%s %T",MSG,"Killing",g_aClientName[attacker],g_aStats[attacker].SCORE,score_dif,g_aClientName[victim],g_aStats[victim].SCORE);
 				if(!hidechat[victim])	
 				{
-					CPrintToChat(victim, "%s %T", MSG, "Killing", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
+					CPrintToChat(victim, "%s %T", MSG, "Killing", victim, g_aClientName[attacker], g_aStats[attacker].SCORE, score_dif, g_aClientName[victim], g_aStats[victim].SCORE);
 				}
 				if (attacker < MAXPLAYERS)
 				{
 					if(!hidechat[attacker])
 					{
-						CPrintToChat(attacker, "%s %T", MSG, "Killing", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE]);
+						CPrintToChat(attacker, "%s %T", MSG, "Killing", attacker, g_aClientName[attacker], g_aStats[attacker].SCORE, score_dif, g_aClientName[victim], g_aStats[victim].SCORE);
 					}
 				}
 			}
 		} else {
-			if (g_aStats[victim][KILLS] < g_MinimalKills && g_aStats[attacker][KILLS] < g_MinimalKills) {
+			if (g_aStats[victim].KILLS < g_MinimalKills && g_aStats[attacker].KILLS < g_MinimalKills) {
 				if (g_bChatChange) {
-					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingBothNotRanked", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingBothNotRanked", victim, g_aClientName[attacker], g_aStats[attacker].SCORE, score_dif, g_aClientName[victim], g_aStats[victim].SCORE, g_aStats[attacker].KILLS, g_MinimalKills, g_aStats[victim].KILLS, g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "KillingBothNotRanked", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills, g_aStats[victim][KILLS], g_MinimalKills);
+						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "KillingBothNotRanked", attacker, g_aClientName[attacker], g_aStats[attacker].SCORE, score_dif, g_aClientName[victim], g_aStats[victim].SCORE, g_aStats[attacker].KILLS, g_MinimalKills, g_aStats[victim].KILLS, g_MinimalKills);
 				}
-			} else if (g_aStats[victim][KILLS] < g_MinimalKills) {
+			} else if (g_aStats[victim].KILLS < g_MinimalKills) {
 				if (g_bChatChange) {
-					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingVictimNotRanked", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingVictimNotRanked", victim, g_aClientName[attacker], g_aStats[attacker].SCORE, score_dif, g_aClientName[victim], g_aStats[victim].SCORE, g_aStats[victim].KILLS, g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingVictimNotRanked", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[victim][KILLS], g_MinimalKills);
+						if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingVictimNotRanked", victim, g_aClientName[attacker], g_aStats[attacker].SCORE, score_dif, g_aClientName[victim], g_aStats[victim].SCORE, g_aStats[victim].KILLS, g_MinimalKills);
 				}
 			} else {
 				if (g_bChatChange) {
-					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingKillerNotRanked", victim, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
+					if(!hidechat[victim])	CPrintToChat(victim, "%s %T", MSG, "KillingKillerNotRanked", victim, g_aClientName[attacker], g_aStats[attacker].SCORE, score_dif, g_aClientName[victim], g_aStats[victim].SCORE, g_aStats[attacker].KILLS, g_MinimalKills);
 					if (attacker < MAXPLAYERS)
-						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "KillingKillerNotRanked", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], score_dif, g_aClientName[victim], g_aStats[victim][SCORE], g_aStats[attacker][KILLS], g_MinimalKills);
+						if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "KillingKillerNotRanked", attacker, g_aClientName[attacker], g_aStats[attacker].SCORE, score_dif, g_aClientName[victim], g_aStats[victim].SCORE, g_aStats[attacker].KILLS, g_MinimalKills);
 				}
 			}
 		}
 		if (headshot && attacker < MAXPLAYERS) {
 			
-			g_aStats[attacker][SCORE] += g_PointsHs;
-			g_aSession[attacker][SCORE] += g_PointsHs;
+			g_aStats[attacker].SCORE += g_PointsHs;
+			g_aSession[attacker].SCORE += g_PointsHs;
 			if (g_bChatChange && g_PointsHs > 0)
-				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "Headshot", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsHs);
+				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "Headshot", attacker, g_aClientName[attacker], g_aStats[attacker].SCORE, g_PointsHs);
 		}
 		/* First blood */
 		if (!firstblood && attacker < MAXPLAYERS) {
 			
-			g_aStats[attacker][SCORE] += g_PointsFb;
-			g_aSession[attacker][SCORE] += g_PointsFb;
+			g_aStats[attacker].SCORE += g_PointsFb;
+			g_aSession[attacker].SCORE += g_PointsFb;
 			
-			g_aStats[attacker][FB] ++;
-			g_aSession[attacker][FB] ++;
+			g_aStats[attacker].FB ++;
+			g_aSession[attacker].FB ++;
 			if (g_bChatChange && g_PointsFb > 0)
-				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "First Blood", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsFb);
+				if(!hidechat[attacker])	CPrintToChat(attacker, "%s %T", MSG, "First Blood", attacker, g_aClientName[attacker], g_aStats[attacker].SCORE, g_PointsFb);
 		}
 		
 		/* No scope */
 		if( attacker < MAXPLAYERS && ((StrContains(weapon, "awp") != -1 || StrContains(weapon, "ssg08") != -1) || (g_bNSAllSnipers && (StrContains(weapon, "g3sg1") != -1 || StrContains(weapon, "scar20") != -1))) && (GetEntProp(attacker, Prop_Data, "m_iFOV") <= 0 || GetEntProp(attacker, Prop_Data, "m_iFOV") == GetEntProp(attacker, Prop_Data, "m_iDefaultFOV")))
 		{
-			g_aStats[attacker][SCORE]+= g_PointsNS;
-			g_aSession[attacker][SCORE]+= g_PointsNS;
-			g_aStats[attacker][NS]++;
-			g_aSession[attacker][NS]++;
+			g_aStats[attacker].SCORE+= g_PointsNS;
+			g_aSession[attacker].SCORE+= g_PointsNS;
+			g_aStats[attacker].NS++;
+			g_aSession[attacker].NS++;
 			
 			float fNSD = Math_UnitsToMeters(Entity_GetDistance(victim, attacker));	
 			
 			// stats are int, so we change it from m to cm
 			int iNSD = RoundToFloor(fNSD * 100);
-			if(iNSD > g_aStats[attacker][NSD]) g_aStats[attacker][NSD] = iNSD;
-			if(iNSD > g_aSession[attacker][NSD]) g_aSession[attacker][NSD] = iNSD;
+			if(iNSD > g_aStats[attacker].NSD) g_aStats[attacker].NSD = iNSD;
+			if(iNSD > g_aSession[attacker].NSD) g_aSession[attacker].NSD = iNSD;
 			
 			if(g_bChatChange && g_PointsNS > 0){
 				if(!hidechat[attacker])	
 				{
-					CPrintToChat(attacker, "%s %T", MSG, "No Scope", attacker, g_aClientName[attacker], g_aStats[attacker][SCORE], g_PointsNS, g_aClientName[victim], weapon, fNSD);
+					CPrintToChat(attacker, "%s %T", MSG, "No Scope", attacker, g_aClientName[attacker], g_aStats[attacker].SCORE, g_PointsNS, g_aClientName[victim], weapon, fNSD);
 				}
 			}
 		}
@@ -1157,23 +1283,22 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 	/* Assist */
 	if(assist && attacker < MAXPLAYERS){
 		
-		//Do not attack your teammate, my friend
-		if(GetClientTeam(victim) == GetClientTeam(assist))	return;
+		if(GetClientTeam(victim) == GetClientTeam(assist) && !g_bFfa)	return;
 		else
 		{
-			g_aStats[assist][SCORE]+= g_PointsAssistKill;
-			g_aSession[assist][SCORE]+= g_PointsAssistKill;
-			g_aStats[assist][ASSISTS]++;
-			g_aSession[assist][ASSISTS]++;
+			g_aStats[assist].SCORE+= g_PointsAssistKill;
+			g_aSession[assist].SCORE+= g_PointsAssistKill;
+			g_aStats[assist].ASSISTS++;
+			g_aSession[assist].ASSISTS++;
 			
 			if(g_bChatChange && g_PointsAssistKill > 0){
-				if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistKill", assist, g_aClientName[assist], g_aStats[assist][SCORE], g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
+				if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistKill", assist, g_aClientName[assist], g_aStats[assist].SCORE, g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
 			}
 		}
 	}
 	
 	if (attacker < MAXPLAYERS)
-		if (g_aStats[attacker][KILLS] == 50)
+		if (g_aStats[attacker].KILLS == 50)
 		g_TotalPlayers++;
 		
 	firstblood = true;
@@ -1196,16 +1321,46 @@ public Action EventPlayerHurt(Handle event, const char [] name, bool dontBroadca
 		
 		if(hitgroup == 8) hitgroup = 1;
 		
-		g_aStats[attacker][HITS]++;
-		g_aSession[attacker][HITS]++;
-		g_aHitBox[attacker][hitgroup]++;
+		g_aStats[attacker].HITS++;
+		g_aSession[attacker].HITS++;
+		PrintToChat(attacker, "%d", hitgroup);
+		switch(hitgroup) {
+			case 1:
+			{
+				g_aHitBox[attacker].HEAD++;
+			}
+			case 2:
+			{
+				g_aHitBox[attacker].CHEST++;
+			}
+			case 3:
+			{
+				g_aHitBox[attacker].STOMACH++;
+			}
+			case 4:
+			{
+				g_aHitBox[attacker].LEFT_ARM++;
+			}
+			case 5:
+			{
+				g_aHitBox[attacker].RIGHT_ARM++;
+			}
+			case 6:
+			{
+				g_aHitBox[attacker].LEFT_LEG++;
+			}
+			case 7:
+			{
+				g_aHitBox[attacker].RIGHT_LEG++;
+			}
+		}
 		
 		int damage = GetEventInt(event, "dmg_health");
-		g_aStats[attacker][DAMAGE] += damage;
-		g_aSession[attacker][DAMAGE] += damage;
+		g_aStats[attacker].DAMAGE += damage;
+		g_aSession[attacker].DAMAGE += damage;
 		
 		//PrintToChat(attacker, "Hitgroup %i: %i hits", hitgroup, g_aHitBox[attacker][hitgroup]);
-		//PrintToServer("Stats Hits: %i\nSession Hits: %i\nHitBox %i -> %i",g_aStats[attacker][HITS],g_aSession[attacker][HITS],hitgroup,g_aHitBox[attacker][hitgroup]);
+		//PrintToServer("Stats Hits: %i\nSession Hits: %i\nHitBox %i -> %i",g_aStats[attacker].HITS,g_aSession[attacker].HITS,hitgroup,g_aHitBox[attacker][hitgroup]);
 	}
 }
 
@@ -1240,8 +1395,8 @@ public Action EventWeaponFire(Handle event, const char[] name, bool dontBroadcas
 		StrContains(sWeaponUsed, "breachcharge") != -1)
 		return; 
 	
-	g_aStats[client][SHOTS]++;
-	g_aSession[client][SHOTS]++;
+	g_aStats[client].SHOTS++;
+	g_aSession[client].SHOTS++;
 }
 
 public void SalvarPlayer(int client) {
@@ -1259,9 +1414,11 @@ public void SalvarPlayer(int client) {
 	// Make SQL-safe
 	//ReplaceString(name, sizeof(name), "'", "");
 	
-	char weapons_query[1000] = "";
+	char weapons_query[2000] = "";
+	int weapon_array[42];
+	g_aWeapons[client].GetData(weapon_array);
 	for (int i = 0; i < 42; i++) {
-		Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], g_aWeapons[client][i]);
+		Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], weapon_array[i]);
 	}
 	
 	/* SM1.9 Fix*/
@@ -1270,32 +1427,32 @@ public void SalvarPlayer(int client) {
 	
 	if (g_RankBy == 0) 
 	{
-		Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientSteam[client]);
+		Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+			g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
+			g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], g_aStats[client][NSD], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientSteam[client]);
+		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+			g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, GetTime(), g_aStats[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientSteam[client]);
 	} 
 	
 	else if (g_RankBy == 1) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], sEscapeName);
+		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+			g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
+			g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, sEscapeName);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], g_aStats[client][NSD], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], sEscapeName);
+		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+			g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, GetTime(), g_aStats[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, sEscapeName);
 	} 
 	
 	else if (g_RankBy == 2) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client][SCORE], g_aStats[client][KILLS], g_aStats[client][DEATHS], g_aStats[client][ASSISTS], g_aStats[client][SUICIDES], g_aStats[client][TK], 
-			g_aStats[client][SHOTS], g_aStats[client][HITS], g_aStats[client][HEADSHOTS], g_aStats[client][ROUNDS_TR], g_aStats[client][ROUNDS_CT], g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBox[client][1], g_aHitBox[client][2], g_aHitBox[client][3], g_aHitBox[client][4], g_aHitBox[client][5], g_aHitBox[client][6], g_aHitBox[client][7], g_aClientIp[client]);
+		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+			g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
+			g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, g_aClientIp[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client][C4_PLANTED], g_aStats[client][C4_EXPLODED], g_aStats[client][C4_DEFUSED], g_aStats[client][CT_WIN], g_aStats[client][TR_WIN], 
-			g_aStats[client][HOSTAGES_RESCUED], g_aStats[client][VIP_KILLED], g_aStats[client][VIP_ESCAPED], g_aStats[client][VIP_PLAYED], g_aStats[client][MVP], g_aStats[client][DAMAGE], g_aStats[client][MATCH_WIN], g_aStats[client][MATCH_DRAW], g_aStats[client][MATCH_LOSE], g_aStats[client][FB], g_aStats[client][NS], g_aStats[client][NSD], GetTime(), g_aStats[client][CONNECTED] + GetTime() - g_aSession[client][CONNECTED], g_aClientIp[client]);
+		Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+			g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, GetTime(), g_aStats[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientIp[client]);
 	}
 	
 	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query, client, DBPrio_High);
@@ -1352,20 +1509,14 @@ public void LoadPlayer(int client) {
 	
 	OnDB[client] = false;
 	// stats
-	for (int i = 0; i <= 28; i++) {
-		g_aSession[client][i] = 0;
-		g_aStats[client][i] = 0;
-	}
-	g_aStats[client][SCORE] = g_PointsStart;
+	g_aSession[client].Reset();
+	g_aStats[client].Reset();
+	g_aStats[client].SCORE = g_PointsStart;
 	// weapons
-	for (int i = 0; i < 42; i++) {
-		g_aWeapons[client][i] = 0;
-	}
-	g_aSession[client][CONNECTED] = GetTime();
+	g_aWeapons[client].Reset();
+	g_aSession[client].CONNECTED = GetTime();
 	//hitboxes
-	for (int i = 1; i <= 7; i++) {
-		g_aHitBox[client][i] = 0;
-	}
+	g_aHitBox[client].Reset();
 	
 	char name[MAX_NAME_LENGTH];
 	GetClientName(client, name, sizeof(name));
@@ -1428,37 +1579,90 @@ public void SQL_LoadPlayerCallback(Handle owner, Handle hndl, const char[] error
 	if (SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		//Player infos
-		for (int i = 0; i <= 11; i++) {
-			g_aStats[client][i] = SQL_FetchInt(hndl, 4 + i);
-		}
-		
-		//ALL 41 Weapons
-		for (int i = 0; i < 42; i++) {
-			g_aWeapons[client][i] = SQL_FetchInt(hndl, 17 + i);
-		}
+		g_aStats[client].SCORE = SQL_FetchInt(hndl, 4);
+		g_aStats[client].KILLS = SQL_FetchInt(hndl, 5);
+		g_aStats[client].DEATHS = SQL_FetchInt(hndl, 6);
+		g_aStats[client].ASSISTS = SQL_FetchInt(hndl, 7);
+		g_aStats[client].SUICIDES = SQL_FetchInt(hndl, 8);
+		g_aStats[client].TK = SQL_FetchInt(hndl, 9);
+		g_aStats[client].SHOTS = SQL_FetchInt(hndl, 10);
+		g_aStats[client].HITS = SQL_FetchInt(hndl, 11);
+		g_aStats[client].HEADSHOTS = SQL_FetchInt(hndl, 12);
+		g_aStats[client].CONNECTED = SQL_FetchInt(hndl, 13);
+		g_aStats[client].ROUNDS_TR = SQL_FetchInt(hndl, 14);
+		g_aStats[client].ROUNDS_CT = SQL_FetchInt(hndl, 15);
+
+		//Weapons
+		g_aWeapons[client].KNIFE = SQL_FetchInt(hndl, 17);
+		g_aWeapons[client].GLOCK = SQL_FetchInt(hndl, 18);
+		g_aWeapons[client].HKP2000 = SQL_FetchInt(hndl, 19);
+		g_aWeapons[client].USP_SILENCER = SQL_FetchInt(hndl, 20);
+		g_aWeapons[client].P250 = SQL_FetchInt(hndl, 21);
+		g_aWeapons[client].DEAGLE = SQL_FetchInt(hndl, 22);
+		g_aWeapons[client].ELITE = SQL_FetchInt(hndl, 23);
+		g_aWeapons[client].FIVESEVEN = SQL_FetchInt(hndl, 24);
+		g_aWeapons[client].TEC9 = SQL_FetchInt(hndl, 25);
+		g_aWeapons[client].CZ75A = SQL_FetchInt(hndl, 26);
+		g_aWeapons[client].REVOLVER = SQL_FetchInt(hndl, 27);
+		g_aWeapons[client].NOVA = SQL_FetchInt(hndl, 28);
+		g_aWeapons[client].XM1014 = SQL_FetchInt(hndl, 29);
+		g_aWeapons[client].MAG7 = SQL_FetchInt(hndl, 30);
+		g_aWeapons[client].SAWEDOFF = SQL_FetchInt(hndl, 31);
+		g_aWeapons[client].BIZON = SQL_FetchInt(hndl, 32);
+		g_aWeapons[client].MAC10 = SQL_FetchInt(hndl, 33);
+		g_aWeapons[client].MP9 = SQL_FetchInt(hndl, 34);
+		g_aWeapons[client].MP7 = SQL_FetchInt(hndl, 35);
+		g_aWeapons[client].UMP45 = SQL_FetchInt(hndl, 36);
+		g_aWeapons[client].P90 = SQL_FetchInt(hndl, 37);
+		g_aWeapons[client].GALILAR = SQL_FetchInt(hndl, 38);
+		g_aWeapons[client].AK47 = SQL_FetchInt(hndl, 39);
+		g_aWeapons[client].SCAR20 = SQL_FetchInt(hndl, 40);
+		g_aWeapons[client].FAMAS = SQL_FetchInt(hndl, 41);
+		g_aWeapons[client].M4A1 = SQL_FetchInt(hndl, 42);
+		g_aWeapons[client].M4A1_SILENCER = SQL_FetchInt(hndl, 43);
+		g_aWeapons[client].AUG = SQL_FetchInt(hndl, 44);
+		g_aWeapons[client].SSG08 = SQL_FetchInt(hndl, 45);
+		g_aWeapons[client].SG556 = SQL_FetchInt(hndl, 46);
+		g_aWeapons[client].AWP = SQL_FetchInt(hndl, 47);
+		g_aWeapons[client].G3SG1 = SQL_FetchInt(hndl, 48);
+		g_aWeapons[client].M249 = SQL_FetchInt(hndl, 49);
+		g_aWeapons[client].NEGEV = SQL_FetchInt(hndl, 50);
+		g_aWeapons[client].HEGRENADE = SQL_FetchInt(hndl, 51);
+		g_aWeapons[client].FLASHBANG = SQL_FetchInt(hndl, 52);
+		g_aWeapons[client].SMOKEGRENADE = SQL_FetchInt(hndl, 53);
+		g_aWeapons[client].INFERNO = SQL_FetchInt(hndl, 54);
+		g_aWeapons[client].DECOY = SQL_FetchInt(hndl, 55);
+		g_aWeapons[client].TASER = SQL_FetchInt(hndl, 56);
+		g_aWeapons[client].MP5SD = SQL_FetchInt(hndl, 57);
+		g_aWeapons[client].BREACHCHARGE = SQL_FetchInt(hndl, 58);
 		
 		//ALL 8 Hitboxes
-		for (int i = 1; i <= 7; i++) {
-			g_aHitBox[client][i] = SQL_FetchInt(hndl, 58 + i);
-		}
+		g_aHitBox[client].HEAD = SQL_FetchInt(hndl, 59);
+		g_aHitBox[client].CHEST = SQL_FetchInt(hndl, 60);
+		g_aHitBox[client].STOMACH = SQL_FetchInt(hndl, 61);
+		g_aHitBox[client].LEFT_ARM = SQL_FetchInt(hndl, 62);
+		g_aHitBox[client].RIGHT_ARM = SQL_FetchInt(hndl, 63);
+		g_aHitBox[client].LEFT_LEG = SQL_FetchInt(hndl, 64);
+		g_aHitBox[client].RIGHT_LEG = SQL_FetchInt(hndl, 65);
 		
-		g_aStats[client][C4_PLANTED] = SQL_FetchInt(hndl, 66);
-		g_aStats[client][C4_EXPLODED] = SQL_FetchInt(hndl, 67);
-		g_aStats[client][C4_DEFUSED] = SQL_FetchInt(hndl, 68);
-		g_aStats[client][CT_WIN] = SQL_FetchInt(hndl, 69);
-		g_aStats[client][TR_WIN] = SQL_FetchInt(hndl, 70);
-		g_aStats[client][HOSTAGES_RESCUED] = SQL_FetchInt(hndl, 71);
-		g_aStats[client][VIP_KILLED] = SQL_FetchInt(hndl, 72);
-		g_aStats[client][VIP_ESCAPED] = SQL_FetchInt(hndl, 73);
-		g_aStats[client][VIP_PLAYED] = SQL_FetchInt(hndl, 74);
-		g_aStats[client][MVP] = SQL_FetchInt(hndl, 75);
-		g_aStats[client][DAMAGE] = SQL_FetchInt(hndl, 76);
-		g_aStats[client][MATCH_WIN] = SQL_FetchInt(hndl, 77);
-		g_aStats[client][MATCH_DRAW] = SQL_FetchInt(hndl, 78);
-		g_aStats[client][MATCH_LOSE] = SQL_FetchInt(hndl, 79);
-		g_aStats[client][FB] = SQL_FetchInt(hndl, 80);
-		g_aStats[client][NS] = SQL_FetchInt(hndl, 81);
-		g_aStats[client][NSD] = SQL_FetchInt(hndl, 82);
+		// other stats
+		g_aStats[client].C4_PLANTED = SQL_FetchInt(hndl, 66);
+		g_aStats[client].C4_EXPLODED = SQL_FetchInt(hndl, 67);
+		g_aStats[client].C4_DEFUSED = SQL_FetchInt(hndl, 68);
+		g_aStats[client].CT_WIN = SQL_FetchInt(hndl, 69);
+		g_aStats[client].TR_WIN = SQL_FetchInt(hndl, 70);
+		g_aStats[client].HOSTAGES_RESCUED = SQL_FetchInt(hndl, 71);
+		g_aStats[client].VIP_KILLED = SQL_FetchInt(hndl, 72);
+		g_aStats[client].VIP_ESCAPED = SQL_FetchInt(hndl, 73);
+		g_aStats[client].VIP_PLAYED = SQL_FetchInt(hndl, 74);
+		g_aStats[client].MVP = SQL_FetchInt(hndl, 75);
+		g_aStats[client].DAMAGE = SQL_FetchInt(hndl, 76);
+		g_aStats[client].MATCH_WIN = SQL_FetchInt(hndl, 77);
+		g_aStats[client].MATCH_DRAW = SQL_FetchInt(hndl, 78);
+		g_aStats[client].MATCH_LOSE = SQL_FetchInt(hndl, 79);
+		g_aStats[client].FB = SQL_FetchInt(hndl, 80);
+		g_aStats[client].NS = SQL_FetchInt(hndl, 81);
+		g_aStats[client].NSD = SQL_FetchInt(hndl, 82);
 	} else {
 		char query[10000];
 		char sEscapeName[MAX_NAME_LENGTH * 2 + 1];
@@ -1750,25 +1954,25 @@ public Action Event_WinPanelMatch(Handle event, const char[] name, bool dontBroa
 				
 				if(GetClientTeam(i) == TR)
 				{
-					g_aStats[i][MATCH_LOSE]++;
-					g_aStats[i][SCORE] -= g_PointsMatchLose;
+					g_aStats[i].MATCH_LOSE++;
+					g_aStats[i].SCORE -= g_PointsMatchLose;
 
 					/* Min points */
-					if (g_bPointsMinEnabled && g_aStats[i][SCORE] < g_PointsMin)
+					if (g_bPointsMinEnabled && g_aStats[i].SCORE < g_PointsMin)
 					{
-						int diff = g_PointsMin - g_aStats[i][SCORE];
-						g_aStats[i][SCORE] = g_PointsMin;
-						g_aSession[i][SCORE] -= diff;
+						int diff = g_PointsMin - g_aStats[i].SCORE;
+						g_aStats[i].SCORE = g_PointsMin;
+						g_aSession[i].SCORE -= diff;
 					}
 					else{
-						g_aSession[i][SCORE] -= g_PointsMatchLose;
+						g_aSession[i].SCORE -= g_PointsMatchLose;
 					}
 				}
 				else if (GetClientTeam(i) == CT)
 				{
-					g_aStats[i][MATCH_WIN]++;
-					g_aStats[i][SCORE] += g_PointsMatchWin;
-					g_aSession[i][SCORE] += g_PointsMatchWin;
+					g_aStats[i].MATCH_WIN++;
+					g_aStats[i].SCORE += g_PointsMatchWin;
+					g_aSession[i].SCORE += g_PointsMatchWin;
 				}
 			}
 		}
@@ -1780,9 +1984,9 @@ public Action Event_WinPanelMatch(Handle event, const char[] name, bool dontBroa
 		{
 			if (IsClientInGame(i) && (GetClientTeam(i) == TR || GetClientTeam(i) == CT))
 			{
-				g_aStats[i][MATCH_DRAW]++;
-				g_aStats[i][SCORE] += g_PointsMatchDraw;
-				g_aSession[i][SCORE] += g_PointsMatchDraw;
+				g_aStats[i].MATCH_DRAW++;
+				g_aStats[i].SCORE += g_PointsMatchDraw;
+				g_aSession[i].SCORE += g_PointsMatchDraw;
 				
 				if(!hidechat[i])	CPrintToChat(i, "%T", "Draw", i, g_PointsMatchDraw);
 			}
@@ -1803,24 +2007,24 @@ public Action Event_WinPanelMatch(Handle event, const char[] name, bool dontBroa
 				
 				if(GetClientTeam(i) == TR)
 				{
-					g_aStats[i][MATCH_WIN]++;
-					g_aStats[i][SCORE] += g_PointsMatchWin;
-					g_aSession[i][SCORE] += g_PointsMatchWin;
+					g_aStats[i].MATCH_WIN++;
+					g_aStats[i].SCORE += g_PointsMatchWin;
+					g_aSession[i].SCORE += g_PointsMatchWin;
 				}
 				else if (GetClientTeam(i) == CT)
 				{
-					g_aStats[i][MATCH_LOSE]++;
-					g_aStats[i][SCORE] -= g_PointsMatchLose;
+					g_aStats[i].MATCH_LOSE++;
+					g_aStats[i].SCORE -= g_PointsMatchLose;
 
 					/* Min points */
-					if (g_bPointsMinEnabled && g_aStats[i][SCORE] < g_PointsMin)
+					if (g_bPointsMinEnabled && g_aStats[i].SCORE < g_PointsMin)
 					{
-						int diff = g_PointsMin - g_aStats[i][SCORE];
-						g_aStats[i][SCORE] = g_PointsMin;
-						g_aSession[i][SCORE] -= diff;
+						int diff = g_PointsMin - g_aStats[i].SCORE;
+						g_aStats[i].SCORE = g_PointsMin;
+						g_aSession[i].SCORE -= diff;
 					}
 					else{
-						g_aSession[i][SCORE] -= g_PointsMatchLose;
+						g_aSession[i].SCORE -= g_PointsMatchLose;
 					}
 				}
 			}
