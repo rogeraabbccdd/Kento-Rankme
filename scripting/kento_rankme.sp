@@ -1323,7 +1323,6 @@ public Action EventPlayerHurt(Handle event, const char [] name, bool dontBroadca
 		
 		g_aStats[attacker].HITS++;
 		g_aSession[attacker].HITS++;
-		PrintToChat(attacker, "%d", hitgroup);
 		switch(hitgroup) {
 			case 1:
 			{
