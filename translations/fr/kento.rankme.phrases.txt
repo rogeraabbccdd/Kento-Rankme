@@ -1,0 +1,705 @@
+//**********************************************  Valid Colors	********************************************************
+// {NORMAL}, {DARKRED}, {PINK}, {YELLOW}, {GREEN}, {LIGHTGREEN}, {RED}, {GRAY}, {BLUE}, {DARKBLUE}, {PURPLE}, {ORANGE} *
+//**********************************************************************************************************************
+//                                     http://i.imgur.com/q2wb8Cu.png                                                  *
+//{NORMAL} = x01 | {DARKRED} = x02 | {PINK} = x03 | {GREEN} = x04 | {YELLOW} = x09 | {LIGHTGREEN} = x06 | {RED} = x07  *
+//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E|  {ORANGE} = x10                                     *
+//**********************************************************************************************************************
+
+"Phrases"
+{
+	//******************* PrintToChat *******************
+
+	"Chat Prefix"
+	{
+		"fr"		"{GREEN}[RankMe]"
+	}
+
+	"ResetMyRank"
+	{
+		"fr"		"{RED}Votre rank s'est fait réinitialiser"
+	}
+
+	"BombPickup"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}repris la bombe{NORMAL}."
+	}
+
+	"BombDropped"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}a reçu {3} point(s) {NORMAL}pour avoir {RED} fait tombé la bombe{NORMAL}."
+	}
+
+	"MVP"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir eu le titre {RED}MVP{NORMAL}."
+	}
+
+	"LostSuicide"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {RED}a perdu {3} point(s) {NORMAL}pour s'être {RED}suicidé{NORMAL}."
+	}
+
+	"LostTK"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {RED}a perdu {3} point(s) {NORMAL}pour avoir tué le membre de son équipe {PINK}{4}{NORMAL}."
+	}
+
+	"CT_VIPEscaped"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{BLUE}Les Counter-Terrorists{NORMAL} {LIGHTGREEN}ont reçu {1} point(s) {NORMAL}pour s'être {RED}échappés en tant que VIP{NORMAL}."
+	}
+
+	"VIPEscaped"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour s'être {RED}échappé en tant que VIP{NORMAL}."
+	}
+
+	"TR_VIPKilled"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{ORANGE}Les Terrorists{NORMAL} {LIGHTGREEN}ont reçu {1} point(s) {NORMAL}pour avoir {RED}tué le VIP{NORMAL}."
+	}
+
+	"VIPKilled"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}tué le VIP{NORMAL}."
+	}
+
+	"GotPointsBy"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}{4}{NORMAL}."
+	}
+
+	"IsRankedAt"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
+		"fr"		"Player{PINK} {1} {NORMAL}est classé {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} point(s){NORMAL},{LIGHTGREEN} {5} tués{NORMAL},{RED} {6} morts{NORMAL},{ORANGE} {7} assistances{NORMAL}, {BLUE} KDR {8} {NORMAL}, {DARKRED}{9} tks {NORMAL}et {YELLOW}{10} MVPs{NORMAL}."
+	}
+
+	"Killing"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}tué {PINK}{4} {PURPLE}({5}){NORMAL}."
+	}
+
+	"KillingKillerNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}tué {PINK}{4} {PURPLE}({5}){NORMAL}."
+	}
+
+	"KillingVictimNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}tué {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}."
+	}
+
+	"KillingBothNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}tué {PINK}{4} {PURPLE}({5})[{8}/{9}]{NORMAL}."
+	}
+
+	"Headshot"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}tué d'un tir dans la tête{NORMAL}."
+	}
+	
+	"First Blood"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}tué quelqu'un en premier{NORMAL}."
+	}
+	
+	"No Scope"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}tué sans viseur (noscope) {PINK}{4} {NORMAL}avec un {ORANGE}{5} {NORMAL}qui était a {RED}{6}{NORMAL} mètres."
+	}
+
+	"TR_Planting"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{ORANGE}Les Terrorists{NORMAL} {LIGHTGREEN}ont reçu {1} point(s) {NORMAL}pour avoir {RED}planté la bombe{NORMAL}."
+	}
+
+	"Planting"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}planté la bombe{NORMAL}."
+	}
+
+	"TR_Exploding"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{ORANGE}Les Terrorists{NORMAL} {LIGHTGREEN}ont reçu {1} point(s) {NORMAL}pour avoir fait {RED}exploser la bombe{NORMAL}."
+	}
+
+	"Exploding"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir fait {RED}explosé la bombe{NORMAL}."
+	}
+
+	"CT_Defusing"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{BLUE}Les Counter-Terrorists{NORMAL} {LIGHTGREEN}on reçu {1} point(s) {NORMAL}pour avoir {RED}désamorçé la bombe{NORMAL}."
+	}
+
+	"Defusing"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}désamorçé la bombe{NORMAL}."
+	}
+
+	"CT_Hostage"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{BLUE}Les Counter-Terrorists{NORMAL} {LIGHTGREEN}on reçu {1} point(s) {NORMAL}pour avoir {RED}sauvé l'hotage{NORMAL}."
+	}
+
+	"Hostage"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}sauvé l'hotage{NORMAL}."
+	}
+
+	"CT_Round"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{BLUE}Les Counter-Terrorists{NORMAL} {LIGHTGREEN}on reçu {1} point(s) {NORMAL}pour avoir {RED}gagné la ronde{NORMAL}."
+	}
+	
+	"CT_Round_Lose"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{BLUE}Les Counter-Terrorists{NORMAL} {RED}ont perdu {1} point(s) {NORMAL}pour avoir {RED}perdu la ronde{NORMAL}."
+	}
+
+	"TR_Round"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{ORANGE}Les Terrorists{NORMAL} {LIGHTGREEN}ont reçu {1} point(s) {NORMAL}for {RED}gagné la ronde{NORMAL}."
+	}
+	
+	"TR_Round_Lose"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{ORANGE}Les Terrorists{NORMAL} {RED}ont perdu {1} point(s) {NORMAL}pour avoir {RED}perdu la ronde{NORMAL}."
+	}
+
+	"PlayerJoinedChat"
+	//{1} = ClientName | {2} = PosOnConnect | {3} = PointsOnConnect | {4} = Country
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"fr"		"{PINK}{1}{NORMAL} de/du {LIGHTGREEN}{4} {NORMAL}a rejoin le serveur. {YELLOW}(Pos {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}Points){NORMAL}."
+	}
+
+	"TopPlayerJoinedChat"
+	{
+		"#format"	"{1:d},{2:s},{3:d},{4:s}"
+		"fr"		"Top {RED}{1}{NORMAL} joueur {PINK}{2}{NORMAL} de/du {LIGHTGREEN}{4} {NORMAL}s'est connecté, actuellement rank {GREEN}{3}{NORMAL}."
+	}
+
+	"PlayerLeft"
+	//{1} = ClientName | {2} = rank | {3} = Reason
+	{
+		"#format"	"{1:s},{2:d},{3:s}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}à quitté le serveur. {YELLOW}({3})"
+	}
+
+	"NotRanked"
+	{
+		"#format"	"{1:d},{2:d}"
+		"fr"		"{RED}Pas de rank. {NORMAL}Tu as besoin de {RED}{2}{NORMAL} kills pour obtenir un rank. Actuel: {LIGHTGREEN}{1}{NORMAL}."
+	}
+
+	"AssistKill"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point {NORMAL}pour avoir {RED}aidé {PINK}{4} {RED} à tuer {PINK}{5}{NORMAL}."
+	}
+
+	"The rank has been reset"
+	{
+		"fr"		"{RED}Le rank a été réinitialisé"
+	}
+
+	"All rank data has been reset"
+	{
+		"fr"		"{RED}Tous les données de rank ont étés réinitialisés"
+	}
+
+	"Usagepurge"
+	{
+		"fr"		"{RED}Utilisation: {PINK}rankpurge X (où X est égal au nombres de jours d'inactivité)"
+	}
+
+	"Purged"
+	{
+		"fr"		"{RED}Purgé"
+	}
+
+	"UsageStatsme2"
+	{
+		"fr"		"{RED}Utilisation: {PINK}sm_statsme2 <nom | #position dans le top | steam>"
+	}
+	
+	"Hide Rankme Chat"
+	{
+		"fr"		"{RED}Cacher les messages Rankme."
+	}
+	
+	"Show Rankme Chat"
+	{
+		"fr"		"{LIGHTGREEN}Montrer les messages Rankme."
+	}
+	
+	"CT_Win"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{BLUE}Les Counter-Terrorists{NORMAL} {LIGHTGREEN}ont reçu {1} point(s) {NORMAL}pour avoir {RED}gagné le match{NORMAL}."
+	}
+	
+	"TR_Win"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{ORANGE}les Terrorists{NORMAL} {LIGHTGREEN}ont reçu {1} point(s) {NORMAL}pour avoir {REDgagné le match{NORMAL}."
+	}
+	
+	"CT_Lose"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{BLUE}les Counter-Terrorists {RED}ont perdu {1} point(s) {NORMAL}pour avoir {RED}perdu le match{NORMAL}."
+	}
+	
+	"TR_Lose"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{ORANGE}Les Terrorists {RED}ont perdu {1} point(s) {NORMAL}pour avoir {RED}perdu le match{NORMAL}."
+	}
+	
+	"Draw"
+	{
+		"#format"	"{1:d}"
+		"fr"		"{RED}Egalité{NORMAL}, {PINK}Les deux équipes {LIGHTGREEN}ont reçu {1} point(s) {NORMAL}."
+	}
+	
+	"RankCooldown"
+	{
+		"#format"	""
+		"fr"		"{RED}Nous savons que tu est le meilleur joueur, arrête de spammer!"
+	}
+	
+	//****************** PrintHintText ******************
+
+	"PlayerJoinedHint"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+		"fr"		"<font color='#28FF28'>Info</font> \n <font color='#B15BFF'>{1}</font> de/du <font color='#00FF7F'>{4}</font>a rejoin le serveur. \n Pos <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> Points"
+	}
+
+	"TopPlayerJoinedHint"
+	{
+		"#format"	"{1:d},{2:s},{3:d},{4:s}"
+		"fr"		"<font color='#28FF28'>Info</font> \n Top <font color='#FF0000'>{1}</font> joueur <font color='#B15BFF'>{2}</font> de/du <font color='#00FF7F'>{4}</font> s'est connecté \n Actuellement rank <font color='#28FF28'>{3}</font>"
+	}
+
+	//***************** Menu (No Colors) *****************
+
+	"Deaths"
+	{
+		"fr"		"Morts"
+	}
+
+
+	"Kills"
+	{
+		"fr"		"Tués"
+	}
+
+	"VIPStats"
+	{
+		"fr"		"Stats VIP"
+	}
+
+	"VIPEscapes"
+	{
+		"fr"		"Échappés en tant que VIP"
+	}
+
+	"VIPsKilled"
+	{
+		"fr"		"VIPs tués"
+	}
+
+	"Showing"
+	{
+		"#format"	"{1:d},{2:d},{3:d}"
+		"fr"		"Montrant à partir de {1} jusqu'à {2} de {3}\n"
+	}
+
+	"Next"
+	{
+		"fr"		"Suivant"
+	}
+
+	"Back"
+	{
+		"fr"		"Précédant"
+	}
+
+	"KnifeKills"
+	{
+		"fr"		"Tués avec un couteau"
+	}
+
+	"TaserKills"
+	{
+		"fr"		"Tués avec un taser"
+	}
+
+	"Position"
+	{
+		"fr"		"Position"
+	}
+
+	"Points"
+	{
+		"fr"		"Points"
+	}
+
+	"BasicStats"
+	{
+		"fr"		"Stats basiques"
+	}
+
+	"KillsDeathsAssists"
+	{
+		"#format"	"{1:d},{2:d},{3:d}"
+		"fr"		"Tués: {1}   Morts: {2}   Assistances: {3}"
+	}
+
+	"Suicides"
+	{
+		"fr"		"Suicides"
+	}
+
+	"RoundStats"
+	{
+		"fr"		"Stats rondes"
+	}
+
+	"TRWins"
+	{
+		"fr"		"Gagnés TR"
+	}
+
+	"CTWins"
+	{
+		"fr"		"Gagnés CT"
+	}
+
+	"HitStats"
+	{
+		"fr"		"Stats touchés"
+	}
+
+	"Shots"
+	{
+		"fr"		"Tirs"
+	}
+
+	"Hits"
+	{
+		"fr"		"Touchés"
+	}
+
+	"Accuracy"
+	{
+		"fr"		"Précision"
+	}
+
+	"BombHostagesStats"
+	{
+		"fr"		"Stats Bombes/Hotages"
+	}
+
+	"PlantedBombs"
+	{
+		"fr"		"Bombes plantées"
+	}
+
+	"DefusedBombs"
+	{
+		"fr"		"Bombes désamorçées"
+	}
+
+	"ExplodedBombs"
+	{
+		"fr"		"Bombes explosées"
+	}
+
+	"RescuedHostages"
+	{
+		"fr"		"Hotages sauvés"
+	}
+
+	"OtherStats"
+	{
+		"fr"		"Autres Stats"
+	}
+
+	"TimeConnected"
+	{
+		"#format"	"{1:d},{2:d},{3:d}"
+		"fr"		"Temps connecté: {1} heures, {2} minutes, {3} secondes"
+	}
+
+	"Head"
+	{
+		"fr"		"Tête"
+	}
+
+	"Chest"
+	{
+		"fr"		"Poitrine"
+	}
+
+	"Stomach"
+	{
+		"fr"		"Ventre"
+	}
+
+	"LeftArm"
+	{
+		"fr"		"Bras gauche"
+	}
+
+	"LeftLeg"
+	{
+		"fr"		"Jambe gauche"
+	}
+
+	"RightArm"
+	{
+		"fr"		"Bras droit"
+	}
+
+	"RightLeg"
+	{
+		"fr"		"Jambe droite"
+	}
+
+	"Next9Players"
+	{
+		"fr"		"9 prochains joueurs"
+	}
+
+	"WeaponsStats"
+	{
+		"fr"		"Stats des armes"
+	}
+
+	"Headshots"
+	{
+		"fr"		"Tirs à la tête"
+	}
+
+	"Assists"
+	{
+		"fr"		"Assistances"
+	}
+
+	"TKs"
+	{
+		"fr"		"TKs"
+	}
+
+	"RankMe Menu"
+	{
+		"fr"		"Menu RankMe"
+	}
+
+	"My Rank"
+	{
+		"fr"		"Mon rank"
+	}
+
+	"Reset My Rank"
+	{
+		"fr"		"Reset mon rank"
+	}
+
+	"My Stats"
+	{
+		"fr"		"Mes Stats"
+	}
+
+	"Show Other Players Stats"
+	{
+		"fr"		"Montrer les stats des autres joueurs"
+	}
+
+	"Session"
+	{
+		"fr"		"Session"
+	}
+
+	"My HitBox Stats"
+	{
+		"fr"		"Mes stats HitBox"
+	}
+
+	"My Weapon Stats"
+	{
+		"fr"		"Mes stats d'armes"
+	}
+
+	"Show Players Above Me"
+	{
+		"fr"		"Montrer les joueurs plus haut que moi"
+	}
+
+	"TOP 10"
+	{
+		"fr"		"TOP 10"
+	}
+
+	"TOP Kills"
+	{
+		"fr"		"TOP Tués"
+	}
+
+	"TOP Deaths"
+	{
+		"fr"		"TOP Morts"
+	}
+
+	"TOP Assists"
+	{
+		"fr"		"TOP Assistances"
+	}
+
+	"TOP KDR"
+	{
+		"fr"		"TOP KDR"
+	}
+
+	"TOP TK"
+	{
+		"fr"		"TOP TK"
+	}
+
+	"TOP Weapon"
+	{
+		"fr"		"TOP Arme"
+	}
+
+	"TOP Accuracy"
+	{
+		"fr"		"TOP Précision"
+	}
+
+	"TOP HS"
+	{
+		"fr"		"TOP HS"
+	}
+
+	"TOP Time Connected"
+	{
+		"fr"		"TOP Temps connecté"
+	}
+
+	"TOP Points"
+	{
+		"fr"		"TOP Points"
+	}
+
+	"Reset a player rank"
+	{
+		"fr"		"Reset le rank d'un joueur"
+	}
+
+	"Reset all the rank"
+	{
+		"fr"		"Reset tous les ranks"
+	}
+
+	"MVPs"
+	{
+		"fr"		"MVPs"
+	}
+
+	"TOP MVP"
+	{
+		"fr"		"TOP MVP"
+	}
+
+	"KPR"
+	{
+		"fr"		"KPR"
+	}
+
+	"DPR"
+	{
+		"fr"		"DPR"
+	}
+
+	"Damage"
+	{
+		"fr"		"Dégats"
+	}
+	
+	"TOP Damage"
+	{
+		"fr"		"TOP Dégats"
+	}
+	
+	"MatchWins"
+	{
+		"fr"		"Victoire"
+	}
+	
+	"MatchLosses"
+	{
+		"fr"		"Défaites"
+	}
+	
+	"MatchDraws"
+	{
+		"fr"		"Égalités"
+	}
+	
+	"First Bloods"
+	{
+		"fr"		"Premières éliminations"
+	}
+	
+	"NoScopeStats"
+	{
+		"fr"		"Stats sans viseur"
+	}
+	
+	"NoScopes"
+	{
+		"fr"		"Sans viseur"
+	}
+	
+	"Farthest"
+	{
+		"fr"		"Le plus loin"
+	}
+}
