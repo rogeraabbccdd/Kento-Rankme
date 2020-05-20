@@ -197,6 +197,9 @@ public void DB_Connect(bool firstload) {
 			SetFailState("[RankMe] Unable to connect to the database (%s)", sError);
 		}
 		SQL_LockDatabase(g_hStatsDb);
+		
+		if(!SQL_SetCharset(g_hStatsDb, "utf8mb4"))	SQL_SetCharset(g_hStatsDb, "utf8");
+
 		char sQuery[9999];
 		
 		if(g_bMysql)
