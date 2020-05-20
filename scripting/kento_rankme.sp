@@ -1,6 +1,6 @@
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.31.4"
+#define PLUGIN_VERSION "3.0.3.Kento.31.5"
 
 #include <sourcemod> 
 #include <adminmenu>
