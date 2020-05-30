@@ -192,28 +192,29 @@ public void DB_Connect(bool firstload) {
 		} else {
 			g_hStatsDb = SQLite_UseDatabase("rankme", sError, sizeof(sError));
 		}
+        
 		if (g_hStatsDb == INVALID_HANDLE)
 		{
 			SetFailState("[RankMe] Unable to connect to the database (%s)", sError);
 		}
-		SQL_LockDatabase(g_hStatsDb);
-		
-		if(!SQL_SetCharset(g_hStatsDb, "utf8mb4"))	SQL_SetCharset(g_hStatsDb, "utf8");
+        
+        // SQL_LockDatabase is redundent for SQL_SetCharset
+		if(!SQL_SetCharset(g_hStatsDb, "utf8mb4")){
+            SQL_SetCharset(g_hStatsDb, "utf8");
+        }
 
 		char sQuery[9999];
 		
 		if(g_bMysql)
 		{
 			Format(sQuery, sizeof(sQuery), g_sMysqlCreate, g_sSQLTable);
-			SQL_FastQuery(g_hStatsDb, sQuery);
-		}
-		if(!g_bMysql)
-		{
+		}else{
 			Format(sQuery, sizeof(sQuery), g_sSqliteCreate, g_sSQLTable);
-			SQL_FastQuery(g_hStatsDb, sQuery);
 		}
-		
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` MODIFY id INTEGER AUTO_INCREMENT", g_sSQLTable);
+        SQL_LockDatabase(g_hStatsDb);
+		SQL_FastQuery(g_hStatsDb, sQuery);
+        
+        Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` MODIFY id INTEGER AUTO_INCREMENT", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_killed NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
@@ -236,10 +237,10 @@ public void DB_Connect(bool firstload) {
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope_dis NUMERIC", g_sSQLTable);
+        SQL_FastQuery(g_hStatsDb, sQuery);
+        Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` CHANGE steam steam VARCHAR(40)", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` CHANGE steam steam VARCHAR(40)", g_sSQLTable);
-		SQL_FastQuery(g_hStatsDb, sQuery);
-		SQL_UnlockDatabase(g_hStatsDb);
+        SQL_UnlockDatabase(g_hStatsDb);
 		
 		for (int i = 1; i <= MaxClients; i++) {
 			if (IsClientInGame(i))
