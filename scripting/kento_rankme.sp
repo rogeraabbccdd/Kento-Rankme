@@ -192,16 +192,16 @@ public void DB_Connect(bool firstload) {
 		} else {
 			g_hStatsDb = SQLite_UseDatabase("rankme", sError, sizeof(sError));
 		}
-        
+
 		if (g_hStatsDb == INVALID_HANDLE)
 		{
 			SetFailState("[RankMe] Unable to connect to the database (%s)", sError);
 		}
-        
-        // SQL_LockDatabase is redundent for SQL_SetCharset
+
+		// SQL_LockDatabase is redundent for SQL_SetCharset
 		if(!SQL_SetCharset(g_hStatsDb, "utf8mb4")){
-            SQL_SetCharset(g_hStatsDb, "utf8");
-        }
+			SQL_SetCharset(g_hStatsDb, "utf8");
+		}
 
 		char sQuery[9999];
 		
@@ -211,10 +211,10 @@ public void DB_Connect(bool firstload) {
 		}else{
 			Format(sQuery, sizeof(sQuery), g_sSqliteCreate, g_sSQLTable);
 		}
-        SQL_LockDatabase(g_hStatsDb);
+		SQL_LockDatabase(g_hStatsDb);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-        
-        Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` MODIFY id INTEGER AUTO_INCREMENT", g_sSQLTable);
+
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` MODIFY id INTEGER AUTO_INCREMENT", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_killed NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
@@ -237,10 +237,10 @@ public void DB_Connect(bool firstload) {
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope NUMERIC", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope_dis NUMERIC", g_sSQLTable);
-        SQL_FastQuery(g_hStatsDb, sQuery);
-        Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` CHANGE steam steam VARCHAR(40)", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-        SQL_UnlockDatabase(g_hStatsDb);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` CHANGE steam steam VARCHAR(40)", g_sSQLTable);
+		SQL_FastQuery(g_hStatsDb, sQuery);
+		SQL_UnlockDatabase(g_hStatsDb);
 		
 		for (int i = 1; i <= MaxClients; i++) {
 			if (IsClientInGame(i))
@@ -1854,7 +1854,7 @@ public Action RankConnectCallback(int client, int rank, any data)
 	char s_address[32];		
 	GetClientIP(client, s_address, 32);
 	Format(s_Country, sizeof(s_Country), "Unknown");
-	GeoipCountry(s_address, s_Country, sizeof(s_Country));     
+	GeoipCountry(s_address, s_Country, sizeof(s_Country));
 	// if(!strcmp(s_Country, NULL_STRING))
 	if (s_Country[0] == 0)
 		Format( s_Country, sizeof(s_Country), "Unknown", s_Country );
