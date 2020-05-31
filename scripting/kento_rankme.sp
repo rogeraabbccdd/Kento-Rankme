@@ -192,27 +192,28 @@ public void DB_Connect(bool firstload) {
 		} else {
 			g_hStatsDb = SQLite_UseDatabase("rankme", sError, sizeof(sError));
 		}
+
 		if (g_hStatsDb == INVALID_HANDLE)
 		{
 			SetFailState("[RankMe] Unable to connect to the database (%s)", sError);
 		}
-		SQL_LockDatabase(g_hStatsDb);
-		
-		if(!SQL_SetCharset(g_hStatsDb, "utf8mb4"))	SQL_SetCharset(g_hStatsDb, "utf8");
+
+		// SQL_LockDatabase is redundent for SQL_SetCharset
+		if(!SQL_SetCharset(g_hStatsDb, "utf8mb4")){
+			SQL_SetCharset(g_hStatsDb, "utf8");
+		}
 
 		char sQuery[9999];
 		
 		if(g_bMysql)
 		{
 			Format(sQuery, sizeof(sQuery), g_sMysqlCreate, g_sSQLTable);
-			SQL_FastQuery(g_hStatsDb, sQuery);
-		}
-		if(!g_bMysql)
-		{
+		}else{
 			Format(sQuery, sizeof(sQuery), g_sSqliteCreate, g_sSQLTable);
-			SQL_FastQuery(g_hStatsDb, sQuery);
 		}
-		
+		SQL_LockDatabase(g_hStatsDb);
+		SQL_FastQuery(g_hStatsDb, sQuery);
+
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` MODIFY id INTEGER AUTO_INCREMENT", g_sSQLTable);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_killed NUMERIC", g_sSQLTable);
@@ -1853,7 +1854,7 @@ public Action RankConnectCallback(int client, int rank, any data)
 	char s_address[32];		
 	GetClientIP(client, s_address, 32);
 	Format(s_Country, sizeof(s_Country), "Unknown");
-	GeoipCountry(s_address, s_Country, sizeof(s_Country));     
+	GeoipCountry(s_address, s_Country, sizeof(s_Country));
 	// if(!strcmp(s_Country, NULL_STRING))
 	if (s_Country[0] == 0)
 		Format( s_Country, sizeof(s_Country), "Unknown", s_Country );
