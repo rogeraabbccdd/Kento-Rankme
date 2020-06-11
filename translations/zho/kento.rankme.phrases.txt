@@ -3,7 +3,7 @@
 //**********************************************************************************************************************
 //                                     http://i.imgur.com/q2wb8Cu.png                                                  *
 //{NORMAL} = x01 | {DARKRED} = x02 | {PINK} = x03 | {GREEN} = x04 | {YELLOW} = x09 | {LIGHTGREEN} = x06 | {RED} = x07  *
-//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E |  {ORANGE} = x10                                    *
+//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E|  {ORANGE} = x10                                     *
 //**********************************************************************************************************************
 
 "Phrases"
@@ -114,6 +114,18 @@
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
 		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}爆頭,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+
+	"Flashed Kill"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}盲殺,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+
+	"Thru Smoke"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}穿煙,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
 	
 	"First Blood"
@@ -230,6 +242,24 @@
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
 		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}協助 {PINK}{4} {RED}擊殺 {PINK}{5} {NORMAL},{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+
+	"AssistFlash"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}閃光助攻 {PINK}{4} {RED}擊殺 {PINK}{5} {NORMAL},{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
+
+	"AssistTeamKill"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}協助 {PINK}{4} {RED}擊殺隊友 {PINK}{5} {NORMAL},{RED}失去 {3} 點{NORMAL}."
+	}
+
+	"AssistTeamFlash"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}閃光助攻 {PINK}{4} {RED}擊殺隊友 {PINK}{5} {NORMAL},{RED}失去 {3} 點{NORMAL}."
 	}
 	
 	"The rank has been reset"
@@ -364,6 +394,12 @@
 	{
 		"#format"	"{1:d},{2:d},{3:d}"
 		"zho"		"擊殺: {1}   死亡: {2}   助攻: {3}"
+	}
+
+	"AssistTeams"
+	{
+		"#format"	""
+		"zho"		"敵方助攻"
 	}
 	
 	"Suicides"
@@ -686,6 +722,26 @@
 	{
 		"zho"		"首殺"
 	}
+
+	"Thru Smokes"
+	{
+		"zho"		"穿煙"
+	}
+
+	"Flashed Kills"
+	{
+		"zho"		"盲殺"
+	}
+
+	"AssistFlashes"
+	{
+		"zho"		"隊友閃光助攻"
+	}
+
+	"AssistTeamFlashes"
+	{
+		"zho"		"敵方閃光助攻"
+	}
 	
 	"NoScopeStats"
 	{
@@ -701,4 +757,30 @@
 	{
 		"zho"		"最遠距離"
 	}
-} 
+
+	"TOP First Blood"
+	{
+		"zho"		"首殺排名"
+	}
+
+	"TOP Noscope"
+	{
+		"zho"		"盲狙排名"
+	}
+
+	"TOP Noscope Distance"
+	{
+		"zho"		"盲狙距離排名"
+	}
+
+	"TOP Flashed Kill"
+	{
+		"zho"		"盲殺排名"
+	}
+
+	"TOP Thru Smoke"
+	{
+		"zho"		"穿煙排名"
+	}
+}
+ 

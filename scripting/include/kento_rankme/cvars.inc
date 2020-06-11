@@ -22,6 +22,8 @@ ConVar g_cvarMysql;
 ConVar g_cvarNSAllSnipers;
 ConVar g_cvarPercentPointsLose;
 ConVar g_cvarPointsAssistKill;
+ConVar g_cvarPointsAssistFlash;
+ConVar g_cvarPointsAssistTeamFlash;
 ConVar g_cvarPointsBombDefusedPlayer;
 ConVar g_cvarPointsBombDefusedTeam;
 ConVar g_cvarPointsBombDropped;
@@ -36,6 +38,8 @@ ConVar g_cvarPointsFb;
 ConVar g_cvarPointsHostageRescPlayer;
 ConVar g_cvarPointsHostageRescTeam;
 ConVar g_cvarPointsHs;
+ConVar g_cvarPointsBlind;
+ConVar g_cvarPointsSmoke;
 ConVar g_cvarPointsKillBonusCt;
 ConVar g_cvarPointsKillBonusDifCt;
 ConVar g_cvarPointsKillBonusDifTr;
@@ -46,6 +50,7 @@ ConVar g_cvarPointsKnifeMultiplier;
 ConVar g_cvarPointsLoseRoundCeil;
 ConVar g_cvarPointsLoseSuicide;
 ConVar g_cvarPointsLoseTk;
+ConVar g_cvarPointsLoseATk;
 ConVar g_cvarPointsMatchDraw;
 ConVar g_cvarPointsMatchLose;
 ConVar g_cvarPointsMatchWin;
@@ -110,6 +115,8 @@ int g_DaysToNotShowOnRank;
 int g_MinimalKills;
 int g_MinimumPlayers;
 int g_PointsAssistKill;
+int g_PointsAssistFlash;
+int g_PointsAssistTeamFlash;
 int g_PointsBombDefusedPlayer;
 int g_PointsBombDefusedTeam;
 int g_PointsBombDropped;
@@ -122,11 +129,14 @@ int g_PointsFb;
 int g_PointsHostageRescPlayer;
 int g_PointsHostageRescTeam;
 int g_PointsHs;
+int g_PointsBlind;
+int g_PointsSmoke;
 int g_PointsKillBonusDif[4];
 int g_PointsKillBonus[4];
 int g_PointsKill[4];
 int g_PointsLoseSuicide;
 int g_PointsLoseTk;
+int g_PointsLoseATk;
 int g_PointsMatchDraw;
 int g_PointsMatchLose;
 int g_PointsMatchWin;
@@ -146,6 +156,7 @@ int g_RankMode;
 int g_aPointsOnConnect[MAXPLAYERS+1];
 int g_aPointsOnDisconnect[MAXPLAYERS+1];
 int g_aRankOnConnect[MAXPLAYERS+1];
+int g_AutoPurge;
 
 void CreateCvars()
 {
@@ -161,6 +172,8 @@ void CreateCvars()
 	g_cvarPointsHostageRescTeam = CreateConVar("rankme_points_hostage_rescued_team", "2", "How many points CTs got for rescuing the hostage?", _, true, 0.0);
 	g_cvarPointsHostageRescPlayer = CreateConVar("rankme_points_hostage_rescued_player", "2", "How many points the CT who rescued got additional?", _, true, 0.0);
 	g_cvarPointsHs = CreateConVar("rankme_points_hs", "1", "How many additional points a player got for a HeadShot?", _, true, 0.0);
+	g_cvarPointsBlind = CreateConVar("rankme_points_blind", "1", "How many additional points a player got for a flashed kill?", _, true, 0.0);
+	g_cvarPointsSmoke = CreateConVar("rankme_points_smoke", "1", "How many additional points a player got for killing through smoke?", _, true, 0.0);
 	g_cvarPointsKillCt = CreateConVar("rankme_points_kill_ct", "2", "How many points a CT got for killing?", _, true, 0.0);
 	g_cvarPointsKillTr = CreateConVar("rankme_points_kill_tr", "2", "How many points a TR got for killing?", _, true, 0.0);
 	g_cvarPointsKillBonusCt = CreateConVar("rankme_points_kill_bonus_ct", "1", "How many points a CT got for killing additional by the diffrence of points?", _, true, 0.0);
@@ -189,6 +202,7 @@ void CreateCvars()
 	g_cvarPointsVipKilledTeam = CreateConVar("rankme_points_vip_killed_team", "2", "How many points TRs got for killing the VIP?", _, true, 0.0);
 	g_cvarPointsVipKilledPlayer = CreateConVar("rankme_points_vip_killed_player", "2", "How many points the TR who killed the VIP got additional?", _, true, 0.0);
 	g_cvarPointsLoseTk = CreateConVar("rankme_points_lose_tk", "0", "How many points a player lose for Team Killing?", _, true, 0.0);
+	g_cvarPointsLoseATk = CreateConVar("rankme_points_lose_atk", "1", "How many points a player lose for Assist Team Killing?", _, true, 0.0);
 	g_cvarPointsLoseSuicide = CreateConVar("rankme_points_lose_suicide", "0", "How many points a player lose for Suiciding?", _, true, 0.0);
 	g_cvarPointsFb = CreateConVar("rankme_points_fb", "1", "How many additional points a player got for a First Blood?", _, true, 0.0);
 	g_cvarPointsNS = CreateConVar("rankme_points_ns", "1", "How many additional points a player got for a no scope kill?", _, true, 0.0);	
@@ -210,6 +224,8 @@ void CreateCvars()
 	g_cvarPointsMatchLose = CreateConVar("rankme_points_match_lose", "2", "How many points a player loess for losing the match?", _, true, 0.0);
 	g_cvarPointsMatchDraw = CreateConVar("rankme_points_match_draw", "0", "How many points a player win when match draw?", _, true, 0.0);
 	g_cvarPointsAssistKill = CreateConVar("rankme_points_assiist_kill","1","How many points a player gets for assist kill?",_,true,0.0);
+	g_cvarPointsAssistFlash = CreateConVar("rankme_points_assiist_flash","1","How many points a player gets for assist flash kill?",_,true,0.0);
+	g_cvarPointsAssistTeamFlash = CreateConVar("rankme_points_lose_atf","1","How many points a lose for team assist flash kill?",_,true,0.0);
 	g_cvarGatherStatsWarmup = CreateConVar("rankme_gather_stats_warmup","1","Gather Statistics In Warmup?", _, true, 0.0, true, 1.0);
 	g_cvarPointsMinEnabled = CreateConVar("rankme_points_min_enabled", "1", "Is minimum points enabled? 1 = true 0 = false", _, true, 0.0, true, 1.0);
 	g_cvarPointsMin = CreateConVar("rankme_points_min", "0", "Minimum points", _, true, 0.0);
@@ -246,6 +262,8 @@ void CreateCvars()
 	g_cvarPointsHostageRescTeam.AddChangeHook(OnConVarChanged);
 	g_cvarPointsHostageRescPlayer.AddChangeHook(OnConVarChanged);
 	g_cvarPointsHs.AddChangeHook(OnConVarChanged);
+	g_cvarPointsBlind.AddChangeHook(OnConVarChanged);
+	g_cvarPointsSmoke.AddChangeHook(OnConVarChanged);
 	g_cvarPointsKillCt.AddChangeHook(OnConVarChanged);
 	g_cvarPointsKillTr.AddChangeHook(OnConVarChanged);
 	g_cvarPointsKillBonusCt.AddChangeHook(OnConVarChanged);
@@ -268,6 +286,7 @@ void CreateCvars()
 	g_cvarPointsVipKilledTeam.AddChangeHook(OnConVarChanged);
 	g_cvarPointsVipKilledPlayer.AddChangeHook(OnConVarChanged);
 	g_cvarPointsLoseTk.AddChangeHook(OnConVarChanged);
+	g_cvarPointsLoseATk.AddChangeHook(OnConVarChanged);
 	g_cvarPointsLoseSuicide.AddChangeHook(OnConVarChanged);
 	g_cvarRankBy.AddChangeHook(OnConVarChanged);
 	g_cvarFfa.AddChangeHook(OnConVarChanged);
@@ -289,6 +308,8 @@ void CreateCvars()
 	g_cvarPointsNS.AddChangeHook(OnConVarChanged);
 	g_cvarNSAllSnipers.AddChangeHook(OnConVarChanged);
 	g_cvarPointsAssistKill.AddChangeHook(OnConVarChanged);
+	g_cvarPointsAssistFlash.AddChangeHook(OnConVarChanged);
+	g_cvarPointsAssistTeamFlash.AddChangeHook(OnConVarChanged);
 	g_cvarGatherStatsWarmup.AddChangeHook(OnConVarChanged);
 	g_cvarPointsMinEnabled.AddChangeHook(OnConVarChanged);
 	g_cvarPointsMin.AddChangeHook(OnConVarChanged);
@@ -323,6 +344,8 @@ void GetCvarValues()
 	g_PointsHostageRescTeam = g_cvarPointsHostageRescTeam.IntValue;
 	g_PointsHostageRescPlayer = g_cvarPointsHostageRescPlayer.IntValue;
 	g_PointsHs = g_cvarPointsHs.IntValue;
+	g_PointsBlind = g_cvarPointsBlind.IntValue;
+	g_PointsSmoke = g_cvarPointsSmoke.IntValue;
 	g_PointsKill[CT] = g_cvarPointsKillCt.IntValue;
 	g_PointsKill[TR] = g_cvarPointsKillTr.IntValue;
 	g_PointsKillBonus[CT] = g_cvarPointsKillBonusCt.IntValue;
@@ -347,6 +370,7 @@ void GetCvarValues()
 	g_PointsVipKilledPlayer = g_cvarPointsVipKilledPlayer.IntValue;
 	g_bVipEnabled = g_cvarVipEnabled.BoolValue;
 	g_PointsLoseTk = g_cvarPointsLoseTk.IntValue;
+	g_PointsLoseATk = g_cvarPointsLoseATk.IntValue;
 	g_PointsLoseSuicide = g_cvarPointsLoseSuicide.IntValue;
 	g_DaysToNotShowOnRank = g_cvarDaysToNotShowOnRank.IntValue;
 	g_bGatherStats = g_cvarGatherStats.BoolValue;
@@ -365,6 +389,8 @@ void GetCvarValues()
 	
 	/* Assist */
 	g_PointsAssistKill = g_cvarPointsAssistKill.IntValue;
+	g_PointsAssistFlash = g_cvarPointsAssistFlash.IntValue;
+	g_PointsAssistTeamFlash = g_cvarPointsAssistTeamFlash.IntValue;
 	
 	/* Enable Or Disable Points In Warmup */
 	g_bGatherStatsWarmup = g_cvarGatherStatsWarmup.BoolValue;
@@ -413,6 +439,9 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 		if(g_hStatsDb != INVALID_HANDLE)	CheckUnique();
 	}
 	else if (convar == g_cvarFfa) {
+		g_AutoPurge = g_cvarAutopurge.IntValue;
+	}
+	else if (convar == g_cvarFfa) {
 		g_bFfa = g_cvarFfa.BoolValue;
 	}
 	else if (convar == g_cvarDumpDB) {
@@ -444,6 +473,12 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	}
 	else if (convar == g_cvarPointsHs) {
 		g_PointsHs = g_cvarPointsHs.IntValue;
+	}
+	else if (convar == g_cvarPointsBlind) {
+		g_PointsBlind = g_cvarPointsBlind.IntValue;
+	}
+	else if (convar == g_cvarPointsSmoke) {
+		g_PointsSmoke = g_cvarPointsSmoke.IntValue;
 	}
 	else if (convar == g_cvarPointsKillCt) {
 		g_PointsKill[CT] = g_cvarPointsKillCt.IntValue;
@@ -514,6 +549,15 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	else if (convar == g_cvarVipEnabled) {
 		g_bVipEnabled = g_cvarVipEnabled.BoolValue;
 	}
+	else if (convar == g_cvarPointsLoseTk) {
+		g_PointsLoseTk = g_cvarPointsLoseTk.IntValue;
+	}
+	else if (convar == g_cvarPointsLoseATk) {
+		g_PointsLoseATk = g_cvarPointsLoseATk.IntValue;
+	}
+	else if (convar == g_cvarPointsLoseSuicide) {
+		g_PointsLoseSuicide = g_cvarPointsLoseSuicide.IntValue;
+	}
 	else if (convar == g_cvarDaysToNotShowOnRank) {
 		g_DaysToNotShowOnRank = g_cvarDaysToNotShowOnRank.IntValue;
 		g_bQueryPlayerCount = true;
@@ -581,6 +625,12 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	/* Assist */
 	else if (convar == g_cvarPointsAssistKill){
 		g_PointsAssistKill = g_cvarPointsAssistKill.IntValue;
+	}
+	else if (convar == g_cvarPointsAssistFlash){
+		g_PointsAssistFlash = g_cvarPointsAssistFlash.IntValue;
+	}
+	else if (convar == g_cvarPointsAssistFlash){
+		g_PointsAssistTeamFlash = g_cvarPointsAssistFlash.IntValue;
 	}
 	
 	/* Enable Or Disable Points In Warmup */

@@ -251,7 +251,7 @@ public void SQL_TopWeaponCallback(Handle owner, Handle hndl, const char[] error,
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	char temp1[20];
 	Format(temp1,sizeof(temp1),"%d;%d",weapon,0);
 	menu.AddItem(temp1,temp);
@@ -384,7 +384,7 @@ public void SQL_TopCallback(Handle owner, Handle hndl, const char[] error, any D
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -496,7 +496,7 @@ public void SQL_TopHSCallback(Handle owner, Handle hndl, const char[] error, any
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -609,7 +609,7 @@ public void SQL_TopKillsCallback(Handle owner, Handle hndl, const char[] error, 
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -722,7 +722,7 @@ public void SQL_TopDeathsCallback(Handle owner, Handle hndl, const char[] error,
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -846,7 +846,7 @@ public void SQL_TopAccCallback(Handle owner, Handle hndl, const char[] error, an
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -967,7 +967,7 @@ public void SQL_TopTimeCallback(Handle owner, Handle hndl, const char[] error, a
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -1111,12 +1111,12 @@ public Action CMD_Session(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
-	char text[255];
+	char text[512];
 	char temp[255];
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
 	Format(temp,sizeof(temp),"%T: %i\n","Points",client,g_aSession[client].SCORE);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
 	int ikills = g_aSession[client].KILLS;
 	int ideaths=g_aSession[client].DEATHS;
 	int deaths;
@@ -1141,49 +1141,66 @@ public Action CMD_Session(int client, int args){
 	int idamage = g_aSession[client].DAMAGE;
 	float damage = IntToFloat(idamage);
 	
-	Format(temp,255,"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aSession[client].ASSISTS,kills/deaths);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","Headshots", client, g_aSession[client].HEADSHOTS,"Suicides",client,g_aSession[client].SUICIDES,"TKs",client,g_aSession[client].TK);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %.2f   %T: %.2f\n ","Damage", client, idamage,"KPR", client, kills/rounds,"DPR", client, damage/rounds);
-	StrCat(text,255,temp);
+	Format(temp,sizeof(temp),"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aSession[client].ASSISTS,kills/deaths);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistTeams",client,g_aSession[client].ATK);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %d\n","Headshots", client, g_aSession[client].HEADSHOTS,"Suicides",client,g_aSession[client].SUICIDES,"TKs",client,g_aSession[client].TK);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds,"DPR", client, damage/rounds);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  \n","First Bloods", client, g_aSession[client].FB);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  %T: %d\n","Thru Smokes", client, g_aSession[client].SMOKE, "Flashed Kills", client, g_aSession[client].BLIND);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistFlashes", client, g_aSession[client].AF);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistTeamFlashes", client, g_aSession[client].ATF);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n ","TRWins",client,g_aSession[client].TR_WIN,g_aSession[client].ROUNDS_TR,"CTWins",client,g_aSession[client].CT_WIN,g_aSession[client].ROUNDS_CT,"MVPs",client,g_aSession[client].MVP);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d/%d   %T: %d/%d   %T: %d\n","TRWins",client,g_aSession[client].TR_WIN,g_aSession[client].ROUNDS_TR,"CTWins",client,g_aSession[client].CT_WIN,g_aSession[client].ROUNDS_CT,"MVPs",client,g_aSession[client].MVP);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","HitStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %.2f%%\n ","Shots",client,shots,"Hits",client,g_aSession[client].HITS,"Accuracy",client,IntToFloat(g_aSession[client].HITS)/shots*100);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %.2f%%\n","Shots",client,shots,"Hits",client,g_aSession[client].HITS,"Accuracy",client,IntToFloat(g_aSession[client].HITS)/shots*100);
+	StrCat(text,sizeof(text),temp);
+	panel.AddItem("",text);
+	text="";
+
+	Format(temp,sizeof(temp),"- %T\n","NoScopeStats",client);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %.2fm \n","NoScopes",client,g_aSession[client].NS, "Farthest", client, IntToFloat(g_aSession[client].NSD)/100 );
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,g_aSession[client].C4_PLANTED,"ExplodedBombs",client,g_aSession[client].C4_EXPLODED,"DefusedBombs",client,g_aSession[client].C4_DEFUSED);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d","RescuedHostages",client,g_aSession[client].HOSTAGES_RESCUED);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,g_aSession[client].C4_PLANTED,"ExplodedBombs",client,g_aSession[client].C4_EXPLODED,"DefusedBombs",client,g_aSession[client].C4_DEFUSED);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d","RescuedHostages",client,g_aSession[client].HOSTAGES_RESCUED);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	if(g_bVipEnabled){
 		Format(temp,sizeof(temp),"- %T\n","VIPStats",client);
-		StrCat(text,255,temp);
-		Format(temp,255,"%T: %d/%d   %T: %d\n ","VIPEscapes",client,g_aSession[client].VIP_ESCAPED,g_aSession[client].VIP_PLAYED,"VIPsKilled",client,g_aSession[client].VIP_KILLED);
-		StrCat(text,255,temp);
+		StrCat(text,sizeof(text),temp);
+		Format(temp,sizeof(temp),"%T: %d/%d   %T: %d\n","VIPEscapes",client,g_aSession[client].VIP_ESCAPED,g_aSession[client].VIP_PLAYED,"VIPsKilled",client,g_aSession[client].VIP_KILLED);
+		StrCat(text,sizeof(text),temp);
 		panel.AddItem("",text);
 		text="";
 	}
 	
 	Format(temp,sizeof(temp),"- %T\n","OtherStats",client);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
 	int time = GetTime()-g_aSession[client].CONNECTED;
 	int hours = RoundToFloor(time/3600.0);
 	time = time-(hours*3600);
@@ -1191,8 +1208,8 @@ public Action CMD_Session(int client, int args){
 	int minutes = RoundToFloor(time/60.0);
 	time = time-(minutes*60);
 	
-	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
-	StrCat(text,255,temp);
+	Format(temp,sizeof(temp),"%T","TimeConnected",client,hours,minutes,time);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	panel.Pagination = 2;
@@ -1215,22 +1232,22 @@ public Action CMD_HitBox(int client, int args){
 	else
 		hits = IntToFloat(ihits);
 	
-	Format(temp,255,"HitBox:\n");
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d (%.2f%%)\n","Head",client,g_aHitBox[client].HEAD,(g_aHitBox[client].HEAD/hits)*100);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d (%.2f%%)\n","Chest",client,g_aHitBox[client].CHEST,(g_aHitBox[client].CHEST/hits)*100);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d (%.2f%%)\n","Stomach",client,g_aHitBox[client].STOMACH,(g_aHitBox[client].STOMACH/hits)*100);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d (%.2f%%)\n","LeftArm",client,g_aHitBox[client].LEFT_ARM,(g_aHitBox[client].LEFT_ARM/hits)*100);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d (%.2f%%)\n","RightArm",client,g_aHitBox[client].RIGHT_ARM,(g_aHitBox[client].RIGHT_ARM/hits)*100);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d (%.2f%%)\n","LeftLeg",client,g_aHitBox[client].LEFT_LEG,(g_aHitBox[client].LEFT_LEG/hits)*100);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d (%.2f%%)","RightLeg",client,g_aHitBox[client].RIGHT_LEG,(g_aHitBox[client].RIGHT_LEG/hits)*100);
-	StrCat(text,255,temp);
+	Format(temp,sizeof(temp),"HitBox:\n");
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Head",client,g_aHitBox[client].HEAD,(g_aHitBox[client].HEAD/hits)*100);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Chest",client,g_aHitBox[client].CHEST,(g_aHitBox[client].CHEST/hits)*100);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Stomach",client,g_aHitBox[client].STOMACH,(g_aHitBox[client].STOMACH/hits)*100);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftArm",client,g_aHitBox[client].LEFT_ARM,(g_aHitBox[client].LEFT_ARM/hits)*100);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","RightArm",client,g_aHitBox[client].RIGHT_ARM,(g_aHitBox[client].RIGHT_ARM/hits)*100);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftLeg",client,g_aHitBox[client].LEFT_LEG,(g_aHitBox[client].LEFT_LEG/hits)*100);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)","RightLeg",client,g_aHitBox[client].RIGHT_LEG,(g_aHitBox[client].RIGHT_LEG/hits)*100);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 
 	panel.Display(client,MENU_TIME_FOREVER);
@@ -1451,7 +1468,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	
 	panel.SetTitle(Name_receive);
 	
-	char text[255];
+	char text[512];
 	int ikills = SQL_FetchInt(hndl,5);
 	int ideaths= SQL_FetchInt(hndl,6);
 	int deaths;
@@ -1476,64 +1493,72 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	int hits = SQL_FetchInt(hndl,11);
 	char temp[255];
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
 	if(i == 0)
 		Format(temp,sizeof(temp),"%T: %i\n","Points",client,SQL_FetchInt(hndl,4));
 	else
 		Format(temp,sizeof(temp),"Rank: %i/%i   %T: %i\n",i,g_TotalPlayers,"Points",client,SQL_FetchInt(hndl,4));
-	StrCat(text,255,temp);
-	Format(temp,255,"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,SQL_FetchInt(hndl,7),kills/deaths);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","Headshots", client, SQL_FetchInt(hndl,12),"Suicides",client,SQL_FetchInt(hndl,8),"TKs",client,SQL_FetchInt(hndl,9));
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d  \n ","First Bloods", client, SQL_FetchInt(hndl, 80));
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,SQL_FetchInt(hndl,7),kills/deaths);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistTeams",client,SQL_FetchInt(hndl,87));
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %d\n","Headshots", client, SQL_FetchInt(hndl,12),"Suicides",client,SQL_FetchInt(hndl,8),"TKs",client,SQL_FetchInt(hndl,9));
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  \n","First Bloods", client, SQL_FetchInt(hndl, 80));
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  %T: %d\n","Thru Smokes", client, SQL_FetchInt(hndl, 83), "Flashed Kills", client, SQL_FetchInt(hndl, 84));
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistFlashes", client, SQL_FetchInt(hndl, 85));
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistTeamFlashes", client, SQL_FetchInt(hndl, 86));
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n ","TRWins",client,SQL_FetchInt(hndl,70),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,69),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,75), "MatchWins", client, SQL_FetchInt(hndl, 77), "MatchDraws", client, SQL_FetchInt(hndl, 78), "MatchLosses", client, SQL_FetchInt(hndl, 79));
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d\n","TRWins",client,SQL_FetchInt(hndl,70),SQL_FetchInt(hndl,14),"CTWins",client,SQL_FetchInt(hndl,69),SQL_FetchInt(hndl,15),"MVPs",client,SQL_FetchInt(hndl,75), "MatchWins", client, SQL_FetchInt(hndl, 77), "MatchDraws", client, SQL_FetchInt(hndl, 78), "MatchLosses", client, SQL_FetchInt(hndl, 79));
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","HitStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %.2f%% \n ","Shots",client,shots,"Hits",client,hits,"Accuracy",client,IntToFloat(hits)/shots*100);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %.2f%% \n","Shots",client,shots,"Hits",client,hits,"Accuracy",client,IntToFloat(hits)/shots*100);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","NoScopeStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %.2fm \n ","NoScopes",client,SQL_FetchInt(hndl,81), "Farthest", client, IntToFloat(SQL_FetchInt(hndl,82))/100 );
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %.2fm \n","NoScopes",client,SQL_FetchInt(hndl,81), "Farthest", client, IntToFloat(SQL_FetchInt(hndl,82))/100 );
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,SQL_FetchInt(hndl,66),"ExplodedBombs",client,SQL_FetchInt(hndl,67),"DefusedBombs",client,SQL_FetchInt(hndl,68));
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d\n ","RescuedHostages",client,SQL_FetchInt(hndl,71));
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,SQL_FetchInt(hndl,66),"ExplodedBombs",client,SQL_FetchInt(hndl,67),"DefusedBombs",client,SQL_FetchInt(hndl,68));
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","RescuedHostages",client,SQL_FetchInt(hndl,71));
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 				
 	if(g_bVipEnabled){
 		Format(temp,sizeof(temp),"- %T\n","VIPStats",client);
-		StrCat(text,255,temp);
-		Format(temp,255,"%T: %d/%d   %T: %d\n ","VIPEscapes",client,SQL_FetchInt(hndl,73),SQL_FetchInt(hndl,74),"VIPsKilled",client,SQL_FetchInt(hndl,72));
-		StrCat(text,255,temp);
+		StrCat(text,sizeof(text),temp);
+		Format(temp,sizeof(temp),"%T: %d/%d   %T: %d\n","VIPEscapes",client,SQL_FetchInt(hndl,73),SQL_FetchInt(hndl,74),"VIPsKilled",client,SQL_FetchInt(hndl,72));
+		StrCat(text,sizeof(text),temp);
 		panel.AddItem("",text);
 		text="";
 	}
 	
 	Format(temp,sizeof(temp),"- %T\n","OtherStats",client);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
 	
 	int time = SQL_FetchInt(hndl,13);
 	if(target != 0 && IsClientInGame(target))
@@ -1545,8 +1570,8 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	int minutes = RoundToFloor(time/60.0);
 	time = time-(minutes*60);
 	
-	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
-	StrCat(text,255,temp);
+	Format(temp,sizeof(temp),"%T","TimeConnected",client,hours,minutes,time);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	panel.Pagination = 2;
@@ -1585,7 +1610,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 		i = 0;
 	}
 	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
-	char text[255];
+	char text[512];
 	int ikills = g_aStats[client].KILLS;
 	int ideaths=g_aStats[client].DEATHS;
 	int deaths;
@@ -1611,64 +1636,72 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 
 	char temp[255];
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
 	if(i == 0)
 		Format(temp,sizeof(temp),"%T: %i [%i]\n","Points",client,g_aStats[client].SCORE,g_aSession[client].SCORE);
 	else
 		Format(temp,sizeof(temp),"Rank: %i/%i   %T: %i [%i]\n",i,SQL_GetRowCount(hndl),"Points",client,g_aStats[client].SCORE,g_aSession[client].SCORE);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aStats[client].ASSISTS,kills/deaths);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d  %T: %d  %T: %d\n","Headshots",client,g_aStats[client].HEADSHOTS,"Suicides",client,g_aStats[client].SUICIDES,"TKs",client,g_aStats[client].TK);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d  %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d  \n ","First Bloods", client, g_aStats[client].FB);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aStats[client].ASSISTS,kills/deaths);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  \n","AssistTeams", client, g_aStats[client].ATK);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  %T: %d  %T: %d\n","Headshots",client,g_aStats[client].HEADSHOTS,"Suicides",client,g_aStats[client].SUICIDES,"TKs",client,g_aStats[client].TK);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  \n","First Bloods", client, g_aStats[client].FB);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d  %T: %d\n","Thru Smokes", client, g_aStats[client].SMOKE, "Flashed Kills", client, g_aStats[client].BLIND);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistFlashes", client, g_aStats[client].AF);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistTeamFlashes", client, g_aStats[client].ATF);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n ","TRWins",client,g_aStats[client].TR_WIN,g_aStats[client].ROUNDS_TR,"CTWins",client,g_aStats[client].CT_WIN,g_aStats[client].ROUNDS_CT,"MVPs",client,g_aStats[client].MVP, "MatchWins", client, g_aStats[client].MATCH_WIN, "MatchDraws", client, g_aStats[client].MATCH_DRAW, "MatchLosses", client, g_aStats[client].MATCH_LOSE);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client].TR_WIN,g_aStats[client].ROUNDS_TR,"CTWins",client,g_aStats[client].CT_WIN,g_aStats[client].ROUNDS_CT,"MVPs",client,g_aStats[client].MVP, "MatchWins", client, g_aStats[client].MATCH_WIN, "MatchDraws", client, g_aStats[client].MATCH_DRAW, "MatchLosses", client, g_aStats[client].MATCH_LOSE);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","HitStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %.2f%%\n ","Shots",client,shots,"Hits",client,g_aStats[client].HITS,"Accuracy",client,IntToFloat(g_aStats[client].HITS)/shots*100);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %.2f%%\n","Shots",client,shots,"Hits",client,g_aStats[client].HITS,"Accuracy",client,IntToFloat(g_aStats[client].HITS)/shots*100);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","NoScopeStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %.2fm \n ","NoScopes",client,g_aStats[client].NS, "Farthest", client, IntToFloat(g_aStats[client].NSD)/100 );
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %.2fm \n","NoScopes",client,g_aStats[client].NS, "Farthest", client, IntToFloat(g_aStats[client].NSD)/100 );
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,g_aStats[client].C4_PLANTED,"ExplodedBombs",client,g_aStats[client].C4_EXPLODED,"DefusedBombs",client,g_aStats[client].C4_DEFUSED);
-	StrCat(text,255,temp);
-	Format(temp,255,"%T: %d \n ","RescuedHostages",client,g_aStats[client].HOSTAGES_RESCUED);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,g_aStats[client].C4_PLANTED,"ExplodedBombs",client,g_aStats[client].C4_EXPLODED,"DefusedBombs",client,g_aStats[client].C4_DEFUSED);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d \n","RescuedHostages",client,g_aStats[client].HOSTAGES_RESCUED);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 				
 	if(g_bVipEnabled){
 		Format(temp,sizeof(temp),"- %T\n","VIPStats",client);
-		StrCat(text,255,temp);
-		Format(temp,255,"%T: %d/%d   %T: %d\n ","VIPEscapes",client,g_aStats[client].VIP_ESCAPED,g_aStats[client].VIP_PLAYED,"VIPsKilled",client,g_aStats[client].VIP_KILLED);
-		StrCat(text,255,temp);
+		StrCat(text,sizeof(text),temp);
+		Format(temp,sizeof(temp),"%T: %d/%d   %T: %d\n","VIPEscapes",client,g_aStats[client].VIP_ESCAPED,g_aStats[client].VIP_PLAYED,"VIPsKilled",client,g_aStats[client].VIP_KILLED);
+		StrCat(text,sizeof(text),temp);
 		panel.AddItem("",text);
 		text="";
 	}
 	
 	Format(temp,sizeof(temp),"- %T\n","OtherStats",client);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
 	int time = g_aStats[client].CONNECTED + GetTime()-g_aSession[client].CONNECTED;
 	int hours = RoundToFloor(time/3600.0);
 	time = time-(hours*3600);
@@ -1676,8 +1709,8 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	int minutes = RoundToFloor(time/60.0);
 	time = time-(minutes*60);
 	
-	Format(temp,255,"%T","TimeConnected",client,hours,minutes,time);
-	StrCat(text,255,temp);
+	Format(temp,sizeof(temp),"%T","TimeConnected",client,hours,minutes,time);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	panel.Pagination = 2;
@@ -1762,7 +1795,7 @@ public void SQL_NextCallback(Handle owner, Handle hndl, const char[] error, any 
 	char text[500];
 	char temp[255];
 	Format(temp,sizeof(temp),"%T\n","Next9Players",client);
-	StrCat(text,255,temp);
+	StrCat(text,sizeof(text),temp);
 	
 	int max;
 	if(i<10){
@@ -1824,104 +1857,97 @@ public Action CMD_RankMe(int client, int args){
 	
 	hMenu.SetTitle("%t", "RankMe Menu");
 	
-	char myrank[512];
-	Format(myrank, sizeof(myrank), "%t", "My Rank");
-	hMenu.AddItem("rank", myrank);
+	char temp[512];
+	Format(temp, sizeof(temp), "%t", "My Rank");
+	hMenu.AddItem("rank", temp);
 	
 	if(g_bResetOwnRank)
 	{
-		char resetmyrank[512];
-		Format(resetmyrank, sizeof(resetmyrank), "%t", "Reset My Rank");
-		hMenu.AddItem("resetmyrank", resetmyrank);
+		Format(temp, sizeof(temp), "%t", "Reset My Rank");
+		hMenu.AddItem("resetmyrank", temp);
 	}
 	
-	char mystats[512];
-	Format(mystats, sizeof(mystats), "%t", "My Stats");
-	hMenu.AddItem("statsme", mystats);
-	
-	char session[512];
-	Format(session, sizeof(session), "%t", "Session");
-	hMenu.AddItem("session", session);
-	
-	char otherstats[512];
-	Format(otherstats, sizeof(otherstats), "%t", "Show Other Players Stats");
-	hMenu.AddItem("statsme2", otherstats);
-	
-	char hitboxme[512];
-	Format(hitboxme, sizeof(hitboxme), "%t", "My HitBox Stats");
-	hMenu.AddItem("hitboxme", hitboxme);
-	
-	char weaponme[512];
-	Format(weaponme, sizeof(weaponme), "%t", "My Weapon Stats");
-	hMenu.AddItem("weaponme", weaponme);
-	
-	char next[512];
-	Format(next, sizeof(next), "%t", "Show Players Above Me");
-	hMenu.AddItem("next", next);
-	
-	char top10[512];
-	Format(top10, sizeof(top10), "%t", "TOP 10");
-	hMenu.AddItem("top10", top10);
+	Format(temp, sizeof(temp), "%t", "My Stats");
+	hMenu.AddItem("statsme", temp);
 
-	char topkills[512];
-	Format(topkills, sizeof(topkills), "%t", "TOP Kills");
-	hMenu.AddItem("topkills", topkills);
+	Format(temp, sizeof(temp), "%t", "Session");
+	hMenu.AddItem("session", temp);
+	
+	Format(temp, sizeof(temp), "%t", "Show Other Players Stats");
+	hMenu.AddItem("statsme2", temp);
+	
+	Format(temp, sizeof(temp), "%t", "My HitBox Stats");
+	hMenu.AddItem("hitboxme", temp);
+	
+	Format(temp, sizeof(temp), "%t", "My Weapon Stats");
+	hMenu.AddItem("weaponme", temp);
+	
+	Format(temp, sizeof(temp), "%t", "Show Players Above Me");
+	hMenu.AddItem("next", temp);
+	
+	Format(temp, sizeof(temp), "%t", "TOP 10");
+	hMenu.AddItem("top10", temp);
 
-	char topdeaths[512];
-	Format(topdeaths, sizeof(topdeaths), "%t", "TOP Deaths");
-	hMenu.AddItem("topdeaths", topdeaths);
-	
-	char topassists[512];
-	Format(topassists, sizeof(topassists), "%t", "TOP Assists");
-	hMenu.AddItem("topassists", topassists);
-	
-	char tophs[512];
-	Format(tophs, sizeof(tophs), "%t", "TOP HS");
-	hMenu.AddItem("tophs", tophs);
-	
-	char topweapon[512];
-	Format(topweapon, sizeof(topweapon), "%t", "TOP Weapon");
-	hMenu.AddItem("topweapon", topweapon);
-	
-	char toptk[512];
-	Format(toptk, sizeof(toptk), "%t", "TOP TK");
-	hMenu.AddItem("toptk", toptk);
-	
-	char topmvp[512];
-	Format(topmvp, sizeof(topmvp), "%t", "TOP MVP");
-	hMenu.AddItem("topmvp", topmvp);
-	
-	char topdamage[512];
-	Format(topdamage, sizeof(topdamage), "%t", "TOP Damage");
-	hMenu.AddItem("topdamage", topdamage);
-	
-	char topacc[512];
-	Format(topacc, sizeof(topacc), "%t", "TOP Accuracy");
-	hMenu.AddItem("topacc", topacc);
+	Format(temp, sizeof(temp), "%t", "TOP Kills");
+	hMenu.AddItem("topkills", temp);
 
-	char toptime[512];
-	Format(toptime, sizeof(toptime), "%t", "TOP Time Connected");
-	hMenu.AddItem("toptime", toptime);
+	Format(temp, sizeof(temp), "%t", "TOP Deaths");
+	hMenu.AddItem("topdeaths", temp);
+	
+	Format(temp, sizeof(temp), "%t", "TOP Assists");
+	hMenu.AddItem("topassists", temp);
 
-	char topkdr[512];
-	Format(topkdr, sizeof(topkdr), "%t", "TOP KDR");
-	hMenu.AddItem("topkdr", topkdr);
+	Format(temp, sizeof(temp), "%t", "TOP HS");
+	hMenu.AddItem("tophs", temp);
+	
+	Format(temp, sizeof(temp), "%t", "TOP Weapon");
+	hMenu.AddItem("topweapon", temp);
+	
+	Format(temp, sizeof(temp), "%t", "TOP TK");
+	hMenu.AddItem("toptk", temp);
+	
+	Format(temp, sizeof(temp), "%t", "TOP MVP");
+	hMenu.AddItem("topmvp", temp);
 
-	char toppoints[512];
-	Format(toppoints, sizeof(toppoints), "%t", "TOP Points");
-	hMenu.AddItem("toppoints", toppoints);
+	Format(temp, sizeof(temp), "%t", "TOP Damage");
+	hMenu.AddItem("topdamage", temp);
+	
+	Format(temp, sizeof(temp), "%t", "TOP Accuracy");
+	hMenu.AddItem("topacc", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP Time Connected");
+	hMenu.AddItem("toptime", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP KDR");
+	hMenu.AddItem("topkdr", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP Points");
+	hMenu.AddItem("toppoints", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP First Blood");
+	hMenu.AddItem("topfb", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP Noscope");
+	hMenu.AddItem("topns", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP Noscope Distance");
+	hMenu.AddItem("topnsd", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP Flashed Kill");
+	hMenu.AddItem("topfk", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP Thru Smoke");
+	hMenu.AddItem("topthrusmoke", temp);
 	
 	if(CheckCommandAccess(client, "sm_resetrank", ADMFLAG_ROOT))
 	{
-		char resetrank[512];
-		Format(resetrank, sizeof(resetrank), "%t", "Reset a player rank");
-		hMenu.AddItem("resetrank", resetrank);
+		Format(temp, sizeof(temp), "%t", "Reset a player rank");
+		hMenu.AddItem("resetrank", temp);
 	}	
 	if(CheckCommandAccess(client, "sm_resetrank_all", ADMFLAG_ROOT))
 	{
-		char resetrankall[512];
-		Format(resetrankall, sizeof(resetrankall), "%t", "Reset all the rank");
-		hMenu.AddItem("resetrankall", resetrankall);
+		Format(temp, sizeof(temp), "%t", "Reset all the rank");
+		hMenu.AddItem("resetrankall", temp);
 	}
 	
 	hMenu.Display(client,MENU_TIME_FOREVER);
@@ -1994,6 +2020,21 @@ public int MenuHandler_RankMe(Menu menu, MenuAction action, int client, int para
 
 		else if(StrEqual(temp,"toppoints"))
 			ShowTOPPoints(client,0);
+
+		else if(StrEqual(temp,"topfb"))
+			ShowTOPFB(client,0);
+
+		else if(StrEqual(temp,"topns"))
+			ShowTOPNS(client,0);
+
+		else if(StrEqual(temp,"topnsd"))
+			ShowTOPNSD(client,0);
+
+		else if(StrEqual(temp,"topfk"))
+			ShowTOPBlind(client,0);
+
+		else if(StrEqual(temp,"topthrusmoke"))
+			ShowTOPSmoke(client,0);
 			
 		else if(StrEqual(temp,"resetrank")){
 			
@@ -2149,7 +2190,7 @@ public void SQL_TopAssistsCallback(Handle owner, Handle hndl, const char[] error
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -2263,7 +2304,7 @@ public void SQL_TopTKCallback(Handle owner, Handle hndl, const char[] error, any
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -2370,14 +2411,14 @@ public void SQL_TopMVPCallback(Handle owner, Handle hndl, const char[] error, an
 			
 		
 	
-		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %t: %d\n",i+at,name,SQL_FetchInt(hndl,4),"MVPs",SQL_FetchInt(hndl,73));
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) - %t: %d\n",i+at,name,SQL_FetchInt(hndl,4),"MVPs",SQL_FetchInt(hndl,75));
 		
 		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
 			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -2491,7 +2532,7 @@ public void SQL_TopDamageCallback(Handle owner, Handle hndl, const char[] error,
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -2615,7 +2656,7 @@ public void SQL_TopKDRCallback(Handle owner, Handle hndl, const char[] error, an
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -2735,7 +2776,7 @@ public void SQL_TopPointsCallback(Handle owner, Handle hndl, const char[] error,
 			sBuffer="\0";
 		}
 	} 
-	Format(temp,sizeof(temp),"%s\n ",temp);
+	Format(temp,sizeof(temp),"%s\n",temp);
 	menu.AddItem(temp,temp);
 	
 	
@@ -2763,6 +2804,552 @@ public int MenuHandler_TopPoints(Menu menu, MenuAction action, int param1, int p
 			ShowTOPPoints(param1,StringToInt(temp)+1);
 		} else {
 			ShowTOPPoints(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+/* Top First Blood */
+public Action CMD_TopFB(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+
+	char arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTOPFB(client,StringToInt(arg1));
+	}	else {
+		ShowTOPFB(client,0);
+	}
+	return Plugin_Handled;
+}
+
+void ShowTOPFB(int client, int at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	Handle Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	Format(query,sizeof(query),"%s ORDER BY first_blood DESC LIMIT %i, 10",query,at-1);
+		
+	SQL_TQuery(g_hStatsDb,SQL_TopFBCallback,query,Datapack);
+
+}
+
+public void SQL_TopFBCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	ResetPack(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	int at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTOPFB(client,g_TotalPlayers-9);
+		return;
+	}
+	char name[256];
+	char temp[500];
+	
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopFB);
+	
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	menu.SetTitle("");
+	char sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		i++;
+		SQL_FetchString(hndl,2,name,sizeof(name));
+			
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) : %d\n",i+at,name,SQL_FetchInt(hndl,4),SQL_FetchInt(hndl,80));
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n",temp);
+	menu.AddItem(temp,temp);
+	
+	IntToString(at+i,temp,sizeof(temp));
+	char temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		menu.AddItem(temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		menu.AddItem(temp,temp1);
+
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_TopFB(Menu menu, MenuAction action, int param1, int param2){
+	
+	if (action == MenuAction_Select)
+	{
+		char temp[250];
+	
+		menu.GetItem(param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTOPFB(param1,StringToInt(temp)+1);
+		} else {
+			ShowTOPFB(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+/* Top No scope */
+public Action CMD_TopNS(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+
+	char arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTOPNS(client,StringToInt(arg1));
+	}	else {
+		ShowTOPNS(client,0);
+	}
+	return Plugin_Handled;
+}
+
+void ShowTOPNS(int client, int at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	Handle Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	Format(query,sizeof(query),"%s ORDER BY no_scope DESC LIMIT %i, 10",query,at-1);
+		
+	SQL_TQuery(g_hStatsDb,SQL_TopNSCallback,query,Datapack);
+
+}
+
+public void SQL_TopNSCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	ResetPack(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	int at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTOPNS(client,g_TotalPlayers-9);
+		return;
+	}
+	char name[256];
+	char temp[500];
+	
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopNS);
+	
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	menu.SetTitle("");
+	char sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		i++;
+		SQL_FetchString(hndl,2,name,sizeof(name));
+			
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) : %d\n",i+at,name,SQL_FetchInt(hndl,4),SQL_FetchInt(hndl,81));
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n",temp);
+	menu.AddItem(temp,temp);
+	
+	IntToString(at+i,temp,sizeof(temp));
+	char temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		menu.AddItem(temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		menu.AddItem(temp,temp1);
+
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_TopNS(Menu menu, MenuAction action, int param1, int param2){
+	
+	if (action == MenuAction_Select)
+	{
+		char temp[250];
+	
+		menu.GetItem(param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTOPNS(param1,StringToInt(temp)+1);
+		} else {
+			ShowTOPNS(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+/* Top No scope distance */
+public Action CMD_TopNSD(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+
+	char arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTOPNSD(client,StringToInt(arg1));
+	}	else {
+		ShowTOPNSD(client,0);
+	}
+	return Plugin_Handled;
+}
+
+void ShowTOPNSD(int client, int at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	Handle Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	Format(query,sizeof(query),"%s ORDER BY no_scope_dis DESC LIMIT %i, 10",query,at-1);
+		
+	SQL_TQuery(g_hStatsDb,SQL_TopNSDCallback,query,Datapack);
+
+}
+
+public void SQL_TopNSDCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	ResetPack(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	int at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTOPNSD(client,g_TotalPlayers-9);
+		return;
+	}
+	char name[256];
+	char temp[500];
+	
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopNSD);
+	
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	menu.SetTitle("");
+	char sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		i++;
+		SQL_FetchString(hndl,2,name,sizeof(name));
+
+			
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) : %.2fm\n",i+at,name,SQL_FetchInt(hndl,4), IntToFloat(SQL_FetchInt(hndl,82))/100);
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n",temp);
+	menu.AddItem(temp,temp);
+	
+	IntToString(at+i,temp,sizeof(temp));
+	char temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		menu.AddItem(temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		menu.AddItem(temp,temp1);
+
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_TopNSD(Menu menu, MenuAction action, int param1, int param2){
+	
+	if (action == MenuAction_Select)
+	{
+		char temp[250];
+	
+		menu.GetItem(param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTOPNSD(param1,StringToInt(temp)+1);
+		} else {
+			ShowTOPNSD(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+// Top flashed kill
+public Action CMD_TopBlind(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+
+	char arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTOPBlind(client,StringToInt(arg1));
+	}	else {
+		ShowTOPBlind(client,0);
+	}
+	return Plugin_Handled;
+}
+
+void ShowTOPBlind(int client, int at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	Handle Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	Format(query,sizeof(query),"%s ORDER BY blind DESC LIMIT %i, 10",query,at-1);
+		
+	SQL_TQuery(g_hStatsDb,SQL_TopBlindCallback,query,Datapack);
+
+}
+
+public void SQL_TopBlindCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	ResetPack(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	int at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTOPBlind(client,g_TotalPlayers-9);
+		return;
+	}
+	char name[256];
+	char temp[500];
+	
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopBlind);
+	
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	menu.SetTitle("");
+	char sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		i++;
+		SQL_FetchString(hndl,2,name,sizeof(name));
+			
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) : %d\n",i+at,name,SQL_FetchInt(hndl,4),SQL_FetchInt(hndl,84));
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n",temp);
+	menu.AddItem(temp,temp);
+	
+	IntToString(at+i,temp,sizeof(temp));
+	char temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		menu.AddItem(temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		menu.AddItem(temp,temp1);
+
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_TopBlind(Menu menu, MenuAction action, int param1, int param2){
+	
+	if (action == MenuAction_Select)
+	{
+		char temp[250];
+	
+		menu.GetItem(param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTOPBlind(param1,StringToInt(temp)+1);
+		} else {
+			ShowTOPBlind(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+// Top thru smoke
+public Action CMD_TopSmoke(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+
+	char arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTOPSmoke(client,StringToInt(arg1));
+	}	else {
+		ShowTOPSmoke(client,0);
+	}
+	return Plugin_Handled;
+}
+
+void ShowTOPSmoke(int client, int at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	Handle Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	Format(query,sizeof(query),"%s ORDER BY thru_smoke DESC LIMIT %i, 10",query,at-1);
+		
+	SQL_TQuery(g_hStatsDb,SQL_TopSmokeCallback,query,Datapack);
+
+}
+
+public void SQL_TopSmokeCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	ResetPack(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	int at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTOPSmoke(client,g_TotalPlayers-9);
+		return;
+	}
+	char name[256];
+	char temp[500];
+	
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopSmoke);
+	
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	menu.SetTitle("");
+	char sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		i++;
+		SQL_FetchString(hndl,2,name,sizeof(name));
+			
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) : %d\n",i+at,name,SQL_FetchInt(hndl,4),SQL_FetchInt(hndl,83));
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n",temp);
+	menu.AddItem(temp,temp);
+	
+	IntToString(at+i,temp,sizeof(temp));
+	char temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		menu.AddItem(temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		menu.AddItem(temp,temp1);
+
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_TopSmoke(Menu menu, MenuAction action, int param1, int param2){
+	
+	if (action == MenuAction_Select)
+	{
+		char temp[250];
+	
+		menu.GetItem(param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTOPSmoke(param1,StringToInt(temp)+1);
+		} else {
+			ShowTOPSmoke(param1,0);
 		}
 	}
 	if (action == MenuAction_End)
@@ -2827,6 +3414,30 @@ public Action OnSayText(int client, const char[] command, int argc)
 	else if (StrContains(sWords[0], "topkdr", false) == 0)
 	{
 		CMD_TopKDR(client, 0);
+	}
+	else if (StrContains(sWords[0], "toppoints", false) == 0)
+	{
+		CMD_TopPoints(client, 0);
+	}
+	else if (StrContains(sWords[0], "topfb", false) == 0)
+	{
+		CMD_TopFB(client, 0);
+	}
+	else if (StrContains(sWords[0], "topns", false) == 0)
+	{
+		CMD_TopNS(client, 0);
+	}
+	else if (StrContains(sWords[0], "topnsd", false) == 0)
+	{
+		CMD_TopNSD(client, 0);
+	}
+	else if (StrContains(sWords[0], "topfk", false) == 0)
+	{
+		CMD_TopBlind(client, 0);
+	}
+	else if (StrContains(sWords[0], "topthrusmoke", false) == 0)
+	{
+		CMD_TopSmoke(client, 0);
 	}
 	
 	else if (StrContains(sWords[0], "tophs", false) == 0)

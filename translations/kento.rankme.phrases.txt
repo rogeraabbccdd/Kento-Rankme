@@ -3,7 +3,7 @@
 //**********************************************************************************************************************
 //                                     http://i.imgur.com/q2wb8Cu.png                                                  *
 //{NORMAL} = x01 | {DARKRED} = x02 | {PINK} = x03 | {GREEN} = x04 | {YELLOW} = x09 | {LIGHTGREEN} = x06 | {RED} = x07  *
-//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E |  {ORANGE} = x10                                    *
+//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E|  {ORANGE} = x10                                     *
 //**********************************************************************************************************************
 
 "Phrases"
@@ -115,7 +115,19 @@
 		"#format"	"{1:s},{2:d},{3:d}"
 		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Headshot{NORMAL}."
 	}
+
+	"Flashed Kill"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Flashed Kill{NORMAL}."
+	}
 	
+	"Thru Smoke"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Killing through smoke{NORMAL}."
+	}
+
 	"First Blood"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
@@ -232,6 +244,24 @@
 		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Kill {PINK}{5}{NORMAL}."
 	}
 
+	"AssistFlash"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Flash {PINK}{5}{NORMAL}."
+	}
+
+	"AssistTeamKill"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Kill teammate{PINK}{5}{NORMAL}."
+	}
+
+	"AssistTeamFlash"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Flash teammate{PINK}{5}{NORMAL}."
+	}
+
 	"The rank has been reset"
 	{
 		"en"		"{RED}The rank has been reset"
@@ -259,12 +289,12 @@
 	
 	"Hide Rankme Chat"
 	{
-		"en"		"{RED}Hide RankME chat messages."
+		"en"		"{RED}Hide Rankme chat messages."
 	}
 	
 	"Show Rankme Chat"
 	{
-		"en"		"{LIGHTGREEN}Show RankME chat messages."
+		"en"		"{LIGHTGREEN}Show Rankme chat messages."
 	}
 	
 	"CT_Win"
@@ -323,6 +353,7 @@
 	{
 		"en"		"Deaths"
 	}
+
 
 	"Kills"
 	{
@@ -389,6 +420,12 @@
 	{
 		"#format"	"{1:d},{2:d},{3:d}"
 		"en"		"Kills: {1}   Deaths: {2}   Assists: {3}"
+	}
+
+	"AssistTeams"
+	{
+		"#format"	""
+		"en"		"Assist Team Kills"
 	}
 
 	"Suicides"
@@ -686,6 +723,26 @@
 	{
 		"en"		"First Bloods"
 	}
+
+	"Thru Smokes"
+	{
+		"en"		"Through Smokes"
+	}
+
+	"Flashed Kills"
+	{
+		"en"		"Flashed Kills"
+	}
+
+	"AssistFlashes"
+	{
+		"en"		"Assist Flashes"
+	}
+
+	"AssistTeamFlashes"
+	{
+		"en"		"Assist Team Flashes"
+	}
 	
 	"NoScopeStats"
 	{
@@ -700,5 +757,30 @@
 	"Farthest"
 	{
 		"en"		"Farthest"
+	}
+
+	"TOP First Blood"
+	{
+		"en"		"TOP First Blood"
+	}
+
+	"TOP Noscope"
+	{
+		"en"		"TOP Noscope"
+	}
+
+	"TOP Noscope Distance"
+	{
+		"en"		"TOP Noscope Distance"
+	}
+
+	"TOP Flashed Kill"
+	{
+		"en"		"TOP Flashed Kill"
+	}
+
+	"TOP Thru Smoke"
+	{
+		"en"		"TOP Thru Smoke"
 	}
 }

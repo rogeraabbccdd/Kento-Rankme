@@ -134,6 +134,136 @@ enum struct WEAPONS_ENUM{
 		this.MP5SD = 0;
 		this.BREACHCHARGE = 0;
 	}
+	void AddKill(int num) {
+		switch(num) {
+			case 0: {
+				this.KNIFE++;
+			}
+			case 1: {
+				this.GLOCK++;
+			}
+			case 2: {
+				this.HKP2000++;
+			}
+			case 3: {
+				this.USP_SILENCER++;
+			}
+			case 4: {
+				this.P250++;
+			}
+			case 5: {
+				this.DEAGLE++;
+			}
+			case 6: {
+				this.ELITE++;
+			}
+			case 7: {
+				this.FIVESEVEN++;
+			}
+			case 8: {
+				this.TEC9++;
+			}
+			case 9: {
+				this.CZ75A++;
+			}
+			case 10: {
+				this.REVOLVER++;
+			}
+			case 11: {
+				this.NOVA++;
+			}
+			case 12: {
+				this.XM1014++;
+			}
+			case 13: {
+				this.MAG7++;
+			}
+			case 14: {
+				this.SAWEDOFF++;
+			}
+			case 15: {
+				this.BIZON++;
+			}
+			case 16: {
+				this.MAC10++;
+			}
+			case 17: {
+				this.MP9++;
+			}
+			case 18: {
+				this.MP7++;
+			}
+			case 19: {
+				this.UMP45++;
+			}
+			case 20: {
+				this.P90++;
+			}
+			case 21: {
+				this.GALILAR++;
+			}
+			case 22: {
+				this.AK47++;
+			}
+			case 23: {
+				this.SCAR20++;
+			}
+			case 24: {
+				this.FAMAS++;
+			}
+			case 25: {
+				this.M4A1++;
+			}
+			case 26: {
+				this.M4A1_SILENCER++;
+			}
+			case 27: {
+				this.AUG++;
+			}
+			case 28: {
+				this.SSG08++;
+			}
+			case 29: {
+				this.SG556++;
+			}
+			case 30: {
+				this.AWP++;
+			}
+			case 31: {
+				this.G3SG1++;
+			}
+			case 32: {
+				this.M249++;
+			}
+			case 33: {
+				this.NEGEV++;
+			}
+			case 34: {
+				this.HEGRENADE++;
+			}
+			case 35: {
+				this.FLASHBANG++;
+			}
+			case 36: {
+				this.SMOKEGRENADE++;
+			}
+			case 37: {
+				this.INFERNO++;
+			}
+			case 38: {
+				this.DECOY++;
+			}
+			case 39: {
+				this.TASER++;
+			}
+			case 40: {
+				this.MP5SD++;
+			}
+			case 41: {
+				this.BREACHCHARGE++;
+			}
+		}
+	}
 } 
 
 enum struct STATS_NAMES{
@@ -166,6 +296,11 @@ enum struct STATS_NAMES{
 	int FB;
 	int NS;
 	int NSD;
+	int SMOKE;
+	int BLIND;
+	int AF;
+	int ATF;
+	int ATK;
 	void GetData(int[] data) {
 		data[0] = this.SCORE;
 		data[1] = this.KILLS;
@@ -196,6 +331,11 @@ enum struct STATS_NAMES{
 		data[26] = this.FB;
 		data[27] = this.NS;
 		data[28] = this.NSD;
+		data[29] = this.SMOKE;
+		data[30] = this.BLIND;
+		data[31] = this.AF;
+		data[32] = this.ATF;
+		data[33] = this.ATK;
 	}
 	void Reset() {
 		this.SCORE = 0;
@@ -227,6 +367,11 @@ enum struct STATS_NAMES{
 		this.FB = 0;
 		this.NS = 0;
 		this.NSD = 0;
+		this.SMOKE = 0;
+		this.BLIND = 0;
+		this.AF = 0;
+		this.ATF = 0;
+		this.ATK = 0;
 	}
 }
 
