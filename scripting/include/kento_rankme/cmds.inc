@@ -1157,6 +1157,8 @@ public Action CMD_Session(int client, int args){
 	StrCat(text,sizeof(text),temp);
 	Format(temp,sizeof(temp),"%T: %d\n","AssistTeamFlashes", client, g_aSession[client].ATF);
 	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","Wallbangs", client, g_aSession[client].WALL);
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 
@@ -1515,6 +1517,8 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	StrCat(text,sizeof(text),temp);
 	Format(temp,sizeof(temp),"%T: %d\n","AssistTeamFlashes", client, SQL_FetchInt(hndl, 86));
 	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","Wallbangs", client, SQL_FetchInt(hndl, 88));
+	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 
@@ -1657,6 +1661,8 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	Format(temp,sizeof(temp),"%T: %d\n","AssistFlashes", client, g_aStats[client].AF);
 	StrCat(text,sizeof(text),temp);
 	Format(temp,sizeof(temp),"%T: %d\n","AssistTeamFlashes", client, g_aStats[client].ATF);
+	StrCat(text,sizeof(text),temp);
+	Format(temp,sizeof(temp),"%T: %d\n","Wallbangs", client, g_aStats[client].WALL);
 	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
@@ -1938,6 +1944,9 @@ public Action CMD_RankMe(int client, int args){
 
 	Format(temp, sizeof(temp), "%t", "TOP Thru Smoke");
 	hMenu.AddItem("topthrusmoke", temp);
+
+	Format(temp, sizeof(temp), "%t", "TOP Wallbang");
+	hMenu.AddItem("topwall", temp);
 	
 	if(CheckCommandAccess(client, "sm_resetrank", ADMFLAG_ROOT))
 	{
@@ -2035,6 +2044,9 @@ public int MenuHandler_RankMe(Menu menu, MenuAction action, int client, int para
 
 		else if(StrEqual(temp,"topthrusmoke"))
 			ShowTOPSmoke(client,0);
+
+		else if(StrEqual(temp,"topwall"))
+			ShowTOPWall(client,0);
 			
 		else if(StrEqual(temp,"resetrank")){
 			
@@ -3358,6 +3370,115 @@ public int MenuHandler_TopSmoke(Menu menu, MenuAction action, int param1, int pa
 	}
 }
 
+// Top wallbang
+public Action CMD_TopWall(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+
+	char arg1[5];
+	GetCmdArg(1,arg1,sizeof(arg1));
+	if(!StrEqual(arg1,"") && StringToInt(arg1) != 0){
+		ShowTOPWall(client,StringToInt(arg1));
+	}	else {
+		ShowTOPWall(client,0);
+	}
+	return Plugin_Handled;
+}
+
+void ShowTOPWall(int client, int at){
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	Handle Datapack= CreateDataPack();
+	
+	WritePackCell(Datapack,client);
+	
+	if(at>0){
+		WritePackCell(Datapack,at-1);
+	}	else {
+		WritePackCell(Datapack,0);
+		at = 1; // For not needing to build twice the query. (for at > 0 and at <= 0)
+	}
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query));
+	Format(query,sizeof(query),"%s ORDER BY wallbang DESC LIMIT %i, 10",query,at-1);
+		
+	SQL_TQuery(g_hStatsDb,SQL_TopWallCallback,query,Datapack);
+
+}
+
+public void SQL_TopWallCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	ResetPack(Datapack);
+	int i;
+	int client = ReadPackCell(Datapack);
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	int at = ReadPackCell(Datapack);
+	CloseHandle(Datapack);
+	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
+		ShowTOPWall(client,g_TotalPlayers-9);
+		return;
+	}
+	char name[256];
+	char temp[500];
+	
+	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopWall);
+	
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	menu.SetTitle("");
+	char sBuffer[200];
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		i++;
+		SQL_FetchString(hndl,2,name,sizeof(name));
+			
+		Format(sBuffer,sizeof(sBuffer),"%d - %s (%d) : %d\n",i+at,name,SQL_FetchInt(hndl,4),SQL_FetchInt(hndl,88));
+		
+		if(strlen(temp)+strlen(sBuffer) < MAX_LENGTH_MENU){
+			Format(temp,sizeof(temp),"%s%s",temp,sBuffer);
+			sBuffer="\0";
+		}
+	} 
+	Format(temp,sizeof(temp),"%s\n",temp);
+	menu.AddItem(temp,temp);
+	
+	IntToString(at+i,temp,sizeof(temp));
+	char temp1[20];
+	Format(temp1,sizeof(temp1),"%T","Next",client);
+	if(i>9)
+		menu.AddItem(temp,temp1);
+	IntToString(at-i,temp,sizeof(temp));
+	Format(temp1,sizeof(temp1),"%T","Back",client);
+	if(at+i-1 >9)
+		menu.AddItem(temp,temp1);
+
+	menu.DisplayAt(client,at,MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_TopWall(Menu menu, MenuAction action, int param1, int param2){
+	
+	if (action == MenuAction_Select)
+	{
+		char temp[250];
+	
+		menu.GetItem(param2, temp, sizeof(temp));
+		if(StringToInt(temp) >= 0){
+			ShowTOPWall(param1,StringToInt(temp)+1);
+		} else {
+			ShowTOPWall(param1,0);
+		}
+	}
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
 // Code made by Antithasys
 public Action OnSayText(int client, const char[] command, int argc)
 {
@@ -3438,6 +3559,10 @@ public Action OnSayText(int client, const char[] command, int argc)
 	else if (StrContains(sWords[0], "topthrusmoke", false) == 0)
 	{
 		CMD_TopSmoke(client, 0);
+	}
+	else if (StrContains(sWords[0], "topwall", false) == 0)
+	{
+		CMD_TopWall(client, 0);
 	}
 	
 	else if (StrContains(sWords[0], "tophs", false) == 0)

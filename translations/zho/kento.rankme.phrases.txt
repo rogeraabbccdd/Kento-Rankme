@@ -127,6 +127,12 @@
 		"#format"	"{1:s},{2:d},{3:d}"
 		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}穿煙,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
 	}
+
+	"Wallbang"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"zho"		"{PINK}{1}{PURPLE} ({2}) {RED}穿牆,{LIGHTGREEN}獲得 {3} 點{NORMAL}."
+	}
 	
 	"First Blood"
 	{
@@ -781,6 +787,16 @@
 	"TOP Thru Smoke"
 	{
 		"zho"		"穿煙排名"
+	}
+
+	"TOP Wallbang"
+	{
+		"zho"		"穿牆排名"
+	}
+
+	"Wallbangs"
+	{
+		"zho"		"穿牆"
 	}
 }
  

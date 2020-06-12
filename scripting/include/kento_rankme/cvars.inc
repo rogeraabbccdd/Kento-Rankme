@@ -40,6 +40,7 @@ ConVar g_cvarPointsHostageRescTeam;
 ConVar g_cvarPointsHs;
 ConVar g_cvarPointsBlind;
 ConVar g_cvarPointsSmoke;
+ConVar g_cvarPointsWall;
 ConVar g_cvarPointsKillBonusCt;
 ConVar g_cvarPointsKillBonusDifCt;
 ConVar g_cvarPointsKillBonusDifTr;
@@ -131,6 +132,7 @@ int g_PointsHostageRescTeam;
 int g_PointsHs;
 int g_PointsBlind;
 int g_PointsSmoke;
+int g_PointsWall;
 int g_PointsKillBonusDif[4];
 int g_PointsKillBonus[4];
 int g_PointsKill[4];
@@ -174,6 +176,7 @@ void CreateCvars()
 	g_cvarPointsHs = CreateConVar("rankme_points_hs", "1", "How many additional points a player got for a HeadShot?", _, true, 0.0);
 	g_cvarPointsBlind = CreateConVar("rankme_points_blind", "1", "How many additional points a player got for a flashed kill?", _, true, 0.0);
 	g_cvarPointsSmoke = CreateConVar("rankme_points_smoke", "1", "How many additional points a player got for killing through smoke?", _, true, 0.0);
+	g_cvarPointsWall = CreateConVar("rankme_points_wall", "1", "How many additional points a player got for wallbang?", _, true, 0.0);
 	g_cvarPointsKillCt = CreateConVar("rankme_points_kill_ct", "2", "How many points a CT got for killing?", _, true, 0.0);
 	g_cvarPointsKillTr = CreateConVar("rankme_points_kill_tr", "2", "How many points a TR got for killing?", _, true, 0.0);
 	g_cvarPointsKillBonusCt = CreateConVar("rankme_points_kill_bonus_ct", "1", "How many points a CT got for killing additional by the diffrence of points?", _, true, 0.0);
@@ -264,6 +267,7 @@ void CreateCvars()
 	g_cvarPointsHs.AddChangeHook(OnConVarChanged);
 	g_cvarPointsBlind.AddChangeHook(OnConVarChanged);
 	g_cvarPointsSmoke.AddChangeHook(OnConVarChanged);
+	g_cvarPointsWall.AddChangeHook(OnConVarChanged);
 	g_cvarPointsKillCt.AddChangeHook(OnConVarChanged);
 	g_cvarPointsKillTr.AddChangeHook(OnConVarChanged);
 	g_cvarPointsKillBonusCt.AddChangeHook(OnConVarChanged);
@@ -346,6 +350,7 @@ void GetCvarValues()
 	g_PointsHs = g_cvarPointsHs.IntValue;
 	g_PointsBlind = g_cvarPointsBlind.IntValue;
 	g_PointsSmoke = g_cvarPointsSmoke.IntValue;
+	g_PointsWall = g_cvarPointsWall.IntValue;
 	g_PointsKill[CT] = g_cvarPointsKillCt.IntValue;
 	g_PointsKill[TR] = g_cvarPointsKillTr.IntValue;
 	g_PointsKillBonus[CT] = g_cvarPointsKillBonusCt.IntValue;
@@ -479,6 +484,9 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	}
 	else if (convar == g_cvarPointsSmoke) {
 		g_PointsSmoke = g_cvarPointsSmoke.IntValue;
+	}
+	else if (convar == g_cvarPointsWall) {
+		g_PointsWall = g_cvarPointsWall.IntValue;
 	}
 	else if (convar == g_cvarPointsKillCt) {
 		g_PointsKill[CT] = g_cvarPointsKillCt.IntValue;

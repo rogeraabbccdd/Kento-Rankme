@@ -128,6 +128,12 @@
 		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Killing through smoke{NORMAL}."
 	}
 
+	"Wallbang"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Wallbang{NORMAL}."
+	}
+
 	"First Blood"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
@@ -782,5 +788,15 @@
 	"TOP Thru Smoke"
 	{
 		"en"		"TOP Thru Smoke"
+	}
+
+	"TOP Wallbang"
+	{
+		"en"		"TOP Wallbang"
+	}
+
+	"Wallbangs"
+	{
+		"en"		"Wallbangs"
 	}
 }

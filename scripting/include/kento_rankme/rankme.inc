@@ -301,6 +301,7 @@ enum struct STATS_NAMES{
 	int AF;
 	int ATF;
 	int ATK;
+	int WALL;
 	void GetData(int[] data) {
 		data[0] = this.SCORE;
 		data[1] = this.KILLS;
@@ -336,6 +337,7 @@ enum struct STATS_NAMES{
 		data[31] = this.AF;
 		data[32] = this.ATF;
 		data[33] = this.ATK;
+		data[34] = this.WALL;
 	}
 	void Reset() {
 		this.SCORE = 0;
@@ -372,6 +374,7 @@ enum struct STATS_NAMES{
 		this.AF = 0;
 		this.ATF = 0;
 		this.ATK = 0;
+		this.WALL = 0;
 	}
 }
 
