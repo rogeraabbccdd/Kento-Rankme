@@ -147,7 +147,7 @@ public void OnPluginStart() {
 	RegConsoleCmd("sm_topnsd", CMD_TopNSD, "RankMe: Shows the TOP ordered by no scope distance");
 	RegConsoleCmd("sm_topfk", CMD_TopBlind, "RankMe: Shows the TOP ordered by flashed kills");
 	RegConsoleCmd("sm_topthrusmoke", CMD_TopSmoke, "RankMe: Shows the TOP ordered by killing through smokes");
-	RegConsoleCmd("sm_topwall", CMD_TopWall, "RankMe: Shows the TOP ordered by killing through smokes");
+	RegConsoleCmd("sm_topwall", CMD_TopWall, "RankMe: Shows the TOP ordered by wallbangs");
 	RegConsoleCmd("sm_rankmechat", CMD_HideChat, "Disable rankme chat messages");
 
 	// LOAD RANKME.CFG
