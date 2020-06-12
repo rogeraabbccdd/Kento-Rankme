@@ -1,0 +1,786 @@
+//**********************************************  Valid Colors	********************************************************
+// {NORMAL}, {DARKRED}, {PINK}, {YELLOW}, {GREEN}, {LIGHTGREEN}, {RED}, {GRAY}, {BLUE}, {DARKBLUE}, {PURPLE}, {ORANGE} *
+//**********************************************************************************************************************
+//                                     http://i.imgur.com/q2wb8Cu.png                                                  *
+//{NORMAL} = x01 | {DARKRED} = x02 | {PINK} = x03 | {GREEN} = x04 | {YELLOW} = x09 | {LIGHTGREEN} = x06 | {RED} = x07  *
+//{GRAY} = x08 | {BLUE} = x0B | {DARKBLUE} = x0C | {PURPLE} = x0E|  {ORANGE} = x10                                     *
+//**********************************************************************************************************************
+
+"Phrases"
+{
+	//******************* PrintToChat *******************
+
+	"Chat Prefix"
+	{
+    "tr"    "{GREEN}[RankMe]"
+	}
+
+	"ResetMyRank"
+	{
+    "tr"    "{RED}Siralaman sifirlandi"
+	}
+
+	"BombPickup"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Bombayi Aldigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"BombDropped"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Bombayi Dusurdugu {NORMAL}icin {RED}{3} puan kaybetti{NORMAL}."
+	}
+
+	"MVP"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}MVP {NORMAL}oldugu icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"LostSuicide"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Intihar ettigi {NORMAL}icin {RED}{3} puan kaybetti{NORMAL}."
+	}
+
+	"LostTK"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {PINK}{4} {NORMAL}isimli takim arkadasini oldurdugu icin {RED}{3} puan kaybetti{NORMAL}."
+	}
+
+	"CT_VIPEscaped"
+	{
+		"#format"	"{1:d}"
+    "tr"     "{BLUE}Anti-Teroristler{NORMAL} {RED}VIP olarak kactigi {NORMAL}icin {LIGHTREEN}{1} puan kazandi{NORMAL}."
+	}
+
+	"VIPEscaped"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}VIP olarak kactigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"TR_VIPKilled"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{ORANGE}Teroristler{NORMAL} {RED}VIP'i oldurdugu {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+
+	"VIPKilled"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    {PINK}{1}{PURPLE} ({2}) {RED}VIP'i oldurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"GotPointsBy"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}{4} {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"IsRankedAt"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
+    "tr"    "Oyuncu{PINK} {1} {GREEN}{2}/{3}{NORMAL} olarak siralandi, {PURPLE}{4} puan{NORMAL},{LIGHTGREEN} {5} oldurme{NORMAL},{RED} {6} olum{NORMAL},{ORANGE} {7} asist{NORMAL}, {BLUE} KDR {8} {NORMAL}ve {DARKRED}{9} tks {NORMAL}ve {YELLOW}{10} MVPs{NORMAL}."
+	}
+
+	"Killing"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
+    "tr"    {PINK}{1}{PURPLE} ({2}) {PINK}{4} {PURPLE}({5}) {RED}oldurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}.
+	}
+
+	"KillingKillerNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2})[{6}/{7}] {PINK}{4} {PURPLE}({5}) {RED}oldurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"KillingVictimNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {PINK}{4} {PURPLE}({5})[{6}/{7}] {RED}oldurdugu {NORMAL]icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+  }
+
+	"KillingBothNotRanked"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2})[{6}/{7}] {PINK}{4} {PURPLE}({5})[{8}/{9}] {RED}oldurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"Headshot"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Kafa Vurusu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"Flashed Kill"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Flashli Oldurme {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+	
+	"Thru Smoke"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Smoke icinden oldurme {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"First Blood"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    {PINK}{1}{PURPLE} ({2}) {RED}Ilk Kan {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+	
+	"No Scope"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
+    "tr     "{{PINK}{1}{PURPLE} ({2}) {RED}{6}{NORMAL} metre uzakliktaki, {ORANGE}{5}{NORMAL}'li {PINK}{4} {NORMAL}kisisini {RED}durbunsuz vurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"TR_Planting"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{ORANGE}Teroristler{NORMAL} {RED}Bombayi Yerlestirdigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+
+	"Planting"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Bombayi Yerlestirdigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"TR_Exploding"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{ORANGE}Teroristler{NORMAL} {RED}Bombayi Patlattigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+
+	"Exploding"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Bombayi Patlattigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"CT_Defusing"
+	{
+		"#format"	"{1:d}"
+    "tr"     {BLUE}Anti-Teroristler{NORMAL} {RED}Bombayi Cozdugu {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+
+	"Defusing"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"     "{PINK}{1}{PURPLE} ({2}) {RED}Bombayi Cozdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"CT_Hostage"
+	{
+		"#format"	"{1:d}"
+    "tr"    {BLUE}Anti-Teroristler{NORMAL} {RED}Rehineyi Kacirdigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+
+	"Hostage"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Rehineyi Kacirdigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"CT_Round"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{BLUE}Anti-Teroristler{NORMAL} {RED}Raundu Kazandigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+	
+	"CT_Round_Lose"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{BLUE}Anti-Teroristler{NORMAL} {RED}Raundu Kaybettigi {NORMAL}icin {RED}{1} puan kaybetti{NORMAL}."
+	}
+
+	"TR_Round"
+	{
+		"#format"	"{1:d}"
+    "tr"    {ORANGE}Teroristler{NORMAL} {RED}Raundu Kazandigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+	
+	"TR_Round_Lose"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{ORANGE}Teroristler{NORMAL} {RED}Raundu Kaybettigi {NORMAL}icin {RED}{1} puan kaybetti{NORMAL}."
+	}
+
+	"PlayerJoinedChat"
+	//{1} = ClientName | {2} = PosOnConnect | {3} = PointsOnConnect | {4} = Country
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+    "tr"    "{PINK}{NORMAL} {LIGHTGREEN}{4} {NORMAL}ulkesinden sunucuya katildi. {YELLOW}(Pozisyon {GREEN}{2} {YELLOW}- {PURPLE}{3} {YELLOW}Puan){NORMAL}."
+	}
+
+	"TopPlayerJoinedChat"
+	{
+		"#format"	"{1:d},{2:s},{3:d},{4:s}"
+    "tr"    "Top {RED}{1}{NORMAL} oyuncu {PINK}{2} {LIGHTGREEN}{4} {NORMAL}ulkesinden baglandi, suanki siralama {GREEN}{3}{NORMAL}."
+	}
+
+	"PlayerLeft"
+	//{1} = ClientName | {2} = rank | {3} = Reason
+	{
+		"#format"	"{1:s},{2:d},{3:s}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {NORMAL}sunucudan ayrildi. {YELLOW}({3})"
+	}
+
+	"NotRanked"
+	{
+		"#format"	"{1:d},{2:d}"
+    "tr"    "{RED}Henuz siralanmadi. {NORMAL}Siralamaya girmen icin {RED}{2} {NORMAL}oldurmeye ihtiyacin var. Suanki {LIGHTGREEN}{1}{NORMAL}."
+	}
+
+	"AssistKill"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {PINK}{5} {RED}kisisini oldurmesinde {PINK}{4} {RED}kisisine Asist yaptigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"AssistFlash"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+    "tr"   "{PINK}{1}{PURPLE} ({2}) {PINK}{5} {RED}kisisini flashlamasinda {PINK}{4} {RED}kisisine asist yaptigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+	}
+
+	"AssistTeamKill"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {PINK}{4} kisisine {RED} takim arkadasi {PINK}{5} {RED}oldurmesinde asist yaptigi {NORMAL}icin {RED}{3} puan kaybetti{NORMAL}."
+	}
+
+	"AssistTeamFlash"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {PINK}{4} kisisine {RED}takim arkadasi {PINK}{5} {RED}flashlamasinda Asist yaptigi {NORMAL}icin {RED}{3} puan kaybetti{NORMAL}."
+	}
+
+	"The rank has been reset"
+	{
+    "tr"    "{RED}Siralama sifirlandi"
+	}
+
+	"All rank data has been reset"
+	{
+    "tr"    "{RED}Butun siralama verisi sifirlandi
+	}
+
+	"Usagepurge"
+	{
+    "tr"    {RED}Kullanim: {PINK}rankpurge X (X aktif olunmayan gun sayisina esittir)"
+	}
+
+	"Purged"
+	{
+    "tr"    "{RED}Tasviye Edildi"
+	}
+
+	"UsageStatsme2"
+	{
+    "tr"    "{RED}Kullanim: {PINK}sm_statsme2 <isim | #toptaki pozisyon | steam>"
+	}
+	
+	"Hide Rankme Chat"
+	{
+    "tr"    "{RED}Rankme chat mesajlarini gizle."
+	}
+	
+	"Show Rankme Chat"
+	{
+    "tr"    "{LIGHTGREEN}Rankme chat mesajlarini goster."
+	}
+	
+	"CT_Win"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{BLUE}Anti-Teroristler{NORMAL} {RED}maci kazandigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+	
+	"TR_Win"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{ORANGE}Teroristler{NORMAL} {RED}maci kazandigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+	
+	"CT_Lose"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{BLUE}Anti-Teroristler {RED}maci kaybettigi {NORMAL}icin {RED}{1} puan kaybetti{NORMAL}."
+	}
+	
+	"TR_Lose"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{ORANGE}Teroristler {RED}maci kaybettigi {NORMAL}icin {RED}{1} puan kaybetti{NORMAL}."
+	}
+	
+	"Draw"
+	{
+		"#format"	"{1:d}"
+    "tr"    "{RED}Mac berabere{NORMAL}, {PINK}Her iki takim {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+	}
+	
+	"RankCooldown"
+	{
+		"#format"	""
+    "tr"    "{RED}En iyi oyuncu oldugunu biliyoruz, lutfen spamlamayi kes!"
+	}
+	
+	//****************** PrintHintText ******************
+
+	"PlayerJoinedHint"
+	{
+		"#format"	"{1:s},{2:d},{3:d},{4:s}"
+    "en"		"<font color='#28FF28'>Bilgi</font> \n <font color='#B15BFF'>{1}</font> <font color='#00FF7F'>{4}</font> ulkesinden sunucuya katildi. \n Pozisyon <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> Puan"
+	}
+
+	"TopPlayerJoinedHint"
+	{
+		"#format"	"{1:d},{2:s},{3:d},{4:s}"
+    "tr"		"<font color='#28FF28'>Bilgi</font> \n Top <font color='#FF0000'>{1}</font> oyuncu <font color='#B15BFF'>{2}</font> <font color='#00FF7F'>{4}</font> ulkesinden baglandi \n Suanki siralama <font color='#28FF28'>{3}</font>"
+	}
+
+	//***************** Menu (No Colors) *****************
+
+	"Deaths"
+	{
+    "tr"    "Olumler"
+	}
+
+
+	"Kills"
+	{
+    "tr"    "Oldurmeler"
+	}
+
+	"VIPStats"
+	{
+    "tr"    "VIP Istatistikleri"
+	}
+
+	"VIPEscapes"
+	{
+    "tr"    "VIP olarak Kacislar"
+	}
+
+	"VIPsKilled"
+	{
+    "tr"    "Oldurulen VIP'ler"
+	}
+
+	"Showing"
+	{
+		"#format"	"{1:d},{2:d},{3:d}"
+    "tr"    "{1}'den {2} / {3} gosteriliyor\n"
+	}
+
+	"Next"
+	{
+    "tr"    "Sonraki"
+	}
+
+	"Back"
+	{
+    "tr"    "Geri"
+	}
+
+	"KnifeKills"
+	{
+    "tr"    "Bicak Oldurmeleri"
+	}
+
+	"TaserKills"
+	{
+    "tr"     "Elektrosok Tabancasi Oldurmeleri"
+	}
+
+	"Position"
+	{
+    "tr"    "Pozisyon"
+	}
+
+	"Points"
+	{
+    "tr"    "Puanlar"
+	}
+
+	"BasicStats"
+	{
+    "tr"    "Basit Istatistikler"
+	}
+
+	"KillsDeathsAssists"
+	{
+		"#format"	"{1:d},{2:d},{3:d}"
+    "tr"    "Oldurmeler: {1}  Olumler: {2}  Asistler: {3}"
+	}
+
+	"AssistTeams"
+	{
+		"#format"	""
+    "tr"    "Takim Oldurme Asistleri"
+	}
+
+	"Suicides"
+	{
+    "tr"    "Intiharlar"
+	}
+
+	"RoundStats"
+	{
+    "tr"    "Raund Istatistikleri"
+	}
+
+	"TRWins"
+	{
+    "tr"    "TR'nin Kazanmalari"
+	}
+
+	"CTWins"
+	{
+    "tr"    "CT'nin Kazanmalari"
+	}
+
+	"HitStats"
+	{
+    "tr"    "Isabet Istatistikleri"
+	}
+
+	"Shots"
+	{
+    "tr"    "Vuruslar"
+	}
+
+	"Hits"
+	{
+    "tr"    "Isabetler"
+	}
+
+	"Accuracy"
+	{
+    "tr"    "Hassasiyet"
+	}
+
+	"BombHostagesStats"
+	{
+    "tr"    "Bomba/Rehine Istatistikleri"
+	}
+
+	"PlantedBombs"
+	{
+    "tr"    "Yerlestirilen Bombalar"
+	}
+
+	"DefusedBombs"
+	{
+    "tr"    "Cozulen Bombalar"
+	}
+
+	"ExplodedBombs"
+	{
+    "tr"    "Patlatilan Bombalar"
+	}
+
+	"RescuedHostages"
+	{
+    "tr"    "Kacirilan Rehineler"
+	}
+
+	"OtherStats"
+	{
+    "tr"    "Diger Istatistikler"
+	}
+
+	"TimeConnected"
+	{
+		"#format"	"{1:d},{2:d},{3:d}"
+    "tr"    "Baglanilan sure: {1} saat, {2} dakika, {3} saniye"
+	}
+
+	"Head"
+	{
+    "tr"    "Kafa"
+	}
+
+	"Chest"
+	{
+    "tr"    "Gogus"
+	}
+
+	"Stomach"
+	{
+    "tr"    "Karin"
+	}
+
+	"LeftArm"
+	{
+    "tr"    "Sol Kol"
+	}
+
+	"LeftLeg"
+	{
+    "tr"    "Sol Bacak"
+	}
+
+	"RightArm"
+	{
+    "tr"    "Sag Kol"
+	}
+
+	"RightLeg"
+	{
+    "tr"    "Sag Bacak"
+	}
+
+	"Next9Players"
+	{
+    "tr"    "Sonraki 9 oyuncu"
+	}
+
+	"WeaponsStats"
+	{
+    "tr"    "Silah Istatistikleri"
+	}
+
+	"Headshots"
+	{
+    "tr"    "Kafadan vuruslari"
+	}
+
+	"Assists"
+	{
+    "tr"    "Asistler"
+	}
+
+	"TKs"
+	{
+    "tr"    "Takim Oldurmeleri"
+	}
+
+	"RankMe Menu"
+	{
+    "tr"    "RankMe Menu"
+	}
+
+	"My Rank"
+	{
+    "tr"    "Siralamam"
+	}
+
+	"Reset My Rank"
+	{
+    "tr"    "Siralamami Sifirla"
+	}
+
+	"My Stats"
+	{
+    "tr"    "Istatistiklerim"
+	}
+
+	"Show Other Players Stats"
+	{
+    "tr"    "Diger Oyuncularin Istatistiklerini Goster"
+	}
+
+	"Session"
+	{
+    "tr"    "Sezon"
+	}
+
+	"My HitBox Stats"
+	{
+    "tr"    "HitBox Istatistiklerim"
+	}
+
+	"My Weapon Stats"
+	{
+    "tr"    "Silah Istatistiklerim"
+	}
+
+	"Show Players Above Me"
+	{
+    "tr"    "Oyunculari Ustumde Goster"
+	}
+
+	"TOP 10"
+	{
+    "tr"    "TOP 10"
+	}
+
+	"TOP Kills"
+	{
+    "tr"    "TOP Oldurmeler"
+	}
+
+	"TOP Deaths"
+	{
+    "tr"    "TOP Olumler"
+	}
+
+	"TOP Assists"
+	{
+    "tr"    "TOP Asistler"
+	}
+
+	"TOP KDR"
+	{
+    "tr"    "TOP KDR"
+	}
+
+	"TOP TK"
+	{
+    "tr"    "TOP Takim Oldurmeler"
+	}
+
+	"TOP Weapon"
+	{
+    "tr"    "TOP Silah"
+	}
+
+	"TOP Accuracy"
+	{
+    "tr"    "TOP Hassasiyet"
+	}
+
+	"TOP HS"
+	{
+    "tr"    "TOP Kafa Vurusu"
+	}
+
+	"TOP Time Connected"
+	{
+    "tr"    "TOP Baglanilan Sure"
+	}
+
+	"TOP Points"
+	{
+    "tr"    "TOP Puanlar"
+	}
+
+	"Reset a player rank"
+	{
+    "tr"    "Bir oyuncunun siralamasini sifirla"
+	}
+
+	"Reset all the rank"
+	{
+    "tr"    "Butun Siralamalari Sifirla"
+	}
+
+	"MVPs"
+	{
+    "tr"    "MVP'ler"
+	}
+
+	"TOP MVP"
+	{
+    "tr"    "TOP MVP"
+	}
+
+	"KPR"
+	{
+    "tr"    "KPR"
+	}
+
+	"DPR"
+	{
+    "tr"    "DPR"
+	}
+
+	"Damage"
+	{
+    "tr"    "Hasar"
+	}
+	
+	"TOP Damage"
+	{
+    "tr"    "TOP Hasar"
+	}
+	
+	"MatchWins"
+	{
+    "tr"    "Kazanilan Maclar"
+	}
+	
+	"MatchLosses"
+	{
+    "tr"    "Kaybedilen Maclar"
+	}
+	
+	"MatchDraws"
+	{
+    "tr"    "Berabere Maclar"
+	}
+	
+	"First Bloods"
+	{
+    "tr"    "Ilk Kanlar"
+	}
+
+	"Thru Smokes"
+	{
+    "tr"    "Smoke Icinden"
+	}
+
+	"Flashed Kills"
+	{
+    "tr"    "Flashli Oldurmeler"
+	}
+
+	"AssistFlashes"
+	{
+    "tr"    "Flash Asistleri"
+	}
+
+	"AssistTeamFlashes"
+	{
+    "tr"    "Takim Flashi Asistleri"
+	}
+	
+	"NoScopeStats"
+	{
+    "tr"    "Durbunsuz Istatistikler"
+	}
+	
+	"NoScopes"
+	{
+    "tr"    "Durbunsuz"
+	}
+	
+	"Farthest"
+	{
+    "tr"    "En uzak"
+	}
+
+	"TOP First Blood"
+	{
+    "tr"    "TOP Ilk Kanlar"
+	}
+
+	"TOP Noscope"
+	{
+    "tr"    "TOP Durbunsuz"
+	}
+
+	"TOP Noscope Distance"
+	{
+    "tr"    "TOP Durbunsuz Uzaklik"
+	}
+
+	"TOP Flashed Kill"
+	{
+    "tr"    "TOP Flashli Oldurme"
+	}
+
+	"TOP Thru Smoke"
+	{
+    "tr"    "TOP Smoke Icinden"
+	}
+}
