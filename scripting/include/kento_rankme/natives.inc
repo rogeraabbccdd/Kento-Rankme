@@ -185,17 +185,17 @@ public int Native_GetPoints(Handle plugin, int numParams)
 public int Native_GetStats(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
-	int array[29];
+	int array[34];
 	g_aStats[client].GetData(array);
-	SetNativeArray(2, array, 29);
+	SetNativeArray(2, array, 34);
 }
 
 public int Native_GetSession(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
-	int array[29];
+	int array[34];
 	g_aSession[client].GetData(array);
-	SetNativeArray(2, array, 29);
+	SetNativeArray(2, array, 34);
 }
 
 public int Native_GetWeaponStats(Handle plugin, int numParams)
