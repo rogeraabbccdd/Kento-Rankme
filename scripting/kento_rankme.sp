@@ -1,6 +1,6 @@
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.33"
+#define PLUGIN_VERSION "3.0.3.Kento.33.1"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -1223,15 +1223,6 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 		/* Assist team kill */
 		if(GetClientTeam(victim) == GetClientTeam(assist) && !g_bFfa)
 		{
-			g_aStats[assist].SCORE -= g_PointsLoseATk;
-			g_aSession[assist].SCORE -= g_PointsLoseATk;
-			g_aStats[assist].ATK++;
-			g_aSession[assist].ATK++;
-
-			if(g_bChatChange && g_PointsAssistKill > 0){
-				if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistTeamKill", assist, g_aClientName[assist], g_aStats[assist].SCORE, g_PointsLoseATk, g_aClientName[attacker], g_aClientName[victim]);
-			}
-
 			if(assistedflash) {
 				g_aStats[assist].SCORE -= g_PointsAssistTeamFlash;
 				g_aSession[assist].SCORE -= g_PointsAssistTeamFlash;
@@ -1242,19 +1233,20 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 					if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistTeamFlash", assist, g_aClientName[assist], g_aStats[assist].SCORE, g_PointsAssistTeamFlash, g_aClientName[attacker], g_aClientName[victim]);
 				}
 			}
+			else {
+				g_aStats[assist].SCORE -= g_PointsLoseATk;
+				g_aSession[assist].SCORE -= g_PointsLoseATk;
+				g_aStats[assist].ATK++;
+				g_aSession[assist].ATK++;
+
+				if(g_bChatChange && g_PointsAssistKill > 0){
+					if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistTeamKill", assist, g_aClientName[assist], g_aStats[assist].SCORE, g_PointsLoseATk, g_aClientName[attacker], g_aClientName[victim]);
+				}
+			}
 		}
 		/* Assist kill */
 		else
 		{
-			g_aStats[assist].SCORE+= g_PointsAssistKill;
-			g_aSession[assist].SCORE+= g_PointsAssistKill;
-			g_aStats[assist].ASSISTS++;
-			g_aSession[assist].ASSISTS++;
-			
-			if(g_bChatChange && g_PointsAssistKill > 0){
-				if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistKill", assist, g_aClientName[assist], g_aStats[assist].SCORE, g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
-			}
-
 			if(assistedflash) {
 				g_aStats[assist].SCORE += g_PointsAssistFlash;
 				g_aSession[assist].SCORE += g_PointsAssistFlash;
@@ -1263,6 +1255,16 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 
 				if(g_bChatChange && g_PointsAssistKill > 0){
 					if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistFlash", assist, g_aClientName[assist], g_aStats[assist].SCORE, g_PointsAssistFlash, g_aClientName[attacker], g_aClientName[victim]);
+				}
+			}
+			else {
+				g_aStats[assist].SCORE+= g_PointsAssistKill;
+				g_aSession[assist].SCORE+= g_PointsAssistKill;
+				g_aStats[assist].ASSISTS++;
+				g_aSession[assist].ASSISTS++;
+				
+				if(g_bChatChange && g_PointsAssistKill > 0){
+					if(!hidechat[assist])	CPrintToChat(assist, "%s %T", MSG, "AssistKill", assist, g_aClientName[assist], g_aStats[assist].SCORE, g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
 				}
 			}
 		}
