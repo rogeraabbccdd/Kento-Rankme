@@ -17,7 +17,7 @@
 
 	"ResetMyRank"
 	{
-		"en"		"{RED}Your rank has been reseted"
+		"en"		"{RED}Your rank has been reseted."
 	}
 
 	"BombPickup"
@@ -29,7 +29,7 @@
 	"BombDropped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}lost {3} point(s) {NORMAL}for {RED}Dropping the Bomb{NORMAL}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for {RED}Dropping the Bomb{NORMAL}."
 	}
 
 	"MVP"
@@ -47,7 +47,7 @@
 	"LostTK"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for Team Killing {PINK}{4}{NORMAL}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for {RED}Team Killing {PINK}{4}{NORMAL}."
 	}
 
 	"CT_VIPEscaped"
@@ -83,7 +83,7 @@
 	"IsRankedAt"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
-		"en"		"Player{PINK} {1} {NORMAL}is ranked at {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} points{NORMAL},{LIGHTGREEN} {5} kills{NORMAL},{RED} {6} deaths{NORMAL},{ORANGE} {7} assists{NORMAL}, {BLUE} KDR {8} {NORMAL}and {DARKRED}{9} tks {NORMAL}and {YELLOW}{10} MVPs{NORMAL}."
+		"en"		"Player{PINK} {1} {NORMAL}is ranked at {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} points{NORMAL},{LIGHTGREEN} {5} kills{NORMAL},{RED} {6} deaths{NORMAL},{ORANGE} {7} assists{NORMAL}, {BLUE} KDR {8} {NORMAL}and {DARKRED}{9} TKs {NORMAL}and {YELLOW}{10} MVPs{NORMAL}."
 	}
 
 	"Killing"
@@ -125,7 +125,7 @@
 	"Thru Smoke"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Killing through smoke{NORMAL}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Through smoke{NORMAL}."
 	}
 
 	"Wallbang"
@@ -247,35 +247,35 @@
 	"AssistKill"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Kill {PINK}{5}{NORMAL}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED}to Kill {PINK}{5}{NORMAL}."
 	}
 
 	"AssistFlash"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Flash {PINK}{5}{NORMAL}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED}to Flash {PINK}{5}{NORMAL}."
 	}
 
 	"AssistTeamKill"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Kill teammate{PINK}{5}{NORMAL}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED}to Kill teammate {PINK}{5}{NORMAL}."
 	}
 
 	"AssistTeamFlash"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
-		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Flash teammate{PINK}{5}{NORMAL}."
+		"en"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED}to Flash teammate {PINK}{5}{NORMAL}."
 	}
 
 	"The rank has been reset"
 	{
-		"en"		"{RED}The rank has been reset"
+		"en"		"{RED}The rank has been reset."
 	}
 
 	"All rank data has been reset"
 	{
-		"en"		"{RED}All rank data has been reset"
+		"en"		"{RED}All rank data has been reset."
 	}
 
 	"Usagepurge"
@@ -787,7 +787,7 @@
 
 	"TOP Thru Smoke"
 	{
-		"en"		"TOP Thru Smoke"
+		"en"		"TOP Through Smoke"
 	}
 
 	"TOP Wallbang"
