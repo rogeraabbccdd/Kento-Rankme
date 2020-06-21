@@ -53,7 +53,7 @@
 	"CT_VIPEscaped"
 	{
 		"#format"	"{1:d}"
-    "tr"     "{BLUE}Anti-Teroristler{NORMAL} {RED}VIP olarak kactigi {NORMAL}icin {LIGHTREEN}{1} puan kazandi{NORMAL}."
+    "tr"    "{BLUE}Anti-Teroristler{NORMAL} {RED}VIP olarak kactigi {NORMAL}icin {LIGHTREEN}{1} puan kazandi{NORMAL}."
 	}
 
 	"VIPEscaped"
@@ -89,7 +89,7 @@
 	"Killing"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
-    "tr"    {PINK}{1}{PURPLE} ({2}) {PINK}{4} {PURPLE}({5}) {RED}oldurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}.
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {PINK}{4} {PURPLE}({5}) {RED}oldurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
 	}
 
 	"KillingKillerNotRanked"
@@ -131,13 +131,13 @@
 	"First Blood"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-    "tr"    {PINK}{1}{PURPLE} ({2}) {RED}Ilk Kan {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Ilk Kan {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
 	}
 	
 	"No Scope"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
-    "tr     "{{PINK}{1}{PURPLE} ({2}) {RED}{6}{NORMAL} metre uzakliktaki, {ORANGE}{5}{NORMAL}'li {PINK}{4} {NORMAL}kisisini {RED}durbunsuz vurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+    "tr"    "{{PINK}{1}{PURPLE} ({2}) {RED}{6}{NORMAL} metre uzakliktaki, {ORANGE}{5}{NORMAL}'li {PINK}{4} {NORMAL}kisisini {RED}durbunsuz vurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
 	}
 
 	"TR_Planting"
@@ -167,19 +167,19 @@
 	"CT_Defusing"
 	{
 		"#format"	"{1:d}"
-    "tr"     {BLUE}Anti-Teroristler{NORMAL} {RED}Bombayi Cozdugu {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+    "tr"    "{BLUE}Anti-Teroristler{NORMAL} {RED}Bombayi Cozdugu {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
 	}
 
 	"Defusing"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-    "tr"     "{PINK}{1}{PURPLE} ({2}) {RED}Bombayi Cozdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}Bombayi Cozdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
 	}
 
 	"CT_Hostage"
 	{
 		"#format"	"{1:d}"
-    "tr"    {BLUE}Anti-Teroristler{NORMAL} {RED}Rehineyi Kacirdigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+    "tr"    "{BLUE}Anti-Teroristler{NORMAL} {RED}Rehineyi Kacirdigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
 	}
 
 	"Hostage"
@@ -203,7 +203,7 @@
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
-    "tr"    {ORANGE}Teroristler{NORMAL} {RED}Raundu Kazandigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
+    "tr"    "{ORANGE}Teroristler{NORMAL} {RED}Raundu Kazandigi {NORMAL}icin {LIGHTGREEN}{1} puan kazandi{NORMAL}."
 	}
 	
 	"TR_Round_Lose"
@@ -247,7 +247,7 @@
 	"AssistFlash"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
-    "tr"   "{PINK}{1}{PURPLE} ({2}) {PINK}{5} {RED}kisisini flashlamasinda {PINK}{4} {RED}kisisine asist yaptigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {PINK}{5} {RED}kisisini flashlamasinda {PINK}{4} {RED}kisisine asist yaptigi {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
 	}
 
 	"AssistTeamKill"
@@ -269,12 +269,12 @@
 
 	"All rank data has been reset"
 	{
-    "tr"    "{RED}Butun siralama verisi sifirlandi
+    "tr"    "{RED}Butun siralama verisi sifirlandi"
 	}
 
 	"Usagepurge"
 	{
-    "tr"    {RED}Kullanim: {PINK}rankpurge X (X aktif olunmayan gun sayisina esittir)"
+    "tr"    "{RED}Kullanim: {PINK}rankpurge X (X aktif olunmayan gun sayisina esittir)"
 	}
 
 	"Purged"
@@ -338,7 +338,7 @@
 	"PlayerJoinedHint"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-    "en"		"<font color='#28FF28'>Bilgi</font> \n <font color='#B15BFF'>{1}</font> <font color='#00FF7F'>{4}</font> ulkesinden sunucuya katildi. \n Pozisyon <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> Puan"
+    "tr"		"<font color='#28FF28'>Bilgi</font> \n <font color='#B15BFF'>{1}</font> <font color='#00FF7F'>{4}</font> ulkesinden sunucuya katildi. \n Pozisyon <font color='#28FF28'>{2}</font> - <font color='#E800E8'>{3}</font> Puan"
 	}
 
 	"TopPlayerJoinedHint"
@@ -398,7 +398,7 @@
 
 	"TaserKills"
 	{
-    "tr"     "Elektrosok Tabancasi Oldurmeleri"
+    "tr"    "Elektrosok Tabancasi Oldurmeleri"
 	}
 
 	"Position"
