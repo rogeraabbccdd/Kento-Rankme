@@ -71,7 +71,7 @@
 	"VIPKilled"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-    "tr"    {PINK}{1}{PURPLE} ({2}) {RED}VIP'i oldurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
+    "tr"    "{PINK}{1}{PURPLE} ({2}) {RED}VIP'i oldurdugu {NORMAL}icin {LIGHTGREEN}{3} puan kazandi{NORMAL}."
 	}
 
 	"GotPointsBy"
