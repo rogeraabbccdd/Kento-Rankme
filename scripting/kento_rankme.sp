@@ -1,6 +1,6 @@
 #pragma semicolon  1
 
-#define PLUGIN_VERSION "3.0.3.Kento.33.1"
+#define PLUGIN_VERSION "3.0.3.Kento.33.2"
 
 #include <sourcemod> 
 #include <adminmenu>
@@ -649,7 +649,7 @@ public Action Event_RoundMVP(Handle event, const char[] name, bool dontBroadcast
 		return;
 	int team = GetClientTeam(client);
 	
-	if (((team == 2 && g_PointsMvpTr > 0) || (team == 3 && g_PointsMvpCt > 0)) && client != 0 && (g_bRankBots && !IsFakeClient(client))) {
+	if (((team == 2 && g_PointsMvpTr > 0) || (team == 3 && g_PointsMvpCt > 0)) && client != 0 && (g_bRankBots || !IsFakeClient(client))) {
 		
 		if (team == 2) {
 			
