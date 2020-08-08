@@ -17,37 +17,37 @@
 
 	"ResetMyRank"
 	{
-		"pt"		"{RED}Seu rank foi resetado"
+		"pt"		"{RED}Seu rank foi resetado."
 	}
 
 	"BombPickup"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point(s) {NORMAL}for {RED}Picking up the Bomb{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} ponto(s) {NORMAL}por {RED}Apanhar a Bomba{NORMAL}."
 	}
 
 	"BombDropped"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}lost {3} point(s) {NORMAL}for {RED}Dropping the Bomb{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {RED}{RED}perdeu {3} ponto(s) {NORMAL}por {RED}Largar a Bomba{NORMAL}."
 	}
 
 	"MVP"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point(s) {NORMAL}for being the {RED}MVP{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} ponto(s) {NORMAL}por ser o {RED}MVP{NORMAL}."
 	}
 
 	"LostSuicide"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for {RED}Suiciding{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {RED}perdeu {3} ponto(s) {NORMAL}por se {RED}Suicidar{NORMAL}."
 	}
 
 	"LostTK"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {RED}lost {3} point(s) {NORMAL}for Team Killing {PINK}{4}{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {RED}perdeu {3} ponto(s) {NORMAL}por ter morto o seu companheiro {PINK}{4}{NORMAL}."
 	}
 
 	"CT_VIPEscaped"
@@ -89,79 +89,79 @@
 	"Killing"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}killing {PINK}{4} {PURPLE}({5}){NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} pontos {NORMAL}por {RED}matar {PINK}{4} {PURPLE}({5}){NORMAL}."
 	}
 
 	"KillingKillerNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points {NORMAL}for {RED}killing {PINK}{4} {PURPLE}({5}){NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}ganhou {3} pontos {NORMAL}por {RED}matar {PINK}{4} {PURPLE}({5}){NORMAL}."
 	}
 
 	"KillingVictimNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}killing {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} pontos {NORMAL}por {RED}matar {PINK}{4} {PURPLE}({5})[{6}/{7}]{NORMAL}."
 	}
 
 	"KillingBothNotRanked"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}got {3} points {NORMAL}for {RED}killing {PINK}{4} {PURPLE}({5})[{8}/{9}]{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2})[{6}/{7}] {LIGHTGREEN}ganhou {3} pontos {NORMAL}por {RED}matar {PINK}{4} {PURPLE}({5})[{8}/{9}]{NORMAL}."
 	}
 
 	"Headshot"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Headshot{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} ponto {NORMAL}por ter dado {RED}Headshot{NORMAL}."
 	}
 	
 	"First Blood"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}First Blood{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} ponto {NORMAL}por ter feito o {RED}First Blood{NORMAL}."
 	}
 	
 	"No Scope"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s},{6:.2f}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}noscoped {PINK}{4} {NORMAL}with {ORANGE}{5} {NORMAL}who was {RED}{6}{NORMAL} meters away."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} ponto {NORMAL}por ter dado {RED}noscope {NORMAL}no {PINK}{4} {NORMAL}com {ORANGE}{5} {NORMAL}que estava a {RED}{6}{NORMAL} metros distância."
 	}
 
 	"TR_Planting"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Planting the Bomb{NORMAL}."
+		"pt"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}ganharam {1} ponto {NORMAL}por {RED}Plantarem a Bomba{NORMAL}."
 	}
 
 	"Planting"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Planting the Bomb{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} pontos {NORMAL}por {RED}Plantar a Bomba{NORMAL}."
 	}
 
 	"TR_Exploding"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Exploding the Bomb{NORMAL}."
+		"pt"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}ganharam {1} pontos {NORMAL}pela {RED}Explosão da Bomba{NORMAL}."
 	}
 
 	"Exploding"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Exploding the Bomb{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} pontos {NORMAL}pela {RED}Explosão da Bomba{NORMAL}."
 	}
 
 	"CT_Defusing"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Defusing the Bomb{NORMAL}."
+		"pt"		"{BLUE}Contra-Terroristas{NORMAL} {LIGHTGREEN}ganharam {1} pontos {NORMAL}por terem{RED}Defusado a Bomba{NORMAL}."
 	}
 
 	"Defusing"
 	{
 		"#format"	"{1:s},{2:d},{3:d}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} points {NORMAL}for {RED}Defusing the Bomb{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} pontos {NORMAL}por {RED}Defusar a Bomba{NORMAL}."
 	}
 
 	"CT_Hostage"
@@ -179,25 +179,25 @@
 	"CT_Round"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Winning the Round{NORMAL}."
+		"pt"		"{BLUE}Contra-Terroristas{NORMAL} {LIGHTGREEN}ganharam {1} pontos {NORMAL}por terem {RED}Ganho a Ronda{NORMAL}."
 	}
 	
 	"CT_Round_Lose"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{BLUE}Counter-Terrorists{NORMAL} {RED}lost {1} points {NORMAL}for {RED}Losing the Round{NORMAL}."
+		"pt"		"{BLUE}Contra-Terroristas{NORMAL} {RED}perderam {1} pontos {NORMAL}por terem {RED}Perdido a Ronda{NORMAL}."
 	}
 
 	"TR_Round"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}Winning the Round{NORMAL}."
+		"pt"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}ganharam {1} pontos {NORMAL}por terem {RED}Ganho a Ronda{NORMAL}."
 	}
 	
 	"TR_Round_Lose"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{ORANGE}Terrorists{NORMAL} {RED}lost {1} points {NORMAL}for {RED}Losing the Round{NORMAL}."
+		"pt"		"{ORANGE}Terroristas{NORMAL} {RED}perderam {1} pontos {NORMAL}por terem {RED}Perdido a Ronda{NORMAL}."
 	}
 
 	"PlayerJoinedChat"
@@ -217,7 +217,7 @@
 	//{1} = ClientName | {2} = rank | {3} = Reason
 	{
 		"#format"	"{1:s},{2:d},{3:s}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}left the server. {YELLOW}({3})"
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {NORMAL}saiu do servidor. {YELLOW}({3})"
 	}
 
 	"NotRanked"
@@ -229,7 +229,7 @@
 	"AssistKill"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:s},{5:s}"
-		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}got {3} point {NORMAL}for {RED}Assist {PINK}{4} {RED} to Kill {PINK}{5}{NORMAL}."
+		"pt"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}ganhou {3} ponto {NORMAL}pela {RED}Assist {PINK}{4} {RED} da Kill {PINK}{5}{NORMAL}."
 	}
 
 	"The rank has been reset"
@@ -259,42 +259,42 @@
 	
 	"Hide Rankme Chat"
 	{
-		"pt"		"{RED}Ocultar mensagens de bate-papo do RankME."
+		"pt"		"{RED}Ocultar mensagens do chat do RankME."
 	}
 	
 	"Show Rankme Chat"
 	{
-		"pt"		"{LIGHTGREEN}Mostrar mensagens de bate-papo do RankME."
+		"pt"		"{LIGHTGREEN}Mostrar mensagens do chat do RankME."
 	}
 	
 	"CT_Win"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{BLUE}Counter-Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}winning the match{NORMAL}."
+		"pt"		"{BLUE}Contra-Terroristas{NORMAL} {LIGHTGREEN}ganharam {1} pontos {NORMAL}por terem{RED}ganho a partida{NORMAL}."
 	}
 	
 	"TR_Win"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{ORANGE}Terrorists{NORMAL} {LIGHTGREEN}got {1} points {NORMAL}for {RED}winning the match{NORMAL}."
+		"pt"		"{ORANGE}Terroristas{NORMAL} {LIGHTGREEN}ganharam {1} pontos {NORMAL}por {RED}ganho a partida{NORMAL}."
 	}
 	
 	"CT_Lose"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{BLUE}Counter-Terrorists {RED}lost {1} point(s) {NORMAL}for {RED}losing the match{NORMAL}."
+		"pt"		"{BLUE}Contra-Terroristas {RED}perderam {1} ponto(s) {NORMAL}por terem {RED}perdido a partida{NORMAL}."
 	}
 	
 	"TR_Lose"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{ORANGE}Terrorists {RED}lost {1} point(s) {NORMAL}for {RED}losing the match{NORMAL}."
+		"pt"		"{ORANGE}Terroristas {RED}perderam {1} ponto(s) {NORMAL}por terem {RED}perdido a partida{NORMAL}."
 	}
 	
 	"Draw"
 	{
 		"#format"	"{1:d}"
-		"pt"		"{RED}Match draw{NORMAL}, {PINK}Both teams {LIGHTGREEN}got {1} points {NORMAL}."
+		"pt"		"{RED}Empate{NORMAL}, {PINK}Ambas as equipas {LIGHTGREEN}ganharam {1} pontos {NORMAL}."
 	}
 	
 	"RankCooldown"
@@ -321,7 +321,7 @@
 
 	"Deaths"
 	{
-		"pt"		"Deaths"
+		"pt"		"Mortes"
 	}
 
 	"Kills"
@@ -362,12 +362,12 @@
 
 	"KnifeKills"
 	{
-		"pt"		"Knife Kills"
+		"pt"		"Kills de Faca"
 	}
 
 	"TaserKills"
 	{
-		"pt"		"Taser Kills"
+		"pt"		"Kills de Taser"
 	}
 
 	"Position"
@@ -393,7 +393,7 @@
 
 	"Suicides"
 	{
-		"pt"		"Suicides"
+		"pt"		"Suicídios"
 	}
 
 	"RoundStats"
@@ -418,7 +418,7 @@
 
 	"Shots"
 	{
-		"pt"		"Shots"
+		"pt"		"Tiros"
 	}
 
 	"Hits"
@@ -428,7 +428,7 @@
 
 	"Accuracy"
 	{
-		"pt"		"Accuracy"
+		"pt"		"Precisão"
 	}
 
 	"BombHostagesStats"
@@ -438,17 +438,17 @@
 
 	"PlantedBombs"
 	{
-		"pt"		"Planted Bombs"
+		"pt"		"Bombas Plantadas"
 	}
 
 	"DefusedBombs"
 	{
-		"pt"		"Defused Bombs"
+		"pt"		"Bombas Defusadas"
 	}
 
 	"ExplodedBombs"
 	{
-		"pt"		"Exploded Bombs"
+		"pt"		"Bombas Explodidas"
 	}
 
 	"RescuedHostages"
@@ -464,47 +464,47 @@
 	"TimeConnected"
 	{
 		"#format"	"{1:d},{2:d},{3:d}"
-		"pt"		"Time connected: {1} hours, {2} minutes, {3} seconds"
+		"pt"		"Tempo conectado: {1} horas, {2} minutos, {3} segundos"
 	}
 
 	"Head"
 	{
-		"pt"		"Head"
+		"pt"		"Cabeça"
 	}
 
 	"Chest"
 	{
-		"pt"		"Chest"
+		"pt"		"Peito"
 	}
 
 	"Stomach"
 	{
-		"pt"		"Stomach"
+		"pt"		"Barriga"
 	}
 
 	"LeftArm"
 	{
-		"pt"		"Left Arm"
+		"pt"		"Braço Esquerdo"
 	}
 
 	"LeftLeg"
 	{
-		"pt"		"Left Leg"
+		"pt"		"Perna Esquerda"
 	}
 
 	"RightArm"
 	{
-		"pt"		"Right Arm"
+		"pt"		"Braço Direito"
 	}
 
 	"RightLeg"
 	{
-		"pt"		"Right Leg"
+		"pt"		"Perna Direita"
 	}
 
 	"Next9Players"
 	{
-		"pt"		"Next 9 players"
+		"pt"		"Próximos 9 Jogadores"
 	}
 
 	"WeaponsStats"
@@ -539,7 +539,7 @@
 
 	"Reset My Rank"
 	{
-		"pt"		"Resetar meu Rank"
+		"pt"		"Resetar o meu Rank"
 	}
 
 	"My Stats"
@@ -554,7 +554,7 @@
 
 	"Session"
 	{
-		"pt"		"Session"
+		"pt"		"Sessão"
 	}
 
 	"My HitBox Stats"
@@ -569,7 +569,7 @@
 
 	"Show Players Above Me"
 	{
-		"pt"		"Show Players Above Me"
+		"pt"		"Mostrar Jogadores Acima de Mim"
 	}
 
 	"TOP 10"
@@ -584,7 +584,7 @@
 
 	"TOP Deaths"
 	{
-		"pt"		"TOP Deaths"
+		"pt"		"TOP Mortes"
 	}
 
 	"TOP Assists"
@@ -609,7 +609,7 @@
 
 	"TOP Accuracy"
 	{
-		"pt"		"TOP Accuracy"
+		"pt"		"TOP Precisão"
 	}
 
 	"TOP HS"
@@ -659,27 +659,27 @@
 
 	"Damage"
 	{
-		"pt"		"Damage"
+		"pt"		"Dano"
 	}
 	
 	"TOP Damage"
 	{
-		"pt"		"TOP Damage"
+		"pt"		"TOP Dano"
 	}
 	
 	"MatchWins"
 	{
-		"pt"		"Match Wins"
+		"pt"		"Partidas Ganhas"
 	}
 	
 	"MatchLosses"
 	{
-		"pt"		"Match Losses"
+		"pt"		"Partidas Perdidas"
 	}
 	
 	"MatchDraws"
 	{
-		"pt"		"Match Draws"
+		"pt"		"Partidas Empatadas"
 	}
 	
 	"First Bloods"
