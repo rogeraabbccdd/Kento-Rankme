@@ -434,7 +434,7 @@ int GetCurrentPlayers()
 {
 	int count;
 	for (int i = 1; i <= MaxClients; i++) {
-		if (IsClientInGame(i) && (!IsFakeClient(i) || g_bRankBots) && GetClientTeam(i) != CS_TEAM_SPECTATOR) {
+		if (IsClientInGame(i) && (!IsFakeClient(i) || g_bRankBots) && GetClientTeam(i) != CS_TEAM_SPECTATOR && GetClientTeam(i) != CS_TEAM_NONE) {
 			count++;
 		}
 	}
