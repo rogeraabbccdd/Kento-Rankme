@@ -18,6 +18,7 @@ https://forums.alliedmods.net/showthread.php?p=2467665
 * [Kxnrl](https://github.com/Kxnrl) - Thanks for his rankme cache;
 * [CrazyHackGUT](https://github.com/CrazyHackGUT) - Thanks for his optimization;
 * [paulocrash](https://github.com/paulocrash) - Thanks for his Português-BR translation;
+* [awyxx](https://github.com/awyxx) - Thanks for his [Portuguese translation](https://github.com/rogeraabbccdd/Kento-Rankme/pull/159)
 
 ## Donate
 If you apreciate my work, you can donate me via [steam trade offer](https://steamcommunity.com/tradeoffer/new/?partner=52559891&token=ADe-707J)
