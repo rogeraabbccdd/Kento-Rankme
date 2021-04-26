@@ -1010,7 +1010,7 @@ public int MenuHandler_DoNothing(Menu menu, MenuAction action, int param1, int p
 	}
 }
 
-public Action CMD_Rank(int client, int args){
+public Action CMD_Rank_Global(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	//LogToFile("rankme.debug.log","\"sm_rank\" command called by client %d.",client);
@@ -1028,6 +1028,95 @@ public Action CMD_Rank(int client, int args){
 	
 	char query[2000];
 	MakeSelectQuery(query,sizeof(query));
+	
+	if(g_RankMode == 1)
+		Format(query,sizeof(query),"%s ORDER BY score DESC",query);
+	else if(g_RankMode == 2){
+		if(g_bMysql)
+			Format(query,sizeof(query),"%s ORDER BY CAST(kills as DECIMAL)/CAST(Case when deaths=0 then 1 ELSE deaths END as DECIMAL) DESC, score DESC",query);
+		else
+			Format(query,sizeof(query),"%s ORDER BY CAST(kills as float)/CAST(Case when deaths=0 then 1 ELSE deaths END as float) DESC, score DESC",query);
+	}	
+		
+	SQL_TQuery(g_hStatsDb,SQL_RankCallback_Global,query,client);
+	return Plugin_Handled;
+}
+
+public void SQL_RankCallback_Global(Handle owner, Handle hndl, const char[] error, any client){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		return;
+	}
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	//LogToFile("rankme.debug.log","Rank SQL callback called by client %d.",client);
+	int i;
+	
+	g_TotalPlayers =SQL_GetRowCount(hndl);
+	char Name_receive[MAX_NAME_LENGTH];
+	char Auth_receive[64];
+	char Ip_receive[64];
+	
+	int ikills = g_aStatsGlobal[client].KILLS;
+	int ideaths=g_aStatsGlobal[client].DEATHS;
+	
+	int deaths;
+	if(ideaths == 0)
+		deaths = 1;
+	else 
+		deaths=ideaths;
+	
+	float kills = IntToFloat(ikills);
+	
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		i++;
+		SQL_FetchString(hndl,2,Name_receive,MAX_NAME_LENGTH);
+		SQL_FetchString(hndl,1,Auth_receive,64);
+		SQL_FetchString(hndl,3,Ip_receive,64);
+	//	PrintToServer("%d %s %s",i, Name_receive, Auth_receive);
+		if((g_RankBy == 1 && StrEqual(Name_receive,g_aClientName[client],false)) || (g_RankBy == 0 && StrEqual(Auth_receive,g_aClientSteam[client],false)) || (g_RankBy == 2 && StrEqual(Ip_receive,g_aClientIp[client],false))){
+
+			if(g_bShowRankAll)
+			{
+				for(int j = 1; j <= MaxClients;j++)
+				{
+					if(IsClientInGame(j))
+					{
+						if(client == j || !hidechat[j])	
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
+					}
+				}
+			} 
+			else 
+			{
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],i,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+			}
+			break;
+		}
+	} 
+}
+
+public Action CMD_Rank(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+		return Plugin_Handled;
+	//LogToFile("rankme.debug.log","\"sm_rank\" command called by client %d.",client);
+	if(g_aStatsSeason[client].KILLS < g_MinimalKills){
+		CPrintToChat(client,"%s %T",MSG,"NotRanked",client,g_aStatsSeason[client].KILLS,g_MinimalKills);
+		return Plugin_Handled;
+	}
+	
+	// check cooldown
+	if(g_bShowRankAll && hRankTimer[client] != INVALID_HANDLE)
+	{
+		CPrintToChat(client,"%s %T",MSG,"RankCooldown",client);
+		return Plugin_Handled;
+	}
+	
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query), true);
 	
 	if(g_RankMode == 1)
 		Format(query,sizeof(query),"%s ORDER BY score DESC",query);

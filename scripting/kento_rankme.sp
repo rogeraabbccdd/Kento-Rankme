@@ -2378,11 +2378,13 @@ stock bool IsValidClient(int client, bool nobots = true)
 	return IsClientInGame(client);
 }
 
-stock void MakeSelectQuery(char[] sQuery, int strsize) {
+stock void MakeSelectQuery(char[] sQuery, int strsize, bool bIsSeason=false) {
 	
 	// Make basic query
-	Format(sQuery, strsize, "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTableGlobal, g_MinimalKills);
-	
+	if(bIsSeason)
+		Format(sQuery, strsize, "SELECT * FROM `%s` WHERE kills >= '%d' AND season_id = '%d'", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
+	else
+		Format(sQuery, strsize, "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTableGlobal, g_MinimalKills);
 	// Append check for bots
 	if (!g_bShowBotsOnRank)
 		Format(sQuery, strsize, "%s AND steam <> 'BOT'", sQuery);
