@@ -60,11 +60,11 @@ public Action CMD_ResetRank(int client, int args){
 	//ReplaceString(arg1,sizeof(arg1),"\"","");
 	char query[2000];
 	if(g_RankBy == 1){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTable,sEscapeArg1);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTableGlobal,sEscapeArg1);
 	} else if (g_RankBy == 0){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE steam='%s'",g_sSQLTable,sEscapeArg1);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE steam='%s'",g_sSQLTableGlobal,sEscapeArg1);
 	} else if (g_RankBy == 2){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastip='%s'",g_sSQLTable,sEscapeArg1);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastip='%s'",g_sSQLTableGlobal,sEscapeArg1);
 	}
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	LogAction(client,-1,"[RankMe]: Rank has been reset (%s)",arg1);
@@ -97,7 +97,7 @@ public Action CMD_ResetRankAll(int client, int args){
 		return Plugin_Handled;
 		
 	char query[2000];
-	Format(query,sizeof(query),"DELETE FROM `%s` WHERE 1=1",g_sSQLTable);
+	Format(query,sizeof(query),"DELETE FROM `%s` WHERE 1=1",g_sSQLTableGlobal);
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	
 	LogAction(client,-1,"[RankMe]: All rank data has been reset");
@@ -128,7 +128,7 @@ public Action CMD_Purge(int client, int args){
 	}
 	deletebefore = GetTime() - (StringToInt(arg1)*86400);
 	char query[2000];
-	Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastconnect < '%d'",g_sSQLTable,deletebefore);
+	Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastconnect < '%d'",g_sSQLTableGlobal,deletebefore);
 	SQL_TQuery(g_hStatsDb,SQL_PurgeCallback,query);
 	LogAction(client,-1,"[RankMe]: Purged rank (%s days inactivity)",arg1);
 	CPrintToChat(client, "%s %T", MSG, "Purged",client);
@@ -1830,11 +1830,11 @@ public Action CMD_ResetOwnRank(int client, int args){
 	if(g_RankBy == 1){
 		char sEscape[MAX_NAME_LENGTH*2+1];
 		SQL_EscapeString(g_hStatsDb,g_aClientName[client],sEscape,sizeof(sEscape));
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTable,sEscape);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTableGlobal,sEscape);
 	} else if(g_RankBy == 0){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE steam='%s'",g_sSQLTable,g_aClientSteam[client]);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE steam='%s'",g_sSQLTableGlobal,g_aClientSteam[client]);
 	} else if(g_RankBy == 2){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastip='%s'",g_sSQLTable,g_aClientIp[client]);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastip='%s'",g_sSQLTableGlobal,g_aClientIp[client]);
 	}
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	LogAction(client,-1,"[RankMe]: Reseted own rank (%s - %s - %s)",g_aClientName[client],g_aClientSteam[client],g_aClientIp[client]);

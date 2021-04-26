@@ -21,8 +21,12 @@
 #define SENDER_WORLD 0
 #define MAX_LENGTH_MENU 470
 
-static const char g_sSqliteCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam VARCHAR(40) NOT NULL, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC)";
-static const char g_sMysqlCreate[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+static const char g_sSqliteCreateGlobal[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam VARCHAR(40) NOT NULL, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC)";
+static const char g_sMysqlCreateGlobal[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+static const char g_sSqliteCreateSeason[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, season_id INTEGER,steam VARCHAR(40) NOT NULL, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC)";
+static const char g_sMysqlCreateSeason[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, season_id INTEGER, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+static const char g_sSqliteCreateSeasonID[] = "CREATE TABLE IF NOT EXISTS `%s` (season_id INTEGER PRIMARY KEY, start_date BIGINT, end_date BIGINT)";
+static const char g_sMysqlCreateSeasonID[] = "CREATE TABLE IF NOT EXISTS `%s` (season_id INTEGER PRIMARY KEY, start_date BIGINT, end_date BIGINT) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 static const char g_sSqlInsert[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
 
 /* SM1.9 Fix */
@@ -45,7 +49,9 @@ static const char g_sSqlRemoveDuplicateIpMySQL[] = "delete from `%s` USING `%s`,
 stock const char g_sWeaponsNamesGame[42][] =  { "knife", "glock", "hkp2000", "usp_silencer", "p250", "deagle", "elite", "fiveseven", "tec9", "cz75a", "revolver", "nova", "xm1014", "mag7", "sawedoff", "bizon", "mac10", "mp9", "mp7", "ump45", "p90", "galilar", "ak47", "scar20", "famas", "m4a1", "m4a1_silencer", "aug", "ssg08", "sg556", "awp", "g3sg1", "m249", "negev", "hegrenade", "flashbang", "smokegrenade", "inferno", "decoy", "taser", "mp5sd", "breachcharge"};
 stock const char g_sWeaponsNamesFull[42][] =  { "Knife", "Glock", "P2000", "USP-S", "P250", "Desert Eagle", "Dual Berettas", "Five-Seven", "Tec 9", "CZ75-Auto", "R8 Revolver", "Nova", "XM1014", "Mag 7", "Sawed-off", "PP-Bizon", "MAC-10", "MP9", "MP7", "UMP45", "P90", "Galil AR", "AK-47", "SCAR-20", "Famas", "M4A4", "M4A1-S", "AUG", "SSG 08", "SG 553", "AWP", "G3SG1", "M249", "Negev", "HE Grenade", "Flashbang", "Smoke Grenade", "Inferno", "Decoy", "Zeus x27", "MP5-SD", "Breach Charges"};
 
-char g_sSQLTable[200];
+char g_sSQLTableGlobal[200];
+char g_sSQLTableSeason[200];
+char g_sSQLTableSeasonID[200];
 Handle g_hStatsDb;
 bool OnDB[MAXPLAYERS + 1];
 STATS_NAMES g_aSession[MAXPLAYERS + 1];
@@ -57,7 +63,7 @@ int g_TotalPlayers;
 Handle g_fwdOnPlayerLoaded;
 Handle g_fwdOnPlayerSaved;
 
-bool DEBUGGING = false;
+bool DEBUGGING = true;
 int g_C4PlantedBy;
 char g_sC4PlantedByName[MAX_NAME_LENGTH];
 
@@ -179,7 +185,6 @@ public void OnPluginStart() {
 
 public void OnConVarChanged_SQLTable(Handle convar, const char[] oldValue, const char[] newValue) {
 
-	g_cvarSQLTable.GetString(g_sSQLTable, sizeof(g_sSQLTable));
 	DB_Connect(true); // Force reloading the stats
 }
 
@@ -188,10 +193,12 @@ public void OnConVarChanged_MySQL(Handle convar, const char[] oldValue, const ch
 }
 
 public void DB_Connect(bool firstload) {
-	
+	if(DEBUGGING) PrintToServer("Connecting to database...");
 	if (g_bMysql != g_cvarMysql.BoolValue || firstload) {  // NEEDS TO CONNECT IF CHANGED MYSQL CVAR OR NEVER CONNECTED
 		g_bMysql = g_cvarMysql.BoolValue;
-		g_cvarSQLTable.GetString(g_sSQLTable, sizeof(g_sSQLTable));
+		g_cvarSQLTableGlobal.GetString(g_sSQLTableGlobal, sizeof(g_sSQLTableGlobal));
+		g_cvarSQLTableSeason.GetString(g_sSQLTableSeason, sizeof(g_sSQLTableSeason));
+		g_cvarSQLTableSeasonID.GetString(g_sSQLTableSeasonID, sizeof(g_sSQLTableSeasonID));
 		char sError[256];
 		if (g_bMysql) {
 			g_hStatsDb = SQL_Connect("rankme", false, sError, sizeof(sError));
@@ -203,6 +210,7 @@ public void DB_Connect(bool firstload) {
 		{
 			SetFailState("[RankMe] Unable to connect to the database (%s)", sError);
 		}
+		if(DEBUGGING) PrintToServer("Connected!");
 
 		// SQL_LockDatabase is redundent for SQL_SetCharset
 		if(!SQL_SetCharset(g_hStatsDb, "utf8mb4")){
@@ -210,53 +218,69 @@ public void DB_Connect(bool firstload) {
 		}
 
 		char sQuery[9999];
-		
+		if(DEBUGGING) PrintToServer("Creating tables!");
 		if(g_bMysql)
 		{
-			Format(sQuery, sizeof(sQuery), g_sMysqlCreate, g_sSQLTable);
+			Format(sQuery, sizeof(sQuery), g_sMysqlCreateGlobal, g_sSQLTableGlobal);
 		}else{
-			Format(sQuery, sizeof(sQuery), g_sSqliteCreate, g_sSQLTable);
+			Format(sQuery, sizeof(sQuery), g_sSqliteCreateGlobal, g_sSQLTableGlobal);
 		}
 		SQL_LockDatabase(g_hStatsDb);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` MODIFY id INTEGER AUTO_INCREMENT", g_sSQLTable);
+		if(g_bMysql)
+		{
+			Format(sQuery, sizeof(sQuery), g_sMysqlCreateSeason, g_sSQLTableSeason);
+		}else{
+			Format(sQuery, sizeof(sQuery), g_sSqliteCreateSeason, g_sSQLTableSeasonID);
+		}
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_killed NUMERIC", g_sSQLTable);
+
+		if(g_bMysql)
+		{
+			Format(sQuery, sizeof(sQuery), g_sMysqlCreateSeasonID, g_sSQLTableSeasonID);
+		}else{
+			Format(sQuery, sizeof(sQuery), g_sSqliteCreateSeasonID, g_sSQLTableSeasonID);
+		}
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_escaped NUMERIC", g_sSQLTable);
+
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` MODIFY id INTEGER AUTO_INCREMENT", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_played NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_killed NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_win NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_escaped NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_draw NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN vip_played NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_lose NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_win NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN mp5sd NUMERIC AFTER taser", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_draw NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN breachcharge NUMERIC AFTER mp5sd", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN match_lose NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN first_blood NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN mp5sd NUMERIC AFTER taser", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN breachcharge NUMERIC AFTER mp5sd", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope_dis NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN first_blood NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN thru_smoke NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN blind NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN no_scope_dis NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN assist_flash NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN thru_smoke NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN assist_team_flash NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN blind NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN assist_team_kill NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN assist_flash NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN wallbang NUMERIC", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN assist_team_flash NUMERIC", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
-		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` CHANGE steam steam VARCHAR(40)", g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN assist_team_kill NUMERIC", g_sSQLTableGlobal);
+		SQL_FastQuery(g_hStatsDb, sQuery);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD COLUMN wallbang NUMERIC", g_sSQLTableGlobal);
+		SQL_FastQuery(g_hStatsDb, sQuery);
+		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` CHANGE steam steam VARCHAR(40)", g_sSQLTableGlobal);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		SQL_UnlockDatabase(g_hStatsDb);
 		
@@ -277,15 +301,15 @@ public void OnConfigsExecuted() {
 	char sQuery[1000];
 	if (g_AutoPurge > 0) {
 		int DeleteBefore = GetTime() - (g_AutoPurge * 86400);
-		Format(sQuery, sizeof(sQuery), "DELETE FROM `%s` WHERE lastconnect < '%d'", g_sSQLTable, DeleteBefore);
+		Format(sQuery, sizeof(sQuery), "DELETE FROM `%s` WHERE lastconnect < '%d'", g_sSQLTableGlobal, DeleteBefore);
 		SQL_TQuery(g_hStatsDb, SQL_PurgeCallback, sQuery);
 	}
 	
 	if (g_bRankBots){
-		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTable, g_MinimalKills);
+		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTableGlobal, g_MinimalKills);
 	}
 	else{
-		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT'", g_sSQLTable, g_MinimalKills);
+		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT'", g_sSQLTableGlobal, g_MinimalKills);
 	}
 	SQL_TQuery(g_hStatsDb, SQL_GetPlayersCallback, sQuery);
 
@@ -295,8 +319,8 @@ public void OnConfigsExecuted() {
 
 void CheckUnique(){
 	char sQuery[1000];
-	if(g_bMysql)	Format(sQuery, sizeof(sQuery), "SHOW INDEX FROM `%s` WHERE Key_name = 'steam'", g_sSQLTable);
-	else			Format(sQuery, sizeof(sQuery), "PRAGMA INDEX_LIST('%s')", g_sSQLTable);
+	if(g_bMysql)	Format(sQuery, sizeof(sQuery), "SHOW INDEX FROM `%s` WHERE Key_name = 'steam'", g_sSQLTableGlobal);
+	else			Format(sQuery, sizeof(sQuery), "PRAGMA INDEX_LIST('%s')", g_sSQLTableGlobal);
 	SQL_TQuery(g_hStatsDb, SQL_SetUniqueCallback, sQuery);
 }
 
@@ -315,19 +339,19 @@ public void SQL_SetUniqueCallback(Handle owner, Handle hndl, const char[] error,
 	if (g_bRankBots){
 		//only drop it when theres unique key
 		if(hasunique){
-			if(g_bMysql)	Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` DROP INDEX steam", g_sSQLTable);
+			if(g_bMysql)	Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` DROP INDEX steam", g_sSQLTableGlobal);
 			else			Format(sQuery, sizeof(sQuery), "DROP INDEX steam");
 			SQL_TQuery(g_hStatsDb, SQL_NothingCallback, sQuery);
 		}
 	}
 	else{
-		Format(sQuery, sizeof(sQuery), "DELETE FROM `%s` WHERE steam = 'BOT'" ,g_sSQLTable);
+		Format(sQuery, sizeof(sQuery), "DELETE FROM `%s` WHERE steam = 'BOT'" ,g_sSQLTableGlobal);
 		SQL_TQuery(g_hStatsDb, SQL_NothingCallback, sQuery);
 
 		// check unique key is exists or not
 		if(SQL_GetRowCount(hndl) < 1){
-			if(g_bMysql)	Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD UNIQUE(steam)" ,g_sSQLTable);
-			else			Format(sQuery, sizeof(sQuery), "CREATE UNIQUE INDEX steam ON `%s`(steam)" ,g_sSQLTable);
+			if(g_bMysql)	Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` ADD UNIQUE(steam)" ,g_sSQLTableGlobal);
+			else			Format(sQuery, sizeof(sQuery), "CREATE UNIQUE INDEX steam ON `%s`(steam)" ,g_sSQLTableGlobal);
 			SQL_TQuery(g_hStatsDb, SQL_NothingCallback, sQuery);
 		}
 	}
@@ -410,7 +434,7 @@ public Action OnClientChangeName(Handle event, const char[] name, bool dontBroad
 			
 			strcopy(g_aClientName[client], MAX_NAME_LENGTH, clientnewname);
 			
-			Format(query, sizeof(query), g_sSqlRetrieveClientName, g_sSQLTable, Eclientnewname);
+			Format(query, sizeof(query), g_sSqlRetrieveClientName, g_sSQLTableGlobal, Eclientnewname);
 			if (DEBUGGING) {
 				PrintToServer(query);
 				LogError("%s", query);
@@ -420,9 +444,9 @@ public Action OnClientChangeName(Handle event, const char[] name, bool dontBroad
 		} else {
 			
 			if (g_RankBy == 0)
-				Format(query, sizeof(query), "UPDATE `%s` SET name='%s' WHERE steam = '%s';", g_sSQLTable, Eclientnewname, g_aClientSteam[client]);
+				Format(query, sizeof(query), "UPDATE `%s` SET name='%s' WHERE steam = '%s';", g_sSQLTableGlobal, Eclientnewname, g_aClientSteam[client]);
 			else
-				Format(query, sizeof(query), "UPDATE `%s` SET name='%s' WHERE lastip = '%s';", g_sSQLTable, Eclientnewname, g_aClientIp[client]);
+				Format(query, sizeof(query), "UPDATE `%s` SET name='%s' WHERE lastip = '%s';", g_sSQLTableGlobal, Eclientnewname, g_aClientIp[client]);
 			
 			SQL_TQuery(g_hStatsDb, SQL_NothingCallback, query);
 		}
@@ -470,11 +494,11 @@ public void OnPluginEnd() {
 	
 			if (g_RankBy == 0) 
 			{
-				Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+				Format(query, sizeof(query), g_sSqlSave, g_sSQLTableGlobal, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
 					g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTableGlobal, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
 					g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, 
 					g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, 
 					g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD,
@@ -484,11 +508,11 @@ public void OnPluginEnd() {
 	
 			else if (g_RankBy == 1) 
 			{
-				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTableGlobal, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
 					g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, sEscapeName);
 	
-				Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTableGlobal, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
 					g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, 
 					g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, 
 					g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, 
@@ -498,7 +522,7 @@ public void OnPluginEnd() {
 	
 			else if (g_RankBy == 2) 
 			{
-				Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTableGlobal, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
 					g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, g_aClientIp[client]);
 	
@@ -1399,11 +1423,11 @@ public void SalvarPlayer(int client) {
 	
 	if (g_RankBy == 0) 
 	{
-		Format(query, sizeof(query), g_sSqlSave, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+		Format(query, sizeof(query), g_sSqlSave, g_sSQLTableGlobal, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
 			g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTable, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTableGlobal, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
 			g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, 
 			g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, 
 			g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, 
@@ -1413,11 +1437,11 @@ public void SalvarPlayer(int client) {
 	
 	else if (g_RankBy == 1) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTableGlobal, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
 			g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, sEscapeName);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTable, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTableGlobal, g_aStats[client].C4_PLANTED, g_aStats[client].C4_EXPLODED, g_aStats[client].C4_DEFUSED, g_aStats[client].CT_WIN, g_aStats[client].TR_WIN, 
 			g_aStats[client].HOSTAGES_RESCUED, g_aStats[client].VIP_KILLED, g_aStats[client].VIP_ESCAPED, g_aStats[client].VIP_PLAYED, g_aStats[client].MVP, g_aStats[client].DAMAGE, 
 			g_aStats[client].MATCH_WIN, g_aStats[client].MATCH_DRAW, g_aStats[client].MATCH_LOSE, 
 			g_aStats[client].FB, g_aStats[client].NS, g_aStats[client].NSD, 
@@ -1427,7 +1451,7 @@ public void SalvarPlayer(int client) {
 	
 	else if (g_RankBy == 2) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTable, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTableGlobal, g_aStats[client].SCORE, g_aStats[client].KILLS, g_aStats[client].DEATHS, g_aStats[client].ASSISTS, g_aStats[client].SUICIDES, g_aStats[client].TK, 
 			g_aStats[client].SHOTS, g_aStats[client].HITS, g_aStats[client].HEADSHOTS, g_aStats[client].ROUNDS_TR, g_aStats[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBox[client].HEAD, g_aHitBox[client].CHEST, g_aHitBox[client].STOMACH, g_aHitBox[client].LEFT_ARM, g_aHitBox[client].RIGHT_ARM, g_aHitBox[client].LEFT_LEG, g_aHitBox[client].RIGHT_LEG, g_aClientIp[client]);
 	
@@ -1516,11 +1540,11 @@ public void LoadPlayer(int client) {
 	strcopy(g_aClientIp[client], sizeof(g_aClientIp[]), ip);
 	char query[10000];
 	if (g_RankBy == 1)
-		FormatEx(query, sizeof(query), g_sSqlRetrieveClientName, g_sSQLTable, sEscapeName);
+		FormatEx(query, sizeof(query), g_sSqlRetrieveClientName, g_sSQLTableGlobal, sEscapeName);
 	else if (g_RankBy == 0)
-		FormatEx(query, sizeof(query), g_sSqlRetrieveClient, g_sSQLTable, auth);
+		FormatEx(query, sizeof(query), g_sSqlRetrieveClient, g_sSQLTableGlobal, auth);
 	else if (g_RankBy == 2)
-		FormatEx(query, sizeof(query), g_sSqlRetrieveClientIp, g_sSQLTable, ip);
+		FormatEx(query, sizeof(query), g_sSqlRetrieveClientIp, g_sSQLTableGlobal, ip);
 	
 	if (DEBUGGING) {
 		PrintToServer(query);
@@ -1660,7 +1684,7 @@ public void SQL_LoadPlayerCallback(Handle owner, Handle hndl, const char[] error
 		//SQL_EscapeString(g_hStatsDb,name,name,sizeof(name));
 		//ReplaceString(name, sizeof(name), "'", "");
 		
-		Format(query, sizeof(query), g_sSqlInsert, g_sSQLTable, g_aClientSteam[client], sEscapeName, g_aClientIp[client], g_PointsStart);
+		Format(query, sizeof(query), g_sSqlInsert, g_sSQLTableGlobal, g_aClientSteam[client], sEscapeName, g_aClientIp[client], g_PointsStart);
 		SQL_TQuery(g_hStatsDb, SQL_NothingCallback, query, _, DBPrio_High);
 		
 		if (DEBUGGING) {
@@ -1721,7 +1745,7 @@ public void DumpDB() {
 	if (!g_bDumpDB || g_bMysql)
 		return;
 	char sQuery[1000];
-	FormatEx(sQuery, sizeof(sQuery), "SELECT * from `%s`", g_sSQLTable);
+	FormatEx(sQuery, sizeof(sQuery), "SELECT * from `%s`", g_sSQLTableGlobal);
 	SQL_TQuery(g_hStatsDb, SQL_DumpCallback, sQuery);
 }
 
@@ -1752,13 +1776,13 @@ public void SQL_DumpCallback(Handle owner, Handle hndl, const char[] error, any 
 	
 	if(g_bMysql)
 	{
-		WriteFileLine(File1, g_sMysqlCreate, g_sSQLTable);
+		WriteFileLine(File1, g_sMysqlCreateGlobal, g_sSQLTableGlobal);
 		WriteFileLine(File1, "");
 	}
 	
 	if(!g_bMysql)
 	{
-		WriteFileLine(File1, g_sSqliteCreate, g_sSQLTable);
+		WriteFileLine(File1, g_sSqliteCreateGlobal, g_sSQLTableGlobal);
 		WriteFileLine(File1, "");
 	}
 	
@@ -1781,7 +1805,7 @@ public void SQL_DumpCallback(Handle owner, Handle hndl, const char[] error, any 
 				Format(fields_values, sizeof(fields_values), "%s,\"%s\"", fields_values, prepared_field);
 		}
 		
-		WriteFileLine(File1, "INSERT INTO `%s` VALUES (%s);", g_sSQLTable, fields_values);
+		WriteFileLine(File1, "INSERT INTO `%s` VALUES (%s);", g_sSQLTableGlobal, fields_values);
 	}
 	CloseHandle(File1);
 }
@@ -1798,7 +1822,7 @@ stock bool IsValidClient(int client, bool nobots = true)
 stock void MakeSelectQuery(char[] sQuery, int strsize) {
 	
 	// Make basic query
-	Format(sQuery, strsize, "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTable, g_MinimalKills);
+	Format(sQuery, strsize, "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTableGlobal, g_MinimalKills);
 	
 	// Append check for bots
 	if (!g_bShowBotsOnRank)
@@ -2038,24 +2062,24 @@ public Action CMD_Duplicate(int client, int args) {
 	if (g_bMysql) {
 		
 		if (g_RankBy == 0)
-			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateMySQL, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal);
 		
 		else if (g_RankBy == 1)
-			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateNameMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateNameMySQL, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal);
 		
 		else if (g_RankBy == 2)
-			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateIpMySQL, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateIpMySQL, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal);
 		
 	} else {
 		
 		if (g_RankBy == 0)
-			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateSQLite, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal);
 		
 		else if (g_RankBy == 1)
-			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateNameSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateNameSQLite, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal);
 		
 		else if (g_RankBy == 2)
-			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateIpSQLite, g_sSQLTable, g_sSQLTable, g_sSQLTable, g_sSQLTable);
+			FormatEx(sQuery, sizeof(sQuery), g_sSqlRemoveDuplicateIpSQLite, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal, g_sSQLTableGlobal);
 		
 	}
 	
