@@ -554,17 +554,6 @@ public void OnPluginEnd() {
 					g_aStatsGlobal[client].FB, g_aStatsGlobal[client].NS, g_aStatsGlobal[client].NSD,
 					g_aStatsGlobal[client].SMOKE, g_aStatsGlobal[client].BLIND, g_aStatsGlobal[client].AF, g_aStatsGlobal[client].ATF, g_aStatsGlobal[client].ATK, g_aStatsGlobal[client].WALL,
 					GetTime(), g_aStatsGlobal[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientSteam[client]);
-
-				Format(query, sizeof(query), g_sSqlSaveGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
-					g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
-					g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientSteam[client]);
-	
-				Format(query2, sizeof(query2), g_sSqlSave2Global, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
-					g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
-					g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
-					g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD,
-					g_aStatsSeason[client].SMOKE, g_aStatsSeason[client].BLIND, g_aStatsSeason[client].AF, g_aStatsSeason[client].ATF, g_aStatsSeason[client].ATK, g_aStatsSeason[client].WALL,
-					GetTime(), g_aStatsSeason[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientSteam[client]);
 			} 
 	
 			else if (g_RankBy == 1) 
