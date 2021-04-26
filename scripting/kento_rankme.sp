@@ -1656,30 +1656,37 @@ public Action EventPlayerHurt(Handle event, const char [] name, bool dontBroadca
 			case 1:
 			{
 				g_aHitBoxGlobal[attacker].HEAD++;
+				g_aHitBoxSeason[attacker].HEAD++;
 			}
 			case 2:
 			{
 				g_aHitBoxGlobal[attacker].CHEST++;
+				g_aHitBoxSeason[attacker].CHEST++;
 			}
 			case 3:
 			{
 				g_aHitBoxGlobal[attacker].STOMACH++;
+				g_aHitBoxSeason[attacker].STOMACH++;
 			}
 			case 4:
 			{
 				g_aHitBoxGlobal[attacker].LEFT_ARM++;
+				g_aHitBoxSeason[attacker].LEFT_ARM++;
 			}
 			case 5:
 			{
 				g_aHitBoxGlobal[attacker].RIGHT_ARM++;
+				g_aHitBoxSeason[attacker].RIGHT_ARM++;
 			}
 			case 6:
 			{
 				g_aHitBoxGlobal[attacker].LEFT_LEG++;
+				g_aHitBoxSeason[attacker].LEFT_LEG++;
 			}
 			case 7:
 			{
 				g_aHitBoxGlobal[attacker].RIGHT_LEG++;
+				g_aHitBoxSeason[attacker].RIGHT_LEG++;
 			}
 		}
 		
@@ -1814,11 +1821,11 @@ public void SalvarPlayer(int client) {
 
 	if (g_RankBy == 0) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveSeason, g_sSQLTableSeason, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 			g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientSteam[client]);
+			g_aHitBoxSeason[client].HEAD, g_aHitBoxSeason[client].CHEST, g_aHitBoxSeason[client].STOMACH, g_aHitBoxSeason[client].LEFT_ARM, g_aHitBoxSeason[client].RIGHT_ARM, g_aHitBoxSeason[client].LEFT_LEG, g_aHitBoxSeason[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSave2Global, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSave2Season, g_sSQLTableSeason, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 			g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 			g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 			g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
@@ -1828,11 +1835,11 @@ public void SalvarPlayer(int client) {
 	
 	else if (g_RankBy == 1) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveNameGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveNameSeason, g_sSQLTableSeason, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 			g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, sEscapeName);
+			g_aHitBoxSeason[client].HEAD, g_aHitBoxSeason[client].CHEST, g_aHitBoxSeason[client].STOMACH, g_aHitBoxSeason[client].LEFT_ARM, g_aHitBoxSeason[client].RIGHT_ARM, g_aHitBoxSeason[client].LEFT_LEG, g_aHitBoxSeason[client].RIGHT_LEG, sEscapeName);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveName2Global, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSaveName2Season, g_sSQLTableSeason, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 			g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 			g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 			g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
@@ -1842,11 +1849,11 @@ public void SalvarPlayer(int client) {
 	
 	else if (g_RankBy == 2) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveIpGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveIpSeason, g_sSQLTableSeason, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 			g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientIp[client]);
+			g_aHitBoxSeason[client].HEAD, g_aHitBoxSeason[client].CHEST, g_aHitBoxSeason[client].STOMACH, g_aHitBoxSeason[client].LEFT_ARM, g_aHitBoxSeason[client].RIGHT_ARM, g_aHitBoxSeason[client].LEFT_LEG, g_aHitBoxSeason[client].RIGHT_LEG, g_aClientIp[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveIp2Global,  g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSaveIp2Season,  g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 			g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 			g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 			g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
@@ -1919,6 +1926,7 @@ public void LoadPlayer(int client) {
 	g_aSession[client].CONNECTED = GetTime();
 	//hitboxes
 	g_aHitBoxGlobal[client].Reset();
+	g_aHitBoxSeason[client].Reset();
 	
 	char name[MAX_NAME_LENGTH];
 	GetClientName(client, name, sizeof(name));
@@ -2148,96 +2156,96 @@ public void SQL_LoadPlayerCallbackSeason(Handle owner, Handle hndl, const char[]
 	if (SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		//Player infos
-		g_aStatsSeason[client].SCORE = SQL_FetchInt(hndl, 4);
-		g_aStatsSeason[client].KILLS = SQL_FetchInt(hndl, 5);
-		g_aStatsSeason[client].DEATHS = SQL_FetchInt(hndl, 6);
-		g_aStatsSeason[client].ASSISTS = SQL_FetchInt(hndl, 7);
-		g_aStatsSeason[client].SUICIDES = SQL_FetchInt(hndl, 8);
-		g_aStatsSeason[client].TK = SQL_FetchInt(hndl, 9);
-		g_aStatsSeason[client].SHOTS = SQL_FetchInt(hndl, 10);
-		g_aStatsSeason[client].HITS = SQL_FetchInt(hndl, 11);
-		g_aStatsSeason[client].HEADSHOTS = SQL_FetchInt(hndl, 12);
-		g_aStatsSeason[client].CONNECTED = SQL_FetchInt(hndl, 13);
-		g_aStatsSeason[client].ROUNDS_TR = SQL_FetchInt(hndl, 14);
-		g_aStatsSeason[client].ROUNDS_CT = SQL_FetchInt(hndl, 15);
+		g_aStatsSeason[client].SCORE = SQL_FetchInt(hndl, 5);
+		g_aStatsSeason[client].KILLS = SQL_FetchInt(hndl, 6);
+		g_aStatsSeason[client].DEATHS = SQL_FetchInt(hndl, 7);
+		g_aStatsSeason[client].ASSISTS = SQL_FetchInt(hndl, 8);
+		g_aStatsSeason[client].SUICIDES = SQL_FetchInt(hndl, 9);
+		g_aStatsSeason[client].TK = SQL_FetchInt(hndl, 10);
+		g_aStatsSeason[client].SHOTS = SQL_FetchInt(hndl, 11);
+		g_aStatsSeason[client].HITS = SQL_FetchInt(hndl, 12);
+		g_aStatsSeason[client].HEADSHOTS = SQL_FetchInt(hndl, 13);
+		g_aStatsSeason[client].CONNECTED = SQL_FetchInt(hndl, 14);
+		g_aStatsSeason[client].ROUNDS_TR = SQL_FetchInt(hndl, 15);
+		g_aStatsSeason[client].ROUNDS_CT = SQL_FetchInt(hndl, 16);
 
 		//Weapons
-		g_aWeaponsSeason[client].KNIFE = SQL_FetchInt(hndl, 17);
-		g_aWeaponsSeason[client].GLOCK = SQL_FetchInt(hndl, 18);
-		g_aWeaponsSeason[client].HKP2000 = SQL_FetchInt(hndl, 19);
-		g_aWeaponsSeason[client].USP_SILENCER = SQL_FetchInt(hndl, 20);
-		g_aWeaponsSeason[client].P250 = SQL_FetchInt(hndl, 21);
-		g_aWeaponsSeason[client].DEAGLE = SQL_FetchInt(hndl, 22);
-		g_aWeaponsSeason[client].ELITE = SQL_FetchInt(hndl, 23);
-		g_aWeaponsSeason[client].FIVESEVEN = SQL_FetchInt(hndl, 24);
-		g_aWeaponsSeason[client].TEC9 = SQL_FetchInt(hndl, 25);
-		g_aWeaponsSeason[client].CZ75A = SQL_FetchInt(hndl, 26);
-		g_aWeaponsSeason[client].REVOLVER = SQL_FetchInt(hndl, 27);
-		g_aWeaponsSeason[client].NOVA = SQL_FetchInt(hndl, 28);
-		g_aWeaponsSeason[client].XM1014 = SQL_FetchInt(hndl, 29);
-		g_aWeaponsSeason[client].MAG7 = SQL_FetchInt(hndl, 30);
-		g_aWeaponsSeason[client].SAWEDOFF = SQL_FetchInt(hndl, 31);
-		g_aWeaponsSeason[client].BIZON = SQL_FetchInt(hndl, 32);
-		g_aWeaponsSeason[client].MAC10 = SQL_FetchInt(hndl, 33);
-		g_aWeaponsSeason[client].MP9 = SQL_FetchInt(hndl, 34);
-		g_aWeaponsSeason[client].MP7 = SQL_FetchInt(hndl, 35);
-		g_aWeaponsSeason[client].UMP45 = SQL_FetchInt(hndl, 36);
-		g_aWeaponsSeason[client].P90 = SQL_FetchInt(hndl, 37);
-		g_aWeaponsSeason[client].GALILAR = SQL_FetchInt(hndl, 38);
-		g_aWeaponsSeason[client].AK47 = SQL_FetchInt(hndl, 39);
-		g_aWeaponsSeason[client].SCAR20 = SQL_FetchInt(hndl, 40);
-		g_aWeaponsSeason[client].FAMAS = SQL_FetchInt(hndl, 41);
-		g_aWeaponsSeason[client].M4A1 = SQL_FetchInt(hndl, 42);
-		g_aWeaponsSeason[client].M4A1_SILENCER = SQL_FetchInt(hndl, 43);
-		g_aWeaponsSeason[client].AUG = SQL_FetchInt(hndl, 44);
-		g_aWeaponsSeason[client].SSG08 = SQL_FetchInt(hndl, 45);
-		g_aWeaponsSeason[client].SG556 = SQL_FetchInt(hndl, 46);
-		g_aWeaponsSeason[client].AWP = SQL_FetchInt(hndl, 47);
-		g_aWeaponsSeason[client].G3SG1 = SQL_FetchInt(hndl, 48);
-		g_aWeaponsSeason[client].M249 = SQL_FetchInt(hndl, 49);
-		g_aWeaponsSeason[client].NEGEV = SQL_FetchInt(hndl, 50);
-		g_aWeaponsSeason[client].HEGRENADE = SQL_FetchInt(hndl, 51);
-		g_aWeaponsSeason[client].FLASHBANG = SQL_FetchInt(hndl, 52);
-		g_aWeaponsSeason[client].SMOKEGRENADE = SQL_FetchInt(hndl, 53);
-		g_aWeaponsSeason[client].INFERNO = SQL_FetchInt(hndl, 54);
-		g_aWeaponsSeason[client].DECOY = SQL_FetchInt(hndl, 55);
-		g_aWeaponsSeason[client].TASER = SQL_FetchInt(hndl, 56);
-		g_aWeaponsSeason[client].MP5SD = SQL_FetchInt(hndl, 57);
-		g_aWeaponsSeason[client].BREACHCHARGE = SQL_FetchInt(hndl, 58);
+		g_aWeaponsSeason[client].KNIFE = SQL_FetchInt(hndl, 18);
+		g_aWeaponsSeason[client].GLOCK = SQL_FetchInt(hndl, 19);
+		g_aWeaponsSeason[client].HKP2000 = SQL_FetchInt(hndl, 20);
+		g_aWeaponsSeason[client].USP_SILENCER = SQL_FetchInt(hndl, 21);
+		g_aWeaponsSeason[client].P250 = SQL_FetchInt(hndl, 22);
+		g_aWeaponsSeason[client].DEAGLE = SQL_FetchInt(hndl, 23);
+		g_aWeaponsSeason[client].ELITE = SQL_FetchInt(hndl, 24);
+		g_aWeaponsSeason[client].FIVESEVEN = SQL_FetchInt(hndl, 25);
+		g_aWeaponsSeason[client].TEC9 = SQL_FetchInt(hndl, 26);
+		g_aWeaponsSeason[client].CZ75A = SQL_FetchInt(hndl, 27);
+		g_aWeaponsSeason[client].REVOLVER = SQL_FetchInt(hndl, 28);
+		g_aWeaponsSeason[client].NOVA = SQL_FetchInt(hndl, 29);
+		g_aWeaponsSeason[client].XM1014 = SQL_FetchInt(hndl, 30);
+		g_aWeaponsSeason[client].MAG7 = SQL_FetchInt(hndl, 31);
+		g_aWeaponsSeason[client].SAWEDOFF = SQL_FetchInt(hndl, 32);
+		g_aWeaponsSeason[client].BIZON = SQL_FetchInt(hndl, 33);
+		g_aWeaponsSeason[client].MAC10 = SQL_FetchInt(hndl, 34);
+		g_aWeaponsSeason[client].MP9 = SQL_FetchInt(hndl, 35);
+		g_aWeaponsSeason[client].MP7 = SQL_FetchInt(hndl, 36);
+		g_aWeaponsSeason[client].UMP45 = SQL_FetchInt(hndl, 37);
+		g_aWeaponsSeason[client].P90 = SQL_FetchInt(hndl, 38);
+		g_aWeaponsSeason[client].GALILAR = SQL_FetchInt(hndl, 39);
+		g_aWeaponsSeason[client].AK47 = SQL_FetchInt(hndl, 40);
+		g_aWeaponsSeason[client].SCAR20 = SQL_FetchInt(hndl, 41);
+		g_aWeaponsSeason[client].FAMAS = SQL_FetchInt(hndl, 42);
+		g_aWeaponsSeason[client].M4A1 = SQL_FetchInt(hndl, 43);
+		g_aWeaponsSeason[client].M4A1_SILENCER = SQL_FetchInt(hndl, 44);
+		g_aWeaponsSeason[client].AUG = SQL_FetchInt(hndl, 45);
+		g_aWeaponsSeason[client].SSG08 = SQL_FetchInt(hndl, 46);
+		g_aWeaponsSeason[client].SG556 = SQL_FetchInt(hndl, 47);
+		g_aWeaponsSeason[client].AWP = SQL_FetchInt(hndl, 48);
+		g_aWeaponsSeason[client].G3SG1 = SQL_FetchInt(hndl, 49);
+		g_aWeaponsSeason[client].M249 = SQL_FetchInt(hndl, 50);
+		g_aWeaponsSeason[client].NEGEV = SQL_FetchInt(hndl, 51);
+		g_aWeaponsSeason[client].HEGRENADE = SQL_FetchInt(hndl, 52);
+		g_aWeaponsSeason[client].FLASHBANG = SQL_FetchInt(hndl, 53);
+		g_aWeaponsSeason[client].SMOKEGRENADE = SQL_FetchInt(hndl, 54);
+		g_aWeaponsSeason[client].INFERNO = SQL_FetchInt(hndl, 55);
+		g_aWeaponsSeason[client].DECOY = SQL_FetchInt(hndl, 56);
+		g_aWeaponsSeason[client].TASER = SQL_FetchInt(hndl, 57);
+		g_aWeaponsSeason[client].MP5SD = SQL_FetchInt(hndl, 58);
+		g_aWeaponsSeason[client].BREACHCHARGE = SQL_FetchInt(hndl, 59);
 		
 		//ALL 8 Hitboxes
-		g_aHitBoxSeason[client].HEAD = SQL_FetchInt(hndl, 59);
-		g_aHitBoxSeason[client].CHEST = SQL_FetchInt(hndl, 60);
-		g_aHitBoxSeason[client].STOMACH = SQL_FetchInt(hndl, 61);
-		g_aHitBoxSeason[client].LEFT_ARM = SQL_FetchInt(hndl, 62);
-		g_aHitBoxSeason[client].RIGHT_ARM = SQL_FetchInt(hndl, 63);
-		g_aHitBoxSeason[client].LEFT_LEG = SQL_FetchInt(hndl, 64);
-		g_aHitBoxSeason[client].RIGHT_LEG = SQL_FetchInt(hndl, 65);
+		g_aHitBoxSeason[client].HEAD = SQL_FetchInt(hndl, 60);
+		g_aHitBoxSeason[client].CHEST = SQL_FetchInt(hndl, 61);
+		g_aHitBoxSeason[client].STOMACH = SQL_FetchInt(hndl, 62);
+		g_aHitBoxSeason[client].LEFT_ARM = SQL_FetchInt(hndl, 63);
+		g_aHitBoxSeason[client].RIGHT_ARM = SQL_FetchInt(hndl, 64);
+		g_aHitBoxSeason[client].LEFT_LEG = SQL_FetchInt(hndl, 65);
+		g_aHitBoxSeason[client].RIGHT_LEG = SQL_FetchInt(hndl, 66);
 		
 		// other stats
-		g_aStatsSeason[client].C4_PLANTED = SQL_FetchInt(hndl, 66);
-		g_aStatsSeason[client].C4_EXPLODED = SQL_FetchInt(hndl, 67);
-		g_aStatsSeason[client].C4_DEFUSED = SQL_FetchInt(hndl, 68);
-		g_aStatsSeason[client].CT_WIN = SQL_FetchInt(hndl, 69);
-		g_aStatsSeason[client].TR_WIN = SQL_FetchInt(hndl, 70);
-		g_aStatsSeason[client].HOSTAGES_RESCUED = SQL_FetchInt(hndl, 71);
-		g_aStatsSeason[client].VIP_KILLED = SQL_FetchInt(hndl, 72);
-		g_aStatsSeason[client].VIP_ESCAPED = SQL_FetchInt(hndl, 73);
-		g_aStatsSeason[client].VIP_PLAYED = SQL_FetchInt(hndl, 74);
-		g_aStatsSeason[client].MVP = SQL_FetchInt(hndl, 75);
-		g_aStatsSeason[client].DAMAGE = SQL_FetchInt(hndl, 76);
-		g_aStatsSeason[client].MATCH_WIN = SQL_FetchInt(hndl, 77);
-		g_aStatsSeason[client].MATCH_DRAW = SQL_FetchInt(hndl, 78);
-		g_aStatsSeason[client].MATCH_LOSE = SQL_FetchInt(hndl, 79);
-		g_aStatsSeason[client].FB = SQL_FetchInt(hndl, 80);
-		g_aStatsSeason[client].NS = SQL_FetchInt(hndl, 81);
-		g_aStatsSeason[client].NSD = SQL_FetchInt(hndl, 82);
-		g_aStatsSeason[client].SMOKE = SQL_FetchInt(hndl, 83);
-		g_aStatsSeason[client].BLIND = SQL_FetchInt(hndl, 84);
-		g_aStatsSeason[client].AF = SQL_FetchInt(hndl, 85);
-		g_aStatsSeason[client].ATF = SQL_FetchInt(hndl, 86);
-		g_aStatsSeason[client].ATK = SQL_FetchInt(hndl, 87);
-		g_aStatsSeason[client].WALL = SQL_FetchInt(hndl, 88);
+		g_aStatsSeason[client].C4_PLANTED = SQL_FetchInt(hndl, 67);
+		g_aStatsSeason[client].C4_EXPLODED = SQL_FetchInt(hndl, 68);
+		g_aStatsSeason[client].C4_DEFUSED = SQL_FetchInt(hndl, 69);
+		g_aStatsSeason[client].CT_WIN = SQL_FetchInt(hndl, 70);
+		g_aStatsSeason[client].TR_WIN = SQL_FetchInt(hndl, 71);
+		g_aStatsSeason[client].HOSTAGES_RESCUED = SQL_FetchInt(hndl, 72);
+		g_aStatsSeason[client].VIP_KILLED = SQL_FetchInt(hndl, 73);
+		g_aStatsSeason[client].VIP_ESCAPED = SQL_FetchInt(hndl, 74);
+		g_aStatsSeason[client].VIP_PLAYED = SQL_FetchInt(hndl, 75);
+		g_aStatsSeason[client].MVP = SQL_FetchInt(hndl, 76);
+		g_aStatsSeason[client].DAMAGE = SQL_FetchInt(hndl, 77);
+		g_aStatsSeason[client].MATCH_WIN = SQL_FetchInt(hndl, 78);
+		g_aStatsSeason[client].MATCH_DRAW = SQL_FetchInt(hndl, 79);
+		g_aStatsSeason[client].MATCH_LOSE = SQL_FetchInt(hndl, 80);
+		g_aStatsSeason[client].FB = SQL_FetchInt(hndl, 81);
+		g_aStatsSeason[client].NS = SQL_FetchInt(hndl, 82);
+		g_aStatsSeason[client].NSD = SQL_FetchInt(hndl, 83);
+		g_aStatsSeason[client].SMOKE = SQL_FetchInt(hndl, 84);
+		g_aStatsSeason[client].BLIND = SQL_FetchInt(hndl, 85);
+		g_aStatsSeason[client].AF = SQL_FetchInt(hndl, 86);
+		g_aStatsSeason[client].ATF = SQL_FetchInt(hndl, 87);
+		g_aStatsSeason[client].ATK = SQL_FetchInt(hndl, 88);
+		g_aStatsSeason[client].WALL = SQL_FetchInt(hndl, 89);
 	} else {
 		char query[10000];
 		char sEscapeName[MAX_NAME_LENGTH * 2 + 1];
