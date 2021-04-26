@@ -202,7 +202,7 @@ public int Native_GetWeaponStats(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
 	int array[42];
-	g_aWeapons[client].GetData(array);
+	g_aWeaponsGlobal[client].GetData(array);
 	SetNativeArray(2, array, 42);
 }
 
@@ -210,12 +210,12 @@ public int Native_GetHitbox(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
 	int array[8];
-	g_aHitBox[client].GetData(array);
+	g_aHitBoxGlobal[client].GetData(array);
 	SetNativeArray(2, array, 8);
 }
 
 public int Native_IsPlayerLoaded(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
-	return OnDB[client];
+	return OnDBGlobal[client];
 }

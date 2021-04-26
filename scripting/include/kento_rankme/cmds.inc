@@ -1227,7 +1227,7 @@ public Action CMD_HitBox(int client, int args){
 	char temp[255];
 	int ihits;
 	float hits;
-	ihits = g_aHitBox[client].Sum();
+	ihits = g_aHitBoxGlobal[client].Sum();
 	char text[255];
 	if(ihits == 0)
 		hits= 1.0;
@@ -1236,19 +1236,19 @@ public Action CMD_HitBox(int client, int args){
 	
 	Format(temp,sizeof(temp),"HitBox:\n");
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Head",client,g_aHitBox[client].HEAD,(g_aHitBox[client].HEAD/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Head",client,g_aHitBoxGlobal[client].HEAD,(g_aHitBoxGlobal[client].HEAD/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Chest",client,g_aHitBox[client].CHEST,(g_aHitBox[client].CHEST/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Chest",client,g_aHitBoxGlobal[client].CHEST,(g_aHitBoxGlobal[client].CHEST/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Stomach",client,g_aHitBox[client].STOMACH,(g_aHitBox[client].STOMACH/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Stomach",client,g_aHitBoxGlobal[client].STOMACH,(g_aHitBoxGlobal[client].STOMACH/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftArm",client,g_aHitBox[client].LEFT_ARM,(g_aHitBox[client].LEFT_ARM/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftArm",client,g_aHitBoxGlobal[client].LEFT_ARM,(g_aHitBoxGlobal[client].LEFT_ARM/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","RightArm",client,g_aHitBox[client].RIGHT_ARM,(g_aHitBox[client].RIGHT_ARM/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","RightArm",client,g_aHitBoxGlobal[client].RIGHT_ARM,(g_aHitBoxGlobal[client].RIGHT_ARM/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftLeg",client,g_aHitBox[client].LEFT_LEG,(g_aHitBox[client].LEFT_LEG/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftLeg",client,g_aHitBoxGlobal[client].LEFT_LEG,(g_aHitBoxGlobal[client].LEFT_LEG/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)","RightLeg",client,g_aHitBox[client].RIGHT_LEG,(g_aHitBox[client].RIGHT_LEG/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)","RightLeg",client,g_aHitBoxGlobal[client].RIGHT_LEG,(g_aHitBoxGlobal[client].RIGHT_LEG/hits)*100);
 	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 
@@ -1261,9 +1261,9 @@ public Action CMD_WeaponMe(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	int weapons_a[42];
-	g_aWeapons[client].GetData(weapons_a);
+	g_aWeaponsGlobal[client].GetData(weapons_a);
 	// for(int a=0;a<42;a++){
-	// 	weapons_a[a] = g_aWeapons[client][a];
+	// 	weapons_a[a] = g_aWeaponsGlobal[client][a];
 	// }
 	int weapons_b[42][2];
 	int index;
