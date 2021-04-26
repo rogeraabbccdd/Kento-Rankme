@@ -25,8 +25,8 @@ static const char g_sSqliteCreateGlobal[] = "CREATE TABLE IF NOT EXISTS `%s` (id
 static const char g_sMysqlCreateGlobal[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 static const char g_sSqliteCreateSeason[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, season_id INTEGER,steam VARCHAR(40) NOT NULL, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC)";
 static const char g_sMysqlCreateSeason[] = "CREATE TABLE IF NOT EXISTS `%s` (id INTEGER PRIMARY KEY, season_id INTEGER, steam TEXT, name TEXT, lastip TEXT, score NUMERIC, kills NUMERIC, deaths NUMERIC, assists NUMERIC, suicides NUMERIC, tk NUMERIC, shots NUMERIC, hits NUMERIC, headshots NUMERIC, connected NUMERIC, rounds_tr NUMERIC, rounds_ct NUMERIC, lastconnect NUMERIC,knife NUMERIC,glock NUMERIC,hkp2000 NUMERIC,usp_silencer NUMERIC,p250 NUMERIC,deagle NUMERIC,elite NUMERIC,fiveseven NUMERIC,tec9 NUMERIC,cz75a NUMERIC,revolver NUMERIC,nova NUMERIC,xm1014 NUMERIC,mag7 NUMERIC,sawedoff NUMERIC,bizon NUMERIC,mac10 NUMERIC,mp9 NUMERIC,mp7 NUMERIC,ump45 NUMERIC,p90 NUMERIC,galilar NUMERIC,ak47 NUMERIC,scar20 NUMERIC,famas NUMERIC,m4a1 NUMERIC,m4a1_silencer NUMERIC,aug NUMERIC,ssg08 NUMERIC,sg556 NUMERIC,awp NUMERIC,g3sg1 NUMERIC,m249 NUMERIC,negev NUMERIC,hegrenade NUMERIC,flashbang NUMERIC,smokegrenade NUMERIC,inferno NUMERIC,decoy NUMERIC,taser NUMERIC,mp5sd NUMERIC,breachcharge NUMERIC,head NUMERIC, chest NUMERIC, stomach NUMERIC, left_arm NUMERIC, right_arm NUMERIC, left_leg NUMERIC, right_leg NUMERIC,c4_planted NUMERIC,c4_exploded NUMERIC,c4_defused NUMERIC,ct_win NUMERIC, tr_win NUMERIC, hostages_rescued NUMERIC, vip_killed NUMERIC, vip_escaped NUMERIC, vip_played NUMERIC, mvp NUMERIC, damage NUMERIC, match_win NUMERIC, match_draw NUMERIC, match_lose NUMERIC, first_blood NUMERIC, no_scope NUMERIC, no_scope_dis NUMERIC, thru_smoke NUMERIC, blind NUMERIC, assist_flash NUMERIC, assist_team_flash NUMERIC, assist_team_kill NUMERIC, wallbang NUMERIC) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
-static const char g_sSqliteCreateSeasonID[] = "CREATE TABLE IF NOT EXISTS `%s` (season_id INTEGER PRIMARY KEY, start_date BIGINT, end_date BIGINT)";
-static const char g_sMysqlCreateSeasonID[] = "CREATE TABLE IF NOT EXISTS `%s` (season_id INTEGER PRIMARY KEY, start_date BIGINT, end_date BIGINT) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+static const char g_sSqliteCreateSeasonID[] = "CREATE TABLE IF NOT EXISTS `%s` (season_id INTEGER PRIMARY KEY, start_date DATETIME, end_date DATETIME)";
+static const char g_sMysqlCreateSeasonID[] = "CREATE TABLE IF NOT EXISTS `%s` (season_id INTEGER PRIMARY KEY, start_date DATETIME, end_date DATETIME) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 static const char g_sSqlInsertGlobal[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
 static const char g_sSqlInsertSeason[] = "INSERT INTO `%s` VALUES (NULL,'%d','%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
 
@@ -45,12 +45,13 @@ static const char g_sSqlSaveIp2Global[] = "UPDATE `%s` SET c4_planted='%i',c4_ex
 static const char g_sSqlSaveIp2Season[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', no_scope_dis='%i', thru_smoke='%i', blind='%i', assist_flash='%i', assist_team_flash='%i', assist_team_kill='%i', wallbang='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s' AND season_id = '%d';";
 
 static const char g_sSqlRetrieveClientGlobal[] = "SELECT * FROM `%s` WHERE steam='%s';";
-static const char g_sSqlRetrieveClientSeason[] = "SELECT * FROM `%s` WHERE steam='%s' AND season_id=%d;";
+static const char g_sSqlRetrieveClientSeason[] = "SELECT * FROM `%s` WHERE steam='%s' AND season_id='%d';";
 static const char g_sSqlRetrieveClientNameGlobal[] = "SELECT * FROM `%s` WHERE name='%s';";
 static const char g_sSqlRetrieveClientNameSeason[] = "SELECT * FROM `%s` WHERE name='%s' AND season_id=%d;";
 static const char g_sSqlRetrieveClientIpGlobal[] = "SELECT * FROM `%s` WHERE lastip='%s';";
 static const char g_sSqlRetrieveClientIpSeason[] = "SELECT * FROM `%s` WHERE lastip='%s' AND season_id=%d;";
-static const char g_sSqlRetrieveSeasonID[] = "SELECT * FROM `%s` WHERE `start_date` <= UNIX_TIMESTAMP() AND `end_date` >= UNIX_TIMESTAMP() ;";
+static const char g_sSqlRetrieveSeasonIDMySQL[] = "SELECT * FROM `%s` WHERE `start_date` <= NOW() AND `end_date` >= NOW() ;";
+static const char g_sSqlRetrieveSeasonIDSQLite[] = "SELECT * FROM `%s` WHERE `start_date` <= DATE() AND `end_date` >= DATE() ;";
 static const char g_sSqlRemoveDuplicateSQLite[] = "delete from `%s` where `%s`.id > (SELECT min(id) from `%s` as t2 WHERE t2.steam=`%s`.steam);";
 static const char g_sSqlRemoveDuplicateNameSQLite[] = "delete from `%s` where `%s`.id > (SELECT min(id) from `%s` as t2 WHERE t2.name=`%s`.name);";
 static const char g_sSqlRemoveDuplicateIpSQLite[] = "delete from `%s` where `%s`.id > (SELECT min(id) from `%s` as t2 WHERE t2.lastip=`%s`.lastip);";
@@ -303,11 +304,6 @@ public void DB_Connect(bool firstload) {
 		Format(sQuery, sizeof(sQuery), "ALTER TABLE `%s` MODIFY season_id INTEGER AUTO_INCREMENT", g_sSQLTableSeasonID);
 		SQL_FastQuery(g_hStatsDb, sQuery);
 		SQL_UnlockDatabase(g_hStatsDb);
-
-		for (int i = 1; i <= MaxClients; i++) {
-			if (IsClientInGame(i))
-				OnClientPutInServer(i);
-		}
 	}
 	
 }
@@ -325,7 +321,10 @@ public void OnConfigsExecuted() {
 		SQL_TQuery(g_hStatsDb, SQL_PurgeCallback, sQuery);
 	}
 	
-	Format(sQuery, sizeof(sQuery), g_sSqlRetrieveSeasonID, g_sSQLTableSeasonID);
+	if(g_bMysql)
+		Format(sQuery, sizeof(sQuery), g_sSqlRetrieveSeasonIDMySQL, g_sSQLTableSeasonID);
+	else
+		Format(sQuery, sizeof(sQuery), g_sSqlRetrieveSeasonIDSQLite, g_sSQLTableSeasonID);
 	SQL_TQuery(g_hStatsDb, SQL_GetSeasonIDCallback, sQuery);
 
 	if (g_bRankBots){
@@ -391,6 +390,10 @@ public void SQL_GetSeasonIDCallback(Handle owner, Handle hndl, const char[] erro
 		g_iSeasonID = SQL_FetchInt(hndl, 0);
 	}
 	if(DEBUGGING) PrintToServer("Season ID is %d", g_iSeasonID);
+	for (int i = 1; i <= MaxClients; i++) {
+		if (IsClientInGame(i))
+			OnClientPutInServer(i);
+		}
 }
 
 void BuildRankCache()
@@ -1141,7 +1144,6 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 {
 	if (!g_bEnabled || !g_bGatherStats || g_MinimumPlayers > GetCurrentPlayers())
 		return;
-	
 	int victim = GetClientOfUserId(GetEventInt(event, "userid"));
 	int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 	int assist = GetClientOfUserId(GetEventInt(event, "assister"));
@@ -1152,7 +1154,6 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 
 	if (!g_bRankBots && attacker != 0 && (IsFakeClient(victim) || IsFakeClient(attacker)))
 		return;
-	
 	if (victim == attacker || attacker == 0) {
 		g_aStatsGlobal[victim].SUICIDES++;
 		g_aStatsSeason[victim].SUICIDES++;
@@ -1823,14 +1824,14 @@ public void SalvarPlayer(int client) {
 	{
 		Format(query, sizeof(query), g_sSqlSaveSeason, g_sSQLTableSeason, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 			g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
-			g_aHitBoxSeason[client].HEAD, g_aHitBoxSeason[client].CHEST, g_aHitBoxSeason[client].STOMACH, g_aHitBoxSeason[client].LEFT_ARM, g_aHitBoxSeason[client].RIGHT_ARM, g_aHitBoxSeason[client].LEFT_LEG, g_aHitBoxSeason[client].RIGHT_LEG, g_aClientSteam[client]);
+			g_aHitBoxSeason[client].HEAD, g_aHitBoxSeason[client].CHEST, g_aHitBoxSeason[client].STOMACH, g_aHitBoxSeason[client].LEFT_ARM, g_aHitBoxSeason[client].RIGHT_ARM, g_aHitBoxSeason[client].LEFT_LEG, g_aHitBoxSeason[client].RIGHT_LEG, g_aClientSteam[client], g_iSeasonID);
 	
 		Format(query2, sizeof(query2), g_sSqlSave2Season, g_sSQLTableSeason, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 			g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 			g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 			g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
 			g_aStatsSeason[client].SMOKE, g_aStatsSeason[client].BLIND, g_aStatsSeason[client].AF, g_aStatsSeason[client].ATF, g_aStatsSeason[client].ATK, g_aStatsSeason[client].WALL,
-			GetTime(), g_aStatsSeason[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientSteam[client]);
+			GetTime(), g_aStatsSeason[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientSteam[client], g_iSeasonID);
 	} 
 	
 	else if (g_RankBy == 1) 
@@ -1943,18 +1944,18 @@ public void LoadPlayer(int client) {
 	char query[10000];
 	char query2[10000];
 	if (g_RankBy == 1){
-		FormatEx(query, sizeof(query), g_sSqlRetrieveClientNameGlobal, g_sSQLTableGlobal, sEscapeName);
-		FormatEx(query2, sizeof(query2), g_sSqlRetrieveClientNameSeason, g_sSQLTableSeason, g_iSeasonID, sEscapeName);
+		Format(query, sizeof(query), g_sSqlRetrieveClientNameGlobal, g_sSQLTableGlobal, sEscapeName);
+		Format(query2, sizeof(query2), g_sSqlRetrieveClientNameSeason, g_sSQLTableSeason, sEscapeName, g_iSeasonID);
 	}
 	else if (g_RankBy == 0)
 	{
-		FormatEx(query, sizeof(query), g_sSqlRetrieveClientGlobal, g_sSQLTableGlobal, auth);
-		FormatEx(query2, sizeof(query2), g_sSqlRetrieveClientSeason, g_sSQLTableSeason, g_iSeasonID, auth);
+		Format(query, sizeof(query), g_sSqlRetrieveClientGlobal, g_sSQLTableGlobal, auth);
+		Format(query2, sizeof(query2), g_sSqlRetrieveClientSeason, g_sSQLTableSeason, auth, g_iSeasonID);
 	}
 		
 	else if (g_RankBy == 2){
-		FormatEx(query, sizeof(query), g_sSqlRetrieveClientIpGlobal, g_sSQLTableGlobal, ip);
-		FormatEx(query2, sizeof(query2), g_sSqlRetrieveClientIpSeason, g_sSQLTableSeason, g_iSeasonID, ip);
+		Format(query, sizeof(query), g_sSqlRetrieveClientIpGlobal, g_sSQLTableGlobal, ip);
+		Format(query2, sizeof(query2), g_sSqlRetrieveClientIpSeason, g_sSQLTableSeason, ip, g_iSeasonID);
 	}
 
 	
