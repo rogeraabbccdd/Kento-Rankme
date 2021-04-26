@@ -31,12 +31,12 @@ static const char g_sSqlInsertGlobal[] = "INSERT INTO `%s` VALUES (NULL,'%s','%s
 static const char g_sSqlInsertSeason[] = "INSERT INTO `%s` VALUES (NULL,'%d','%s','%s','%s','%d','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');";
 
 /* SM1.9 Fix */
-static const char g_sSqlSave[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE steam = '%s';";
-static const char g_sSqlSaveName[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE name = '%s';";
-static const char g_sSqlSaveIp[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE lastip = '%s';";
-static const char g_sSqlSave2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', no_scope_dis='%i', thru_smoke='%i', blind='%i', assist_flash='%i', assist_team_flash='%i', assist_team_kill='%i', wallbang='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
-static const char g_sSqlSaveName2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', no_scope_dis='%i', thru_smoke='%i', blind='%i', assist_flash='%i', assist_team_flash='%i', assist_team_kill='%i', wallbang='%i', lastconnect='%i', connected='%i' WHERE name = '%s';";
-static const char g_sSqlSaveIp2[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', no_scope_dis='%i', thru_smoke='%i', blind='%i', assist_flash='%i', assist_team_flash='%i', assist_team_kill='%i', wallbang='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s';";
+static const char g_sSqlSaveGlobal[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE steam = '%s';";
+static const char g_sSqlSaveNameGlobal[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE name = '%s';";
+static const char g_sSqlSaveIpGlobal[] = "UPDATE `%s` SET score = '%i', kills = '%i', deaths='%i', assists='%i',suicides='%i',tk='%i',shots='%i',hits='%i',headshots='%i', rounds_tr = '%i', rounds_ct = '%i',lastip='%s',name='%s'%s,head='%i',chest='%i', stomach='%i',left_arm='%i',right_arm='%i',left_leg='%i',right_leg='%i' WHERE lastip = '%s';";
+static const char g_sSqlSave2Global[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', no_scope_dis='%i', thru_smoke='%i', blind='%i', assist_flash='%i', assist_team_flash='%i', assist_team_kill='%i', wallbang='%i', lastconnect='%i', connected='%i' WHERE steam = '%s';";
+static const char g_sSqlSaveName2Global[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', no_scope_dis='%i', thru_smoke='%i', blind='%i', assist_flash='%i', assist_team_flash='%i', assist_team_kill='%i', wallbang='%i', lastconnect='%i', connected='%i' WHERE name = '%s';";
+static const char g_sSqlSaveIp2Global[] = "UPDATE `%s` SET c4_planted='%i',c4_exploded='%i',c4_defused='%i',ct_win='%i',tr_win='%i', hostages_rescued='%i',vip_killed = '%d',vip_escaped = '%d',vip_played = '%d', mvp='%i', damage='%i', match_win='%i', match_draw='%i', match_lose='%i', first_blood='%i', no_scope='%i', no_scope_dis='%i', thru_smoke='%i', blind='%i', assist_flash='%i', assist_team_flash='%i', assist_team_kill='%i', wallbang='%i', lastconnect='%i', connected='%i' WHERE lastip = '%s';";
 
 static const char g_sSqlRetrieveClientGlobal[] = "SELECT * FROM `%s` WHERE steam='%s';";
 static const char g_sSqlRetrieveClientSeason[] = "SELECT * FROM `%s` WHERE steam='%s' AND season_id=%d;";
@@ -537,22 +537,22 @@ public void OnPluginEnd() {
 	
 			if (g_RankBy == 0) 
 			{
-				Format(query, sizeof(query), g_sSqlSave, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveGlobal, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
 					g_aStatsGlobal[client].SHOTS, g_aStatsGlobal[client].HITS, g_aStatsGlobal[client].HEADSHOTS, g_aStatsGlobal[client].ROUNDS_TR, g_aStatsGlobal[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTableGlobal, g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSave2Global, g_sSQLTableGlobal, g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
 					g_aStatsGlobal[client].HOSTAGES_RESCUED, g_aStatsGlobal[client].VIP_KILLED, g_aStatsGlobal[client].VIP_ESCAPED, g_aStatsGlobal[client].VIP_PLAYED, g_aStatsGlobal[client].MVP, g_aStatsGlobal[client].DAMAGE, 
 					g_aStatsGlobal[client].MATCH_WIN, g_aStatsGlobal[client].MATCH_DRAW, g_aStatsGlobal[client].MATCH_LOSE, 
 					g_aStatsGlobal[client].FB, g_aStatsGlobal[client].NS, g_aStatsGlobal[client].NSD,
 					g_aStatsGlobal[client].SMOKE, g_aStatsGlobal[client].BLIND, g_aStatsGlobal[client].AF, g_aStatsGlobal[client].ATF, g_aStatsGlobal[client].ATK, g_aStatsGlobal[client].WALL,
 					GetTime(), g_aStatsGlobal[client].CONNECTED + GetTime() - g_aSession[client].CONNECTED, g_aClientSteam[client]);
 
-				Format(query, sizeof(query), g_sSqlSave, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 					g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSave2Global, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 					g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 					g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 					g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD,
@@ -562,11 +562,11 @@ public void OnPluginEnd() {
 	
 			else if (g_RankBy == 1) 
 			{
-				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveNameGlobal, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
 					g_aStatsGlobal[client].SHOTS, g_aStatsGlobal[client].HITS, g_aStatsGlobal[client].HEADSHOTS, g_aStatsGlobal[client].ROUNDS_TR, g_aStatsGlobal[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, sEscapeName);
 	
-				Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTableGlobal, g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSaveName2Global, g_sSQLTableGlobal, g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
 					g_aStatsGlobal[client].HOSTAGES_RESCUED, g_aStatsGlobal[client].VIP_KILLED, g_aStatsGlobal[client].VIP_ESCAPED, g_aStatsGlobal[client].VIP_PLAYED, g_aStatsGlobal[client].MVP, g_aStatsGlobal[client].DAMAGE, 
 					g_aStatsGlobal[client].MATCH_WIN, g_aStatsGlobal[client].MATCH_DRAW, g_aStatsGlobal[client].MATCH_LOSE, 
 					g_aStatsGlobal[client].FB, g_aStatsGlobal[client].NS, g_aStatsGlobal[client].NSD, 
@@ -576,11 +576,11 @@ public void OnPluginEnd() {
 	
 			else if (g_RankBy == 2) 
 			{
-				Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveIpGlobal, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
 					g_aStatsGlobal[client].SHOTS, g_aStatsGlobal[client].HITS, g_aStatsGlobal[client].HEADSHOTS, g_aStatsGlobal[client].ROUNDS_TR, g_aStatsGlobal[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientIp[client]);
 	
-				Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSaveIp2Global,  g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
 					g_aStatsGlobal[client].HOSTAGES_RESCUED, g_aStatsGlobal[client].VIP_KILLED, g_aStatsGlobal[client].VIP_ESCAPED, g_aStatsGlobal[client].VIP_PLAYED, g_aStatsGlobal[client].MVP, g_aStatsGlobal[client].DAMAGE, 
 					g_aStatsGlobal[client].MATCH_WIN, g_aStatsGlobal[client].MATCH_DRAW, g_aStatsGlobal[client].MATCH_LOSE, 
 					g_aStatsGlobal[client].FB, g_aStatsGlobal[client].NS, g_aStatsGlobal[client].NSD, 
@@ -595,11 +595,11 @@ public void OnPluginEnd() {
 			
 			if (g_RankBy == 0) 
 			{
-				Format(query, sizeof(query), g_sSqlSave, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 					g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-				Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSave2Global, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 					g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 					g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 					g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD,
@@ -609,11 +609,11 @@ public void OnPluginEnd() {
 
 			else if (g_RankBy == 1) 
 			{
-				Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveNameGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 					g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, sEscapeName);
 	
-				Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSaveName2Global, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 					g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 					g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 					g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
@@ -623,11 +623,11 @@ public void OnPluginEnd() {
 	
 			else if (g_RankBy == 2) 
 			{
-				Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+				Format(query, sizeof(query), g_sSqlSaveIpGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 					g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 					g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientIp[client]);
 	
-				Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+				Format(query2, sizeof(query2), g_sSqlSaveIp2Global,  g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 					g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 					g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 					g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
@@ -1523,11 +1523,11 @@ public void SalvarPlayer(int client) {
 	
 	if (g_RankBy == 0) 
 	{
-		Format(query, sizeof(query), g_sSqlSave, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveGlobal, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
 			g_aStatsGlobal[client].SHOTS, g_aStatsGlobal[client].HITS, g_aStatsGlobal[client].HEADSHOTS, g_aStatsGlobal[client].ROUNDS_TR, g_aStatsGlobal[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTableGlobal, g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSave2Global, g_sSQLTableGlobal, g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
 			g_aStatsGlobal[client].HOSTAGES_RESCUED, g_aStatsGlobal[client].VIP_KILLED, g_aStatsGlobal[client].VIP_ESCAPED, g_aStatsGlobal[client].VIP_PLAYED, g_aStatsGlobal[client].MVP, g_aStatsGlobal[client].DAMAGE, 
 			g_aStatsGlobal[client].MATCH_WIN, g_aStatsGlobal[client].MATCH_DRAW, g_aStatsGlobal[client].MATCH_LOSE, 
 			g_aStatsGlobal[client].FB, g_aStatsGlobal[client].NS, g_aStatsGlobal[client].NSD, 
@@ -1537,11 +1537,11 @@ public void SalvarPlayer(int client) {
 	
 	else if (g_RankBy == 1) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveNameGlobal, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
 			g_aStatsGlobal[client].SHOTS, g_aStatsGlobal[client].HITS, g_aStatsGlobal[client].HEADSHOTS, g_aStatsGlobal[client].ROUNDS_TR, g_aStatsGlobal[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, sEscapeName);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTableGlobal, g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSaveName2Global, g_sSQLTableGlobal, g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
 			g_aStatsGlobal[client].HOSTAGES_RESCUED, g_aStatsGlobal[client].VIP_KILLED, g_aStatsGlobal[client].VIP_ESCAPED, g_aStatsGlobal[client].VIP_PLAYED, g_aStatsGlobal[client].MVP, g_aStatsGlobal[client].DAMAGE, 
 			g_aStatsGlobal[client].MATCH_WIN, g_aStatsGlobal[client].MATCH_DRAW, g_aStatsGlobal[client].MATCH_LOSE, 
 			g_aStatsGlobal[client].FB, g_aStatsGlobal[client].NS, g_aStatsGlobal[client].NSD, 
@@ -1551,11 +1551,11 @@ public void SalvarPlayer(int client) {
 	
 	else if (g_RankBy == 2) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveIpGlobal, g_sSQLTableGlobal, g_aStatsGlobal[client].SCORE, g_aStatsGlobal[client].KILLS, g_aStatsGlobal[client].DEATHS, g_aStatsGlobal[client].ASSISTS, g_aStatsGlobal[client].SUICIDES, g_aStatsGlobal[client].TK, 
 			g_aStatsGlobal[client].SHOTS, g_aStatsGlobal[client].HITS, g_aStatsGlobal[client].HEADSHOTS, g_aStatsGlobal[client].ROUNDS_TR, g_aStatsGlobal[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientIp[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSaveIp2Global,  g_aStatsGlobal[client].C4_PLANTED, g_aStatsGlobal[client].C4_EXPLODED, g_aStatsGlobal[client].C4_DEFUSED, g_aStatsGlobal[client].CT_WIN, g_aStatsGlobal[client].TR_WIN, 
 			g_aStatsGlobal[client].HOSTAGES_RESCUED, g_aStatsGlobal[client].VIP_KILLED, g_aStatsGlobal[client].VIP_ESCAPED, g_aStatsGlobal[client].VIP_PLAYED, g_aStatsGlobal[client].MVP, g_aStatsGlobal[client].DAMAGE, 
 			g_aStatsGlobal[client].MATCH_WIN, g_aStatsGlobal[client].MATCH_DRAW, g_aStatsGlobal[client].MATCH_LOSE, 
 			g_aStatsGlobal[client].FB, g_aStatsGlobal[client].NS, g_aStatsGlobal[client].NSD, 
@@ -1575,11 +1575,11 @@ public void SalvarPlayer(int client) {
 
 	if (g_RankBy == 0) 
 	{
-		Format(query, sizeof(query), g_sSqlSave, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 			g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientSteam[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSave2, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSave2Global, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 			g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 			g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 			g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
@@ -1589,11 +1589,11 @@ public void SalvarPlayer(int client) {
 	
 	else if (g_RankBy == 1) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveName, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveNameGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 			g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, sEscapeName);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveName2, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSaveName2Global, g_sSQLTableGlobal, g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 			g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 			g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 			g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
@@ -1603,11 +1603,11 @@ public void SalvarPlayer(int client) {
 	
 	else if (g_RankBy == 2) 
 	{
-		Format(query, sizeof(query), g_sSqlSaveIp, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
+		Format(query, sizeof(query), g_sSqlSaveIpGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
 			g_aStatsSeason[client].SHOTS, g_aStatsSeason[client].HITS, g_aStatsSeason[client].HEADSHOTS, g_aStatsSeason[client].ROUNDS_TR, g_aStatsSeason[client].ROUNDS_CT, g_aClientIp[client], sEscapeName, weapons_query, 
 			g_aHitBoxGlobal[client].HEAD, g_aHitBoxGlobal[client].CHEST, g_aHitBoxGlobal[client].STOMACH, g_aHitBoxGlobal[client].LEFT_ARM, g_aHitBoxGlobal[client].RIGHT_ARM, g_aHitBoxGlobal[client].LEFT_LEG, g_aHitBoxGlobal[client].RIGHT_LEG, g_aClientIp[client]);
 	
-		Format(query2, sizeof(query2), g_sSqlSaveIp2,  g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
+		Format(query2, sizeof(query2), g_sSqlSaveIp2Global,  g_aStatsSeason[client].C4_PLANTED, g_aStatsSeason[client].C4_EXPLODED, g_aStatsSeason[client].C4_DEFUSED, g_aStatsSeason[client].CT_WIN, g_aStatsSeason[client].TR_WIN, 
 			g_aStatsSeason[client].HOSTAGES_RESCUED, g_aStatsSeason[client].VIP_KILLED, g_aStatsSeason[client].VIP_ESCAPED, g_aStatsSeason[client].VIP_PLAYED, g_aStatsSeason[client].MVP, g_aStatsSeason[client].DAMAGE, 
 			g_aStatsSeason[client].MATCH_WIN, g_aStatsSeason[client].MATCH_DRAW, g_aStatsSeason[client].MATCH_LOSE, 
 			g_aStatsSeason[client].FB, g_aStatsSeason[client].NS, g_aStatsSeason[client].NSD, 
