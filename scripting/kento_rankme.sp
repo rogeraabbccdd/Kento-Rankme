@@ -80,7 +80,7 @@ int g_iSeasonID = 0;
 Handle g_fwdOnPlayerLoaded;
 Handle g_fwdOnPlayerSaved;
 
-bool DEBUGGING = true;
+bool DEBUGGING = false;
 int g_C4PlantedBy;
 char g_sC4PlantedByName[MAX_NAME_LENGTH];
 
@@ -144,7 +144,8 @@ public void OnPluginStart() {
 	
 	// PLAYER COMMANDS
 	RegConsoleCmd("sm_session", CMD_Session, "RankMe: Shows the stats of your current session");
-	RegConsoleCmd("sm_rank", CMD_Rank, "RankMe: Shows your rank");
+	RegConsoleCmd("sm_rank", CMD_Rank, "RankMe: Shows your rank for this season");
+	RegConsoleCmd("sm_rank_global", CMD_Rank_Global, "RankMe: Shows your global rank");
 	RegConsoleCmd("sm_top", CMD_Top, "RankMe: Shows the TOP");
 	RegConsoleCmd("sm_topweapon", CMD_TopWeapon, "RankMe: Shows the TOP ordered by kills with a specific weapon");
 	RegConsoleCmd("sm_topacc", CMD_TopAcc, "RankMe: Shows the TOP ordered by accuracy");
