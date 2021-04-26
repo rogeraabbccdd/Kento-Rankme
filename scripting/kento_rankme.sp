@@ -470,6 +470,7 @@ public Action OnClientChangeName(Handle event, const char[] name, bool dontBroad
 			g_aStatsSeason[client].Reset();
 			g_aStatsSeason[client].SCORE = g_PointsStart;
 			g_aWeaponsGlobal[client].Reset();
+			g_aWeaponsSeason[client].Reset();
 			g_aSession[client].CONNECTED = GetTime();
 			
 			strcopy(g_aClientName[client], MAX_NAME_LENGTH, clientnewname);
@@ -599,6 +600,11 @@ public void OnPluginEnd() {
 			SQL_FastQuery(g_hStatsDb, query);
 			SQL_FastQuery(g_hStatsDb, query2);
 			
+			g_aWeaponsSeason[client].GetData(weapon_array);
+			for (int i = 0; i < 42; i++) {
+				Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], weapon_array[i]);
+			}
+
 			if (g_RankBy == 0) 
 			{
 				Format(query, sizeof(query), g_sSqlSaveSeason, g_sSQLTableSeason, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
@@ -1346,7 +1352,11 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			g_aStatsSeason[attacker].SCORE += score_dif_global;
 			g_aSession[attacker].SCORE += score_dif_global;
 			int num = GetWeaponNum(weapon); 
-			if (num < 42) g_aWeaponsGlobal[attacker].AddKill(num);
+			if (num < 42){
+				g_aWeaponsGlobal[attacker].AddKill(num);
+				g_aWeaponsSeason[attacker].AddKill(num);
+			}
+
 		}
 		
 		if (g_MinimalKills == 0 || (g_aStatsGlobal[victim].KILLS >= g_MinimalKills && g_aStatsGlobal[attacker].KILLS >= g_MinimalKills)) {
@@ -1808,6 +1818,11 @@ public void SalvarPlayer(int client) {
 		LogError("%s", query2);
 	}
 
+	g_aWeaponsSeason[client].GetData(weapon_array);
+	for (int i = 0; i < 42; i++) {
+		Format(weapons_query, sizeof(weapons_query), "%s,%s='%d'", weapons_query, g_sWeaponsNamesGame[i], weapon_array[i]);
+	}
+
 	if (g_RankBy == 0) 
 	{
 		Format(query, sizeof(query), g_sSqlSaveGlobal, g_sSQLTableGlobal, g_aStatsSeason[client].SCORE, g_aStatsSeason[client].KILLS, g_aStatsSeason[client].DEATHS, g_aStatsSeason[client].ASSISTS, g_aStatsSeason[client].SUICIDES, g_aStatsSeason[client].TK, 
@@ -1911,6 +1926,7 @@ public void LoadPlayer(int client) {
 	g_aStatsSeason[client].SCORE = g_PointsStart;
 	// weapons
 	g_aWeaponsGlobal[client].Reset();
+	g_aWeaponsSeason[client].Reset();
 	g_aSession[client].CONNECTED = GetTime();
 	//hitboxes
 	g_aHitBoxGlobal[client].Reset();
