@@ -2393,6 +2393,7 @@ stock void MakeSelectQuery(char[] sQuery, int strsize, bool bIsSeason=false) {
 	// Append check for inactivity
 	if (g_DaysToNotShowOnRank > 0)
 		Format(sQuery, strsize, "%s AND lastconnect >= '%d'", sQuery, GetTime() - (g_DaysToNotShowOnRank * 86400));
+	if (DEBUGGING) PrintToServer(sQuery);
 } 
 
 public Action RankMe_OnPlayerLoaded(int client){

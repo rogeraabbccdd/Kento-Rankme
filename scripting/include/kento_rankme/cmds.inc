@@ -1101,7 +1101,10 @@ public void SQL_RankCallback_Global(Handle owner, Handle hndl, const char[] erro
 
 public Action CMD_Rank(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+	{
+		if(DEBUGGING) PrintToServer("Player is not here");
 		return Plugin_Handled;
+	}
 	//LogToFile("rankme.debug.log","\"sm_rank\" command called by client %d.",client);
 	if(g_aStatsSeason[client].KILLS < g_MinimalKills){
 		CPrintToChat(client,"%s %T",MSG,"NotRanked",client,g_aStatsSeason[client].KILLS,g_MinimalKills);
@@ -1126,7 +1129,7 @@ public Action CMD_Rank(int client, int args){
 		else
 			Format(query,sizeof(query),"%s ORDER BY CAST(kills as float)/CAST(Case when deaths=0 then 1 ELSE deaths END as float) DESC, score DESC",query);
 	}	
-		
+	if (DEBUGGING) PrintToServer(query);
 	SQL_TQuery(g_hStatsDb,SQL_RankCallback,query,client);
 	return Plugin_Handled;
 }
@@ -1142,7 +1145,7 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 	//LogToFile("rankme.debug.log","Rank SQL callback called by client %d.",client);
 	int i;
 	
-	g_TotalPlayers =SQL_GetRowCount(hndl);
+	g_TotalPlayers = SQL_GetRowCount(hndl);
 	char Name_receive[MAX_NAME_LENGTH];
 	char Auth_receive[64];
 	char Ip_receive[64];
@@ -1161,9 +1164,9 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
 		i++;
-		SQL_FetchString(hndl,2,Name_receive,MAX_NAME_LENGTH);
-		SQL_FetchString(hndl,1,Auth_receive,64);
-		SQL_FetchString(hndl,3,Ip_receive,64);
+		SQL_FetchString(hndl,3,Name_receive,MAX_NAME_LENGTH);
+		SQL_FetchString(hndl,2,Auth_receive,64);
+		SQL_FetchString(hndl,4,Ip_receive,64);
 	//	PrintToServer("%d %s %s",i, Name_receive, Auth_receive);
 		if((g_RankBy == 1 && StrEqual(Name_receive,g_aClientName[client],false)) || (g_RankBy == 0 && StrEqual(Auth_receive,g_aClientSteam[client],false)) || (g_RankBy == 2 && StrEqual(Ip_receive,g_aClientIp[client],false))){
 
