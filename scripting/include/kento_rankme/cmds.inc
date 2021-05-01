@@ -60,11 +60,11 @@ public Action CMD_ResetRank(int client, int args){
 	//ReplaceString(arg1,sizeof(arg1),"\"","");
 	char query[2000];
 	if(g_RankBy == 1){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTable,sEscapeArg1);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTableGlobal,sEscapeArg1);
 	} else if (g_RankBy == 0){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE steam='%s'",g_sSQLTable,sEscapeArg1);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE steam='%s'",g_sSQLTableGlobal,sEscapeArg1);
 	} else if (g_RankBy == 2){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastip='%s'",g_sSQLTable,sEscapeArg1);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastip='%s'",g_sSQLTableGlobal,sEscapeArg1);
 	}
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	LogAction(client,-1,"[RankMe]: Rank has been reset (%s)",arg1);
@@ -97,7 +97,7 @@ public Action CMD_ResetRankAll(int client, int args){
 		return Plugin_Handled;
 		
 	char query[2000];
-	Format(query,sizeof(query),"DELETE FROM `%s` WHERE 1=1",g_sSQLTable);
+	Format(query,sizeof(query),"DELETE FROM `%s` WHERE 1=1",g_sSQLTableGlobal);
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	
 	LogAction(client,-1,"[RankMe]: All rank data has been reset");
@@ -128,7 +128,7 @@ public Action CMD_Purge(int client, int args){
 	}
 	deletebefore = GetTime() - (StringToInt(arg1)*86400);
 	char query[2000];
-	Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastconnect < '%d'",g_sSQLTable,deletebefore);
+	Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastconnect < '%d'",g_sSQLTableGlobal,deletebefore);
 	SQL_TQuery(g_hStatsDb,SQL_PurgeCallback,query);
 	LogAction(client,-1,"[RankMe]: Purged rank (%s days inactivity)",arg1);
 	CPrintToChat(client, "%s %T", MSG, "Purged",client);
@@ -1010,12 +1010,12 @@ public int MenuHandler_DoNothing(Menu menu, MenuAction action, int param1, int p
 	}
 }
 
-public Action CMD_Rank(int client, int args){
+public Action CMD_Rank_Global(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	//LogToFile("rankme.debug.log","\"sm_rank\" command called by client %d.",client);
-	if(g_aStats[client].KILLS < g_MinimalKills){
-		CPrintToChat(client,"%s %T",MSG,"NotRanked",client,g_aStats[client].KILLS,g_MinimalKills);
+	if(g_aStatsGlobal[client].KILLS < g_MinimalKills){
+		CPrintToChat(client,"%s %T",MSG,"NotRanked",client,g_aStatsGlobal[client].KILLS,g_MinimalKills);
 		return Plugin_Handled;
 	}
 	
@@ -1038,11 +1038,11 @@ public Action CMD_Rank(int client, int args){
 			Format(query,sizeof(query),"%s ORDER BY CAST(kills as float)/CAST(Case when deaths=0 then 1 ELSE deaths END as float) DESC, score DESC",query);
 	}	
 		
-	SQL_TQuery(g_hStatsDb,SQL_RankCallback,query,client);
+	SQL_TQuery(g_hStatsDb,SQL_RankCallback_Global,query,client);
 	return Plugin_Handled;
 }
 
-public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any client){
+public void SQL_RankCallback_Global(Handle owner, Handle hndl, const char[] error, any client){
 	if(hndl == INVALID_HANDLE)
 	{
 		LogError("[RankMe] Query Fail: %s", error);
@@ -1058,8 +1058,8 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 	char Auth_receive[64];
 	char Ip_receive[64];
 	
-	int ikills = g_aStats[client].KILLS;
-	int ideaths=g_aStats[client].DEATHS;
+	int ikills = g_aStatsGlobal[client].KILLS;
+	int ideaths=g_aStatsGlobal[client].DEATHS;
 	
 	int deaths;
 	if(ideaths == 0)
@@ -1085,14 +1085,106 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 					if(IsClientInGame(j))
 					{
 						if(client == j || !hidechat[j])	
-							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStats[client].SCORE,g_aStats[client].KILLS,g_aStats[client].DEATHS,g_aStats[client].ASSISTS,kills/deaths,g_aStats[client].TK,g_aStats[client].MVP);
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
 						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
 					}
 				}
 			} 
 			else 
 			{
-				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],i,g_TotalPlayers,g_aStats[client].SCORE,g_aStats[client].KILLS,g_aStats[client].DEATHS,g_aStats[client].ASSISTS,kills/deaths,g_aStats[client].TK,g_aStats[client].MVP);
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],i,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+			}
+			break;
+		}
+	} 
+}
+
+public Action CMD_Rank(int client, int args){
+	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
+	{
+		if(DEBUGGING) PrintToServer("Player is not here");
+		return Plugin_Handled;
+	}
+	//LogToFile("rankme.debug.log","\"sm_rank\" command called by client %d.",client);
+	if(g_aStatsSeason[client].KILLS < g_MinimalKills){
+		CPrintToChat(client,"%s %T",MSG,"NotRanked",client,g_aStatsSeason[client].KILLS,g_MinimalKills);
+		return Plugin_Handled;
+	}
+	
+	// check cooldown
+	if(g_bShowRankAll && hRankTimer[client] != INVALID_HANDLE)
+	{
+		CPrintToChat(client,"%s %T",MSG,"RankCooldown",client);
+		return Plugin_Handled;
+	}
+	
+	char query[2000];
+	MakeSelectQuery(query,sizeof(query), true);
+	
+	if(g_RankMode == 1)
+		Format(query,sizeof(query),"%s ORDER BY score DESC",query);
+	else if(g_RankMode == 2){
+		if(g_bMysql)
+			Format(query,sizeof(query),"%s ORDER BY CAST(kills as DECIMAL)/CAST(Case when deaths=0 then 1 ELSE deaths END as DECIMAL) DESC, score DESC",query);
+		else
+			Format(query,sizeof(query),"%s ORDER BY CAST(kills as float)/CAST(Case when deaths=0 then 1 ELSE deaths END as float) DESC, score DESC",query);
+	}	
+	if (DEBUGGING) PrintToServer(query);
+	SQL_TQuery(g_hStatsDb,SQL_RankCallback,query,client);
+	return Plugin_Handled;
+}
+
+public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any client){
+	if(hndl == INVALID_HANDLE)
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		return;
+	}
+	if(client == 0 || !IsClientInGame(client))
+		return;
+	//LogToFile("rankme.debug.log","Rank SQL callback called by client %d.",client);
+	int i;
+	
+	g_TotalPlayers = SQL_GetRowCount(hndl);
+	char Name_receive[MAX_NAME_LENGTH];
+	char Auth_receive[64];
+	char Ip_receive[64];
+	
+	int ikills = g_aStatsGlobal[client].KILLS;
+	int ideaths=g_aStatsGlobal[client].DEATHS;
+	
+	int deaths;
+	if(ideaths == 0)
+		deaths = 1;
+	else 
+		deaths=ideaths;
+	
+	float kills = IntToFloat(ikills);
+	
+	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	{
+		i++;
+		SQL_FetchString(hndl,3,Name_receive,MAX_NAME_LENGTH);
+		SQL_FetchString(hndl,2,Auth_receive,64);
+		SQL_FetchString(hndl,4,Ip_receive,64);
+	//	PrintToServer("%d %s %s",i, Name_receive, Auth_receive);
+		if((g_RankBy == 1 && StrEqual(Name_receive,g_aClientName[client],false)) || (g_RankBy == 0 && StrEqual(Auth_receive,g_aClientSteam[client],false)) || (g_RankBy == 2 && StrEqual(Ip_receive,g_aClientIp[client],false))){
+
+			if(g_bShowRankAll)
+			{
+				for(int j = 1; j <= MaxClients;j++)
+				{
+					if(IsClientInGame(j))
+					{
+						if(client == j || !hidechat[j])	
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
+					}
+				}
+			} 
+			else 
+			{
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],i,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
 			}
 			break;
 		}
@@ -1227,7 +1319,7 @@ public Action CMD_HitBox(int client, int args){
 	char temp[255];
 	int ihits;
 	float hits;
-	ihits = g_aHitBox[client].Sum();
+	ihits = g_aHitBoxGlobal[client].Sum();
 	char text[255];
 	if(ihits == 0)
 		hits= 1.0;
@@ -1236,19 +1328,19 @@ public Action CMD_HitBox(int client, int args){
 	
 	Format(temp,sizeof(temp),"HitBox:\n");
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Head",client,g_aHitBox[client].HEAD,(g_aHitBox[client].HEAD/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Head",client,g_aHitBoxGlobal[client].HEAD,(g_aHitBoxGlobal[client].HEAD/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Chest",client,g_aHitBox[client].CHEST,(g_aHitBox[client].CHEST/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Chest",client,g_aHitBoxGlobal[client].CHEST,(g_aHitBoxGlobal[client].CHEST/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Stomach",client,g_aHitBox[client].STOMACH,(g_aHitBox[client].STOMACH/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","Stomach",client,g_aHitBoxGlobal[client].STOMACH,(g_aHitBoxGlobal[client].STOMACH/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftArm",client,g_aHitBox[client].LEFT_ARM,(g_aHitBox[client].LEFT_ARM/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftArm",client,g_aHitBoxGlobal[client].LEFT_ARM,(g_aHitBoxGlobal[client].LEFT_ARM/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","RightArm",client,g_aHitBox[client].RIGHT_ARM,(g_aHitBox[client].RIGHT_ARM/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","RightArm",client,g_aHitBoxGlobal[client].RIGHT_ARM,(g_aHitBoxGlobal[client].RIGHT_ARM/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftLeg",client,g_aHitBox[client].LEFT_LEG,(g_aHitBox[client].LEFT_LEG/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)\n","LeftLeg",client,g_aHitBoxGlobal[client].LEFT_LEG,(g_aHitBoxGlobal[client].LEFT_LEG/hits)*100);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d (%.2f%%)","RightLeg",client,g_aHitBox[client].RIGHT_LEG,(g_aHitBox[client].RIGHT_LEG/hits)*100);
+	Format(temp,sizeof(temp),"%T: %d (%.2f%%)","RightLeg",client,g_aHitBoxGlobal[client].RIGHT_LEG,(g_aHitBoxGlobal[client].RIGHT_LEG/hits)*100);
 	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 
@@ -1261,9 +1353,9 @@ public Action CMD_WeaponMe(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
 	int weapons_a[42];
-	g_aWeapons[client].GetData(weapons_a);
+	g_aWeaponsGlobal[client].GetData(weapons_a);
 	// for(int a=0;a<42;a++){
-	// 	weapons_a[a] = g_aWeapons[client][a];
+	// 	weapons_a[a] = g_aWeaponsGlobal[client][a];
 	// }
 	int weapons_b[42][2];
 	int index;
@@ -1292,7 +1384,7 @@ public Action CMD_WeaponMe(int client, int args){
 	}
 	Menu panel = CreateMenu(MenuHandler_DoNothing);
 	
-	int ikills =g_aStats[client].KILLS;
+	int ikills =g_aStatsGlobal[client].KILLS;
 	
 	float hits;
 	if(ikills == 0)
@@ -1596,7 +1688,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	char Auth_receive[64];
 	char Name_receive[MAX_NAME_LENGTH];
 	char Ip_receive[64];
-	if(g_aStats[client].KILLS >= g_MinimalKills){
+	if(g_aStatsGlobal[client].KILLS >= g_MinimalKills){
 		
 		while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 		{
@@ -1615,8 +1707,8 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	}
 	Menu panel = CreateMenuEx(_,MenuHandler_DoNothing,MENU_ACTIONS_ALL);
 	char text[512];
-	int ikills = g_aStats[client].KILLS;
-	int ideaths=g_aStats[client].DEATHS;
+	int ikills = g_aStatsGlobal[client].KILLS;
+	int ideaths=g_aStatsGlobal[client].DEATHS;
 	int deaths;
 	if(ideaths == 0)
 		deaths = 1;
@@ -1624,75 +1716,75 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 		deaths=ideaths;
 	float kills = IntToFloat(ikills);
 	int shots;
-	if(g_aStats[client].SHOTS == 0)
+	if(g_aStatsGlobal[client].SHOTS == 0)
 		shots = 1;
 	else
-		shots = g_aStats[client].SHOTS;
+		shots = g_aStatsGlobal[client].SHOTS;
 	
-	int rounds = g_aStats[client].ROUNDS_TR + g_aStats[client].ROUNDS_CT;
-	if((g_aStats[client].ROUNDS_TR ==0) && (g_aStats[client].ROUNDS_CT == 0))
+	int rounds = g_aStatsGlobal[client].ROUNDS_TR + g_aStatsGlobal[client].ROUNDS_CT;
+	if((g_aStatsGlobal[client].ROUNDS_TR ==0) && (g_aStatsGlobal[client].ROUNDS_CT == 0))
 	{
 		rounds = 1;
 	}
 	
-	int idamage = g_aStats[client].DAMAGE;
+	int idamage = g_aStatsGlobal[client].DAMAGE;
 	float damage = IntToFloat(idamage);
 
 	char temp[255];
 	Format(temp,sizeof(temp),"- %T\n","BasicStats",client);
 	StrCat(text,sizeof(text),temp);
 	if(i == 0)
-		Format(temp,sizeof(temp),"%T: %i [%i]\n","Points",client,g_aStats[client].SCORE,g_aSession[client].SCORE);
+		Format(temp,sizeof(temp),"%T: %i [%i]\n","Points",client,g_aStatsGlobal[client].SCORE,g_aSession[client].SCORE);
 	else
-		Format(temp,sizeof(temp),"Rank: %i/%i   %T: %i [%i]\n",i,SQL_GetRowCount(hndl),"Points",client,g_aStats[client].SCORE,g_aSession[client].SCORE);
+		Format(temp,sizeof(temp),"Rank: %i/%i   %T: %i [%i]\n",i,SQL_GetRowCount(hndl),"Points",client,g_aStatsGlobal[client].SCORE,g_aSession[client].SCORE);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aStats[client].ASSISTS,kills/deaths);
+	Format(temp,sizeof(temp),"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,g_aStatsGlobal[client].ASSISTS,kills/deaths);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d  \n","AssistTeams", client, g_aStats[client].ATK);
+	Format(temp,sizeof(temp),"%T: %d  \n","AssistTeams", client, g_aStatsGlobal[client].ATK);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d  %T: %d  %T: %d\n","Headshots",client,g_aStats[client].HEADSHOTS,"Suicides",client,g_aStats[client].SUICIDES,"TKs",client,g_aStats[client].TK);
+	Format(temp,sizeof(temp),"%T: %d  %T: %d  %T: %d\n","Headshots",client,g_aStatsGlobal[client].HEADSHOTS,"Suicides",client,g_aStatsGlobal[client].SUICIDES,"TKs",client,g_aStatsGlobal[client].TK);
 	StrCat(text,sizeof(text),temp);
 	Format(temp,sizeof(temp),"%T: %d  %T: %.2f   %T: %.2f\n","Damage", client, idamage,"KPR", client, kills/rounds, "DPR", client, damage/rounds);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d  \n","First Bloods", client, g_aStats[client].FB);
+	Format(temp,sizeof(temp),"%T: %d  \n","First Bloods", client, g_aStatsGlobal[client].FB);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d  %T: %d\n","Thru Smokes", client, g_aStats[client].SMOKE, "Flashed Kills", client, g_aStats[client].BLIND);
+	Format(temp,sizeof(temp),"%T: %d  %T: %d\n","Thru Smokes", client, g_aStatsGlobal[client].SMOKE, "Flashed Kills", client, g_aStatsGlobal[client].BLIND);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d\n","AssistFlashes", client, g_aStats[client].AF);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistFlashes", client, g_aStatsGlobal[client].AF);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d\n","AssistTeamFlashes", client, g_aStats[client].ATF);
+	Format(temp,sizeof(temp),"%T: %d\n","AssistTeamFlashes", client, g_aStatsGlobal[client].ATF);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d\n","Wallbangs", client, g_aStats[client].WALL);
+	Format(temp,sizeof(temp),"%T: %d\n","Wallbangs", client, g_aStatsGlobal[client].WALL);
 	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","RoundStats",client);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStats[client].TR_WIN,g_aStats[client].ROUNDS_TR,"CTWins",client,g_aStats[client].CT_WIN,g_aStats[client].ROUNDS_CT,"MVPs",client,g_aStats[client].MVP, "MatchWins", client, g_aStats[client].MATCH_WIN, "MatchDraws", client, g_aStats[client].MATCH_DRAW, "MatchLosses", client, g_aStats[client].MATCH_LOSE);
+	Format(temp,sizeof(temp),"%T: %d/%d   %T: %d/%d   %T: %d\n%T: %d   %T: %d   %T: %d \n","TRWins",client,g_aStatsGlobal[client].TR_WIN,g_aStatsGlobal[client].ROUNDS_TR,"CTWins",client,g_aStatsGlobal[client].CT_WIN,g_aStatsGlobal[client].ROUNDS_CT,"MVPs",client,g_aStatsGlobal[client].MVP, "MatchWins", client, g_aStatsGlobal[client].MATCH_WIN, "MatchDraws", client, g_aStatsGlobal[client].MATCH_DRAW, "MatchLosses", client, g_aStatsGlobal[client].MATCH_LOSE);
 	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","HitStats",client);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %.2f%%\n","Shots",client,shots,"Hits",client,g_aStats[client].HITS,"Accuracy",client,IntToFloat(g_aStats[client].HITS)/shots*100);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %.2f%%\n","Shots",client,shots,"Hits",client,g_aStatsGlobal[client].HITS,"Accuracy",client,IntToFloat(g_aStatsGlobal[client].HITS)/shots*100);
 	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","NoScopeStats",client);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d   %T: %.2fm \n","NoScopes",client,g_aStats[client].NS, "Farthest", client, IntToFloat(g_aStats[client].NSD)/100 );
+	Format(temp,sizeof(temp),"%T: %d   %T: %.2fm \n","NoScopes",client,g_aStatsGlobal[client].NS, "Farthest", client, IntToFloat(g_aStatsGlobal[client].NSD)/100 );
 	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
 	
 	Format(temp,sizeof(temp),"- %T\n","BombHostagesStats",client);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,g_aStats[client].C4_PLANTED,"ExplodedBombs",client,g_aStats[client].C4_EXPLODED,"DefusedBombs",client,g_aStats[client].C4_DEFUSED);
+	Format(temp,sizeof(temp),"%T: %d   %T: %d   %T: %d\n","PlantedBombs",client,g_aStatsGlobal[client].C4_PLANTED,"ExplodedBombs",client,g_aStatsGlobal[client].C4_EXPLODED,"DefusedBombs",client,g_aStatsGlobal[client].C4_DEFUSED);
 	StrCat(text,sizeof(text),temp);
-	Format(temp,sizeof(temp),"%T: %d \n","RescuedHostages",client,g_aStats[client].HOSTAGES_RESCUED);
+	Format(temp,sizeof(temp),"%T: %d \n","RescuedHostages",client,g_aStatsGlobal[client].HOSTAGES_RESCUED);
 	StrCat(text,sizeof(text),temp);
 	panel.AddItem("",text);
 	text="";
@@ -1700,7 +1792,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	if(g_bVipEnabled){
 		Format(temp,sizeof(temp),"- %T\n","VIPStats",client);
 		StrCat(text,sizeof(text),temp);
-		Format(temp,sizeof(temp),"%T: %d/%d   %T: %d\n","VIPEscapes",client,g_aStats[client].VIP_ESCAPED,g_aStats[client].VIP_PLAYED,"VIPsKilled",client,g_aStats[client].VIP_KILLED);
+		Format(temp,sizeof(temp),"%T: %d/%d   %T: %d\n","VIPEscapes",client,g_aStatsGlobal[client].VIP_ESCAPED,g_aStatsGlobal[client].VIP_PLAYED,"VIPsKilled",client,g_aStatsGlobal[client].VIP_KILLED);
 		StrCat(text,sizeof(text),temp);
 		panel.AddItem("",text);
 		text="";
@@ -1708,7 +1800,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 	
 	Format(temp,sizeof(temp),"- %T\n","OtherStats",client);
 	StrCat(text,sizeof(text),temp);
-	int time = g_aStats[client].CONNECTED + GetTime()-g_aSession[client].CONNECTED;
+	int time = g_aStatsGlobal[client].CONNECTED + GetTime()-g_aSession[client].CONNECTED;
 	int hours = RoundToFloor(time/3600.0);
 	time = time-(hours*3600);
 	
@@ -1811,7 +1903,7 @@ public void SQL_NextCallback(Handle owner, Handle hndl, const char[] error, any 
 	}
 	for(int b=0;b<=max;b++){
 		if(!StrEqual(next_players_name[b],"",false)){
-			Format(temp,sizeof(temp),"- %s (%d) => +%d\n",next_players_name[b],next_players_score[b],next_players_score[b]-g_aStats[client].SCORE);
+			Format(temp,sizeof(temp),"- %s (%d) => +%d\n",next_players_name[b],next_players_score[b],next_players_score[b]-g_aStatsGlobal[client].SCORE);
 			StrCat(text,500,temp);
 		}
 		
@@ -1830,11 +1922,11 @@ public Action CMD_ResetOwnRank(int client, int args){
 	if(g_RankBy == 1){
 		char sEscape[MAX_NAME_LENGTH*2+1];
 		SQL_EscapeString(g_hStatsDb,g_aClientName[client],sEscape,sizeof(sEscape));
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTable,sEscape);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE name='%s'",g_sSQLTableGlobal,sEscape);
 	} else if(g_RankBy == 0){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE steam='%s'",g_sSQLTable,g_aClientSteam[client]);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE steam='%s'",g_sSQLTableGlobal,g_aClientSteam[client]);
 	} else if(g_RankBy == 2){
-		Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastip='%s'",g_sSQLTable,g_aClientIp[client]);
+		Format(query,sizeof(query),"DELETE FROM `%s` WHERE lastip='%s'",g_sSQLTableGlobal,g_aClientIp[client]);
 	}
 	SQL_TQuery(g_hStatsDb,SQL_NothingCallback,query);
 	LogAction(client,-1,"[RankMe]: Reseted own rank (%s - %s - %s)",g_aClientName[client],g_aClientSteam[client],g_aClientIp[client]);
