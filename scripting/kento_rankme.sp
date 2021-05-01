@@ -1436,7 +1436,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			{
 				if(!hidechat[attacker])
 				{
-					CPrintToChat(attacker, "%s %T", MSG, "Headshot", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsHs);
+					//CPrintToChat(attacker, "%s %T", MSG, "Headshot", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsHs);
 					CPrintToChat(attacker, "%s %T", MSG, "Headshot", attacker, g_aClientName[attacker], g_aStatsSeason[attacker].SCORE, g_PointsHs);
 				}
 			}
@@ -1454,7 +1454,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			{
 				if(!hidechat[attacker])
 				{
-					CPrintToChat(attacker, "%s %T", MSG, "Flashed Kill", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsBlind);
+					//CPrintToChat(attacker, "%s %T", MSG, "Flashed Kill", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsBlind);
 					CPrintToChat(attacker, "%s %T", MSG, "Flashed Kill", attacker, g_aClientName[attacker], g_aStatsSeason[attacker].SCORE, g_PointsBlind);
 				}
 			}
@@ -1472,7 +1472,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			{
 				if(!hidechat[attacker])
 				{
-					CPrintToChat(attacker, "%s %T", MSG, "Thru Smoke", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsSmoke);
+					//CPrintToChat(attacker, "%s %T", MSG, "Thru Smoke", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsSmoke);
 					CPrintToChat(attacker, "%s %T", MSG, "Thru Smoke", attacker, g_aClientName[attacker], g_aStatsSeason[attacker].SCORE, g_PointsSmoke);
 				}
 			}
@@ -1490,7 +1490,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			{
 				if(!hidechat[attacker])	
 				{
-					CPrintToChat(attacker, "%s %T", MSG, "Wallbang", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsWall);
+					//CPrintToChat(attacker, "%s %T", MSG, "Wallbang", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsWall);
 					CPrintToChat(attacker, "%s %T", MSG, "Wallbang", attacker, g_aClientName[attacker], g_aStatsSeason[attacker].SCORE, g_PointsWall);
 				}
 			}			
@@ -1510,7 +1510,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			{
 				if(!hidechat[attacker])
 				{
-					CPrintToChat(attacker, "%s %T", MSG, "First Blood", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsFb);
+					//CPrintToChat(attacker, "%s %T", MSG, "First Blood", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsFb);
 					CPrintToChat(attacker, "%s %T", MSG, "First Blood", attacker, g_aClientName[attacker], g_aStatsSeason[attacker].SCORE, g_PointsFb);
 				}
 			}	
@@ -1538,7 +1538,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			{
 				if(!hidechat[attacker])	
 				{
-					CPrintToChat(attacker, "%s %T", MSG, "No Scope", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsNS, g_aClientName[victim], weapon, fNSD);
+					//CPrintToChat(attacker, "%s %T", MSG, "No Scope", attacker, g_aClientName[attacker], g_aStatsGlobal[attacker].SCORE, g_PointsNS, g_aClientName[victim], weapon, fNSD);
 					CPrintToChat(attacker, "%s %T", MSG, "No Scope", attacker, g_aClientName[attacker], g_aStatsSeason[attacker].SCORE, g_PointsNS, g_aClientName[victim], weapon, fNSD);
 				}
 			}
@@ -1565,7 +1565,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 				{
 					if(!hidechat[assist])
 					{
-						CPrintToChat(assist, "%s %T", MSG, "AssistTeamFlash", assist, g_aClientName[assist], g_aStatsGlobal[assist].SCORE, g_PointsAssistTeamFlash, g_aClientName[attacker], g_aClientName[victim]);
+						//CPrintToChat(assist, "%s %T", MSG, "AssistTeamFlash", assist, g_aClientName[assist], g_aStatsGlobal[assist].SCORE, g_PointsAssistTeamFlash, g_aClientName[attacker], g_aClientName[victim]);
 						CPrintToChat(assist, "%s %T", MSG, "AssistTeamFlash", assist, g_aClientName[assist], g_aStatsSeason[assist].SCORE, g_PointsAssistTeamFlash, g_aClientName[attacker], g_aClientName[victim]);
 					}	
 				}
@@ -1581,7 +1581,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 				if(g_bChatChange && g_PointsAssistKill > 0){
 					if(!hidechat[assist])
 					{
-						CPrintToChat(assist, "%s %T", MSG, "AssistTeamKill", assist, g_aClientName[assist], g_aStatsGlobal[assist].SCORE, g_PointsLoseATk, g_aClientName[attacker], g_aClientName[victim]);
+						//CPrintToChat(assist, "%s %T", MSG, "AssistTeamKill", assist, g_aClientName[assist], g_aStatsGlobal[assist].SCORE, g_PointsLoseATk, g_aClientName[attacker], g_aClientName[victim]);
 						CPrintToChat(assist, "%s %T", MSG, "AssistTeamKill", assist, g_aClientName[assist], g_aStatsSeason[assist].SCORE, g_PointsLoseATk, g_aClientName[attacker], g_aClientName[victim]);
 					}	
 				}
@@ -1602,7 +1602,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 				{
 					if(!hidechat[assist])
 					{
-						CPrintToChat(assist, "%s %T", MSG, "AssistFlash", assist, g_aClientName[assist], g_aStatsGlobal[assist].SCORE, g_PointsAssistFlash, g_aClientName[attacker], g_aClientName[victim]);
+						//CPrintToChat(assist, "%s %T", MSG, "AssistFlash", assist, g_aClientName[assist], g_aStatsGlobal[assist].SCORE, g_PointsAssistFlash, g_aClientName[attacker], g_aClientName[victim]);
 						CPrintToChat(assist, "%s %T", MSG, "AssistFlash", assist, g_aClientName[assist], g_aStatsSeason[assist].SCORE, g_PointsAssistFlash, g_aClientName[attacker], g_aClientName[victim]);
 					}	
 				}
@@ -1619,7 +1619,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 				{
 					if(!hidechat[assist])
 					{
-						CPrintToChat(assist, "%s %T", MSG, "AssistKill", assist, g_aClientName[assist], g_aStatsGlobal[assist].SCORE, g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
+						//CPrintToChat(assist, "%s %T", MSG, "AssistKill", assist, g_aClientName[assist], g_aStatsGlobal[assist].SCORE, g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
 						CPrintToChat(assist, "%s %T", MSG, "AssistKill", assist, g_aClientName[assist], g_aStatsSeason[assist].SCORE, g_PointsAssistKill, g_aClientName[attacker], g_aClientName[victim]);
 					}
 				}
