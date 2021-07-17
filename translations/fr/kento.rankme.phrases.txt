@@ -89,7 +89,7 @@
 	"IsRankedAtSeason"
 	{
 		"#format"	"{1:d},{2:s},{3:d},{4:d},{5:d},{6:d},{7:d},{8:d},{9:.2f},{10:d},{11:d}"
-		"fr"		"Pour la saison {RED}{1}{NORMAL}, {PINK} {2} {NORMAL}est au rang {GREEN}{3}/{4}{NORMAL}, {PURPLE}{5} points{NORMAL}, {LIGHTGREEN}{6} kills{NORMAL}, {RED}{7} morts{NORMAL}, {ORANGE}{8} assistances{NORMAL}, {BLUE}KDR {9}{NORMAL}, {DARKRED}{10} TKs {NORMAL}et {YELLOW}{11} MVPs{NORMAL}."
+		"fr"		"{NORMAL}Pour la saison {RED}{1}{NORMAL}, {PINK} {2} {NORMAL}est au rang {GREEN}{3}/{4}{NORMAL}, {PURPLE}{5} points{NORMAL}, {LIGHTGREEN}{6} kills{NORMAL}, {RED}{7} morts{NORMAL}, {ORANGE}{8} assistances{NORMAL}, {BLUE}KDR {9}{NORMAL}, {DARKRED}{10} TKs {NORMAL}et {YELLOW}{11} MVPs{NORMAL}."
 	}
 
 

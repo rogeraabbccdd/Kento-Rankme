@@ -1174,14 +1174,14 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 					if(IsClientInGame(j))
 					{
 						if(client == j || !hidechat[j])	
-							CPrintToChat(j,"%s %T",MSG,"IsRankedAtSeason",g_iSeasonID,j,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAtSeason",j,g_iSeasonID,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
 						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
 					}
 				}
 			} 
 			else 
 			{
-				CPrintToChat(client,"%s %T",MSG,"IsRankedAtSeason",g_iSeasonID, client,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAtSeason",client,g_iSeasonID,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
 			}
 		}
 	} 
