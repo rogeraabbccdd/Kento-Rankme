@@ -692,7 +692,9 @@ public void OnConVarChanged(Handle convar, const char[] oldValue, const char[] n
 	
 	if (g_bQueryPlayerCount && g_hStatsDb != INVALID_HANDLE) {
 		char query[10000];
-		MakeSelectQuery(query, sizeof(query));
-		SQL_TQuery(g_hStatsDb, SQL_GetPlayersCallback, query);
+		MakeSelectQuery(query, sizeof(query), true, true);
+		SQL_TQuery(g_hStatsDb, SQL_GetPlayersSeasonCallback, query);
+		MakeSelectQuery(query, sizeof(query), false, true);
+		SQL_TQuery(g_hStatsDb, SQL_GetPlayersGlobalCallback, query);
 	}
 }

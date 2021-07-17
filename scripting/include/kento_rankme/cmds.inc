@@ -135,15 +135,14 @@ public Action CMD_Purge(int client, int args){
 	return Plugin_Handled;
 }
 
-public void SQL_GetPlayersCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+public void SQL_GetPlayersSeasonCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
 	if(hndl == INVALID_HANDLE || !SQL_FetchRow(hndl))
 	{
 		LogError("[RankMe] Query Fail: %s", error);
 		PrintToServer(error);
 		return;
 	}
-	g_TotalPlayers = SQL_FetchInt(hndl, 0);
-	PrintToServer("%d", g_TotalPlayers);
+	g_iTotalPlayersSeason = SQL_FetchInt(hndl, 0);
 }
 
 public Action CMD_TopWeapon(int client, int args){
@@ -230,7 +229,7 @@ public void SQL_TopWeaponCallback(Handle owner, Handle hndl, const char[] error,
 	CloseHandle(Datapack);
 	
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPWeapon(client,weapon,g_TotalPlayers-9);
+		ShowTOPWeapon(client,weapon,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -238,7 +237,7 @@ public void SQL_TopWeaponCallback(Handle owner, Handle hndl, const char[] error,
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), MenuHandler_TopWeapon);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 
@@ -351,7 +350,7 @@ public void SQL_TopCallback(Handle owner, Handle hndl, const char[] error, any D
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOP(client,g_TotalPlayers-9);
+		ShowTOP(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -360,7 +359,7 @@ public void SQL_TopCallback(Handle owner, Handle hndl, const char[] error, any D
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_Top);
 	
 	float kdr;
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -470,7 +469,7 @@ public void SQL_TopHSCallback(Handle owner, Handle hndl, const char[] error, any
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopHS(client,g_TotalPlayers-9);
+		ShowTopHS(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -478,7 +477,7 @@ public void SQL_TopHSCallback(Handle owner, Handle hndl, const char[] error, any
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopHS);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -583,7 +582,7 @@ public void SQL_TopKillsCallback(Handle owner, Handle hndl, const char[] error, 
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopKills(client,g_TotalPlayers-9);
+		ShowTopKills(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -591,7 +590,7 @@ public void SQL_TopKillsCallback(Handle owner, Handle hndl, const char[] error, 
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopKills);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -696,7 +695,7 @@ public void SQL_TopDeathsCallback(Handle owner, Handle hndl, const char[] error,
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopDeaths(client,g_TotalPlayers-9);
+		ShowTopDeaths(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -704,7 +703,7 @@ public void SQL_TopDeathsCallback(Handle owner, Handle hndl, const char[] error,
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), MenuHandler_TopDeaths);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -814,7 +813,7 @@ public void SQL_TopAccCallback(Handle owner, Handle hndl, const char[] error, an
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopAcc(client,g_TotalPlayers-9);
+		ShowTopAcc(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -822,7 +821,7 @@ public void SQL_TopAccCallback(Handle owner, Handle hndl, const char[] error, an
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopAcc);
 
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	int shots;
 	int hits;
@@ -933,7 +932,7 @@ public void SQL_TopTimeCallback(Handle owner, Handle hndl, const char[] error, a
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopTime(client,g_TotalPlayers-9);
+		ShowTopTime(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -941,7 +940,7 @@ public void SQL_TopTimeCallback(Handle owner, Handle hndl, const char[] error, a
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopTime);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	int time;
@@ -1086,14 +1085,14 @@ public void SQL_RankCallback_Global(Handle owner, Handle hndl, const char[] erro
 					if(IsClientInGame(j))
 					{
 						if(client == j || !hidechat[j])	
-							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],iRank,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],iRank,g_iTotalPlayersGlobal,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
 						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
 					}
 				}
 			} 
 			else 
 			{
-				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],iRank,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],iRank,g_iTotalPlayersGlobal,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
 			}
 		}
 	} 
@@ -1119,10 +1118,10 @@ public Action CMD_Rank(int client, int args){
 	}
 	
 	char query[2000];
-	MakeSelectQuery(query,sizeof(query), true);
+	MakeSelectQuery(query,sizeof(query), true, true);
 	
 	if(g_RankMode == 1)
-		Format(query,sizeof(query),"%s ORDER BY score DESC",query);
+		Format(query,sizeof(query), "SELECT id,steam, name,lastip,1+(%s AND rankme_season.score > b.score) as rank,score, season_id FROM rankme_season b WHERE steam='%s' AND season_id = %d;", query, g_aClientSteam[client], g_iSeasonID);
 	else if(g_RankMode == 2){
 		if(g_bMysql)
 			Format(query,sizeof(query),"%s ORDER BY CAST(kills as DECIMAL)/CAST(Case when deaths=0 then 1 ELSE deaths END as DECIMAL) DESC, score DESC",query);
@@ -1143,15 +1142,14 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 	if(client == 0 || !IsClientInGame(client))
 		return;
 	//LogToFile("rankme.debug.log","Rank SQL callback called by client %d.",client);
-	int i;
 	
-	//g_TotalPlayers = SQL_GetRowCount(hndl);
+	//g_iTotalPlayersGlobal = SQL_GetRowCount(hndl);
 	char Name_receive[MAX_NAME_LENGTH];
 	char Auth_receive[64];
 	char Ip_receive[64];
 	
-	int ikills = g_aStatsGlobal[client].KILLS;
-	int ideaths=g_aStatsGlobal[client].DEATHS;
+	int ikills = g_aStatsSeason[client].KILLS;
+	int ideaths=g_aStatsSeason[client].DEATHS;
 	
 	int deaths;
 	if(ideaths == 0)
@@ -1161,15 +1159,16 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 	
 	float kills = IntToFloat(ikills);
 	
-	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
+	if(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
-		i++;
-		SQL_FetchString(hndl,3,Name_receive,MAX_NAME_LENGTH);
-		SQL_FetchString(hndl,2,Auth_receive,64);
-		SQL_FetchString(hndl,4,Ip_receive,64);
+		SQL_FetchString(hndl,2,Name_receive,MAX_NAME_LENGTH);
+		SQL_FetchString(hndl,1,Auth_receive,64);
+		SQL_FetchString(hndl,3,Ip_receive,64);
+		int iRank = SQL_FetchInt(hndl, 4);
+		if(DEBUGGING) PrintToServer("debug0");
 	//	PrintToServer("%d %s %s",i, Name_receive, Auth_receive);
 		if((g_RankBy == 1 && StrEqual(Name_receive,g_aClientName[client],false)) || (g_RankBy == 0 && StrEqual(Auth_receive,g_aClientSteam[client],false)) || (g_RankBy == 2 && StrEqual(Ip_receive,g_aClientIp[client],false))){
-
+			if(DEBUGGING) PrintToServer("debug1");
 			if(g_bShowRankAll)
 			{
 				for(int j = 1; j <= MaxClients;j++)
@@ -1177,16 +1176,16 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 					if(IsClientInGame(j))
 					{
 						if(client == j || !hidechat[j])	
-							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],i,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
 						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
 					}
 				}
 			} 
 			else 
 			{
-				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],i,g_TotalPlayers,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+				if(DEBUGGING) PrintToServer("debug2");
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
 			}
-			break;
 		}
 	} 
 }
@@ -1462,8 +1461,8 @@ public Action CMD_StatsMe2(int client, int args){
 		
 		WritePackCell(hDatapack,1);
 		
-		if(StringToInt(arg1[1]) > g_TotalPlayers)
-			Format(arg1,sizeof(arg1),"#%d",g_TotalPlayers);
+		if(StringToInt(arg1[1]) > g_iTotalPlayersGlobal)
+			Format(arg1,sizeof(arg1),"#%d",g_iTotalPlayersGlobal);
 			
 		Format(query,sizeof(query),"%s %s LIMIT %d, 1",query,order, StringToInt(arg1[1]) - 1);
 
@@ -1591,7 +1590,7 @@ public void SQL_StatsMe2Callback(Handle owner, Handle hndl, const char[] error, 
 	if(i == 0)
 		Format(temp,sizeof(temp),"%T: %i\n","Points",client,SQL_FetchInt(hndl,4));
 	else
-		Format(temp,sizeof(temp),"Rank: %i/%i   %T: %i\n",i,g_TotalPlayers,"Points",client,SQL_FetchInt(hndl,4));
+		Format(temp,sizeof(temp),"Rank: %i/%i   %T: %i\n",i,g_iTotalPlayersGlobal,"Points",client,SQL_FetchInt(hndl,4));
 	StrCat(text,sizeof(text),temp);
 	Format(temp,sizeof(temp),"%T   KDR: %.2f\n","KillsDeathsAssists",client,ikills,ideaths,SQL_FetchInt(hndl,7),kills/deaths);
 	StrCat(text,sizeof(text),temp);
@@ -1684,7 +1683,7 @@ public void SQL_StatsMeCallback(Handle owner, Handle hndl, const char[] error, a
 		return;
 	int i;
 	
-	//g_TotalPlayers =SQL_GetRowCount(hndl);
+	//g_iTotalPlayersGlobal =SQL_GetRowCount(hndl);
 	char Auth_receive[64];
 	char Name_receive[MAX_NAME_LENGTH];
 	char Ip_receive[64];
@@ -1849,7 +1848,7 @@ public void SQL_NextCallback(Handle owner, Handle hndl, const char[] error, any 
 		return;
 	int i;
 	int a;
-	//g_TotalPlayers =SQL_GetRowCount(hndl);
+	//g_iTotalPlayersGlobal =SQL_GetRowCount(hndl);
 	char next_players_name[10][MAX_NAME_LENGTH];
 	int next_players_score[10];
 	bool dobreak;
@@ -2269,7 +2268,7 @@ public void SQL_TopAssistsCallback(Handle owner, Handle hndl, const char[] error
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopAssists(client,g_TotalPlayers-9);
+		ShowTopAssists(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -2277,7 +2276,7 @@ public void SQL_TopAssistsCallback(Handle owner, Handle hndl, const char[] error
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopAssists);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -2381,7 +2380,7 @@ public void SQL_TopTKCallback(Handle owner, Handle hndl, const char[] error, any
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopTK(client,g_TotalPlayers-9);
+		ShowTopTK(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -2389,7 +2388,7 @@ public void SQL_TopTKCallback(Handle owner, Handle hndl, const char[] error, any
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopTK);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -2495,7 +2494,7 @@ public void SQL_TopMVPCallback(Handle owner, Handle hndl, const char[] error, an
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopMVP(client,g_TotalPlayers-9);
+		ShowTopMVP(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -2503,7 +2502,7 @@ public void SQL_TopMVPCallback(Handle owner, Handle hndl, const char[] error, an
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopMVP);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -2609,7 +2608,7 @@ public void SQL_TopDamageCallback(Handle owner, Handle hndl, const char[] error,
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTopDamage(client,g_TotalPlayers-9);
+		ShowTopDamage(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -2617,7 +2616,7 @@ public void SQL_TopDamageCallback(Handle owner, Handle hndl, const char[] error,
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopDamage);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -2726,7 +2725,7 @@ public void SQL_TopKDRCallback(Handle owner, Handle hndl, const char[] error, an
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPKDR(client,g_TotalPlayers-9);
+		ShowTOPKDR(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -2735,7 +2734,7 @@ public void SQL_TopKDRCallback(Handle owner, Handle hndl, const char[] error, an
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopKDR);
 	
 	float kdr;
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -2846,7 +2845,7 @@ public void SQL_TopPointsCallback(Handle owner, Handle hndl, const char[] error,
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPPoints(client,g_TotalPlayers-9);
+		ShowTOPPoints(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -2855,7 +2854,7 @@ public void SQL_TopPointsCallback(Handle owner, Handle hndl, const char[] error,
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopPoints);
 	
 	float kdr;
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -2967,7 +2966,7 @@ public void SQL_TopFBCallback(Handle owner, Handle hndl, const char[] error, any
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPFB(client,g_TotalPlayers-9);
+		ShowTOPFB(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -2975,7 +2974,7 @@ public void SQL_TopFBCallback(Handle owner, Handle hndl, const char[] error, any
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopFB);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -3076,7 +3075,7 @@ public void SQL_TopNSCallback(Handle owner, Handle hndl, const char[] error, any
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPNS(client,g_TotalPlayers-9);
+		ShowTOPNS(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -3084,7 +3083,7 @@ public void SQL_TopNSCallback(Handle owner, Handle hndl, const char[] error, any
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopNS);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -3185,7 +3184,7 @@ public void SQL_TopNSDCallback(Handle owner, Handle hndl, const char[] error, an
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPNSD(client,g_TotalPlayers-9);
+		ShowTOPNSD(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -3193,7 +3192,7 @@ public void SQL_TopNSDCallback(Handle owner, Handle hndl, const char[] error, an
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopNSD);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -3295,7 +3294,7 @@ public void SQL_TopBlindCallback(Handle owner, Handle hndl, const char[] error, 
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPBlind(client,g_TotalPlayers-9);
+		ShowTOPBlind(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -3303,7 +3302,7 @@ public void SQL_TopBlindCallback(Handle owner, Handle hndl, const char[] error, 
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopBlind);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -3404,7 +3403,7 @@ public void SQL_TopSmokeCallback(Handle owner, Handle hndl, const char[] error, 
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPSmoke(client,g_TotalPlayers-9);
+		ShowTOPSmoke(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -3412,7 +3411,7 @@ public void SQL_TopSmokeCallback(Handle owner, Handle hndl, const char[] error, 
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopSmoke);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
@@ -3513,7 +3512,7 @@ public void SQL_TopWallCallback(Handle owner, Handle hndl, const char[] error, a
 	int at = ReadPackCell(Datapack);
 	CloseHandle(Datapack);
 	if(!SQL_HasResultSet(hndl) || SQL_GetRowCount(hndl) ==0){
-		ShowTOPWall(client,g_TotalPlayers-9);
+		ShowTOPWall(client,g_iTotalPlayersGlobal-9);
 		return;
 	}
 	char name[256];
@@ -3521,7 +3520,7 @@ public void SQL_TopWallCallback(Handle owner, Handle hndl, const char[] error, a
 	
 	Menu menu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio),MenuHandler_TopWall);
 	
-	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_TotalPlayers);
+	Format(temp,sizeof(temp)," %T\n","Showing",client,at+1,at+10,g_iTotalPlayersGlobal);
 	menu.SetTitle("");
 	char sBuffer[200];
 	while(SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))

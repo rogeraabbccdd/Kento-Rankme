@@ -74,7 +74,8 @@ WEAPONS_ENUM g_aWeaponsGlobal[MAXPLAYERS + 1];
 WEAPONS_ENUM g_aWeaponsSeason[MAXPLAYERS + 1];
 HITBOXES g_aHitBoxGlobal[MAXPLAYERS + 1];
 HITBOXES g_aHitBoxSeason[MAXPLAYERS + 1];
-int g_TotalPlayers;
+int g_iTotalPlayersGlobal;
+int g_iTotalPlayersSeason;
 int g_iSeasonID = 0;
 
 Handle g_fwdOnPlayerLoaded;
@@ -337,7 +338,7 @@ public void OnConfigsExecuted() {
 		Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT'", g_sSQLTableGlobal, g_MinimalKills);
 	}
 	if(DEBUGGING) PrintToServer("Count query %s", sQuery);
-	SQL_TQuery(g_hStatsDb, SQL_GetPlayersCallback, sQuery);
+	SQL_TQuery(g_hStatsDb, SQL_GetPlayersGlobalCallback, sQuery);
 
 	CheckUnique();
 	BuildRankCache();
@@ -398,7 +399,27 @@ public void SQL_GetSeasonIDCallback(Handle owner, Handle hndl, const char[] erro
 		if (IsClientInGame(i))
 			OnClientPutInServer(i);
 		}
+	char sQuery[400];
+	if (g_bRankBots){
+		Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND season_id = %d", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
+	}
+	else{
+		Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT' AND season_id = %d", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
+	}
+	SQL_TQuery(g_hStatsDb, SQL_GetPlayersSeasonCallback, sQuery);
 }
+
+public void SQL_GetPlayersGlobalCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
+	if(hndl == INVALID_HANDLE || !SQL_FetchRow(hndl))
+	{
+		LogError("[RankMe] Query Fail: %s", error);
+		PrintToServer(error);
+		return;
+	}
+	g_iTotalPlayersGlobal = SQL_FetchInt(hndl, 0);
+}
+
+
 
 void BuildRankCache()
 {
@@ -1632,7 +1653,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 	/*	
 	if (attacker < MAXPLAYERS)
 		if (g_aStatsGlobal[attacker].KILLS == 50)
-		g_TotalPlayers++;
+		g_iTotalPlayersGlobal++;
 	*/	
 	firstblood = true;
 }
