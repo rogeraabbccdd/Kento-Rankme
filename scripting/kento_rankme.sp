@@ -199,6 +199,8 @@ public void OnPluginStart() {
 	hidechatcookie = RegClientCookie("rankme_hidechat", "Hide rankme chat messages", CookieAccess_Private);
 
 	Format(MSG, sizeof(MSG), "%t", "Chat Prefix");
+	// Late loading
+	OnConfigsExecuted();
 }
 
 public void OnConVarChanged_SQLTable(Handle convar, const char[] oldValue, const char[] newValue) {
@@ -329,11 +331,12 @@ public void OnConfigsExecuted() {
 	SQL_TQuery(g_hStatsDb, SQL_GetSeasonIDCallback, sQuery);
 
 	if (g_bRankBots){
-		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTableGlobal, g_MinimalKills);
+		Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d'", g_sSQLTableGlobal, g_MinimalKills);
 	}
 	else{
-		Format(sQuery, sizeof(sQuery), "SELECT * FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT'", g_sSQLTableGlobal, g_MinimalKills);
+		Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT'", g_sSQLTableGlobal, g_MinimalKills);
 	}
+	if(DEBUGGING) PrintToServer("Count query %s", sQuery);
 	SQL_TQuery(g_hStatsDb, SQL_GetPlayersCallback, sQuery);
 
 	CheckUnique();
@@ -2379,14 +2382,14 @@ stock bool IsValidClient(int client, bool nobots = true)
 	return IsClientInGame(client);
 }
 
-stock void MakeSelectQuery(char[] sQuery, int strsize, bool bIsSeason=false) {
+stock void MakeSelectQuery(char[] sQuery, int strsize, bool bIsSeason=false, bool bCount=false) {
 	
 	// Make basic query
 	if(bIsSeason)
-		Format(sQuery, strsize, "SELECT * FROM `%s` WHERE kills >= '%d' AND season_id = '%d'", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
+		Format(sQuery, strsize, "SELECT %s FROM `%s` WHERE kills >= '%d' AND season_id = '%d'", bCount? "COUNT(*)": "*", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
 	else
-		Format(sQuery, strsize, "SELECT * FROM `%s` WHERE kills >= '%d'", g_sSQLTableGlobal, g_MinimalKills);
-	// Append check for bots
+		Format(sQuery, strsize, "SELECT %s FROM `%s` WHERE kills >= '%d'", bCount? "COUNT(*)": "*", g_sSQLTableGlobal, g_MinimalKills);
+	// Append check for bot
 	if (!g_bShowBotsOnRank)
 		Format(sQuery, strsize, "%s AND steam <> 'BOT'", sQuery);
 	

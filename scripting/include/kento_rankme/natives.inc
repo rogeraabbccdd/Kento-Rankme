@@ -133,7 +133,7 @@ public void SQL_GetRankCallback(Handle owner, Handle hndl, const char[] error, a
 		return;
 	}
 	int i;
-	g_TotalPlayers = SQL_GetRowCount(hndl);
+	//g_TotalPlayers = SQL_GetRowCount(hndl);
 	
 	char Receive[64];
 	
