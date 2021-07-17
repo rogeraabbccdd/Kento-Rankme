@@ -1349,7 +1349,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 			}
 
 		}
-		
+		/*
 		if (g_MinimalKills == 0 || (g_aStatsGlobal[victim].KILLS >= g_MinimalKills && g_aStatsGlobal[attacker].KILLS >= g_MinimalKills)) {
 			if (g_bChatChange) {
 				//PrintToServer("%s %T",MSG,"Killing",g_aClientName[attacker],g_aStatsGlobal[attacker].SCORE,score_dif_global,g_aClientName[victim],g_aStatsGlobal[victim].SCORE);
@@ -1386,7 +1386,7 @@ public Action EventPlayerDeath(Handle event, const char [] name, bool dontBroadc
 				}
 			}
 		}
-
+	*/
 		if (g_MinimalKills == 0 || (g_aStatsSeason[victim].KILLS >= g_MinimalKills && g_aStatsSeason[attacker].KILLS >= g_MinimalKills)) {
 			if (g_bChatChange) {
 				//PrintToServer("%s %T",MSG,"Killing",g_aClientName[attacker],g_aStatsSeason[attacker].SCORE,score_dif_season,g_aClientName[victim],g_aStatsSeason[victim].SCORE);
