@@ -1085,14 +1085,14 @@ public void SQL_RankCallback_Global(Handle owner, Handle hndl, const char[] erro
 					if(IsClientInGame(j))
 					{
 						if(client == j || !hidechat[j])	
-							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],iRank,g_iTotalPlayersGlobal,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAtGlobal",j,g_aClientName[client],iRank,g_iTotalPlayersGlobal,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
 						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
 					}
 				}
 			} 
 			else 
 			{
-				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],iRank,g_iTotalPlayersGlobal,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAtGlobal",client,g_aClientName[client],iRank,g_iTotalPlayersGlobal,g_aStatsGlobal[client].SCORE,g_aStatsGlobal[client].KILLS,g_aStatsGlobal[client].DEATHS,g_aStatsGlobal[client].ASSISTS,kills/deaths,g_aStatsGlobal[client].TK,g_aStatsGlobal[client].MVP);
 			}
 		}
 	} 
@@ -1165,10 +1165,8 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 		SQL_FetchString(hndl,1,Auth_receive,64);
 		SQL_FetchString(hndl,3,Ip_receive,64);
 		int iRank = SQL_FetchInt(hndl, 4);
-		if(DEBUGGING) PrintToServer("debug0");
 	//	PrintToServer("%d %s %s",i, Name_receive, Auth_receive);
 		if((g_RankBy == 1 && StrEqual(Name_receive,g_aClientName[client],false)) || (g_RankBy == 0 && StrEqual(Auth_receive,g_aClientSteam[client],false)) || (g_RankBy == 2 && StrEqual(Ip_receive,g_aClientIp[client],false))){
-			if(DEBUGGING) PrintToServer("debug1");
 			if(g_bShowRankAll)
 			{
 				for(int j = 1; j <= MaxClients;j++)
@@ -1176,15 +1174,14 @@ public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any 
 					if(IsClientInGame(j))
 					{
 						if(client == j || !hidechat[j])	
-							CPrintToChat(j,"%s %T",MSG,"IsRankedAt",j,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
+							CPrintToChat(j,"%s %T",MSG,"IsRankedAtSeason",g_iSeasonID,j,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
 						if(g_fRankAllTimer > 0.0)	hRankTimer[j] = CreateTimer(g_fRankAllTimer, KillRankAllTimer, j);
 					}
 				}
 			} 
 			else 
 			{
-				if(DEBUGGING) PrintToServer("debug2");
-				CPrintToChat(client,"%s %T",MSG,"IsRankedAt",client,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
+				CPrintToChat(client,"%s %T",MSG,"IsRankedAtSeason",g_iSeasonID, client,g_aClientName[client],iRank,g_iTotalPlayersSeason,g_aStatsSeason[client].SCORE,g_aStatsSeason[client].KILLS,g_aStatsSeason[client].DEATHS,g_aStatsSeason[client].ASSISTS,kills/deaths,g_aStatsSeason[client].TK,g_aStatsSeason[client].MVP);
 			}
 		}
 	} 
