@@ -73,7 +73,7 @@ public int Native_GetRank(Handle plugin, int numParams)
 	if (g_RankMode == 1)
 		Format(query, sizeof(query), "%s ORDER BY score DESC", query);
 	else if (g_RankMode == 2)
-		Format(query, sizeof(query), "%s ORDER BY CAST(CAST(kills as float)/CAST (deaths as float) as float) DESC", query);
+		Format(query, sizeof(query), "%s ORDER BY CAST(kills as DECIMAL)/CAST(Case when deaths=0 then 1 ELSE deaths END as DECIMAL) DESC", query);
 	
 	SQL_TQuery(g_hStatsDb, SQL_GetRankCallback, query, pack);
 }
