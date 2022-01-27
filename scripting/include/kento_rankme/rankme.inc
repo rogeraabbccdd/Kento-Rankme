@@ -463,11 +463,11 @@ native void RankMe_GetRank(int client, RankCallback callback, any data = 0);
 /*********************************************************
  * Get the score (points) of a player on the server
  *
- * @param client	The client index of the player to get the rank
- * @param data	Any data you would like that return on the callback
+ * @param client	The client index of the player to get the rank.
+ * @param global  Whether or not to get the global points for the client.
  * @return		The score of the client
  *********************************************************/
-native int RankMe_GetPoints(int client);
+native int RankMe_GetPoints(int client, bool global = false);
 
 /*********************************************************
  * Get stats of a player on the server

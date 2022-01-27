@@ -179,6 +179,13 @@ void CallRankCallback(int client, int rank, Function callback, any data, Handle 
 public int Native_GetPoints(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
+	if(numParams>1)
+	{
+		if(GetNativeCell(2))
+		{
+			return g_aStatsGlobal[client].SCORE;
+		}
+	}
 	return g_aStatsSeason[client].SCORE;
 }
 
