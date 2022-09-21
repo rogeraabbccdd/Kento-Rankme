@@ -1030,7 +1030,7 @@ public Action CMD_Rank_Global(int client, int args){
 	MakeSelectQuery(query,sizeof(query), _, true);
 
 	if(g_RankMode == 1)
-		Format(query,sizeof(query), "SELECT id,steam, name,lastip,1+(%s AND rankme.score > b.score) as rank,score FROM rankme b WHERE steam='%s';", query, g_aClientSteam[client]);
+		Format(query,sizeof(query), "SELECT id,steam, name,lastip,1+(%s AND rankme.score > b.score) as `rank`,score FROM rankme b WHERE steam='%s';", query, g_aClientSteam[client]);
 	else if(g_RankMode == 2){
 		if(g_bMysql)
 			Format(query,sizeof(query),"%s ORDER BY CAST(kills as DECIMAL)/CAST(Case when deaths=0 then 1 ELSE deaths END as DECIMAL) DESC, score DESC",query);
@@ -1101,8 +1101,10 @@ public void SQL_RankCallback_Global(Handle owner, Handle hndl, const char[] erro
 public Action CMD_Rank(int client, int args){
 	if(!g_bEnabled || client == 0 || !IsClientInGame(client))
 	{
-		if(DEBUGGING) PrintToServer("Player is not here");
-		return Plugin_Handled;
+		#if DEBUGGING
+      PrintToServer("Player is not here");
+    #endif
+    return Plugin_Handled;
 	}
 	//LogToFile("rankme.debug.log","\"sm_rank\" command called by client %d.",client);
 	if(g_aStatsSeason[client].KILLS < g_MinimalKills){
@@ -1121,16 +1123,18 @@ public Action CMD_Rank(int client, int args){
 	MakeSelectQuery(query,sizeof(query), true, true);
 	
 	if(g_RankMode == 1)
-		Format(query,sizeof(query), "SELECT id,steam, name,lastip,1+(%s AND rankme_season.score > b.score) as rank,score, season_id FROM rankme_season b WHERE steam='%s' AND season_id = %d;", query, g_aClientSteam[client], g_iSeasonID);
+		Format(query,sizeof(query), "SELECT id,steam, name,lastip,1+(%s AND rankme_season.score > b.score) as `rank`,score, season_id FROM rankme_season b WHERE steam='%s' AND season_id = %d;", query, g_aClientSteam[client], g_iSeasonID);
 	else if(g_RankMode == 2){
 		if(g_bMysql)
 			Format(query,sizeof(query),"%s ORDER BY CAST(kills as DECIMAL)/CAST(Case when deaths=0 then 1 ELSE deaths END as DECIMAL) DESC, score DESC",query);
 		else
 			Format(query,sizeof(query),"%s ORDER BY CAST(kills as float)/CAST(Case when deaths=0 then 1 ELSE deaths END as float) DESC, score DESC",query);
 	}	
-	if (DEBUGGING) PrintToServer(query);
-	SQL_TQuery(g_hStatsDb,SQL_RankCallback,query,client);
-	return Plugin_Handled;
+	#if DEBUGGING
+    PrintToServer(query);
+  #endif
+  SQL_TQuery(g_hStatsDb,SQL_RankCallback,query,client);
+  return Plugin_Handled;
 }
 
 public void SQL_RankCallback(Handle owner, Handle hndl, const char[] error, any client){

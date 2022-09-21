@@ -81,7 +81,7 @@ int g_iSeasonID = 0;
 Handle g_fwdOnPlayerLoaded;
 Handle g_fwdOnPlayerSaved;
 
-bool DEBUGGING = false;
+#define DEBUGGING false;
 int g_C4PlantedBy;
 char g_sC4PlantedByName[MAX_NAME_LENGTH];
 
@@ -214,8 +214,10 @@ public void OnConVarChanged_MySQL(Handle convar, const char[] oldValue, const ch
 }
 
 public void DB_Connect(bool firstload) {
-	if(DEBUGGING) PrintToServer("Connecting to database...");
-	if (g_bMysql != g_cvarMysql.BoolValue || firstload) {  // NEEDS TO CONNECT IF CHANGED MYSQL CVAR OR NEVER CONNECTED
+	#if DEBUGGING
+    PrintToServer("Connecting to database...");
+  #endif
+  if (g_bMysql != g_cvarMysql.BoolValue || firstload) {  // NEEDS TO CONNECT IF CHANGED MYSQL CVAR OR NEVER CONNECTED
 		g_bMysql = g_cvarMysql.BoolValue;
 		g_cvarSQLTableGlobal.GetString(g_sSQLTableGlobal, sizeof(g_sSQLTableGlobal));
 		g_cvarSQLTableSeason.GetString(g_sSQLTableSeason, sizeof(g_sSQLTableSeason));
@@ -231,15 +233,18 @@ public void DB_Connect(bool firstload) {
 		{
 			SetFailState("[RankMe] Unable to connect to the database (%s)", sError);
 		}
-		if(DEBUGGING) PrintToServer("Connected!");
-
+		#if DEBUGGING 
+      PrintToServer("Connected!");
+    #endif
 		// SQL_LockDatabase is redundent for SQL_SetCharset
 		if(!SQL_SetCharset(g_hStatsDb, "utf8mb4")){
 			SQL_SetCharset(g_hStatsDb, "utf8");
 		}
 
 		char sQuery[9999];
-		if(DEBUGGING) PrintToServer("Creating tables!");
+		#if DEBUGGING
+      PrintToServer("Creating tables!");
+    #endif
 		if(g_bMysql)
 		{
 			Format(sQuery, sizeof(sQuery), g_sMysqlCreateGlobal, g_sSQLTableGlobal);
@@ -329,6 +334,9 @@ public void OnConfigsExecuted() {
 		Format(sQuery, sizeof(sQuery), g_sSqlRetrieveSeasonIDMySQL, g_sSQLTableSeasonID);
 	else
 		Format(sQuery, sizeof(sQuery), g_sSqlRetrieveSeasonIDSQLite, g_sSQLTableSeasonID);
+  #if DEBUGGING
+    PrintToServer(sQuery);
+  #endif
 	SQL_TQuery(g_hStatsDb, SQL_GetSeasonIDCallback, sQuery);
 
 	if (g_bRankBots){
@@ -337,7 +345,9 @@ public void OnConfigsExecuted() {
 	else{
 		Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT'", g_sSQLTableGlobal, g_MinimalKills);
 	}
-	if(DEBUGGING) PrintToServer("Count query %s", sQuery);
+	#if DEBUGGING
+    PrintToServer("Count query %s", sQuery);
+  #endif
 	SQL_TQuery(g_hStatsDb, SQL_GetPlayersGlobalCallback, sQuery);
 
 	CheckUnique();
@@ -394,19 +404,21 @@ public void SQL_GetSeasonIDCallback(Handle owner, Handle hndl, const char[] erro
 	{
 		g_iSeasonID = SQL_FetchInt(hndl, 0);
 	}
-	if(DEBUGGING) PrintToServer("Season ID is %d", g_iSeasonID);
-	for (int i = 1; i <= MaxClients; i++) {
+	#if DEBUGGING
+    PrintToServer("Season ID is %d", g_iSeasonID);
+  #endif
+  for (int i = 1; i <= MaxClients; i++) {
 		if (IsClientInGame(i))
 			OnClientPutInServer(i);
 		}
-	char sQuery[400];
-	if (g_bRankBots){
-		Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND season_id = %d", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
-	}
-	else{
-		Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT' AND season_id = %d", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
-	}
-	SQL_TQuery(g_hStatsDb, SQL_GetPlayersSeasonCallback, sQuery);
+  char sQuery[400];
+  if (g_bRankBots){
+    Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND season_id = %d", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
+  }
+  else{
+    Format(sQuery, sizeof(sQuery), "SELECT COUNT(*) FROM `%s` WHERE kills >= '%d' AND steam <> 'BOT' AND season_id = %d", g_sSQLTableSeason, g_MinimalKills, g_iSeasonID);
+  }
+  SQL_TQuery(g_hStatsDb, SQL_GetPlayersSeasonCallback, sQuery);
 }
 
 public void SQL_GetPlayersGlobalCallback(Handle owner, Handle hndl, const char[] error, any Datapack){
@@ -505,12 +517,12 @@ public Action OnClientChangeName(Handle event, const char[] name, bool dontBroad
 			
 			Format(query, sizeof(query), g_sSqlRetrieveClientNameGlobal, g_sSQLTableGlobal, Eclientnewname);
 			Format(query2, sizeof(query2), g_sSqlRetrieveClientNameSeason, g_sSQLTableSeason, Eclientnewname, g_iSeasonID);
-			if (DEBUGGING) {
+			#if DEBUGGING
 				PrintToServer(query);
 				LogError("%s", query);
 				PrintToServer(query2);
 				LogError("%s", query2);
-			}
+      #endif
 			SQL_TQuery(g_hStatsDb, SQL_LoadPlayerCallbackGlobal, query, client);
 			SQL_TQuery(g_hStatsDb, SQL_LoadPlayerCallbackSeason, query2, client);
 			
@@ -1833,12 +1845,12 @@ public void SalvarPlayer(int client) {
 	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query, client, DBPrio_High);
 	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query2, client, DBPrio_High);
 	
-	if (DEBUGGING) {
+	#if DEBUGGING
 		PrintToServer(query);
 		PrintToServer(query2);
 		LogError("%s", query);
 		LogError("%s", query2);
-	}
+  #endif
 
 	g_aWeaponsSeason[client].GetData(weapon_array);
 	for (int i = 0; i < 42; i++) {
@@ -1890,12 +1902,12 @@ public void SalvarPlayer(int client) {
 	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query, client, DBPrio_High);
 	SQL_TQuery(g_hStatsDb, SQL_SaveCallback, query2, client, DBPrio_High);
 	
-	if (DEBUGGING) {
+	#if DEBUGGING
 		PrintToServer(query);
 		PrintToServer(query2);
 		LogError("%s", query);
 		LogError("%s", query2);
-	}
+  #endif
 }
 
 
@@ -1984,12 +1996,12 @@ public void LoadPlayer(int client) {
 	}
 
 	
-	if (DEBUGGING) {
+	#if DEBUGGING
 		PrintToServer(query);
 		LogError("%s", query);
 		PrintToServer(query2);
 		LogError("%s", query2);
-	}
+  #endif
 	if (g_hStatsDb != INVALID_HANDLE){
 		SQL_TQuery(g_hStatsDb, SQL_LoadPlayerCallbackGlobal, query, client);
 		SQL_TQuery(g_hStatsDb, SQL_LoadPlayerCallbackSeason, query2, client);
@@ -2129,10 +2141,10 @@ public void SQL_LoadPlayerCallbackGlobal(Handle owner, Handle hndl, const char[]
 		Format(query, sizeof(query), g_sSqlInsertGlobal, g_sSQLTableGlobal, g_aClientSteam[client], sEscapeName, g_aClientIp[client], g_PointsStart);
 		SQL_TQuery(g_hStatsDb, SQL_NothingCallback, query, _, DBPrio_High);
 		
-		if (DEBUGGING) {
+	#if DEBUGGING
 			PrintToServer(query);
 			LogError("%s", query);
-		}
+  #endif
 	}
 
 	OnDBGlobal[client] = true;
@@ -2282,10 +2294,10 @@ public void SQL_LoadPlayerCallbackSeason(Handle owner, Handle hndl, const char[]
 		Format(query, sizeof(query), g_sSqlInsertSeason, g_sSQLTableSeason, g_iSeasonID, g_aClientSteam[client], sEscapeName, g_aClientIp[client], g_PointsStart);
 		SQL_TQuery(g_hStatsDb, SQL_NothingCallback, query, _, DBPrio_High);
 		
-		if (DEBUGGING) {
+		#if DEBUGGING
 			PrintToServer(query);
 			LogError("%s", query);
-		}
+    #endif
 	}
 	OnDBSeason[client] = true;
 }
@@ -2417,7 +2429,9 @@ stock void MakeSelectQuery(char[] sQuery, int strsize, bool bIsSeason=false, boo
 	// Append check for inactivity
 	if (g_DaysToNotShowOnRank > 0)
 		Format(sQuery, strsize, "%s AND lastconnect >= '%d'", sQuery, GetTime() - (g_DaysToNotShowOnRank * 86400));
-	if (DEBUGGING) PrintToServer(sQuery);
+	#if DEBUGGING
+	  PrintToServer(sQuery);
+  #endif
 } 
 
 public Action RankMe_OnPlayerLoaded(int client){
