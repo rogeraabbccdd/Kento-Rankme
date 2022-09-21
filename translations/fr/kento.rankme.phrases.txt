@@ -80,11 +80,18 @@
 		"fr"		"{PINK}{1}{PURPLE} ({2}) {LIGHTGREEN}a reçu {3} point(s) {NORMAL}pour avoir {RED}{4}{NORMAL}."
 	}
 
-	"IsRankedAt"
+	"IsRankedAtGlobal"
 	{
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:.2f},{9:d},{10:d}"
-		"fr"		"Player{PINK} {1} {NORMAL}est classé {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} point(s){NORMAL},{LIGHTGREEN} {5} tués{NORMAL},{RED} {6} morts{NORMAL},{ORANGE} {7} assistances{NORMAL}, {BLUE} KDR {8} {NORMAL}, {DARKRED}{9} tks {NORMAL}et {YELLOW}{10} MVPs{NORMAL}."
+		"fr"		"{PINK} {1} {NORMAL}est au rang {GREEN}{2}/{3} {NORMAL}, {PURPLE}{4} point(s){NORMAL},{LIGHTGREEN} {5} kills{NORMAL},{RED} {6} morts{NORMAL},{ORANGE} {7} assistances{NORMAL}, {BLUE} KDR {8} {NORMAL}, {DARKRED}{9} tks {NORMAL}et {YELLOW}{10} MVPs{NORMAL}."
 	}
+
+	"IsRankedAtSeason"
+	{
+		"#format"	"{1:d},{2:s},{3:d},{4:d},{5:d},{6:d},{7:d},{8:d},{9:.2f},{10:d},{11:d}"
+		"fr"		"{NORMAL}Pour la saison {RED}{1}{NORMAL}, {PINK} {2} {NORMAL}est au rang {GREEN}{3}/{4}{NORMAL}, {PURPLE}{5} points{NORMAL}, {LIGHTGREEN}{6} kills{NORMAL}, {RED}{7} morts{NORMAL}, {ORANGE}{8} assistances{NORMAL}, {BLUE}KDR {9}{NORMAL}, {DARKRED}{10} TKs {NORMAL}et {YELLOW}{11} MVPs{NORMAL}."
+	}
+
 
 	"Killing"
 	{
