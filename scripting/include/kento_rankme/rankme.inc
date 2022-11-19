@@ -46,7 +46,7 @@ enum struct WEAPONS_ENUM{
 	int TASER;
 	int MP5SD;
 	int BREACHCHARGE;
-	int GetData(int[] data) {
+	void GetData(int[] data) {
 		data[0] = this.KNIFE;
 		data[1] = this.GLOCK;
 		data[2] = this.HKP2000;
@@ -390,7 +390,7 @@ enum struct HITBOXES{
 	int Sum() {
 		return this.HEAD + this.CHEST + this.STOMACH + this.LEFT_ARM + this.RIGHT_ARM + this.LEFT_LEG + this.RIGHT_LEG;
 	}
-	int GetData(int[] data) {
+	void GetData(int[] data) {
 		data[0] = this.NULL_HITBOX;
 		data[1] = this.HEAD;
 		data[2] = this.CHEST;
