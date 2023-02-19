@@ -645,7 +645,7 @@ public Action Event_RoundMVP(Handle event, const char[] name, bool dontBroadcast
 		return;
 	
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if (!IsClientInGame(client))
+	if (client < 1 || !IsClientInGame(client))
 		return;
 	int team = GetClientTeam(client);
 	
